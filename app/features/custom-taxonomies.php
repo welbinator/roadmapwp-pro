@@ -15,22 +15,22 @@ function wp_roadmap_pro_custom_taxonomy_content() {
         <form action="" method="post">
             <?php wp_nonce_field('wp_roadmap_pro_add_taxonomy', 'wp_roadmap_pro_nonce'); ?>
             <ul class="flex-outer">
-                <li class="new_taxonomy_form_input">
+                <li class="new_idea_form_input">
                     <label for="taxonomy_slug">Slug:</label>
                     <input type="text" id="taxonomy_slug" name="taxonomy_slug" required>
                 </li>
 
-                <li class="new_taxonomy_form_input">
+                <li class="new_idea_form_input">
                     <label for="taxonomy_singular">Singular Name:</label>
                     <input type="text" id="taxonomy_singular" name="taxonomy_singular" required>
                 </li>
 
-                <li class="new_taxonomy_form_input">
+                <li class="new_idea_form_input">
                     <label for="taxonomy_plural">Plural Name:</label>
                     <input type="text" id="taxonomy_plural" name="taxonomy_plural" required>
                 </li>
 
-                <li class="new_taxonomy_form_input">
+                <li class="new_idea_form_input">
                     <label for="public">Public:</label>
                     <select id="public" name="public">
                         <option value="1">Yes</option>
@@ -38,7 +38,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
                     </select>
                 </li>
 
-                <li class="new_taxonomy_form_input">
+                <li class="new_idea_form_input">
                     <input type="submit" value="Add Taxonomy">
                 </li>
             </ul>
