@@ -11,7 +11,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
     ob_start();
     ?>
     <div class="wrap">
-        <h1>Add New Custom Taxonomy</h1>
+       
         <form action="" method="post">
             <?php wp_nonce_field('wp_roadmap_pro_add_taxonomy', 'wp_roadmap_pro_nonce'); ?>
             <ul class="flex-outer">
