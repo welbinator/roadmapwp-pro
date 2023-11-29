@@ -8,7 +8,6 @@ function wp_roadmap_pro_default_idea_status_setting($content) {
     // Fetch the current settings
     $options = get_option('wp_roadmap_pro_settings', []);
     $default_idea_status = isset($options['default_idea_status']) ? $options['default_idea_status'] : 'pending';
-    error_log('Current Default Status Setting: ' . $default_idea_status);
 
     // Create the HTML for the dropdown
     $html = '<select name="wp_roadmap_pro_settings[default_idea_status]">';
