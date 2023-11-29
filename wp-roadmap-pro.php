@@ -42,3 +42,6 @@ function wp_roadmap_pro_check_free_version() {
 
 // Include admin functions
 require_once plugin_dir_path( __FILE__ ) . 'app/features/custom-taxonomies.php';
+
+// Include admin functions
+require_once plugin_dir_path( __FILE__ ) . 'app/features/idea-default-status.php';
