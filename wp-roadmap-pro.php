@@ -39,3 +39,6 @@ function wp_roadmap_pro_check_free_version() {
         add_action('admin_notices', 'wp_roadmap_pro_admin_notice_free_version_missing');
     }
 }
+
+// Include admin functions
+require_once plugin_dir_path( __FILE__ ) . 'app/features/custom-taxonomies.php';
