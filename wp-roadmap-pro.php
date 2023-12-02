@@ -40,6 +40,11 @@ function wp_roadmap_pro_check_free_version() {
     }
 }
 
+// returns true for enabling pro features in the free plugin
+function is_wp_roadmap_pro_active() {
+    return true;
+}
+
 // Include custom taxonomies feature
 include_once plugin_dir_path( __FILE__ ) . 'app/features/custom-taxonomies.php';
 
@@ -86,4 +91,20 @@ function wp_roadmap_pro_enqueue_block_editor_assets() {
         }
     }
 }
+
+// Show or hide new idea heading
+add_filter('wp_roadmap_hide_new_idea_heading', function($hide_heading) {
+    $pro_options = get_option('wp_roadmap_pro_settings', []);
+    return !empty($pro_options['hide_new_idea_heading']);
+});
+
+// Setting field for hiding new idea heading
+add_filter('wp_roadmap_hide_new_idea_heading_setting', function($content) {
+    $pro_options = get_option('wp_roadmap_pro_settings', []);
+    $hide_heading_checked = isset($pro_options['hide_new_idea_heading']) ? 'checked' : '';
+    return '<input type="checkbox" name="wp_roadmap_pro_settings[hide_new_idea_heading]" value="1" ' . $hide_heading_checked . ' />';
+});
+
+
+
 
