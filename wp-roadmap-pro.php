@@ -74,8 +74,8 @@ add_filter('wp_roadmap_hide_new_idea_heading_setting', function($content) {
 });
 
 
-// Filter for new idea heading text
-add_filter('wp_roadmap_new_idea_heading_text', function($default_heading) {
+// Filter for custom idea heading text
+add_filter('wp_roadmap_custom_idea_heading_text', function($default_heading) {
     $pro_options = get_option('wp_roadmap_pro_settings', []);
     return !empty($pro_options['new_idea_heading']) ? $pro_options['new_idea_heading'] : $default_heading;
 });
