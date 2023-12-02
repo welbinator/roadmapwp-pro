@@ -58,37 +58,35 @@ include_once plugin_dir_path(__FILE__) . 'app/features/choose-idea-template.php'
 include_once plugin_dir_path(__FILE__) . 'app/blocks/blocks.php';
 
 
-
-
 // Show or hide new idea heading
-add_filter('wp_roadmap_hide_new_idea_heading', function($hide_heading) {
+add_filter('wp_roadmap_hide_custom_idea_heading', function($hide_heading) {
     $pro_options = get_option('wp_roadmap_pro_settings', []);
-    return !empty($pro_options['hide_new_idea_heading']);
+    return !empty($pro_options['hide_custom_idea_heading']);
 });
 
 // Setting field for hiding new idea heading
-add_filter('wp_roadmap_hide_new_idea_heading_setting', function($content) {
+add_filter('wp_roadmap_hide_custom_idea_heading_setting', function($content) {
     $pro_options = get_option('wp_roadmap_pro_settings', []);
-    $hide_heading_checked = isset($pro_options['hide_new_idea_heading']) ? 'checked' : '';
-    return '<input type="checkbox" name="wp_roadmap_pro_settings[hide_new_idea_heading]" value="1" ' . $hide_heading_checked . ' />';
+    $hide_heading_checked = isset($pro_options['hide_custom_idea_heading']) ? 'checked' : '';
+    return '<input type="checkbox" name="wp_roadmap_pro_settings[hide_custom_idea_heading]" value="1" ' . $hide_heading_checked . ' />';
 });
 
 
 // Filter for custom idea heading text
 add_filter('wp_roadmap_custom_idea_heading_text', function($default_heading) {
     $pro_options = get_option('wp_roadmap_pro_settings', []);
-    return !empty($pro_options['new_idea_heading']) ? $pro_options['new_idea_heading'] : $default_heading;
+    return !empty($pro_options['custom_idea_heading']) ? $pro_options['custom_idea_heading'] : $default_heading;
 });
 
 // Filter for adding new heading text field in settings
-add_filter('wp_roadmap_hide_new_idea_heading_setting', function($content) {
+add_filter('wp_roadmap_hide_custom_idea_heading_setting', function($content) {
     $pro_options = get_option('wp_roadmap_pro_settings', []);
-    $hide_heading_checked = isset($pro_options['hide_new_idea_heading']) ? 'checked' : '';
-    $new_heading = isset($pro_options['new_idea_heading']) ? $pro_options['new_idea_heading'] : '';
+    $hide_heading_checked = isset($pro_options['hide_custom_idea_heading']) ? 'checked' : '';
+    $new_heading = isset($pro_options['custom_idea_heading']) ? $pro_options['custom_idea_heading'] : '';
 
-    $content = '<input type="checkbox" name="wp_roadmap_pro_settings[hide_new_idea_heading]" value="1" ' . $hide_heading_checked . ' />';
-    $content .= '<br/><label for="new_idea_heading">New Heading:</label>';
-    $content .= '<input type="text" name="wp_roadmap_pro_settings[new_idea_heading]" value="' . esc_attr($new_heading) . '" />';
+    $content = '<input type="checkbox" name="wp_roadmap_pro_settings[hide_custom_idea_heading]" value="1" ' . $hide_heading_checked . ' />';
+    $content .= '<br/><label for="custom_idea_heading">New Heading:</label>';
+    $content .= '<input type="text" name="wp_roadmap_pro_settings[custom_idea_heading]" value="' . esc_attr($new_heading) . '" />';
 
     return $content;
 });
@@ -99,11 +97,11 @@ function wp_roadmap_pro_save_settings() {
 
         $pro_settings = get_option('wp_roadmap_pro_settings', []);
 
-        // Capture the 'hide_new_idea_heading' checkbox value
-        $pro_settings['hide_new_idea_heading'] = isset($_POST['wp_roadmap_pro_settings']['hide_new_idea_heading']) ? 1 : 0;
+        // Capture the 'hide_custom_idea_heading' checkbox value
+        $pro_settings['hide_custom_idea_heading'] = isset($_POST['wp_roadmap_pro_settings']['hide_custom_idea_heading']) ? 1 : 0;
 
-        // Capture the 'new_idea_heading' text value
-        $pro_settings['new_idea_heading'] = sanitize_text_field($_POST['wp_roadmap_pro_settings']['new_idea_heading']);
+        // Capture the 'custom_idea_heading' text value
+        $pro_settings['custom_idea_heading'] = sanitize_text_field($_POST['wp_roadmap_pro_settings']['custom_idea_heading']);
 
         update_option('wp_roadmap_pro_settings', $pro_settings);
     }
