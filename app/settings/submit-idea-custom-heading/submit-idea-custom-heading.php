@@ -25,7 +25,7 @@ add_filter('wp_roadmap_hide_custom_idea_heading_setting', function($content) {
     $hide_submit_idea_heading_checked = isset($pro_options['hide_custom_idea_heading']) ? 'checked' : '';
     $new_submit_idea_heading = isset($pro_options['custom_idea_heading']) ? $pro_options['custom_idea_heading'] : '';
 
-    $content = '<input type="checkbox" name="wp_roadmap_pro_settings[hide_custom_idea_heading]" id="hide_custom_idea_heading" value="1" ' . $hide_submit_idea_heading_checked . ' />';
+    $content = '<label>Hide Heading: </label><input type="checkbox" name="wp_roadmap_pro_settings[hide_custom_idea_heading]" id="hide_custom_idea_heading" value="1" ' . $hide_submit_idea_heading_checked . ' />';
     $content .= '<br/>';
 
     // Add JavaScript to toggle the visibility of the label and input field based on checkbox state
@@ -53,7 +53,7 @@ add_filter('wp_roadmap_hide_custom_idea_heading_setting', function($content) {
         });
     </script>';
 
-    $content .= '<label for="custom_idea_heading">New Heading:</label>';
+    $content .= '<label for="custom_idea_heading">Custom Heading: </label>';
     $content .= '<input type="text" name="wp_roadmap_pro_settings[custom_idea_heading]" value="' . esc_attr($new_submit_idea_heading) . '" />';
 
     return $content;
