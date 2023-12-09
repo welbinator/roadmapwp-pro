@@ -95,20 +95,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
     </div>
     <?php
 
-    // Retrieve and display existing taxonomies
-    $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
-    echo '<h2>Existing Taxonomies</h2>';
-    if (!empty($custom_taxonomies)) {
-        echo '<ul>';
-        foreach ($custom_taxonomies as $taxonomy_slug => $taxonomy_data) {
-            $delete_link = wp_nonce_url(
-                admin_url('admin.php?page=wp-roadmap-taxonomies&action=delete&taxonomy=' . $taxonomy_slug),
-                'delete_taxonomy_' . $taxonomy_slug
-            );
-            echo '<li>' . esc_html($taxonomy_slug) . ' - <a href="' . esc_url($delete_link) . '">Delete</a></li>';
-        }
-        echo '</ul>';
-    }
+    
 
     return ob_get_clean();
 }
