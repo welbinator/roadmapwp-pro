@@ -45,6 +45,10 @@ function is_wp_roadmap_pro_active() {
     return true;
 }
 
+
+// Include pro settings
+include_once plugin_dir_path(__FILE__) . 'app/settings/settings.php';
+
 // Include custom taxonomies feature
 include_once plugin_dir_path( __FILE__ ) . 'app/settings/custom-taxonomies/custom-taxonomies.php';
 
@@ -56,9 +60,6 @@ include_once plugin_dir_path(__FILE__) . 'app/settings/choose-idea-template/choo
 
 // Include blocks
 include_once plugin_dir_path(__FILE__) . 'app/blocks/blocks.php';
-
-// Include pro settings
-include_once plugin_dir_path(__FILE__) . 'app/settings/settings.php';
 
 // Include custom submit idea heading setting
 include_once plugin_dir_path(__FILE__) . 'app/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
