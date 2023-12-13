@@ -7,9 +7,11 @@
 add_filter('wp_roadmap_choose_idea_template_setting', 'wp_roadmap_pro_choose_idea_template_setting');
 
 function wp_roadmap_pro_choose_idea_template_setting($content) {
-    // Fetch the current settings
-    $options = get_option('wp_roadmap_pro_settings', []);
-    $chosen_template = isset($options['chosen_idea_template']) ? $options['chosen_idea_template'] : 'default';
+   // Fetch the current settings
+   $options = get_option('wp_roadmap_pro_settings', []);
+    
+   // Set 'custom' as default value if not set
+   $chosen_template = isset($options['chosen_idea_template']) ? $options['chosen_idea_template'] : 'custom';
 
     // Create the HTML for the dropdown
     $html = '<select name="wp_roadmap_pro_settings[chosen_idea_template]">';
