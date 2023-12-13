@@ -12,9 +12,14 @@ Text Domain: wp-roadmap-pro
 */
 
 // Function to check if the free version is active
-function is_wp_roadmap_free_active() {
-    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-    return is_plugin_active('wproadmap/wp-roadmap.php'); // Replace 'wproadmap/wp-roadmap.php' with the actual path of your free plugin's main file
+function is_wp_roadmap_free_installed() {
+    // Check for a unique function or class from the free version
+    if (function_exists('wp_roadmap_free_version_active')) {
+        return true;
+    }
+
+    // Fallback to check the database option
+    return get_option('wp_roadmap_free_active', false);
 }
 
 // Deactivate Pro plugin if free version isn't active
@@ -26,9 +31,12 @@ function wp_roadmap_pro_activation_check() {
 }
 register_activation_hook(__FILE__, 'wp_roadmap_pro_activation_check');
 
-// Admin notice for missing free version
+function is_wp_roadmap_free_active() {
+    return function_exists('wp_roadmap_free_version_active');
+}
+
 function wp_roadmap_pro_admin_notice_free_version_missing() {
-    echo '<div class="error"><p>WP Roadmap Pro requires the free version of WP Roadmap to be installed and active.</p></div>';
+    echo '<div class="error"><p>' . esc_html__('WP Roadmap Pro requires the free version to be installed and active.', 'wp-roadmap-pro') . '</p></div>';
 }
 
 // Deactivate Pro plugin if the free version is deactivated
@@ -45,9 +53,8 @@ function is_wp_roadmap_pro_active() {
     return true;
 }
 
-
 // Include pro settings
-include_once plugin_dir_path(__FILE__) . 'app/settings/settings.php';
+include_once plugin_dir_path( __FILE__ ) . 'app/settings/settings.php';
 
 // Include enable comments feature
 include_once plugin_dir_path( __FILE__ ) . 'app/settings/comments/comments.php';
@@ -59,16 +66,16 @@ include_once plugin_dir_path( __FILE__ ) . 'app/settings/custom-taxonomies/custo
 include_once plugin_dir_path( __FILE__ ) . 'app/settings/idea-default-status/idea-default-status.php';
 
 // Include choose idea template feature
-include_once plugin_dir_path(__FILE__) . 'app/settings/choose-idea-template/choose-idea-template.php';
+include_once plugin_dir_path( __FILE__ ) . 'app/settings/choose-idea-template/choose-idea-template.php';
 
 // Include blocks
-include_once plugin_dir_path(__FILE__) . 'app/blocks/blocks.php';
+include_once plugin_dir_path( __FILE__ ) . 'app/blocks/blocks.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path(__FILE__) . 'app/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
+include_once plugin_dir_path( __FILE__ ) . 'app/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path(__FILE__) . 'app/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
+include_once plugin_dir_path( __FILE__ ) . 'app/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
 
 
 
