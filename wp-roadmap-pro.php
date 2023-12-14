@@ -49,6 +49,9 @@ function is_wp_roadmap_pro_active() {
 // Include pro settings
 include_once plugin_dir_path(__FILE__) . 'app/settings/settings.php';
 
+// Include enable comments feature
+include_once plugin_dir_path( __FILE__ ) . 'app/settings/comments/comments.php';
+
 // Include custom taxonomies feature
 include_once plugin_dir_path( __FILE__ ) . 'app/settings/custom-taxonomies/custom-taxonomies.php';
 
