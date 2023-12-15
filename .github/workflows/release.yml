@@ -38,3 +38,6 @@ jobs:
 
       - name: Echo Release Attempt
         run: echo "Attempting to create a release for tag ${{ github.event.inputs.tag }}"
+
+permissions:
+  contents: write
