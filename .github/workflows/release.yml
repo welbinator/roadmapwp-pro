@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Release Tag (e.g., v1.0.6)'
+        description: 'Release Tag'  # Input field to specify the tag name
         required: true
 
 jobs:
@@ -12,32 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Echo Checkout Completion
-        run: echo "Checked out code"
+    - name: Create desired directory
+      run: |
+        mkdir wproadmap
 
-      - name: Install zip utility
-        run: |
-          sudo apt-get install zip
-          echo "Installed zip utility"
+    - name: Copy files to new directory
+      run: |
+        cp -r * wproadmap/
 
-      - name: Zip the repository
-        run: |
-          zip -r roadmapwp-pro.zip .
-          echo "Created roadmapwp-pro.zip"
+    - name: Zip the folder
+      run: |
+        zip -r wproadmap-${{ github.event.inputs.tag }}.zip wproadmap
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: roadmapwp-pro.zip
-          tag_name: ${{ github.event.inputs.tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Echo Release Attempt
-        run: echo "Attempting to create a release for tag ${{ github.event.inputs.tag }}"
-
-permissions:
-  contents: write
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: wproadmap-${{ github.event.inputs.tag }}.zip
+        tag_name: ${{ github.event.inputs.tag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
