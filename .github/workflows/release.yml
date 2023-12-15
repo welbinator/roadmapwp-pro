@@ -15,13 +15,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Create desired directory
+    - name: Create temporary directory
       run: |
-        mkdir wproadmap
+        mkdir temp_dir
 
-    - name: Copy files to new directory
+    - name: Copy files to temporary directory
       run: |
-        cp -r * wproadmap/
+        find . -maxdepth 1 -not -name 'temp_dir' -not -name '.' -exec cp -r {} temp_dir/ \;
+
+    - name: Rename directory
+      run: |
+        mv temp_dir wproadmap
 
     - name: Zip the folder
       run: |
@@ -34,3 +38,7 @@ jobs:
         tag_name: ${{ github.event.inputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+permissions:
+  contents: write
