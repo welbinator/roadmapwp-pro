@@ -25,20 +25,19 @@ jobs:
 
     - name: Rename directory
       run: |
-        mv temp_dir wproadmap
+        mv temp_dir roadmapwp-pro
 
     - name: Zip the folder
       run: |
-        zip -r wproadmap-${{ github.event.inputs.tag }}.zip wproadmap
+        zip -r roadmapwp-pro-${{ github.event.inputs.tag }}.zip roadmapwp-pro
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: wproadmap-${{ github.event.inputs.tag }}.zip
+        files: roadmapwp-pro-${{ github.event.inputs.tag }}.zip
         tag_name: ${{ github.event.inputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
 permissions:
   contents: write
