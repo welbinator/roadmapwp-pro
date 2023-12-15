@@ -21,7 +21,7 @@ jobs:
 
     - name: Copy files to temporary directory
       run: |
-        find . -maxdepth 1 -not -name 'temp_dir' -not -name '.' -exec cp -r {} temp_dir/ \;
+        find . -maxdepth 1 -not -name 'temp_dir' -not -name '.' -not -name '.git' -not -name '.github' -exec cp -r {} temp_dir/ \;
 
     - name: Rename directory
       run: |
@@ -29,7 +29,7 @@ jobs:
 
     - name: Zip the folder
       run: |
-        zip -r roadmapwp-pro-${{ github.event.inputs.tag }}.zip roadmapwp-pro
+        zip -r roadmapwp-pro-${{ github.event.inputs.tag }}.zip roadmapwp-pro -x "*.git/*" "*.github/*"
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
