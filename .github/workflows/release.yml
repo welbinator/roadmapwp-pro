@@ -2,10 +2,10 @@ name: Create Release
 
 on:
   workflow_dispatch:
-    # inputs:
-    #   tag:
-    #     description: 'Release Tag (e.g., v1.0.6)'
-    #     required: true
+    inputs:
+      tag:
+        description: 'Release Tag (e.g., v1.0.6)'
+        required: true
 
 jobs:
   build:
@@ -14,12 +14,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        run: echo "Checked out code"
 
       - name: Install zip utility
-        run: sudo apt-get install zip
+        run: |
+          sudo apt-get install zip
+          echo "Installed zip utility"
 
       - name: Zip the repository
-        run: zip -r release.zip .
+        run: |
+          zip -r release.zip .
+          echo "Created release.zip"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -28,3 +33,4 @@ jobs:
           tag_name: ${{ github.event.inputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "Attempting to create a release for tag ${{ github.event.inputs.tag }}"
