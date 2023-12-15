@@ -25,13 +25,13 @@ jobs:
 
       - name: Zip the repository
         run: |
-          zip -r release.zip .
-          echo "Created release.zip"
+          zip -r roadmapwp.zip .
+          echo "Created roadmapwp.zip"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release.zip
+          files: roadmapwp.zip
           tag_name: ${{ github.event.inputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
