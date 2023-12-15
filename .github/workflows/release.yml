@@ -3,8 +3,16 @@ name: Create Release
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'Branch to release'
+        required: true
+        type: choice
+        options:
+          - main
+          - develop
+          # Add more branches here as options
       tag:
-        description: 'Release Tag'  # Input field to specify the tag name
+        description: 'Release Tag'
         required: true
 
 jobs:
@@ -12,24 +20,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'  # Specify Node.js version 16
-
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        submodules: recursive  # Optional: include this line if you need to fetch submodules
+        ref: ${{ github.event.inputs.branch }}
+
+    - name: Install zip utility
+      run: sudo apt-get install zip
+
+    - name: Zip the repository
+      run: zip -r release.zip .
 
     - name: Create Release
-      id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: .
-        tag_name: ${{ github.event.inputs.tag }}  # Use the input tag value
+        files: release.zip
+        tag_name: ${{ github.event.inputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-
