@@ -2,10 +2,10 @@ name: Create Release
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Release Tag (e.g., v1.0.6)'
-        required: true
+    # inputs:
+    #   tag:
+    #     description: 'Release Tag (e.g., v1.0.6)'
+    #     required: true
 
 jobs:
   build:
