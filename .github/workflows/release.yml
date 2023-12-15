@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Echo Checkout Completion
         run: echo "Checked out code"
 
       - name: Install zip utility
@@ -33,4 +35,6 @@ jobs:
           tag_name: ${{ github.event.inputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Echo Release Attempt
         run: echo "Attempting to create a release for tag ${{ github.event.inputs.tag }}"
