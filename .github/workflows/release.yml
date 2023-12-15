@@ -1,3 +1,12 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'  # Input field to specify the tag name
+        required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest  # This sets the operating system for the entire job
@@ -16,3 +25,4 @@ jobs:
         tag_name: ${{ github.event.inputs.tag }}  # Use the input tag value
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
