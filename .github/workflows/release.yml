@@ -2,8 +2,10 @@ name: Create Release
 
 on:
   workflow_dispatch:
-    branches:
-      - main  # Change this to the branch you want to trigger the release
+    inputs:
+      tag:
+        description: 'Release Tag'  # Input field to specify the tag name
+        required: true
 
 jobs:
   build:
@@ -18,5 +20,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: .
+        tag_name: ${{ github.event.inputs.tag }}  # Use the input tag value
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
