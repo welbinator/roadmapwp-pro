@@ -2,29 +2,25 @@ name: Create Release
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Release Tag'
-        required: true
+      tags:
+        # release tags should start with 'v'. Example: v1.0.0
+        - "v*"
 
 jobs:
-  build:
+  validation:
     runs-on: ubuntu-latest
 
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # We always use the main branch for the release.
+          ref: main
 
-    - name: Install zip utility
-      run: sudo apt-get install zip
-
-    - name: Zip the repository
-      run: zip -r release.zip .
-
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: release.zip
-        tag_name: ${{ github.event.inputs.tag }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get tag
+        id: tag
+        run: |
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
