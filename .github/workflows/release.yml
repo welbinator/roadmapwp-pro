@@ -9,9 +9,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # This sets the operating system for the entire job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./  # Specify the working directory if needed
 
     steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '21'  # Specify Node.js version 21
+
     - name: Checkout code
       uses: actions/checkout@v2
       with:
@@ -25,4 +34,5 @@ jobs:
         tag_name: ${{ github.event.inputs.tag }}  # Use the input tag value
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
