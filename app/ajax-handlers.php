@@ -42,7 +42,7 @@ add_action('wp_ajax_nopriv_wp_roadmap_handle_vote', 'wp_roadmap_pro_handle_vote'
  * Handle AJAX requests for ideas filter.
  */
 function wp_roadmap_pro_filter_ideas() {
-    check_ajax_referer('wp-roadmap-vote-nonce', 'nonce');
+    check_ajax_referer('wp-roadmap-idea-filter-nonce', 'nonce');
 
     $filter_data = $_POST['filter_data'];
     $tax_query = array();
