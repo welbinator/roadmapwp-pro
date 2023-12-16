@@ -4,17 +4,17 @@
  */
 function wp_roadmap_settings_page() {
     // Fetch current settings
-    $options = get_option('wp_roadmap_settings');
-    $selected_page = isset($options['single_idea_page']) ? $options['single_idea_page'] : '';
+    $pro_options = get_option('wp_roadmap_pro_settings');
+    $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
      
     
     
     // New Styling Section
-    $vote_button_bg_color = isset($options['vote_button_bg_color']) ? $options['vote_button_bg_color'] : '#0000ff'; // Default to blue if not set
-    $vote_button_text_color = isset($options['vote_button_text_color']) ? $options['vote_button_text_color'] : '#000000'; // Default to blue if not set
-    $filter_tags_bg_color = isset($options['filter_tags_bg_color']) ? $options['filter_tags_bg_color'] : '#0000ff'; // Default to blue if not set
-    $filter_tags_text_color = isset($options['filter_tags_text_color']) ? $options['filter_tags_text_color'] : '#000000'; // Default to blue if not set
-    $filters_bg_color = isset($options['filters_bg_color']) ? $options['filters_bg_color'] : '#f5f5f5'; // Default to blue if not set
+    $vote_button_bg_color = isset($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '#0000ff'; // Default to blue if not set
+    $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000'; // Default to blue if not set
+    $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#0000ff'; // Default to blue if not set
+    $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000'; // Default to blue if not set
+    $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5'; // Default to blue if not set
 
     ?>
     <div class="wrap">
@@ -63,7 +63,7 @@ function wp_roadmap_settings_page() {
                 <tr valign="top" id="single_idea_page_setting" style="display: none;">
                     <th scope="row"><?php esc_html_e('Set page for single idea', 'wp-roadmap'); ?></th>
                     <td>
-                        <select name="wp_roadmap_settings[single_idea_page]">
+                        <select name="wp_roadmap_pro_settings[single_idea_page]">
                             <?php
                             $pages = get_pages();
                             foreach ($pages as $page) {
@@ -104,35 +104,35 @@ function wp_roadmap_settings_page() {
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Vote Button Background Color', 'wp-roadmap'); ?></th>
                     <td>
-                        <input type="text" name="wp_roadmap_settings[vote_button_bg_color]" value="<?php echo esc_attr($vote_button_bg_color); ?>" class="wp-roadmap-color-picker"/>
+                        <input type="text" name="wp_roadmap_pro_settings[vote_button_bg_color]" value="<?php echo esc_attr($vote_button_bg_color); ?>" class="wp-roadmap-color-picker"/>
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Vote Button Text Color', 'wp-roadmap'); ?></th>
                     <td>
-                        <input type="text" name="wp_roadmap_settings[vote_button_text_color]" value="<?php echo esc_attr($vote_button_text_color); ?>" class="wp-roadmap-color-picker"/>
+                        <input type="text" name="wp_roadmap_pro_settings[vote_button_text_color]" value="<?php echo esc_attr($vote_button_text_color); ?>" class="wp-roadmap-color-picker"/>
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filter Tags Background Color', 'wp-roadmap'); ?></th>
                     <td>
-                        <input type="text" name="wp_roadmap_settings[filter_tags_bg_color]" value="<?php echo esc_attr($filter_tags_bg_color); ?>" class="wp-roadmap-color-picker"/>
+                        <input type="text" name="wp_roadmap_pro_settings[filter_tags_bg_color]" value="<?php echo esc_attr($filter_tags_bg_color); ?>" class="wp-roadmap-color-picker"/>
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filter Tags Text Color', 'wp-roadmap'); ?></th>
                     <td>
-                        <input type="text" name="wp_roadmap_settings[filter_tags_text_color]" value="<?php echo esc_attr($filter_tags_text_color); ?>" class="wp-roadmap-color-picker"/>
+                        <input type="text" name="wp_roadmap_pro_settings[filter_tags_text_color]" value="<?php echo esc_attr($filter_tags_text_color); ?>" class="wp-roadmap-color-picker"/>
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filters Background Color', 'wp-roadmap'); ?></th>
                     <td>
-                        <input type="text" name="wp_roadmap_settings[filters_bg_color]" value="<?php echo esc_attr($filters_bg_color); ?>" class="wp-roadmap-color-picker"/>
+                        <input type="text" name="wp_roadmap_pro_settings[filters_bg_color]" value="<?php echo esc_attr($filters_bg_color); ?>" class="wp-roadmap-color-picker"/>
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>

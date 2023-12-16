@@ -7,10 +7,10 @@
 add_filter('wp_roadmap_single_idea_template_setting', 'wp_roadmap_pro_single_idea_template_setting');
 
 function wp_roadmap_pro_single_idea_template_setting($content) {
-    $options = get_option('wp_roadmap_settings', []);
-    $chosen_template = isset($options['single_idea_template']) ? $options['single_idea_template'] : 'plugin';
+    $pro_options = get_option('wp_roadmap_pro_settings', []);
+    $chosen_template = isset($pro_options['single_idea_template']) ? $pro_options['single_idea_template'] : 'plugin';
 
-    $html = '<select name="wp_roadmap_settings[single_idea_template]" id="wp_roadmap_single_idea_template">';
+    $html = '<select name="wp_roadmap_pro_settings[single_idea_template]" id="wp_roadmap_single_idea_template">';
     $templates = ['plugin' => 'Plugin Template', 'page' => 'Choose Page'];
     foreach ($templates as $value => $label) {
         $selected = selected($chosen_template, $value, false);
@@ -48,16 +48,16 @@ function wp_roadmap_pro_register_template_settings() {
 // Implement the template choice functionality
 function wp_roadmap_pro_template_include($template) {
     if (is_singular('idea')) {
-        $options = get_option('wp_roadmap_settings', []);
+        $pro_options = get_option('wp_roadmap_pro_settings', []);
 
-        if (isset($options['single_idea_template'])) {
-            if ($options['single_idea_template'] === 'plugin') {
+        if (isset($pro_options['single_idea_template'])) {
+            if ($pro_options['single_idea_template'] === 'plugin') {
                 $plugin_template = plugin_dir_path(__FILE__) . 'pro/templates/template-single-idea.php';
                 if (file_exists($plugin_template)) {
                     return $plugin_template;
                 }
-            } elseif ($options['single_idea_template'] === 'page' && isset($options['single_idea_page'])) {
-                $page_id = $options['single_idea_page'];
+            } elseif ($pro_options['single_idea_template'] === 'page' && isset($pro_options['single_idea_page'])) {
+                $page_id = $pro_options['single_idea_page'];
                 $page_link = get_permalink($page_id);
                 if ($page_link) {
                     wp_redirect($page_link);
@@ -73,10 +73,10 @@ add_filter('template_include', 'wp_roadmap_pro_template_include');
 
 function wp_roadmap_pro_handle_single_idea_redirection() {
     if (is_singular('idea')) {
-        $options = get_option('wp_roadmap_settings', []);
+        $pro_options = get_option('wp_roadmap_pro_settings', []);
 
-        if (isset($options['single_idea_template']) && $options['single_idea_template'] === 'page' && isset($options['single_idea_page'])) {
-            $page_id = $options['single_idea_page'];
+        if (isset($pro_options['single_idea_template']) && $pro_options['single_idea_template'] === 'page' && isset($pro_options['single_idea_page'])) {
+            $page_id = $pro_options['single_idea_page'];
             $page_link = add_query_arg('idea_id', get_queried_object_id(), get_permalink($page_id));
             if ($page_link) {
                 wp_redirect($page_link);

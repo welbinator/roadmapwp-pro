@@ -51,12 +51,12 @@ function wp_roadmap_filter_ideas() {
     $display_taxonomies = array_merge(array('idea-tag'), array_keys($custom_taxonomies));
 
     // Retrieve color settings
-    $options = get_option('wp_roadmap_settings');
-    $vote_button_bg_color = isset($options['vote_button_bg_color']) ? $options['vote_button_bg_color'] : '#ff0000';
-    $vote_button_text_color = isset($options['vote_button_text_color']) ? $options['vote_button_text_color'] : '#000000';
-    $filter_tags_bg_color = isset($options['filter_tags_bg_color']) ? $options['filter_tags_bg_color'] : '#ff0000';
-    $filter_tags_text_color = isset($options['filter_tags_text_color']) ? $options['filter_tags_text_color'] : '#000000';
-    $filters_bg_color = isset($options['filters_bg_color']) ? $options['filters_bg_color'] : '#f5f5f5';
+    $pro_options = get_option('wp_roadmap_pro_settings');
+    $vote_button_bg_color = isset($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '#ff0000';
+    $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
+    $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
+    $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
+    $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
     foreach ($filter_data as $taxonomy => $data) {
         if (!empty($data['terms'])) {
@@ -80,10 +80,10 @@ function wp_roadmap_filter_ideas() {
     );
 
      // Validate color settings
-     $vote_button_bg_color = sanitize_hex_color($options['vote_button_bg_color']);
-     $vote_button_text_color = sanitize_hex_color($options['vote_button_text_color']);
-     $filter_tags_bg_color = sanitize_hex_color($options['filter_tags_bg_color']);
-     $filter_tags_text_color = sanitize_hex_color($options['filter_tags_text_color']);
+     $vote_button_bg_color = sanitize_hex_color($pro_options['vote_button_bg_color']);
+     $vote_button_text_color = sanitize_hex_color($pro_options['vote_button_text_color']);
+     $filter_tags_bg_color = sanitize_hex_color($pro_options['filter_tags_bg_color']);
+     $filter_tags_text_color = sanitize_hex_color($pro_options['filter_tags_text_color']);
 
     $query = new WP_Query($args);
 

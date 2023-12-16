@@ -127,12 +127,12 @@ function wp_roadmap_display_ideas_shortcode() {
     $taxonomies = array_diff($taxonomies, $exclude_taxonomies);
 
     // Retrieve color settings
-    $options = get_option('wp_roadmap_settings');
-    $vote_button_bg_color = isset($options['vote_button_bg_color']) ? $options['vote_button_bg_color'] : '#ff0000';
-    $vote_button_text_color = isset($options['vote_button_text_color']) ? $options['vote_button_text_color'] : '#000000';
-    $filter_tags_bg_color = isset($options['filter_tags_bg_color']) ? $options['filter_tags_bg_color'] : '#ff0000';
-    $filter_tags_text_color = isset($options['filter_tags_text_color']) ? $options['filter_tags_text_color'] : '#000000';
-    $filters_bg_color = isset($options['filters_bg_color']) ? $options['filters_bg_color'] : '#f5f5f5';
+    $pro_options = get_option('wp_roadmap_pro_settings');
+    $vote_button_bg_color = isset($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '#ff0000';
+    $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
+    $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
+    $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
+    $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
     // Check if the pro version is installed and settings are enabled
     $hide_display_ideas_heading = apply_filters('wp_roadmap_hide_display_ideas_heading', false);
@@ -270,12 +270,12 @@ function wp_roadmap_roadmap_shortcode() {
     $taxonomies = array_diff($taxonomies, $exclude_taxonomies); // Exclude 'status' taxonomy
 
     // Retrieve color settings
-    $options = get_option('wp_roadmap_settings');
-    $vote_button_bg_color = isset($options['vote_button_bg_color']) ? $options['vote_button_bg_color'] : '#ff0000';
-    $vote_button_text_color = isset($options['vote_button_text_color']) ? $options['vote_button_text_color'] : '#000000';
-    $filter_tags_bg_color = isset($options['filter_tags_bg_color']) ? $options['filter_tags_bg_color'] : '#ff0000';
-    $filter_tags_text_color = isset($options['filter_tags_text_color']) ? $options['filter_tags_text_color'] : '#000000';
-    $filters_bg_color = isset($options['filters_bg_color']) ? $options['filters_bg_color'] : '#f5f5f5';
+    $pro_options = get_option('wp_roadmap_pro_settings');
+    $vote_button_bg_color = isset($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '#ff0000';
+    $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
+    $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
+    $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
+    $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
     ob_start(); // Start output buffering
     ?>
@@ -356,11 +356,11 @@ function wp_roadmap_single_idea_shortcode($atts) {
     }
 
     // Fetch options for styling (assumed to be saved in your options table)
-    $options = get_option('wp_roadmap_settings', []);
-    $vote_button_bg_color = $options['vote_button_bg_color'] ?? '#ff0000';
-    $vote_button_text_color = $options['vote_button_text_color'] ?? '#000000';
-    $filter_tags_bg_color = $options['filter_tags_bg_color'] ?? '#ff0000';
-    $filter_tags_text_color = $options['filter_tags_text_color'] ?? '#000000';
+    $pro_options = get_option('wp_roadmap_pro_settings', []);
+    $vote_button_bg_color = $pro_options['vote_button_bg_color'] ?? '#ff0000';
+    $vote_button_text_color = $pro_options['vote_button_text_color'] ?? '#000000';
+    $filter_tags_bg_color = $pro_options['filter_tags_bg_color'] ?? '#ff0000';
+    $filter_tags_text_color = $pro_options['filter_tags_text_color'] ?? '#000000';
 
     // Get vote count
     $vote_count = get_post_meta($idea_id, 'idea_votes', true) ?: '0';

@@ -4,12 +4,13 @@
  */
 
  // Retrieve color settings
- $options = get_option('wp_roadmap_settings');
- $vote_button_bg_color = isset($options['vote_button_bg_color']) ? $options['vote_button_bg_color'] : '#ff0000';
- $vote_button_text_color = isset($options['vote_button_text_color']) ? $options['vote_button_text_color'] : '#000000';
- $filter_tags_bg_color = isset($options['filter_tags_bg_color']) ? $options['filter_tags_bg_color'] : '#ff0000';
- $filter_tags_text_color = isset($options['filter_tags_text_color']) ? $options['filter_tags_text_color'] : '#000000';
- $filters_bg_color = isset($options['filters_bg_color']) ? $options['filters_bg_color'] : '#f5f5f5';
+ $pro_options = get_option('wp_roadmap_pro_settings');
+ $allow_comments = isset($pro_options['allow_comments']) ? $pro_options['allow_comments'] : false;
+ $vote_button_bg_color = isset($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '#ff0000';
+ $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
+ $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
+ $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
+ $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
  
 get_header(); ?>
 
@@ -116,16 +117,12 @@ get_header(); ?>
                     </footer><!-- .entry-footer -->
                 
 
-                <?php
-                // if ( $allow_comments ) {
-                //     error_log("comments status" . $allow_comments)
-                //     if ( comments_open() || get_comments_number() ) :
-                //         comments_template();
-                //     endif;
-                // }
-                
-            endwhile; 
-            ?>
+                    <?php
+                        if ( ($allow_comments) && (comments_open() || get_comments_number()) ) :
+                            comments_template();
+                        endif;
+                        endwhile;
+                    ?>
         </article>
     </div>
 </main><!-- #main -->
