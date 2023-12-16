@@ -11,42 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-roadmap-pro
 */
 
-// Function to check if the free version is active
-function is_wp_roadmap_free_installed() {
-    // Check for a unique function or class from the free version
-    if (function_exists('wp_roadmap_free_version_active')) {
-        return true;
-    }
-
-    // Fallback to check the database option
-    return get_option('wp_roadmap_free_active', false);
-}
-
-// Deactivate Pro plugin if free version isn't active
-function wp_roadmap_pro_activation_check() {
-    if (!is_wp_roadmap_free_active()) {
-        deactivate_plugins(plugin_basename(__FILE__));
-        add_action('admin_notices', 'wp_roadmap_pro_admin_notice_free_version_missing');
-    }
-}
-register_activation_hook(__FILE__, 'wp_roadmap_pro_activation_check');
-
-function is_wp_roadmap_free_active() {
-    return function_exists('wp_roadmap_free_version_active');
-}
-
-function wp_roadmap_pro_admin_notice_free_version_missing() {
-    echo '<div class="error"><p>' . esc_html__('WP Roadmap Pro requires the free version to be installed and active.', 'wp-roadmap-pro') . '</p></div>';
-}
-
-// Deactivate Pro plugin if the free version is deactivated
-add_action('admin_init', 'wp_roadmap_pro_check_free_version');
-function wp_roadmap_pro_check_free_version() {
-    if (!is_wp_roadmap_free_active() && is_plugin_active(plugin_basename(__FILE__))) {
-        deactivate_plugins(plugin_basename(__FILE__));
-        add_action('admin_notices', 'wp_roadmap_pro_admin_notice_free_version_missing');
-    }
-}
 
 // returns true for enabling pro features in the free plugin
 function is_wp_roadmap_pro_active() {
@@ -442,3 +406,45 @@ include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-head
 
 // Include custom submit idea heading setting
 include_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
+
+// Include necessary files
+require_once plugin_dir_path(__FILE__) . 'app/admin-functions.php';
+require_once plugin_dir_path(__FILE__) . 'app/cpt-ideas.php';
+require_once plugin_dir_path(__FILE__) . 'app/ajax-handlers.php';
+require_once plugin_dir_path(__FILE__) . 'app/admin-pages.php';
+require_once plugin_dir_path(__FILE__) . 'app/shortcodes.php';
+
+function wp_roadmap_on_activation() {
+    // Directly call the function that registers your taxonomies here
+    wp_roadmap_register_default_taxonomies();
+
+    // Now add the terms
+    $status_terms = array('New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed');
+    foreach ($status_terms as $term) {
+        if (!term_exists($term, 'status')) {
+            $result = wp_insert_term($term, 'status');
+            if (is_wp_error($result)) {
+                error_log('Error inserting term ' . $term . ': ' . $result->get_error_message());
+            }
+        }
+    }
+}
+
+register_activation_hook(__FILE__, 'wp_roadmap_on_activation');
+
+function wp_roadmap_custom_template($template) {
+    global $post;
+
+    if ('idea' === $post->post_type) {
+        $options = get_option('wp_roadmap_settings');
+        $chosen_idea_template = isset($options['single_idea_template']) ? $options['single_idea_template'] : 'plugin';
+
+        if ($chosen_idea_template === 'plugin' && file_exists(plugin_dir_path(__FILE__) . 'app/templates/template-single-idea.php')) {
+            return plugin_dir_path(__FILE__) . 'app/templates/template-single-idea.php';
+        }
+    }
+
+    return $template;
+}
+
+add_filter('single_template', 'wp_roadmap_custom_template');
