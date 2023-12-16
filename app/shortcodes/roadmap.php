@@ -5,16 +5,35 @@
  * @return string The HTML output for displaying the roadmap.
  */
 function wp_roadmap_pro_roadmap_shortcode($atts) {
-    // Parse the shortcode attributes
-    $atts = shortcode_atts(array(
-        'status' => 'Up Next, On Roadmap', // Default values
-    ), $atts, 'roadmap');
+     // Flag to indicate the roadmap shortcode is loaded
+     update_option('wp_roadmap_roadmap_shortcode_loaded', true);
+     
+    echo '<pre>' . var_export($atts, true) . '</pre>';
+   // Parse the shortcode attributes
+   $atts = shortcode_atts(array(
+    'status' => '',
+    'showNewIdea' => true,
+    'showUpNext' => true,
+    'showMaybe' => true,
+    'showOnRoadmap' => true,
+    'showClosed' => true,
+), $atts, 'roadmap');
 
-    // Convert the status list into an array
-    $statuses = array_map('trim', explode(',', $atts['status']));
+// Assume true if the attribute is not passed
+$statuses = array();
+    if (!empty($atts['status'])) {
+        // Use the 'status' attribute if it's provided (for the shortcode)
+        $statuses = array_map('trim', explode(',', $atts['status']));
+    } else {
+        // Otherwise, use the boolean attributes (for the block)
+        if ($atts['showNewIdea']) $statuses[] = 'New Idea';
+        if ($atts['showUpNext']) $statuses[] = 'Up Next';
+        if ($atts['showMaybe']) $statuses[] = 'Maybe';
+        if ($atts['showOnRoadmap']) $statuses[] = 'On Roadmap';
+        if ($atts['showClosed']) $statuses[] = 'Closed';
+    }
 
-    // Flag to indicate the roadmap shortcode is loaded
-    update_option('wp_roadmap_roadmap_shortcode_loaded', true);
+   
 
     // Retrieve color settings
     $pro_options = get_option('wp_roadmap_pro_settings');
@@ -48,7 +67,7 @@ function wp_roadmap_pro_roadmap_shortcode($atts) {
                 $query = new WP_Query($args);
                 ?>
                 <div class="roadmap-column">
-                    <h1><?php echo esc_html($status); ?></h1>
+                    <h3 style="text-align:center;"><?php echo esc_html__($status, 'wp-roadmap-pro'); ?></h3>
                     <?php
                     if ($query->have_posts()) {
                         while ($query->have_posts()) : $query->the_post();
