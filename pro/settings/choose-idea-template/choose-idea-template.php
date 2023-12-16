@@ -42,7 +42,7 @@ function wp_roadmap_pro_single_idea_template_setting($content) {
 add_action('admin_init', 'wp_roadmap_pro_register_template_settings');
 
 function wp_roadmap_pro_register_template_settings() {
-    register_setting('wp_roadmap_settings', 'wp_roadmap_settings');
+    register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
 }
 
 // Implement the template choice functionality

@@ -25,7 +25,7 @@ add_filter('wp_roadmap_default_idea_status_setting', 'wp_roadmap_pro_default_ide
 
 // Save the setting when the settings form is submitted
 function wp_roadmap_pro_register_settings() {
-    register_setting('wp_roadmap_settings', 'wp_roadmap_pro_settings');
+    register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
 }
 
 

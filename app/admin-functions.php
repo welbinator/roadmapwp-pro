@@ -191,7 +191,7 @@ function wp_roadmap_add_admin_menu() {
     );
 
     // Check if Pro version is active, then add the submenu
-    if (function_exists('is_wp_roadmap_pro_active') && is_wp_roadmap_pro_active()) {
+    
         add_submenu_page(
             'wp-roadmap',
             __('License', 'wp-roadmap'),
@@ -200,7 +200,7 @@ function wp_roadmap_add_admin_menu() {
             'roadmapwp-license', // You can use a constant here if defined
             'roadmapwp_pro_license_page' // Ensure this function exists and renders the license page
         );
-    }
+    
 
     remove_submenu_page('wp-roadmap', 'wp-roadmap');
 }
@@ -249,7 +249,7 @@ add_action('admin_menu', 'wp_roadmap_add_admin_menu');
  * This function sets up a settings section for the plugin, allowing configuration of various features and functionalities.
  */
 function wp_roadmap_register_settings() {
-    register_setting('wp_roadmap_settings', 'wp_roadmap_settings');
+    register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
 }
 add_action('admin_init', 'wp_roadmap_register_settings');
 
