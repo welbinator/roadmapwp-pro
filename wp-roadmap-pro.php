@@ -11,12 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-roadmap-pro
 */
 
-
-// returns true for enabling pro features in the free plugin
-function is_wp_roadmap_pro_active() {
-    return true;
-}
-
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'ROADMAPWP_PRO_STORE_URL', 'https://roadmapwp.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
 // the download ID. This is the ID of your product in EDD and should match the download ID visible in your Downloads list (see example below)
