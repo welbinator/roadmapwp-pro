@@ -4,7 +4,7 @@
  *
  * @return string The HTML output for displaying the roadmap.
  */
-function wp_roadmap_roadmap_shortcode() {
+function wp_roadmap_pro_roadmap_shortcode() {
     // Flag to indicate the roadmap shortcode is loaded
      update_option('wp_roadmap_roadmap_shortcode_loaded', true);
  
@@ -86,4 +86,4 @@ function wp_roadmap_roadmap_shortcode() {
      <?php
      return ob_get_clean(); // Return the buffered output
  }
- add_shortcode('roadmap', 'wp_roadmap_roadmap_shortcode');
+ add_shortcode('roadmap', 'wp_roadmap_pro_roadmap_shortcode');

@@ -2,7 +2,7 @@
 /**
  * Function to display WP RoadMap settings page.
  */
-function wp_roadmap_settings_page() {
+function wp_roadmap_pro_settings_page() {
     // Fetch current settings
     $pro_options = get_option('wp_roadmap_pro_settings');
     $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
@@ -165,7 +165,7 @@ function wp_roadmap_settings_page() {
  * Function to display the Taxonomies management page.
  * This function allows adding terms to the "Tags" taxonomy.
  */
-function wp_roadmap_taxonomies_page() {
+function wp_roadmap_pro_taxonomies_page() {
     // Check if the current user has the 'manage_options' capability
     if (!current_user_can('manage_options')) {
         wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'wp-roadmap'));

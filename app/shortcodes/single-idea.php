@@ -1,6 +1,6 @@
 <?php 
 // single idea shortcode 
-function wp_roadmap_single_idea_shortcode($atts) {
+function wp_roadmap_pro_single_idea_shortcode($atts) {
     // Flag to indicate the roadmap shortcode is loaded
     update_option('wp_roadmap_single_idea_shortcode_loaded', true);
 
@@ -88,4 +88,4 @@ function wp_roadmap_single_idea_shortcode($atts) {
     <?php
     return ob_get_clean();
 }
-add_shortcode('single_idea', 'wp_roadmap_single_idea_shortcode');
+add_shortcode('single_idea', 'wp_roadmap_pro_single_idea_shortcode');

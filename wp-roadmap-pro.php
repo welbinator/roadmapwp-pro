@@ -10,6 +10,19 @@ License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-roadmap-pro
 */
+// This function will be called when the Pro version is activated.
+function wp_roadmap_pro_activate() {
+    // Check if the free version is active
+    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    if (is_plugin_active('wproadmap/wp-roadmap.php')) {
+        // Deactivate the free version
+        deactivate_plugins('wproadmap/wp-roadmap.php');
+    }
+    // Additional activation code for Pro version goes here...
+}
+
+// Register the activation hook for the Pro version
+register_activation_hook(__FILE__, 'wp_roadmap_pro_activate');
 
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'ROADMAPWP_PRO_STORE_URL', 'https://roadmapwp.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
@@ -411,7 +424,7 @@ require_once plugin_dir_path(__FILE__) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/roadmap.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/single-idea.php';
 
-function wp_roadmap_on_activation() {
+function wp_roadmap_pro_on_activation() {
     // Directly call the function that registers your taxonomies here
     wp_roadmap_register_default_taxonomies();
 
@@ -427,9 +440,9 @@ function wp_roadmap_on_activation() {
     }
 }
 
-register_activation_hook(__FILE__, 'wp_roadmap_on_activation');
+register_activation_hook(__FILE__, 'wp_roadmap_pro_on_activation');
 
-function wp_roadmap_custom_template($template) {
+function wp_roadmap_pro_custom_template($template) {
     global $post;
 
     if ('idea' === $post->post_type) {
@@ -444,4 +457,4 @@ function wp_roadmap_custom_template($template) {
     return $template;
 }
 
-add_filter('single_template', 'wp_roadmap_custom_template');
+add_filter('single_template', 'wp_roadmap_pro_custom_template');

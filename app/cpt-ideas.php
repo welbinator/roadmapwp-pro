@@ -1,7 +1,7 @@
 <?php
 
 // Function to register the custom post type
-function wp_roadmap_register_post_type() {
+function wp_roadmap_pro_register_post_type() {
     $pro_options = get_option('wp_roadmap_pro_settings');
      
     $supports = array('title', 'editor', 'author'); // include 'comments' support
@@ -55,11 +55,11 @@ function wp_roadmap_register_post_type() {
     register_post_type('idea', $args);
 }
 
-add_action('init', 'wp_roadmap_register_post_type');
+add_action('init', 'wp_roadmap_pro_register_post_type');
 
 
 // default taxonomies
-function wp_roadmap_register_default_taxonomies() {
+function wp_roadmap_pro_register_default_taxonomies() {
     // Define default taxonomies with their properties
     $default_taxonomies = array(
         'status' => array(
@@ -96,14 +96,14 @@ function wp_roadmap_register_default_taxonomies() {
         }
     }
 }
-add_action('init', 'wp_roadmap_register_default_taxonomies');
+add_action('init', 'wp_roadmap_pro_register_default_taxonomies');
 
 //automatically assign Status of New Idea to new idea posts
 // Hook into the save_post action
 add_action('save_post_idea', 'wp_roadmap_auto_assign_new_idea_status', 10, 3);
 
 // Function to auto-assign "New Idea" status to new Idea posts
-function wp_roadmap_auto_assign_new_idea_status($post_id, $post, $update) {
+function wp_roadmap_pro_auto_assign_new_idea_status($post_id, $post, $update) {
     // If this is an update, not a new post, or if it's an autosave, don't do anything
     if ($update || wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
         return;
@@ -127,10 +127,10 @@ function wp_roadmap_auto_assign_new_idea_status($post_id, $post, $update) {
     wp_set_object_terms($post_id, 'new-idea', 'status');
 }
 
-add_action('save_post_idea', 'wp_roadmap_auto_assign_new_idea_status', 10, 3);
+add_action('save_post_idea', 'wp_roadmap_pro_auto_assign_new_idea_status', 10, 3);
 
 // Register custom taxonomies
-function wp_roadmap_register_custom_taxonomies() {
+function wp_roadmap_pro_register_custom_taxonomies() {
     $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
 
     foreach ($custom_taxonomies as $taxonomy_slug => $taxonomy_data) {
@@ -139,4 +139,4 @@ function wp_roadmap_register_custom_taxonomies() {
         }
     }
 }
-add_action('init', 'wp_roadmap_register_custom_taxonomies', 0);
+add_action('init', 'wp_roadmap_pro_register_custom_taxonomies', 0);
