@@ -420,25 +420,25 @@ function roadmapwp_pro_admin_notices() {
 add_action( 'admin_notices', 'roadmapwp_pro_admin_notices' );
 
 // Include pro settings
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/settings.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
 
 // Include enable comments feature
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/comments/comments.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments/comments.php';
 
 // Include custom taxonomies feature
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/custom-taxonomies/custom-taxonomies.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies/custom-taxonomies.php';
 
 // Include default idea status feature
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/idea-default-status/idea-default-status.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-status/idea-default-status.php';
 
 // Include choose idea template feature
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/choose-idea-template/choose-idea-template.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template/choose-idea-template.php';
 
 // Include blocks
-include_once plugin_dir_path( __FILE__ ) . 'app/blocks/blocks.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path( __FILE__ ) . 'app/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
