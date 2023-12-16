@@ -149,7 +149,4 @@ function wp_roadmap_display_ideas_shortcode() {
     return ob_get_clean(); // Return the buffered output
 }
 
-
-
-
 add_shortcode('display_ideas', 'wp_roadmap_display_ideas_shortcode');
