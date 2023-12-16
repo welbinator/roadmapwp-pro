@@ -426,7 +426,7 @@ require_once plugin_dir_path(__FILE__) . 'app/shortcodes/single-idea.php';
 
 function wp_roadmap_pro_on_activation() {
     // Directly call the function that registers your taxonomies here
-    wp_roadmap_register_default_taxonomies();
+    wp_roadmap_pro_register_default_taxonomies();
 
     // Now add the terms
     $status_terms = array('New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed');
