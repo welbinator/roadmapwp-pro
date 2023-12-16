@@ -144,12 +144,6 @@ h3.idea-title a {
 
 
 /* roadmap shortcode */
-.roadmap-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
 
 
 /* Media query for responsiveness */
