@@ -8,7 +8,7 @@ function wp_roadmap_pro_roadmap_shortcode($atts) {
      // Flag to indicate the roadmap shortcode is loaded
      update_option('wp_roadmap_roadmap_shortcode_loaded', true);
      
-    echo '<pre>' . var_export($atts, true) . '</pre>';
+   
    // Parse the shortcode attributes
    $atts = shortcode_atts(array(
     'status' => '',
