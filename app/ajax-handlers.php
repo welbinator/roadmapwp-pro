@@ -186,4 +186,42 @@ function wp_roadmap_pro_handle_delete_selected_terms() {
 }
 add_action('wp_ajax_delete_selected_terms', 'wp_roadmap_pro_handle_delete_selected_terms');
 
+function wp_roadmap_pro_update_idea_status() {
+    check_ajax_referer('wp-roadmap-admin-frontend-nonce', 'nonce');
+
+    $idea_id = isset($_POST['idea_id']) ? intval($_POST['idea_id']) : 0;
+    $statuses = isset($_POST['statuses']) ? json_decode(stripslashes($_POST['statuses']), true) : array();
+
+    // Log the received statuses
+    error_log('Received statuses for idea ID ' . $idea_id . ': ' . print_r($statuses, true));
+
+    if ($idea_id && !empty($statuses)) {
+        // Remove all existing status terms from the post
+        $current_terms = wp_get_post_terms($idea_id, 'status', array('fields' => 'ids'));
+        foreach ($current_terms as $term_id) {
+            wp_remove_object_terms($idea_id, $term_id, 'status');
+        }
+
+        // Add each new status term
+        foreach ($statuses as $status_slug) {
+            $term = get_term_by('slug', $status_slug, 'status');
+            if ($term && !is_wp_error($term)) {
+                wp_add_object_terms($idea_id, $term->term_id, 'status');
+            }
+        }
+
+        // Check current terms after setting
+        $current_terms = wp_get_post_terms($idea_id, 'status', array('fields' => 'slugs'));
+        error_log('Current terms after setting: ' . print_r($current_terms, true));
+
+        wp_send_json_success();
+    } else {
+        wp_send_json_error('Invalid data');
+    }
+}
+add_action('wp_ajax_update_idea_status', 'wp_roadmap_pro_update_idea_status');
+
+
+
+
 

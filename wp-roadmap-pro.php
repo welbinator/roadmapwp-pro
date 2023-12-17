@@ -458,3 +458,12 @@ function wp_roadmap_pro_custom_template($template) {
 }
 
 add_filter('single_template', 'wp_roadmap_pro_custom_template');
+
+function wp_roadmap_pro_log_all_status_terms() {
+    $terms = get_terms(array(
+        'taxonomy' => 'status',
+        'hide_empty' => false,
+    ));
+    error_log('All status terms: ' . print_r($terms, true));
+}
+add_action('init', 'wp_roadmap_pro_log_all_status_terms');
