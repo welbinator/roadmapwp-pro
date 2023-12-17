@@ -91,7 +91,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                     $idea_id = get_the_ID();
                     $vote_count = get_post_meta($idea_id, 'idea_votes', true) ?: '0'; ?>
         
-                    <div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden" data-v0-t="card">
+                    <div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden" data-v0-t="card">
                         <div class="p-6">
                             <h2 class="text-2xl font-bold"><a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html(get_the_title()); ?></a></h2>
         
@@ -107,7 +107,8 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                             </div>
         
                             
-                            <p class="text-gray-700 mt-4"><?php echo get_the_excerpt(); ?></p>
+                            <p class="text-gray-700 mt-4"><?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?></p>
+
         
                             <div class="flex items-center justify-between mt-6">
                                 <a class="text-blue-500 hover:underline" href="<?php echo esc_url(get_permalink()); ?>" rel="ugc">Read More</a>
