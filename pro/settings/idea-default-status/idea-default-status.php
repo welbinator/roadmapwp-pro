@@ -6,8 +6,8 @@
 // Hook into the settings page of the free version to add the default status setting
 function wp_roadmap_pro_default_idea_status_setting($content) {
     // Fetch the current settings
-    $options = get_option('wp_roadmap_pro_settings', []);
-    $default_idea_status = isset($options['default_idea_status']) ? $options['default_idea_status'] : 'pending';
+    $pro_options = get_option('wp_roadmap_pro_settings', []);
+    $default_idea_status = isset($pro_options['default_idea_status']) ? $pro_options['default_idea_status'] : 'pending';
 
     // Create the HTML for the dropdown
     $html = '<select name="wp_roadmap_pro_settings[default_idea_status]">';
@@ -25,7 +25,7 @@ add_filter('wp_roadmap_default_idea_status_setting', 'wp_roadmap_pro_default_ide
 
 // Save the setting when the settings form is submitted
 function wp_roadmap_pro_register_settings() {
-    register_setting('wp_roadmap_settings', 'wp_roadmap_pro_settings');
+    register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
 }
 
 
