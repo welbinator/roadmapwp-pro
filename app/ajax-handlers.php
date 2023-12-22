@@ -45,6 +45,7 @@ function wp_roadmap_pro_filter_ideas() {
     check_ajax_referer('wp-roadmap-idea-filter-nonce', 'nonce');
 
     $filter_data = $_POST['filter_data'];
+    error_log('Received filter data: ' . print_r($filter_data, true));
     $tax_query = array();
 
     $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
@@ -72,7 +73,7 @@ function wp_roadmap_pro_filter_ideas() {
     if (count($tax_query) > 1) {
         $tax_query['relation'] = 'AND';
     }
-
+    error_log('Tax query parameters: ' . print_r($tax_query, true));
     $args = array(
         'post_type' => 'idea',
         'posts_per_page' => -1,
@@ -86,7 +87,7 @@ function wp_roadmap_pro_filter_ideas() {
      $filter_tags_text_color = sanitize_hex_color($pro_options['filter_tags_text_color']);
 
     $query = new WP_Query($args);
-
+    error_log('Number of ideas found: ' . $query->found_posts);
     if ($query->have_posts()) : ?>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
             <?php while ($query->have_posts()) : $query->the_post();

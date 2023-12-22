@@ -13,6 +13,8 @@ jQuery(document).ready(function($) {
                 filterData[taxonomy]['terms'].push($(this).val());
             });
         });
+        // Log the filter data to the console
+        console.log('Sending AJAX request with filter data:', filterData);
 
         $.ajax({
             url: wpRoadMapAjax.ajax_url,
@@ -23,11 +25,13 @@ jQuery(document).ready(function($) {
                 'nonce': wpRoadMapAjax.nonce // Include the nonce for security
             },
             success: function(response) {
+                console.log('AJAX request successful. Response:', response);
                 $('.wp-roadmap-ideas-list').html(response);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log('AJAX error:', textStatus, errorThrown); // Log errors for debugging
+                console.log('AJAX error:', textStatus, errorThrown);
             }
+            
         });
     });
 });

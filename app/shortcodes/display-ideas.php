@@ -76,7 +76,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
         </div>
         </div>
 
-        <div class="wp-roadmap-ideas-listt">
+        <div class="wp-roadmap-ideas-list">
 
         <?php
         $args = array(
