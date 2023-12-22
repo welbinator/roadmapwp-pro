@@ -3,13 +3,26 @@
 Plugin Name: WP Road Map Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     1.2.2
+Version:     1.2.3
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-roadmap-pro
 */
+// This function will be called when the Pro version is activated.
+function wp_roadmap_pro_activate() {
+    // Check if the free version is active
+    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    if (is_plugin_active('wproadmap/wp-roadmap.php')) {
+        // Deactivate the free version
+        deactivate_plugins('wproadmap/wp-roadmap.php');
+    }
+    // Additional activation code for Pro version goes here...
+}
+
+// Register the activation hook for the Pro version
+register_activation_hook(__FILE__, 'wp_roadmap_pro_activate');
 
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'ROADMAPWP_PRO_STORE_URL', 'https://roadmapwp.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
@@ -29,7 +42,7 @@ if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 $license_key = trim( get_option( 'roadmapwp_pro_license_key' ) ); 
 // setup the updater
 $edd_updater = new EDD_SL_Plugin_Updater( ROADMAPWP_PRO_STORE_URL, __FILE__, array(
-	'version' 	=> '1.2.2',		// current version number
+	'version' 	=> '1.2.3',		// current version number
 	'license' 	=> $license_key,	// license key (used get_option above to retrieve from DB)
 	'item_id'       => ROADMAPWP_PRO_ITEM_ID,	// id of this plugin
 	'author' 	=> 'James Welbes',	// author of this plugin
@@ -411,7 +424,7 @@ require_once plugin_dir_path(__FILE__) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/roadmap.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/single-idea.php';
 
-function wp_roadmap_on_activation() {
+function wp_roadmap_pro_on_activation() {
     // Directly call the function that registers your taxonomies here
     wp_roadmap_register_default_taxonomies();
 
@@ -427,9 +440,9 @@ function wp_roadmap_on_activation() {
     }
 }
 
-register_activation_hook(__FILE__, 'wp_roadmap_on_activation');
+register_activation_hook(__FILE__, 'wp_roadmap_pro_on_activation');
 
-function wp_roadmap_custom_template($template) {
+function wp_roadmap_pro_custom_template($template) {
     global $post;
 
     if ('idea' === $post->post_type) {
@@ -444,4 +457,4 @@ function wp_roadmap_custom_template($template) {
     return $template;
 }
 
-add_filter('single_template', 'wp_roadmap_custom_template');
+add_filter('single_template', 'wp_roadmap_pro_custom_template');

@@ -4,7 +4,7 @@
  *
  * @return string The HTML output for displaying ideas.
  */
-function wp_roadmap_display_ideas_shortcode() {
+function wp_roadmap_pro_display_ideas_shortcode() {
    // Flag to indicate the display ideas shortcode is loaded
    update_option('wp_roadmap_ideas_shortcode_loaded', true);
 
@@ -149,4 +149,4 @@ function wp_roadmap_display_ideas_shortcode() {
     return ob_get_clean(); // Return the buffered output
 }
 
-add_shortcode('display_ideas', 'wp_roadmap_display_ideas_shortcode');
+add_shortcode('display_ideas', 'wp_roadmap_pro_display_ideas_shortcode');

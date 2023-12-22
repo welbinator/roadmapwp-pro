@@ -4,7 +4,7 @@
  *
  * @return string The HTML output for the new idea form.
  */
-function wp_roadmap_new_idea_form_shortcode() {
+function wp_roadmap_pro_new_idea_form_shortcode() {
     update_option('wp_roadmap_new_idea_shortcode_loaded', true);
 
     $output = '';
@@ -61,13 +61,13 @@ function wp_roadmap_new_idea_form_shortcode() {
     return $output;
 }
 
-add_shortcode('new_idea_form', 'wp_roadmap_new_idea_form_shortcode');
+add_shortcode('new_idea_form', 'wp_roadmap_pro_new_idea_form_shortcode');
 
 
 /**
  * Function to handle the submission of the new idea form.
  */
-function wp_roadmap_handle_new_idea_submission() {
+function wp_roadmap_pro_handle_new_idea_submission() {
     if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_nonce']) && wp_verify_nonce($_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea')) {
         $title = sanitize_text_field($_POST['idea_title']);
         $description = sanitize_textarea_field($_POST['idea_description']);
@@ -95,4 +95,4 @@ function wp_roadmap_handle_new_idea_submission() {
     }
 }
 
-add_action('template_redirect', 'wp_roadmap_handle_new_idea_submission');
+add_action('template_redirect', 'wp_roadmap_pro_handle_new_idea_submission');

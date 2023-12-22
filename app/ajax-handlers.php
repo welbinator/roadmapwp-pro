@@ -2,7 +2,7 @@
 /**
  * Ajax handling for voting functionality.
  */
-function wp_roadmap_handle_vote() {
+function wp_roadmap_pro_handle_vote() {
     check_ajax_referer('wp-roadmap-vote-nonce', 'nonce');
 
     $post_id = intval($_POST['post_id']);
@@ -35,13 +35,13 @@ function wp_roadmap_handle_vote() {
     wp_die();
 }
 
-add_action('wp_ajax_wp_roadmap_handle_vote', 'wp_roadmap_handle_vote');
-add_action('wp_ajax_nopriv_wp_roadmap_handle_vote', 'wp_roadmap_handle_vote');
+add_action('wp_ajax_wp_roadmap_handle_vote', 'wp_roadmap_pro_handle_vote');
+add_action('wp_ajax_nopriv_wp_roadmap_handle_vote', 'wp_roadmap_pro_handle_vote');
 
 /**
  * Handle AJAX requests for ideas filter.
  */
-function wp_roadmap_filter_ideas() {
+function wp_roadmap_pro_filter_ideas() {
     check_ajax_referer('wp-roadmap-vote-nonce', 'nonce');
 
     $filter_data = $_POST['filter_data'];
@@ -148,13 +148,13 @@ function wp_roadmap_filter_ideas() {
 }
 
 
-add_action('wp_ajax_filter_ideas', 'wp_roadmap_filter_ideas');
-add_action('wp_ajax_nopriv_filter_ideas', 'wp_roadmap_filter_ideas');
+add_action('wp_ajax_filter_ideas', 'wp_roadmap_pro_filter_ideas');
+add_action('wp_ajax_nopriv_filter_ideas', 'wp_roadmap_pro_filter_ideas');
 
 
 
 // Handles the AJAX request for deleting a custom taxonomy
-function handle_delete_custom_taxonomy() {
+function wp_roadmap_pro_handle_delete_custom_taxonomy() {
     check_ajax_referer('wp_roadmap_delete_taxonomy_nonce', 'nonce');
 
     $taxonomy = sanitize_text_field($_POST['taxonomy']);
@@ -168,10 +168,10 @@ function handle_delete_custom_taxonomy() {
         wp_send_json_error(array('message' => __('Taxonomy not found.', 'wp-roadmap')));
     }
 }
-add_action('wp_ajax_delete_custom_taxonomy', 'handle_delete_custom_taxonomy');
+add_action('wp_ajax_delete_custom_taxonomy', 'wp_roadmap_pro_handle_delete_custom_taxonomy');
 
 // Handles the AJAX request for deleting selected terms
-function handle_delete_selected_terms() {
+function wp_roadmap_pro_handle_delete_selected_terms() {
     check_ajax_referer('wp_roadmap_delete_terms_nonce', 'nonce');
 
     $taxonomy = sanitize_text_field($_POST['taxonomy']);
@@ -183,6 +183,6 @@ function handle_delete_selected_terms() {
 
     wp_send_json_success();
 }
-add_action('wp_ajax_delete_selected_terms', 'handle_delete_selected_terms');
+add_action('wp_ajax_delete_selected_terms', 'wp_roadmap_pro_handle_delete_selected_terms');
 
 
