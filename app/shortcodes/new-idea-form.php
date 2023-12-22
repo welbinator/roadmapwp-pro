@@ -30,7 +30,8 @@ function wp_roadmap_pro_new_idea_form_shortcode() {
 
     $taxonomies = get_object_taxonomies('idea', 'objects');
     foreach ($taxonomies as $taxonomy) {
-        if ($taxonomy->name !== 'status' && $taxonomy->name === 'idea-tag') {
+        // if ($taxonomy->name !== 'status' && $taxonomy->name === 'idea-tag') {
+            if ($taxonomy->name !== 'status') {
             $terms = get_terms(array('taxonomy' => $taxonomy->name, 'hide_empty' => false));
             if (!empty($terms) && !is_wp_error($terms)) {
                 $output .= '<li class="new_idea_form_input">';

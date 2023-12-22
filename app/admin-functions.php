@@ -139,7 +139,7 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
         wp_enqueue_script('wp-roadmap-idea-filter', plugin_dir_url(__FILE__) . 'assets/js/idea-filter.js', array('jquery'), '', true);
         wp_localize_script('wp-roadmap-idea-filter', 'wpRoadMapAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('wp-roadmap-vote-nonce')
+            'nonce' => wp_create_nonce('wp-roadmap-idea-filter-nonce')
         ));
     }
 }
