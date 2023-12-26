@@ -91,7 +91,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                     $idea_id = get_the_ID();
                     $vote_count = get_post_meta($idea_id, 'idea_votes', true) ?: '0'; ?>
         
-                    <div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden" data-v0-t="card">
+                    <div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden" data-v0-t="card">
                         <div class="p-6">
                             <h2 class="text-2xl font-bold"><a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html(get_the_title()); ?></a></h2>
         
@@ -107,7 +107,8 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                             </div>
         
                             
-                            <p class="text-gray-700 mt-4"><?php echo get_the_excerpt(); ?></p>
+                            <p class="text-gray-700 mt-4"><?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?></p>
+
         
                             <div class="flex items-center justify-between mt-6">
                                 <a class="text-blue-500 hover:underline" href="<?php echo esc_url(get_permalink()); ?>" rel="ugc">Read More</a>
@@ -134,6 +135,25 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                                 </div>
                             </div>
                         </div>
+                        <?php if (current_user_can('administrator')): ?>
+                            <div class="p-6 bg-gray-200">
+                                <h6 class="text-center">Admin only</h6>
+                                <form class="idea-status-update-form" data-idea-id="<?php echo $idea_id; ?>">
+                                    <select multiple class="status-select" name="idea_status[]">
+                                        <?php 
+                                        $statuses = get_terms('status', array('hide_empty' => false));
+                                        $current_statuses = wp_get_post_terms($idea_id, 'status', array('fields' => 'slugs'));
+                                        
+                                        foreach ($statuses as $status) {
+                                            $selected = in_array($status->slug, $current_statuses) ? 'selected' : '';
+                                            echo '<option value="' . esc_attr($status->slug) . '" ' . $selected . '>' . esc_html($status->name) . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                    <button type="submit" class="block text-sm font-medium h-10 bg-gray-500 text-white px-4 py-2 rounded-lg update-status-button">Update</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endwhile; ?>
             </div>

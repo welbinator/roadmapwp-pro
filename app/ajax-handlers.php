@@ -45,7 +45,6 @@ function wp_roadmap_pro_filter_ideas() {
     check_ajax_referer('wp-roadmap-idea-filter-nonce', 'nonce');
 
     $filter_data = $_POST['filter_data'];
-    error_log('Received filter data: ' . print_r($filter_data, true));
     $tax_query = array();
 
     $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
@@ -73,7 +72,6 @@ function wp_roadmap_pro_filter_ideas() {
     if (count($tax_query) > 1) {
         $tax_query['relation'] = 'AND';
     }
-    error_log('Tax query parameters: ' . print_r($tax_query, true));
     $args = array(
         'post_type' => 'idea',
         'posts_per_page' => -1,
@@ -87,7 +85,6 @@ function wp_roadmap_pro_filter_ideas() {
      $filter_tags_text_color = sanitize_hex_color($pro_options['filter_tags_text_color']);
 
     $query = new WP_Query($args);
-    error_log('Number of ideas found: ' . $query->found_posts);
     if ($query->have_posts()) : ?>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
             <?php while ($query->have_posts()) : $query->the_post();
@@ -185,5 +182,39 @@ function wp_roadmap_pro_handle_delete_selected_terms() {
     wp_send_json_success();
 }
 add_action('wp_ajax_delete_selected_terms', 'wp_roadmap_pro_handle_delete_selected_terms');
+
+function wp_roadmap_pro_update_idea_status() {
+    check_ajax_referer('wp-roadmap-admin-frontend-nonce', 'nonce');
+
+    $idea_id = isset($_POST['idea_id']) ? intval($_POST['idea_id']) : 0;
+    $statuses = isset($_POST['statuses']) ? json_decode(stripslashes($_POST['statuses']), true) : array();
+
+    if ($idea_id && !empty($statuses)) {
+        // Remove all existing status terms from the post
+        $current_terms = wp_get_post_terms($idea_id, 'status', array('fields' => 'ids'));
+        foreach ($current_terms as $term_id) {
+            wp_remove_object_terms($idea_id, $term_id, 'status');
+        }
+
+        // Add each new status term
+        foreach ($statuses as $status_slug) {
+            $term = get_term_by('slug', $status_slug, 'status');
+            if ($term && !is_wp_error($term)) {
+                wp_add_object_terms($idea_id, $term->term_id, 'status');
+            }
+        }
+
+        // Check current terms after setting
+        $current_terms = wp_get_post_terms($idea_id, 'status', array('fields' => 'slugs'));
+
+        wp_send_json_success();
+    } else {
+        wp_send_json_error('Invalid data');
+    }
+}
+add_action('wp_ajax_update_idea_status', 'wp_roadmap_pro_update_idea_status');
+
+
+
 
 

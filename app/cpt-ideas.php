@@ -99,8 +99,6 @@ function wp_roadmap_pro_register_default_taxonomies() {
 add_action('init', 'wp_roadmap_pro_register_default_taxonomies');
 
 //automatically assign Status of New Idea to new idea posts
-// Hook into the save_post action
-add_action('save_post_idea', 'wp_roadmap_pro_auto_assign_new_idea_status', 10, 3);
 
 // Function to auto-assign "New Idea" status to new Idea posts
 function wp_roadmap_pro_auto_assign_new_idea_status($post_id, $post, $update) {
@@ -127,7 +125,7 @@ function wp_roadmap_pro_auto_assign_new_idea_status($post_id, $post, $update) {
     wp_set_object_terms($post_id, 'new-idea', 'status');
 }
 
-add_action('save_post_idea', 'wp_roadmap_pro_auto_assign_new_idea_status', 10, 3);
+// add_action('save_post_idea', 'wp_roadmap_pro_auto_assign_new_idea_status', 10, 3);
 
 // Register custom taxonomies
 function wp_roadmap_pro_register_custom_taxonomies() {
