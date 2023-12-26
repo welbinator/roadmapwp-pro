@@ -29,7 +29,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
             $taxonomy_slug = sanitize_key($_POST['taxonomy_slug']);
             $taxonomy_singular = sanitize_text_field($_POST['taxonomy_singular']);
             $taxonomy_plural = sanitize_text_field($_POST['taxonomy_plural']);
-            $public = (isset($_POST['public']) && $_POST['public'] === '1');
+            // $public = (isset($_POST['public']) && $_POST['public'] === '1');
 
             $labels = array(
                 'name' => $taxonomy_plural,
@@ -39,7 +39,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
 
             $taxonomy_data = array(
                 'labels' => $labels,
-                'public' => $public,
+                'public' => true,
                 'hierarchical' => false,
                 'show_ui' => true,
                 'show_in_rest' => true,
@@ -74,13 +74,6 @@ function wp_roadmap_pro_custom_taxonomy_content() {
                 <li class="new_taxonomy_form_input">
                     <label for="taxonomy_plural">Plural Name:</label>
                     <input type="text" id="taxonomy_plural" name="taxonomy_plural" required>
-                </li>
-                <li class="new_taxonomy_form_input">
-                    <label for="public">Public:</label>
-                    <select id="public" name="public">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                    </select>
                 </li>
                 <li class="new_taxonomy_form_input">
                     <input type="submit" value="Add Taxonomy">

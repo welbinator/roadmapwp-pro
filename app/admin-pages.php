@@ -31,16 +31,7 @@ function wp_roadmap_pro_settings_page() {
             ?>
 
             <table class="form-table">
-                <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Allow Comments on Ideas', 'wp-roadmap'); ?></th>
-                    <td>
-                        <?php
-                        // Filter hook to allow the Pro version to override this setting
-                        echo apply_filters('wp_roadmap_enable_comments_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__('Available in Pro', 'wp-roadmap') . '</a>');
-                        ?>
-                    </td>
-                </tr>
-                
+                                
                 <!-- Default Status Setting -->
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Set New Idea Default Status', 'wp-roadmap'); ?></th>
@@ -71,6 +62,15 @@ function wp_roadmap_pro_settings_page() {
                             }
                             ?>
                         </select>
+                    </td>
+                </tr>
+                <tr id="allow-comments-setting" valign="top">
+                    <th scope="row"><?php esc_html_e('Allow Comments on Ideas', 'wp-roadmap'); ?></th>
+                    <td>
+                        <?php
+                        // Filter hook to allow the Pro version to override this setting
+                        echo apply_filters('wp_roadmap_enable_comments_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__('Available in Pro', 'wp-roadmap') . '</a>');
+                        ?>
                     </td>
                 </tr>
                 
