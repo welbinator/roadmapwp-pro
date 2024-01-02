@@ -11,60 +11,74 @@ function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
     ?>
 
     <!-- Tabbed interface -->
-    <div class="roadmap-tabs-wrapper">
-        <div class="roadmap-tabs">
+    <div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
+        <div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-4 px-2 py-4 scrollbar-none roadmap-tabs">
             <?php foreach ($statuses as $status): ?>
-                <button class="roadmap-tab" data-status="<?php echo esc_attr($status); ?>">
+                <button type="button" role="tab" aria-selected="true" aria-controls="radix-:r3a:-content-newIdea" data-state="inactive" id="radix-:r3a:-trigger-newIdea" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow roadmap-tab" data-status="<?php echo esc_attr($status); ?>">
                     <?php echo esc_html__($status, 'wp-roadmap-pro'); ?>
                 </button>
             <?php endforeach; ?>
         </div>
-        <div class="roadmap-ideas-container">
+        <div
+            data-state="active"
+            data-orientation="horizontal"
+            role="tabpanel"
+            aria-labelledby="radix-:r3a:-trigger-newIdea"
+            id="radix-:r3a:-content-newIdea"
+            tabindex="0"
+            class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            style="animation-duration: 0s;"
+        >
+        <div class="grid grid-cols-3 gap-4 p-4 roadmap-ideas-container">
             <!-- Ideas will be loaded here via JavaScript -->
         </div>
     </div>
 
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            var tabs = document.querySelectorAll('.roadmap-tab');
-            var ideasContainer = document.querySelector('.roadmap-ideas-container');
+    document.addEventListener('DOMContentLoaded', function() {
+        var tabs = document.querySelectorAll('.roadmap-tab');
+        var ideasContainer = document.querySelector('.roadmap-ideas-container');
+        var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+        var nonce = '<?php echo wp_create_nonce('roadmap_nonce'); ?>';
 
-            tabs.forEach(function(tab) {
-                tab.addEventListener('click', function() {
-                    var status = this.getAttribute('data-status');
-                    loadIdeas(status);
-                });
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var status = this.getAttribute('data-status');
+                loadIdeas(status);
             });
-
-            function loadIdeas(status) {
-    // Prepare the data to send in the AJAX request
-    var formData = new FormData();
-    formData.append('action', 'load_ideas_for_status');
-    formData.append('status', status);
-    formData.append('nonce', roadmapAjax.nonce); // Assuming you've localized 'nonce'
-
-    fetch(roadmapAjax.ajaxurl, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Assuming the response is the HTML content of the ideas
-        ideasContainer.innerHTML = data.html;
-    })
-    .catch(error => {
-        console.error('Error loading ideas:', error);
-        ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
-    });
-}
-
-
-            // Load the first tab's content by default
-            if (tabs.length > 0) {
-                tabs[0].click();
-            }
         });
-    </script>
+
+        function loadIdeas(status) {
+            var formData = new FormData();
+            formData.append('action', 'load_ideas_for_status');
+            formData.append('status', status);
+            formData.append('nonce', nonce);
+
+            fetch(ajaxurl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data && data.data.html) {
+                    ideasContainer.innerHTML = data.data.html;
+                } else {
+                    ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading ideas:', error);
+                ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
+            });
+        }
+
+        if (tabs.length > 0) {
+            tabs[0].click();
+        }
+    });
+</script>
+
+
 
     <?php
     return ob_get_clean(); // Return the buffered output

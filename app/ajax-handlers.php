@@ -226,7 +226,7 @@ function load_ideas_for_status() {
         'tax_query' => array(
             array(
                 'taxonomy' => 'status',
-                'field'    => 'name',
+                'field'    => 'slug',
                 'terms'    => $status,
             ),
         ),
@@ -234,25 +234,54 @@ function load_ideas_for_status() {
 
     $query = new WP_Query($args);
 
-    $html = '';
+    ob_start();
+
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
-            // Here, format each idea post into HTML. For example:
-            $html .= '<div class="idea-post">';
-            $html .= '<h4>' . esc_html(get_the_title()) . '</h4>';
-            // Add more details as needed
-            $html .= '</div>';
+            $idea_id = get_the_ID();
+            $tags = wp_get_post_terms($idea_id, 'idea-tag', array('fields' => 'names'));
+            ?>
+
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+                <div class="flex flex-col space-y-1.5 p-6">
+                    <h3 class="text-2xl font-semibold leading-none tracking-tight">
+                        <a href="<?php echo get_permalink($idea_id); ?>"><?php echo esc_html(get_the_title()); ?></a>
+                    </h3>
+
+                    <?php if (!empty($tags)) : ?>
+                        <p class="text-sm text-muted-foreground">
+                            <?php foreach ($tags as $tag) : ?>
+                                <span class="px-2 py-1 text-sm text-blue-500 bg-blue-100 rounded-full"><?php echo esc_html($tag); ?></span>
+                            <?php endforeach; ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="p-6">
+                    <p><?php echo get_the_excerpt(); ?></p>
+                </div>
+
+                <div class="flex items-center p-6">
+                    <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Vote</button>
+                </div>
+            </div>
+
+            <?php
         }
     } else {
-        $html = '<p>No ideas found for this status.</p>';
+        echo '<p>No ideas found for this status.</p>';
     }
+
     wp_reset_postdata();
 
+    $html = ob_get_clean();
     wp_send_json_success(['html' => $html]);
 }
 add_action('wp_ajax_load_ideas_for_status', 'load_ideas_for_status');
 add_action('wp_ajax_nopriv_load_ideas_for_status', 'load_ideas_for_status');
+
+
 
 
 
