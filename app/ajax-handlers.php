@@ -215,6 +215,44 @@ function wp_roadmap_pro_update_idea_status() {
 add_action('wp_ajax_update_idea_status', 'wp_roadmap_pro_update_idea_status');
 
 
+function load_ideas_for_status() {
+    check_ajax_referer('roadmap_nonce', 'nonce');
+
+    $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+
+    $args = array(
+        'post_type' => 'idea',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'status',
+                'field'    => 'name',
+                'terms'    => $status,
+            ),
+        ),
+    );
+
+    $query = new WP_Query($args);
+
+    $html = '';
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            // Here, format each idea post into HTML. For example:
+            $html .= '<div class="idea-post">';
+            $html .= '<h4>' . esc_html(get_the_title()) . '</h4>';
+            // Add more details as needed
+            $html .= '</div>';
+        }
+    } else {
+        $html = '<p>No ideas found for this status.</p>';
+    }
+    wp_reset_postdata();
+
+    wp_send_json_success(['html' => $html]);
+}
+add_action('wp_ajax_load_ideas_for_status', 'load_ideas_for_status');
+add_action('wp_ajax_nopriv_load_ideas_for_status', 'load_ideas_for_status');
 
 
 
