@@ -101,6 +101,7 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
     $has_new_idea_form_shortcode = false;
     $has_display_ideas_shortcode = false;
     $has_roadmap_shortcode = false;
+    $has_roadmap_tabs_shortcode = false;
     $has_single_idea_shortcode = false;
     $has_block = false;
 
@@ -110,6 +111,7 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
         $has_display_ideas_shortcode = has_shortcode($post->post_content, 'display_ideas');
         $has_roadmap_shortcode = has_shortcode($post->post_content, 'roadmap');
         $has_single_idea_shortcode = has_shortcode($post->post_content, 'single_idea');
+        $has_roadmap_tabs_shortcode = has_shortcode($post->post_content, 'roadmap_tabs');
 
         // Check for block presence
         $has_block = has_block('wp-roadmap-pro/new-idea-form', $post) ||
@@ -118,7 +120,7 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
     }
 
     // Enqueue styles if a shortcode or block is loaded
-    if ($has_new_idea_form_shortcode || $has_display_ideas_shortcode || $has_roadmap_shortcode || $has_single_idea_shortcode|| $has_block || is_singular('idea')) {
+    if ($has_roadmap_tabs_shortcode || $has_new_idea_form_shortcode || $has_display_ideas_shortcode || $has_roadmap_shortcode || $has_single_idea_shortcode|| $has_block || is_singular('idea')) {
 
         // Enqueue Tailwind CSS
         $tailwind_css_url = plugin_dir_url(__FILE__) . '../dist/styles.css';

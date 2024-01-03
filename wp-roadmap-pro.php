@@ -422,6 +422,7 @@ require_once plugin_dir_path(__FILE__) . 'app/admin-pages.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/new-idea-form.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/roadmap.php';
+require_once plugin_dir_path(__FILE__) . 'app/shortcodes/roadmap-tabs.php';
 require_once plugin_dir_path(__FILE__) . 'app/shortcodes/single-idea.php';
 
 function wp_roadmap_pro_on_activation() {
