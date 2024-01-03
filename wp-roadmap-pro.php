@@ -3,7 +3,7 @@
 Plugin Name: WP Road Map Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     1.3.0
+Version:     1.3.1
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
@@ -58,7 +58,7 @@ if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 $license_key = trim( get_option( 'roadmapwp_pro_license_key' ) ); 
 // setup the updater
 $edd_updater = new EDD_SL_Plugin_Updater( ROADMAPWP_PRO_STORE_URL, __FILE__, array(
-	'version' 	=> '1.3.0',		// current version number
+	'version' 	=> '1.3.1',		// current version number
 	'license' 	=> $license_key,	// license key (used get_option above to retrieve from DB)
 	'item_id'       => ROADMAPWP_PRO_ITEM_ID,	// id of this plugin
 	'author' 	=> 'James Welbes',	// author of this plugin
@@ -91,12 +91,12 @@ function roadmapwp_pro_license_key_settings_field() {
 		esc_attr( $license )
 	);
 	$button = array(
-		'name'  => 'edd_license_deactivate',
+		'name'  => 'roadmapwp_pro_edd_license_deactivate',
 		'label' => __( 'Deactivate License' ),
 	);
 	if ( 'valid' !== $status ) {
 		$button = array(
-			'name'  => 'edd_license_activate',
+			'name'  => 'roadmapwp_pro_edd_license_activate',
 			'label' => __( 'Activate License' ),
 		);
 	}
@@ -139,7 +139,7 @@ function edd_sanitize_license( $new ) {
 function roadmapwp_pro_activate_license() {
 
 	// listen for our activate button to be clicked
-	if ( ! isset( $_POST['edd_license_activate'] ) ) {
+	if ( ! isset( $_POST['roadmapwp_pro_edd_license_activate'] ) ) {
 		return;
 	}
 
@@ -265,7 +265,7 @@ add_action( 'admin_init', 'roadmapwp_pro_activate_license' );
 function roadmapwp_pro_deactivate_license() {
 
 	// listen for our activate button to be clicked
-	if ( isset( $_POST['edd_license_deactivate'] ) ) {
+	if ( isset( $_POST['roadmapwp_pro_edd_license_deactivate'] ) ) {
 
 		// run a quick security check
 		if ( ! check_admin_referer( 'roadmapwp_pro_nonce', 'roadmapwp_pro_nonce' ) ) {
