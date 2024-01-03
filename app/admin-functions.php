@@ -133,19 +133,19 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
 
         // Enqueue scripts and localize them as before
         wp_enqueue_script('wp-roadmap-voting', plugin_dir_url(__FILE__) . 'assets/js/voting.js', array('jquery'), null, true);
-        wp_localize_script('wp-roadmap-voting', 'wpRoadMapVoting', array(
+        wp_localize_script('wp-roadmap-voting', 'wpRoadMapVotingAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-vote-nonce')
         ));
 
         wp_enqueue_script('wp-roadmap-idea-filter', plugin_dir_url(__FILE__) . 'assets/js/idea-filter.js', array('jquery'), '', true);
-        wp_localize_script('wp-roadmap-idea-filter', 'wpRoadMapAjax', array(
+        wp_localize_script('wp-roadmap-idea-filter', 'wpRoadMapFilterAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-idea-filter-nonce')
         ));
 
         wp_enqueue_script('wp-roadmap-admin-frontend', plugin_dir_url(__FILE__) . 'assets/js/admin-frontend.js', array('jquery'), '', true);
-        wp_localize_script('wp-roadmap-admin-frontend', 'wpRoadMapAdminFrontend', array(
+        wp_localize_script('wp-roadmap-admin-frontend', 'wpRoadMapAdminFrontendAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-admin-frontend-nonce')
         ));

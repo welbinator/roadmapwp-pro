@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('action', 'update_idea_status');
             formData.append('idea_id', ideaId);
             formData.append('statuses', JSON.stringify(selectedStatuses));
-            formData.append('nonce', wpRoadMapAjax.nonce);
+            formData.append('nonce', wpRoadMapAdminFrontendAjax.nonce);
 
-            fetch(wpRoadMapAjax.ajax_url, {
+            fetch(wpRoadMapAdminFrontendAjax.ajax_url, {
                 method: 'POST',
                 credentials: 'same-origin',
                 body: formData
