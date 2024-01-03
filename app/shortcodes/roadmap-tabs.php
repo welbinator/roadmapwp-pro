@@ -7,17 +7,17 @@ function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
 
     $statuses = !empty($atts['status']) ? array_map('trim', explode(',', $atts['status'])) : [];
 
-    $pro_options = get_option('wp_roadmap_pro_settings');
-    $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';
-    $vote_button_text_color = !empty($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '';
-    $filter_tags_bg_color = !empty($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '';
-    $filter_tags_text_color = !empty($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '';
-    $filters_bg_color = !empty($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '';
-    $tabs_container_bg_color = !empty($pro_options['tabs_container_bg_color']) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
-    $tabs_text_color = !empty($pro_options['tabs_text_color']) ? $pro_options['tabs_text_color'] : '#000000';
-    $tabs_button_bg_color = !empty($pro_options['tabs_button_bg_color']) ? $pro_options['tabs_button_bg_color'] : '#ffffff';
-    
+    // $pro_options = get_option('wp_roadmap_pro_settings');
+    // $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';
+    // $vote_button_text_color = !empty($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '';
+    // $filter_tags_bg_color = !empty($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '';
+    // $filter_tags_text_color = !empty($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '';
+    // $filters_bg_color = !empty($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '';
+    // $tabs_container_bg_color = !empty($pro_options['tabs_container_bg_color']) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
+    // $tabs_text_color = !empty($pro_options['tabs_text_color']) ? $pro_options['tabs_text_color'] : '#000000';
+    // $tabs_button_bg_color = !empty($pro_options['tabs_button_bg_color']) ? $pro_options['tabs_button_bg_color'] : '#ffffff';
 
+    
     ob_start(); // Start output buffering
     ?>
 

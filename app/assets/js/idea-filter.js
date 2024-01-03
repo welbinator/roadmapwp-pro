@@ -13,9 +13,7 @@ jQuery(document).ready(function($) {
                 filterData[taxonomy]['terms'].push($(this).val());
             });
         });
-        // Log the filter data to the console
-        console.log('Sending AJAX request with filter data:', filterData);
-
+       
         $.ajax({
             url: wpRoadMapAjax.ajax_url,
             type: 'POST',

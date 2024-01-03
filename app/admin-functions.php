@@ -145,7 +145,7 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
         ));
 
         wp_enqueue_script('wp-roadmap-admin-frontend', plugin_dir_url(__FILE__) . 'assets/js/admin-frontend.js', array('jquery'), '', true);
-        wp_localize_script('wp-roadmap-admin-frontend', 'wpRoadMapAjax', array(
+        wp_localize_script('wp-roadmap-admin-frontend', 'wpRoadMapAdminFrontend', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-admin-frontend-nonce')
         ));

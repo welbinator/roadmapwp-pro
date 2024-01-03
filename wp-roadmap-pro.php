@@ -10,6 +10,22 @@ License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-roadmap-pro
 */
+
+function wp_roadmap_pro_get_color_settings() {
+    global $vote_button_bg_color, $vote_button_text_color, $filter_tags_bg_color, $filter_tags_text_color, $filters_bg_color, $tabs_container_bg_color, $tabs_text_color, $tabs_button_bg_color;
+
+    $pro_options = get_option('wp_roadmap_pro_settings');
+    
+    $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';
+    $vote_button_text_color = !empty($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '';
+    $filter_tags_bg_color = !empty($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '';
+    $filter_tags_text_color = !empty($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '';
+    $filters_bg_color = !empty($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '';
+    $tabs_container_bg_color = !empty($pro_options['tabs_container_bg_color']) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
+    $tabs_text_color = !empty($pro_options['tabs_text_color']) ? $pro_options['tabs_text_color'] : '#000000';
+    $tabs_button_bg_color = !empty($pro_options['tabs_button_bg_color']) ? $pro_options['tabs_button_bg_color'] : '#ffffff';
+}
+
 // This function will be called when the Pro version is activated.
 function wp_roadmap_pro_activate() {
     // Check if the free version is active

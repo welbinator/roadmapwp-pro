@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var ideaId = this.getAttribute('data-idea-id');
             var selectedStatuses = Array.from(this.querySelector('.status-select').selectedOptions).map(option => option.value);
 
-            // Add the console.log here
-            console.log('Sending AJAX request with idea ID:', ideaId, 'and statuses:', selectedStatuses);
-
             var formData = new FormData();
             formData.append('action', 'update_idea_status');
             formData.append('idea_id', ideaId);
