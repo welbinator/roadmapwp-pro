@@ -283,10 +283,10 @@ function wp_roadmap_pro_help_page() {
         <h2 style="font-size: 1.5em;">Shortcodes</h2>
         <hr />
         <ul>
-            <li><strong>New Idea Form:</strong><span> [new_idea_form]</span></li>
-            <li><strong>Display Ideas:</strong><span> [display_ideas]</span></li>
-            <li><strong>Roadmap:</strong><span> [roadmap]</span></li>
-            <li>Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"] Possible values for status parameter:</li>
+            <li style="font-size: 1.1em;"><strong>New Idea Form:</strong><span> [new_idea_form]</span></li>
+            <li style="font-size: 1.1em;"><strong>Display Ideas:</strong><span> [display_ideas]</span></li>
+            <li style="font-size: 1.1em;"><strong>Roadmap:</strong><span> [roadmap]</span></li>
+            <li style="font-size: 1.1em;">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"] Possible values for status parameter:</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
                     <li>Not Now</li>
@@ -295,7 +295,7 @@ function wp_roadmap_pro_help_page() {
                     <li>On Roadmap</li>
                     <li>Closed</li>
                 </ul>
-            <li><strong>Roadmap Tabs:</strong><span> [roadmap]</span></li>
+            <li style="font-size: 1.1em;"><strong>Roadmap Tabs:</strong><span> [roadmap]</span></li>
             <li>Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"] Possible values for status parameter:</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
@@ -310,10 +310,10 @@ function wp_roadmap_pro_help_page() {
         <h2 style="font-size: 1.5em;">Blocks</h2>
         <hr />
         <ul>
-            <li><strong>New Idea Form</strong></li>
-            <li><strong>Display Ideas</strong></li>
-            <li><strong>Roadmap</strong></li>
-            <li>After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
+            <li style="font-size: 1.1em;"><strong>New Idea Form</strong></li>
+            <li style="font-size: 1.1em;"><strong>Display Ideas</strong></li>
+            <li style="font-size: 1.1em;"><strong>Roadmap</strong></li>
+            <li style="font-size: 1.1em;">After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
                     <li>Not Now</li>
@@ -322,7 +322,7 @@ function wp_roadmap_pro_help_page() {
                     <li>On Roadmap</li>
                     <li>Closed</li>
                 </ul>
-            <li><strong>Roadmap Tabs</strong></li>
+            <li style="font-size: 1.1em;"><strong>Roadmap Tabs</strong></li>
             <li>After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
