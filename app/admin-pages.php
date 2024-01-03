@@ -275,4 +275,73 @@ function wp_roadmap_pro_taxonomies_page() {
     }
 }
 
+function wp_roadmap_pro_help_page() {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <hr />
+        <h2 style="font-size: 1.5em;">Shortcodes</h2>
+        <hr />
+        <ul>
+            <li><strong>New Idea Form:</strong><span> [new_idea_form]</span></li>
+            <li><strong>Display Ideas:</strong><span> [display_ideas]</span></li>
+            <li><strong>Roadmap:</strong><span> [roadmap]</span></li>
+            <li>Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"] Possible values for status parameter:</li>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>New Idea</li>
+                    <li>Not Now</li>
+                    <li>Maybe</li>
+                    <li>Up Next</li>
+                    <li>On Roadmap</li>
+                    <li>Closed</li>
+                </ul>
+            <li><strong>Roadmap Tabs:</strong><span> [roadmap]</span></li>
+            <li>Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"] Possible values for status parameter:</li>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>New Idea</li>
+                    <li>Not Now</li>
+                    <li>Maybe</li>
+                    <li>Up Next</li>
+                    <li>On Roadmap</li>
+                    <li>Closed</li>
+                </ul>
+        </ul>
+        <hr />
+        <h2 style="font-size: 1.5em;">Blocks</h2>
+        <hr />
+        <ul>
+            <li><strong>New Idea Form</strong></li>
+            <li><strong>Display Ideas</strong></li>
+            <li><strong>Roadmap</strong></li>
+            <li>After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>New Idea</li>
+                    <li>Not Now</li>
+                    <li>Maybe</li>
+                    <li>Up Next</li>
+                    <li>On Roadmap</li>
+                    <li>Closed</li>
+                </ul>
+            <li><strong>Roadmap Tabs</strong></li>
+            <li>After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>New Idea</li>
+                    <li>Not Now</li>
+                    <li>Maybe</li>
+                    <li>Up Next</li>
+                    <li>On Roadmap</li>
+                    <li>Closed</li>
+                </ul>
+        </ul>
+        <!-- Add more content or instructions here as needed -->
+    </div>
+    <style>
+        li {
+            margin: 10px;
+        }
+        </style>
+    <?php
+}
+
+
 

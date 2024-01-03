@@ -199,16 +199,23 @@ function wp_roadmap_pro_add_admin_menu() {
         'wp_roadmap_pro_taxonomies_page'
     );
 
-    // Check if Pro version is active, then add the submenu
-    
-        add_submenu_page(
-            'wp-roadmap',
-            __('License', 'wp-roadmap'),
-            __('License', 'wp-roadmap'),
-            'manage_options',
-            'roadmapwp-license', // You can use a constant here if defined
-            'roadmapwp_pro_license_page' // Ensure this function exists and renders the license page
-        );
+    add_submenu_page(
+        'wp-roadmap',
+        __('License', 'wp-roadmap'),
+        __('License', 'wp-roadmap'),
+        'manage_options',
+        'roadmapwp-license', // You can use a constant here if defined
+        'roadmapwp_pro_license_page' // Ensure this function exists and renders the license page
+    );
+
+    add_submenu_page(
+        'wp-roadmap',
+        __('Help', 'wp-roadmap'),
+        __('Help', 'wp-roadmap'),
+        'manage_options',
+        'wp-roadmap-help',
+        'wp_roadmap_pro_help_page' // This is the function you created
+    );
     
 
     remove_submenu_page('wp-roadmap', 'wp-roadmap');
