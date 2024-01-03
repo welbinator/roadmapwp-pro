@@ -12,6 +12,7 @@ function wp_roadmap_pro_register_blocks() {
         'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
         'display-ideas' => 'wp_roadmap_pro_display_ideas_shortcode',
         'roadmap' => 'wp_roadmap_pro_roadmap_shortcode',
+        'roadmap-tabs' => 'wp_roadmap_pro_roadmap_tabs_shortcode',
     );
 
     foreach ($blocks as $block_name => $callback) {

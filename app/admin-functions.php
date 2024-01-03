@@ -116,7 +116,8 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
         // Check for block presence
         $has_block = has_block('wp-roadmap-pro/new-idea-form', $post) ||
                      has_block('wp-roadmap-pro/display-ideas', $post) ||
-                     has_block('wp-roadmap-pro/roadmap', $post);
+                     has_block('wp-roadmap-pro/roadmap', $post) ||
+                     has_block('wp-roadmap-pro/roadmap-tabs', $post);
     }
 
     // Enqueue styles if a shortcode or block is loaded

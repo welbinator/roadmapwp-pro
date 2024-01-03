@@ -1,11 +1,22 @@
 <?php
 function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
-    // Parse the shortcode attributes
     $atts = shortcode_atts(array(
-        'status' => '',
+        'showNewIdea' => true,
+        'showUpNext' => true,
+        'showMaybe' => true,
+        'showOnRoadmap' => true,
+        'showClosed' => true,
+        'showNotNow' => true,
     ), $atts, 'roadmap_tabs');
 
-    $statuses = !empty($atts['status']) ? array_map('trim', explode(',', $atts['status'])) : [];
+    // Determine which statuses to show
+    $statuses = array();
+    if ($atts['showNewIdea']) $statuses[] = 'New Idea';
+    if ($atts['showUpNext']) $statuses[] = 'Up Next';
+    if ($atts['showMaybe']) $statuses[] = 'Maybe';
+    if ($atts['showOnRoadmap']) $statuses[] = 'On Roadmap';
+    if ($atts['showClosed']) $statuses[] = 'Closed';
+    if ($atts['showNotNow']) $statuses[] = 'Not Now';
 
     $pro_options = get_option('wp_roadmap_pro_settings');
     $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';
