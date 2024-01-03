@@ -101,7 +101,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                                 foreach ($terms as $term) :
                                     $term_link = get_term_link($term);
                                     if (!is_wp_error($term_link)) : ?>
-                                        <a href="<?php echo esc_url($term_link); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr($filter_tags_bg_color); ?>;color: <?php echo esc_attr($filter_tags_text_color); ?>;"><?php echo esc_html($term->name); ?></a>
+                                        <a href="<?php echo esc_url($term_link); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr($filter_tags_bg_color); ?>;color: <?php echo esc_attr($filter_tags_text_color); ?>;"><?php echo esc_html($term->name); ?></a>
                                     <?php endif;
                                 endforeach; ?>
                             </div>
@@ -113,7 +113,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                             <div class="flex items-center justify-between mt-6">
                                 <a class="text-blue-500 hover:underline" href="<?php echo esc_url(get_permalink()); ?>" rel="ugc">Read More</a>
                                 <div class="flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
-                                    <button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr($vote_button_bg_color); ?>!important;background-image: none!important;color: <?php echo esc_attr($vote_button_text_color); ?>!important;">
+                                    <button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr($vote_button_bg_color); ?>!important;background-image: none!important;color: <?php echo esc_attr($vote_button_text_color); ?>!important;">
                                         <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
