@@ -192,14 +192,26 @@ function wp_roadmap_pro_handle_delete_selected_terms() {
 
     $taxonomy = sanitize_text_field($_POST['taxonomy']);
     $terms = array_map('intval', (array) $_POST['terms']);
+    $deletion_successful = true;
 
     foreach ($terms as $term_id) {
-        wp_delete_term($term_id, $taxonomy);
+        $deleted_term = wp_delete_term($term_id, $taxonomy);
+        if (is_wp_error($deleted_term)) {
+            $deletion_successful = false;
+            break; // Exit the loop if any deletion fails
+        }
     }
 
-    wp_send_json_success();
+    if ($deletion_successful) {
+        wp_send_json_success(array('message' => 'Term deleted successfully.'));
+    } else {
+        wp_send_json_error(array('message' => 'Error occurred while deleting term.'));
+    }
+
+    wp_die(); // This is important to terminate immediately and return a proper response
 }
 add_action('wp_ajax_delete_selected_terms', 'wp_roadmap_pro_handle_delete_selected_terms');
+
 
 function wp_roadmap_pro_update_idea_status() {
     check_ajax_referer('wp-roadmap-admin-frontend-nonce', 'nonce');
