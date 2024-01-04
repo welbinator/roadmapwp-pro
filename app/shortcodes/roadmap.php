@@ -17,6 +17,7 @@ function wp_roadmap_pro_roadmap_shortcode($atts) {
     'showMaybe' => true,
     'showOnRoadmap' => true,
     'showClosed' => true,
+    'showNotNow' => true,
 ), $atts, 'roadmap');
 
 // Assume true if the attribute is not passed
@@ -31,17 +32,9 @@ $statuses = array();
         if ($atts['showMaybe']) $statuses[] = 'Maybe';
         if ($atts['showOnRoadmap']) $statuses[] = 'On Roadmap';
         if ($atts['showClosed']) $statuses[] = 'Closed';
+        if ($atts['showNotNow']) $statuses[] = 'Not Now';
     }
 
-   
-
-    // Retrieve color settings
-    // $pro_options = get_option('wp_roadmap_pro_settings');
-    // $vote_button_bg_color = isset($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-    // $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
-    // $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-    // $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
-    // $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
     $num_statuses = count($statuses);
     $md_cols_class = 'md:grid-cols-' . ($num_statuses > 3 ? 3 : $num_statuses); // Set to number of statuses, but max out at 4
