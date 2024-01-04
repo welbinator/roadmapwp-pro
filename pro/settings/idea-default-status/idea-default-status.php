@@ -9,9 +9,6 @@ function wp_roadmap_pro_default_idea_status_setting($content) {
     $pro_options = get_option('wp_roadmap_pro_settings', []);
     $default_wp_post_status = isset($pro_options['default_wp_post_status']) ? $pro_options['default_wp_post_status'] : 'pending';
 
-    // Debugging: Log the current value of default WordPress post status
-    error_log('Default WP Post Status: ' . $default_wp_post_status);
-
     // Create the HTML for the dropdown
     $html = '<select name="wp_roadmap_pro_settings[default_wp_post_status]">';
     $statuses = ['publish' => 'Publish', 'pending' => 'Pending Review', 'draft' => 'Draft'];

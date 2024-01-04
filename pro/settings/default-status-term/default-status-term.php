@@ -7,14 +7,8 @@ function wp_roadmap_pro_register_default_status_setting() {
 }
 
 function wp_roadmap_pro_settings_validate($input) {
-    // Debugging: Log the input received upon form submission
-    error_log('Input received on form submission: ' . print_r($input, true));
-
     // Get the current options from the database
     $current_options = get_option('wp_roadmap_pro_settings');
-
-    // Debugging: Log the current settings before any changes
-    error_log('Current settings before validation: ' . print_r($current_options, true));
 
     // Validation logic for your settings
     // Ensure 'default_status_term' is a valid slug from 'status' taxonomy
@@ -44,9 +38,6 @@ function wp_roadmap_pro_settings_validate($input) {
             'error'
         );
     }
-
-    // Debugging: Log the final settings array that will be returned
-    error_log('Final settings array before returning: ' . print_r($current_options, true));
 
     // Return the updated array
     return $current_options;
