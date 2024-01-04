@@ -9,31 +9,18 @@ function wp_roadmap_pro_roadmap_shortcode($atts) {
      update_option('wp_roadmap_roadmap_shortcode_loaded', true);
      
    
-   // Parse the shortcode attributes
-   $atts = shortcode_atts(array(
-    'status' => '',
-    'showNewIdea' => true,
-    'showUpNext' => true,
-    'showMaybe' => true,
-    'showOnRoadmap' => true,
-    'showClosed' => true,
-    'showNotNow' => true,
-), $atts, 'roadmap');
+    // Retrieve dynamic status terms
+    $dynamic_status_terms = get_terms(array('taxonomy' => 'status', 'hide_empty' => false));
+    $dynamic_statuses = array_map(function($term) {
+        return $term->name;
+    }, $dynamic_status_terms);
 
-// Assume true if the attribute is not passed
-$statuses = array();
-    if (!empty($atts['status'])) {
-        // Use the 'status' attribute if it's provided (for the shortcode)
-        $statuses = array_map('trim', explode(',', $atts['status']));
-    } else {
-        // Otherwise, use the boolean attributes (for the block)
-        if ($atts['showNewIdea']) $statuses[] = 'New Idea';
-        if ($atts['showUpNext']) $statuses[] = 'Up Next';
-        if ($atts['showMaybe']) $statuses[] = 'Maybe';
-        if ($atts['showOnRoadmap']) $statuses[] = 'On Roadmap';
-        if ($atts['showClosed']) $statuses[] = 'Closed';
-        if ($atts['showNotNow']) $statuses[] = 'Not Now';
-    }
+    // Parse the shortcode attributes
+    $atts = shortcode_atts(array(
+        'status' => implode(',', $dynamic_statuses), // Default to all dynamic statuses
+    ), $atts, 'roadmap');
+
+    $statuses = !empty($atts['status']) ? array_map('trim', explode(',', $atts['status'])) : $dynamic_statuses;
 
 
     $num_statuses = count($statuses);
