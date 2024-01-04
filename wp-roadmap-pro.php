@@ -424,6 +424,9 @@ include_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template/ch
 // Include blocks
 include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
 
+// Include roadmap block
+include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-block.php';
+
 // Include custom submit idea heading setting
 include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
 
