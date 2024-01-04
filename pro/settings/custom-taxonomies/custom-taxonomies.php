@@ -13,14 +13,45 @@ function wp_roadmap_pro_custom_taxonomy_content() {
     // Flag to trigger JavaScript redirection
     $should_redirect = false;
 
+    // Fetch custom taxonomies
+    $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
+
     // Handle taxonomy deletion
     if (isset($_GET['action'], $_GET['taxonomy'], $_GET['_wpnonce']) && $_GET['action'] == 'delete') {
-        if (wp_verify_nonce($_GET['_wpnonce'], 'delete_taxonomy_' . $_GET['taxonomy'])) {
-            $taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
-            unset($taxonomies[$_GET['taxonomy']]);
-            update_option('wp_roadmap_custom_taxonomies', $taxonomies);
+        if (wp_verify_nonce($_GET['_wpnonce'], 'delete_taxonomy_' . $_GET['taxonomy']) && array_key_exists($_GET['taxonomy'], $custom_taxonomies)) {
+            unset($custom_taxonomies[$_GET['taxonomy']]);
+            update_option('wp_roadmap_custom_taxonomies', $custom_taxonomies);
+            $should_redirect = true;
         }
     }
+
+    // Check if a new term is being added
+if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($_POST['new_term']) && !empty($_POST['taxonomy_slug'])) {
+    // Verify the nonce for security
+    if (!isset($_POST['wp_roadmap_add_term_nonce']) || !wp_verify_nonce($_POST['wp_roadmap_add_term_nonce'], 'add_term_to_' . $_POST['taxonomy_slug'])) {
+        wp_die(esc_html__('Nonce verification failed.', 'wp-roadmap-pro'));
+    }
+
+    $new_term = sanitize_text_field($_POST['new_term']);
+    $taxonomy_slug = sanitize_text_field($_POST['taxonomy_slug']);
+
+    // Check if the term already exists in the specified taxonomy
+    if (term_exists($new_term, $taxonomy_slug)) {
+        // Term already exists
+        echo '<div class="error"><p>Term already exists in this taxonomy.</p></div>';
+    } else {
+        $inserted_term = wp_insert_term($new_term, $taxonomy_slug);
+        if (is_wp_error($inserted_term)) {
+            // Handle error: Term could not be added
+            echo '<div class="error"><p>Term could not be added: ' . esc_html($inserted_term->get_error_message()) . '</p></div>';
+        } else {
+            // Term added successfully
+            echo '<div class="updated"><p>Term added successfully.</p></div>';
+        }
+    }
+}
+
+
 
     // Check if the form has been submitted for adding a new taxonomy
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['wp_roadmap_pro_nonce'], $_POST['taxonomy_slug'])) {
@@ -55,7 +86,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
         }
     }
 
-    echo '<div class="wrap">';
+    echo '<div class="wrap custom">';
     echo '<h2>Add Custom Taxonomy</h2>';
     echo '<form action="" method="post">';
     wp_nonce_field('wp_roadmap_pro_add_taxonomy', 'wp_roadmap_pro_nonce');
@@ -78,10 +109,12 @@ function wp_roadmap_pro_custom_taxonomy_content() {
     echo '</ul>';
     echo '</form>';
 
-    // Display existing taxonomies and their terms
+    // Display existing taxonomies and their terms, including 'status' and 'idea-tag'
     $taxonomies = get_taxonomies(array('object_type' => array('idea')), 'objects');
     foreach ($taxonomies as $taxonomy) {
-        echo '<h3>' . esc_html($taxonomy->labels->name) . '</h3>';
+        // Exclude custom taxonomies from this loop
+        if (!array_key_exists($taxonomy->name, $custom_taxonomies)) {
+            echo '<h3>' . esc_html($taxonomy->labels->name) . '</h3>';
 
         $terms = get_terms(array('taxonomy' => $taxonomy->name, 'hide_empty' => false));
         if (!empty($terms) && !is_wp_error($terms)) {
@@ -107,6 +140,41 @@ function wp_roadmap_pro_custom_taxonomy_content() {
         echo '</form>';
         echo '<hr style="margin:20px; border:2px solid #8080802e;" />';
     }
+}
+
+// Display and provide deletion option for custom taxonomies
+foreach ($custom_taxonomies as $taxonomy_slug => $taxonomy_data) {
+    echo '<h3>' . esc_html($taxonomy_data['labels']['name']) . '</h3>';
+    echo '<a href="#" class="delete-taxonomy" data-taxonomy="' . esc_attr($taxonomy_slug) . '">Delete this taxonomy</a>';
+
+
+    // Display and delete terms for custom taxonomies
+    $terms = get_terms(array('taxonomy' => $taxonomy_slug, 'hide_empty' => false));
+    if (!empty($terms) && !is_wp_error($terms)) {
+        echo '<form method="post" class="delete-terms-form" data-taxonomy="' . esc_attr($taxonomy_slug) . '">';
+        echo '<ul class="terms-list">';
+        foreach ($terms as $term) {
+            echo '<li>';
+            echo '<input type="checkbox" name="terms[]" value="' . esc_attr($term->term_id) . '"> ' . esc_html($term->name);
+            echo '</li>';
+        }
+        echo '</ul>';
+        echo '<input type="submit" value="Delete Selected Terms" class="button delete-terms-button">';
+        echo '</form>';
+    } else {
+        echo '<p>No terms found for ' . esc_html($taxonomy_data['labels']['name']) . '.</p>';
+    }
+
+    // Form to add a new term to this custom taxonomy
+    echo '<form action="' . esc_url(admin_url('admin.php?page=wp-roadmap-taxonomies')) . '" method="post">';
+    echo '<input type="text" name="new_term" placeholder="New Term for ' . esc_attr($taxonomy_data['labels']['singular_name']) . '" />';
+    echo '<input type="hidden" name="taxonomy_slug" value="' . esc_attr($taxonomy_slug) . '" />';
+    echo '<input type="submit" value="Add Term" />';
+    echo wp_nonce_field('add_term_to_' . $taxonomy_slug, 'wp_roadmap_add_term_nonce');
+    echo '</form>';
+
+    echo '<hr style="margin:20px; border:2px solid #8080802e;" />';
+}
 
     if ($should_redirect) {
         echo '<script type="text/javascript">';

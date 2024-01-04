@@ -155,12 +155,27 @@ add_action('wp_ajax_nopriv_filter_ideas', 'wp_roadmap_pro_filter_ideas');
 
 // Handles the AJAX request for deleting a custom taxonomy
 function wp_roadmap_pro_handle_delete_custom_taxonomy() {
-    check_ajax_referer('wp_roadmap_delete_taxonomy_nonce', 'nonce');
+    error_log('Received AJAX request: ' . print_r($_POST, true));
+    // Check if the nonce and taxonomy parameters are set
+    if (!isset($_POST['nonce'], $_POST['taxonomy'])) {
+        wp_send_json_error(array('message' => __('Missing parameters.', 'wp-roadmap')));
+        return;
+    }
 
+    // Sanitize and assign the taxonomy
     $taxonomy = sanitize_text_field($_POST['taxonomy']);
+
+    // Verify the nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'wp_roadmap_delete_taxonomy_nonce')) {
+        wp_send_json_error(array('message' => __('Nonce verification failed.', 'wp-roadmap')));
+        return;
+    }
+
+    // Fetch the custom taxonomies
     $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
 
-    if (isset($custom_taxonomies[$taxonomy])) {
+    // Check if the taxonomy exists and delete it
+    if (array_key_exists($taxonomy, $custom_taxonomies)) {
         unset($custom_taxonomies[$taxonomy]);
         update_option('wp_roadmap_custom_taxonomies', $custom_taxonomies);
         wp_send_json_success();
@@ -169,6 +184,7 @@ function wp_roadmap_pro_handle_delete_custom_taxonomy() {
     }
 }
 add_action('wp_ajax_delete_custom_taxonomy', 'wp_roadmap_pro_handle_delete_custom_taxonomy');
+
 
 // Handles the AJAX request for deleting selected terms
 function wp_roadmap_pro_handle_delete_selected_terms() {

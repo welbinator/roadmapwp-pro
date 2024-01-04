@@ -3,12 +3,19 @@ jQuery(document).ready(function($) {
     $('.delete-taxonomy').on('click', function(e) {
         e.preventDefault();
         var taxonomy = $(this).data('taxonomy');
+    
+        // Make sure the taxonomy value is being captured
+        if (!taxonomy) {
+            alert('Taxonomy not specified.');
+            return;
+        }
+    
         $.ajax({
             url: wpRoadmapAjax.ajax_url,
             type: 'post',
             data: {
                 action: 'delete_custom_taxonomy',
-                taxonomy: taxonomy,
+                taxonomy: taxonomy, // Ensure this parameter is correctly included
                 nonce: wpRoadmapAjax.delete_taxonomy_nonce
             },
             success: function(response) {
@@ -20,6 +27,7 @@ jQuery(document).ready(function($) {
             }
         });
     });
+    
 
     // Handling deletion of selected terms
     $('.delete-terms-form').on('submit', function(e) {
