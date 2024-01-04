@@ -3,6 +3,11 @@
  * Function to display WP RoadMap settings page.
  */
 function wp_roadmap_pro_settings_page() {
+
+    // Debugging: Check the currently saved default status
+    $pro_options = get_option('wp_roadmap_pro_settings');
+    error_log('Pro options on load: ' . print_r($pro_options, true));   
+
     // Fetch current settings
     $pro_options = get_option('wp_roadmap_pro_settings');
     $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
@@ -19,7 +24,10 @@ function wp_roadmap_pro_settings_page() {
     $tabs_button_bg_color = isset($pro_options['tabs_button_bg_color']) ? $pro_options['tabs_button_bg_color'] : '#ffffff'; // Default to blue if not set
     $tabs_text_color = isset($pro_options['tabs_text_color']) ? $pro_options['tabs_text_color'] : '#000000'; // Default to blue if not set
     
-
+    // Fetch terms for 'status' taxonomy
+    $status_terms = get_terms(array('taxonomy' => 'status', 'hide_empty' => false));
+    $default_status = isset($pro_options['default_idea_status']) ? $pro_options['default_idea_status'] : '';
+    $default_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : '';
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -36,9 +44,22 @@ function wp_roadmap_pro_settings_page() {
 
             <table class="form-table">
                                 
+
+                <tr valign="top">
+                    <th scope="row"><?php esc_html_e('Set Default Status Term for New Ideas', 'wp-roadmap'); ?></th>
+                    <td>
+                        <select name="wp_roadmap_pro_settings[default_status_term]">
+                            <?php foreach ($status_terms as $term) : ?>
+                                <option value="<?php echo esc_attr($term->slug); ?>" <?php selected($default_status_term, $term->slug); ?>>
+                                    <?php echo esc_html($term->name); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
                 <!-- Default Status Setting -->
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Set New Idea Default Status', 'wp-roadmap'); ?></th>
+                    <th scope="row"><?php esc_html_e('Set Published/Pending/Draft', 'wp-roadmap'); ?></th>
                     <td>
                         <?php
                         // Filter hook to allow the Pro version to override this setting

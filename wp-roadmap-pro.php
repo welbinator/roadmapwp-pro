@@ -430,6 +430,9 @@ include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-head
 // Include custom submit idea heading setting
 include_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
 
+// Include default idea status setting
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term/default-status-term.php';
+
 // Include necessary files
 require_once plugin_dir_path(__FILE__) . 'app/admin-functions.php';
 require_once plugin_dir_path(__FILE__) . 'app/cpt-ideas.php';
