@@ -11,20 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wp-roadmap-pro
 */
 
-function wp_roadmap_pro_get_color_settings() {
-    global $vote_button_bg_color, $vote_button_text_color, $filter_tags_bg_color, $filter_tags_text_color, $filters_bg_color, $tabs_container_bg_color, $tabs_text_color, $tabs_button_bg_color;
-
-    $pro_options = get_option('wp_roadmap_pro_settings');
-    
-    $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';
-    $vote_button_text_color = !empty($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '';
-    $filter_tags_bg_color = !empty($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '';
-    $filter_tags_text_color = !empty($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '';
-    $filters_bg_color = !empty($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '';
-    $tabs_container_bg_color = !empty($pro_options['tabs_container_bg_color']) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
-    $tabs_text_color = !empty($pro_options['tabs_text_color']) ? $pro_options['tabs_text_color'] : '#000000';
-    $tabs_button_bg_color = !empty($pro_options['tabs_button_bg_color']) ? $pro_options['tabs_button_bg_color'] : '#ffffff';
-}
 
 // This function will be called when the Pro version is activated.
 function wp_roadmap_pro_activate() {
@@ -410,16 +396,16 @@ add_action( 'admin_notices', 'roadmapwp_pro_admin_notices' );
 include_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
 
 // Include enable comments feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments/comments.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments.php';
 
 // Include custom taxonomies feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies/custom-taxonomies.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
 
 // Include default idea status feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-status/idea-default-status.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-status.php';
 
 // Include choose idea template feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template/choose-idea-template.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
 
 // Include blocks
 include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
@@ -431,13 +417,13 @@ include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-block.php';
 include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-tabs-block.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading/submit-idea-custom-heading.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading/display-ideas-custom-heading.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading.php';
 
 // Include default idea status setting
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term/default-status-term.php';
+include_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
 // Include necessary files
 require_once plugin_dir_path(__FILE__) . 'app/admin-functions.php';

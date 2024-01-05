@@ -270,10 +270,11 @@ add_action('admin_menu', 'wp_roadmap_pro_add_admin_menu');
  *
  * This function sets up a settings section for the plugin, allowing configuration of various features and functionalities.
  */
-function wp_roadmap_pro_register_settings() {
-    register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
-}
-add_action('admin_init', 'wp_roadmap_pro_register_settings');
+// function wp_roadmap_pro_register_settings() {
+//     error_log('Registering settings for wp_roadmap_pro');
+//     register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
+// }
+// add_action('admin_init', 'wp_roadmap_pro_register_settings');
 
 /**
  * Dynamically enables or disables comments on 'idea' post types.
@@ -309,3 +310,7 @@ function wp_roadmap_pro_redirect_single_idea($template) {
 add_filter('single_template', 'wp_roadmap_pro_redirect_single_idea');
 
 
+// add_action('admin_init', function() {
+//     error_log('admin_init action called');
+//     wp_roadmap_pro_register_settings();
+// });
