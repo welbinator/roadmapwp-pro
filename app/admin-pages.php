@@ -4,17 +4,17 @@
  */
 function wp_roadmap_pro_settings_page() {
     // Fetch current settings
-    $pro_options = get_option('wp_roadmap_pro_settings');
-    error_log('Current settings on page load: ' . print_r($pro_options, true));
+    $pro_options = get_option('wp_roadmap_pro_settings', array('default_status_term' => 'new-idea'));
+    $status_terms = get_terms(array('taxonomy' => 'status', 'hide_empty' => false));
+    $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
+    $default_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea';
 
     // Log form submission data
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         error_log('Form submitted with data: ' . print_r($_POST, true));
     }
 
-    $status_terms = get_terms(array('taxonomy' => 'status', 'hide_empty' => false));
-    $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
-    $default_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : '';
+   
     
     
     // New Styling Section
@@ -45,18 +45,18 @@ function wp_roadmap_pro_settings_page() {
             <table class="form-table">
                                 
 
-                <tr valign="top">
-                    <th scope="row"><?php esc_html_e('Set Default Status Term for New Ideas', 'wp-roadmap-pro'); ?></th>
-                    <td>
-                        <select name="wp_roadmap_pro_settings[default_status_term]">
-                            <?php foreach ($status_terms as $term) : ?>
-                                <option value="<?php echo esc_attr($term->slug); ?>" <?php selected($default_status_term, $term->slug); ?>>
-                                    <?php echo esc_html($term->name); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                </tr>
+            <tr valign="top">
+                <th scope="row"><?php esc_html_e('Set Default Status Term for New Ideas', 'wp-roadmap-pro'); ?></th>
+                <td>
+                    <select name="wp_roadmap_pro_settings[default_status_term]">
+                        <?php foreach ($status_terms as $term) : ?>
+                            <option value="<?php echo esc_attr($term->slug); ?>" <?php selected($default_status_term, $term->slug); ?>>
+                                <?php echo esc_html($term->name); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
                 
 
                 <tr valign="top">
@@ -83,13 +83,14 @@ function wp_roadmap_pro_settings_page() {
 
                 
 
-
-                <tr id="allow-comments-setting" valign="top">
+                <?php $displayCommentsStyle = $pro_options['single_idea_template'] === 'plugin' ? '' : 'style="display: none;"'; ?>
+                
+                <tr id="allow-comments-setting" valign="top" <?php echo $displayCommentsStyle; ?>>
                     <th scope="row"><?php esc_html_e('Allow Comments on Ideas', 'wp-roadmap-pro'); ?></th>
                     <td>
                         <?php
-                        // Filter hook to allow the Pro version to override this setting
-                        echo apply_filters('wp_roadmap_enable_comments_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__('Available in Pro', 'wp-roadmap-pro') . '</a>');
+                        // Apply the filter here
+                        echo apply_filters('wp_roadmap_enable_comments_setting', '');
                         ?>
                     </td>
                 </tr>
