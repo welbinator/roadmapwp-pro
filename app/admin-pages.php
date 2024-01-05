@@ -121,12 +121,19 @@ function wp_roadmap_pro_settings_page() {
            
                 <tr>
                     <td style="padding:0;padding-block:20px;">
+                        <hr>
                         <h1>Styling</h1>
+                        <hr>
                     </td>
                 </tr>
 
 
-            <!-- Styling section -->
+                <tr>
+                    <td style="padding:0;padding-block:20px;">
+                        <h4 style="margin: 0px;">Vote Button</h4>
+                    </td>
+                </tr>
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Vote Button Background Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -140,10 +147,16 @@ function wp_roadmap_pro_settings_page() {
                     <th scope="row"><?php esc_html_e('Vote Button Text Color', 'wp-roadmap-pro'); ?></th>
                     <td>
                         <input type="text" name="wp_roadmap_pro_settings[vote_button_text_color]" value="<?php echo esc_attr($vote_button_text_color); ?>" class="wp-roadmap-color-picker"/>
-                        <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
+                       
+                    </td>
+                    
+                </tr>
+                <tr><td><hr></td></tr>
+                <tr>
+                    <td style="padding:0;padding-block:20px;">
+                        <h4 style="margin: 0px;">Filters</h4>
                     </td>
                 </tr>
-
 
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filter Tags Background Color', 'wp-roadmap-pro'); ?></th>
@@ -170,7 +183,12 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
-
+                <tr><td><hr></td></tr>
+                <tr>
+                    <td style="padding:0;padding-block:20px;">
+                        <h4 style="margin: 0px;">Roadmap Tabs</h4>
+                    </td>
+                </tr>
 
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Roadmap Tabs Container Background Color', 'wp-roadmap-pro'); ?></th>
@@ -231,10 +249,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-
-
-
-
 /**
  * Function to display the Taxonomies management page.
  * This function allows adding terms to the "Tags" taxonomy.
@@ -264,8 +278,9 @@ function wp_roadmap_pro_help_page() {
         <ul>
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/new-idea-form-shortcode/" target="_blank">New Idea Form:</a></strong><span> [new_idea_form]</span></li>
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/display-ideas-shortcode/" target="_blank">Display Ideas:</a></strong><span> [display_ideas]</span></li>
-            <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">Roadmap:</a></strong><span> [roadmap]</span></li>
-            <li style="font-size: 1.1em;">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"] Possible values for status parameter:</li>
+            <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">Roadmap:</a></strong><span> [roadmap status=""]</span></li>
+            <li style="font-size: 1.1em;">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"]</li>
+            <li style="font-size: 1.1em;">Possible values for status parameter (these are the default options but can be changed in Taxonomies page):</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
                     <li>Not Now</li>
@@ -274,8 +289,9 @@ function wp_roadmap_pro_help_page() {
                     <li>On Roadmap</li>
                     <li>Closed</li>
                 </ul>
-            <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">Roadmap Tabs:</a></strong><span> [roadmap]</span></li>
-            <li>Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"] Possible values for status parameter:</li>
+            <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">Roadmap Tabs:</a></strong><span> [roadmap_tabs status=""]</span></li>
+            <li style="font-size: 1.1em;">Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"]</li>
+            <li style="font-size: 1.1em;">Possible values for status parameter (these are the default options but can be changed in Taxonomies page):</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
                     <li>Not Now</li>
@@ -292,7 +308,8 @@ function wp_roadmap_pro_help_page() {
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/new-idea-form-block/" target="_target">New Idea Form</a></strong></li>
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/display-ideas-block/" target="_blank">Display Ideas</a></strong></li>
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-block/" target="_blank">Roadmap</a></strong></li>
-            <li style="font-size: 1.1em;">After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
+            <li style="font-size: 1.1em;">After adding the block to the page, in the block editor choose which statuses you want to display.<li>
+            <li style="font-size: 1.1em;">Available statuses (these are the default options but can be changed in Taxonomies page):</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
                     <li>Not Now</li>
@@ -302,7 +319,8 @@ function wp_roadmap_pro_help_page() {
                     <li>Closed</li>
                 </ul>
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-tabs-block/" target="_blank">Roadmap Tabs</a></strong></li>
-            <li>After adding the block to the page, in the block editor choose which statuses you want to display. Available statuses:</li>
+            <li style="font-size: 1.1em;">After adding the block to the page, in the block editor choose which statuses you want to display.</li>
+            <li style="font-size: 1.1em;">Available statuses (these are the default options but can be changed in Taxonomies page):</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
                     <li>New Idea</li>
                     <li>Not Now</li>

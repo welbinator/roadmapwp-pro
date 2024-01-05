@@ -45,7 +45,7 @@ add_filter('wp_roadmap_hide_custom_idea_heading_setting', function($content) {
     </script>';
 
     // Input field for custom heading
-    $content .= '<label for="custom_idea_heading" style="margin-left: 10px;">Custom Heading: </label>';
+    $content .= '<label for="custom_idea_heading">Custom Heading: </label>';
     $content .= '<input type="text" name="wp_roadmap_pro_settings[custom_idea_heading]" value="' . esc_attr($new_submit_idea_heading) . '" />';
 
     return $content;

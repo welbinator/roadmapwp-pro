@@ -46,7 +46,7 @@ add_filter('wp_roadmap_hide_display_ideas_heading_setting', function($content) {
         });
     </script>';
 
-    $content .= '<label for="custom_display_ideas_heading" style="margin-left: 10px;">Custom Heading: </label>';
+    $content .= '<label for="custom_display_ideas_heading">Custom Heading: </label>';
     $content .= '<input type="text" name="wp_roadmap_pro_settings[custom_display_ideas_heading]" value="' . esc_attr($new_display_ideas_heading) . '" />';
 
     return $content;

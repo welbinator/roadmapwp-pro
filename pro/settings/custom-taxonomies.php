@@ -108,14 +108,16 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($_POST['new_term']) && !empt
     echo '</li>';
     echo '</ul>';
     echo '</form>';
+    echo '<hr style="margin:20px; border:2px solid #8080802e;" />';
 
+    echo '<h2>Manage Taxonomies</h2>';
     // Display existing taxonomies and their terms, including 'status' and 'idea-tag'
     $taxonomies = get_taxonomies(array('object_type' => array('idea')), 'objects');
     foreach ($taxonomies as $taxonomy) {
         // Exclude custom taxonomies from this loop
         if (!array_key_exists($taxonomy->name, $custom_taxonomies)) {
-            echo '<h3>' . esc_html($taxonomy->labels->name) . '</h3>';
-
+            echo '<h4>Taxonomy name: <strong>' . esc_html($taxonomy->labels->name) . '</strong></h4>';
+            echo '<h5 style="margin-bottom: 0;">Terms:</h5>';
         $terms = get_terms(array('taxonomy' => $taxonomy->name, 'hide_empty' => false));
         if (!empty($terms) && !is_wp_error($terms)) {
             echo '<form method="post" class="delete-terms-form" data-taxonomy="' . esc_attr($taxonomy->name) . '">';
