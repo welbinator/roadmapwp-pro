@@ -1,22 +1,30 @@
 <?php
 function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
     $atts = shortcode_atts(array(
+        'status' => '',
         'showNewIdea' => true,
         'showUpNext' => true,
         'showMaybe' => true,
         'showOnRoadmap' => true,
         'showClosed' => true,
         'showNotNow' => true,
-    ), $atts, 'roadmap_tabs');
-
-    // Determine which statuses to show
+    ), $atts, 'roadmap-tabs');
+    
+    // Assume true if the attribute is not passed
     $statuses = array();
-    if ($atts['showNewIdea']) $statuses[] = 'New Idea';
-    if ($atts['showUpNext']) $statuses[] = 'Up Next';
-    if ($atts['showMaybe']) $statuses[] = 'Maybe';
-    if ($atts['showOnRoadmap']) $statuses[] = 'On Roadmap';
-    if ($atts['showClosed']) $statuses[] = 'Closed';
-    if ($atts['showNotNow']) $statuses[] = 'Not Now';
+        if (!empty($atts['status'])) {
+            // Use the 'status' attribute if it's provided (for the shortcode)
+            $statuses = array_map('trim', explode(',', $atts['status']));
+        } else {
+            // Otherwise, use the boolean attributes (for the block)
+            if ($atts['showNewIdea']) $statuses[] = 'New Idea';
+            if ($atts['showUpNext']) $statuses[] = 'Up Next';
+            if ($atts['showMaybe']) $statuses[] = 'Maybe';
+            if ($atts['showOnRoadmap']) $statuses[] = 'On Roadmap';
+            if ($atts['showClosed']) $statuses[] = 'Closed';
+            if ($atts['showNotNow']) $statuses[] = 'Not Now';
+        }
+    error_log('Received statuses for roadmap_tabs shortcode: ' . implode(', ', $statuses));
 
     $pro_options = get_option('wp_roadmap_pro_settings');
     $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';
@@ -82,6 +90,7 @@ function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
             })
             .then(response => response.json())
             .then(data => {
+                
                 if (data.success && data.data && data.data.html) {
                     ideasContainer.innerHTML = data.data.html;
                 } else {
@@ -103,6 +112,7 @@ function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
 
 
     <?php
+    
     return ob_get_clean(); // Return the buffered output
 }
 add_shortcode('roadmap_tabs', 'wp_roadmap_pro_roadmap_tabs_shortcode');

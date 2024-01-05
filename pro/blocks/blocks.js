@@ -99,6 +99,7 @@
             showNotNow: { type: 'boolean', default: true },
         },
         edit: function (props) {
+           
             return wp.element.createElement(
                 'div',
                 {},
@@ -161,8 +162,25 @@
                 )
             );
         },
-        save: function () {
-            return null; // Render via PHP
+        save: function(props) {
+            const { attributes: { showNewIdea, showUpNext, showMaybe, showOnRoadmap, showClosed, showNotNow } } = props;
+    
+            let statusString = '';
+            if (showNewIdea) statusString += 'New Idea,';
+            if (showUpNext) statusString += 'Up Next,';
+            if (showMaybe) statusString += 'Maybe,';
+            if (showOnRoadmap) statusString += 'On Roadmap,';
+            if (showClosed) statusString += 'Closed,';
+            if (showNotNow) statusString += 'Not Now,';
+    
+            // Remove the trailing comma
+            statusString = statusString.replace(/,$/, '');
+            console.log('Status String in Block Save Function:', statusString);
+
+             
+
+            // Return the shortcode with the selected statuses
+            return '[roadmap_tabs status="' + statusString + '"]';
         },
     });
     
