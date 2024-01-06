@@ -24,7 +24,7 @@ function wp_roadmap_pro_roadmap_tabs_shortcode($atts) {
             if ($atts['showClosed']) $statuses[] = 'Closed';
             if ($atts['showNotNow']) $statuses[] = 'Not Now';
         }
-    error_log('Received statuses for roadmap_tabs shortcode: ' . implode(', ', $statuses));
+    
 
     $pro_options = get_option('wp_roadmap_pro_settings');
     $vote_button_bg_color = !empty($pro_options['vote_button_bg_color']) ? $pro_options['vote_button_bg_color'] : '';

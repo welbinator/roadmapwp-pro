@@ -74,26 +74,38 @@ function wp_roadmap_pro_handle_new_idea_submission() {
         $description = sanitize_textarea_field($_POST['idea_description']);
 
         $pro_options = get_option('wp_roadmap_pro_settings', []);
-        $default_idea_status = isset($pro_options['default_idea_status']) ? $pro_options['default_idea_status'] : 'pending';
+        // Retrieve the WordPress default post status setting
+        $default_wp_post_status = isset($pro_options['default_wp_post_status']) ? $pro_options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
+        $default_idea_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea'; // Replace 'new-idea' with your actual default term slug
 
         $idea_id = wp_insert_post(array(
             'post_title'    => $title,
             'post_content'  => $description,
-            'post_status'   => $default_idea_status,
+            'post_status'   => $default_wp_post_status, // Set the WordPress post status
             'post_type'     => 'idea',
         ));
 
-        if (isset($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
-            foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
-                $term_ids = array_map('intval', $term_ids);
-                wp_set_object_terms($idea_id, $term_ids, $tax_slug);
+        if ($idea_id && !is_wp_error($idea_id)) {
+            // Set the terms for other taxonomies if any
+            if (isset($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
+                foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
+                    if ($tax_slug !== 'status') { // Skip 'status' taxonomy here
+                        $term_ids = array_map('intval', $term_ids);
+                        wp_set_object_terms($idea_id, $term_ids, $tax_slug);
+                    }
+                }
             }
-        }
 
-        $redirect_url = add_query_arg('new_idea_submitted', '1', esc_url_raw($_SERVER['REQUEST_URI']));
-        wp_redirect($redirect_url);
-        exit;
+            // Set the term for 'status' taxonomy
+            wp_set_object_terms($idea_id, $default_idea_status_term, 'status');
+
+            $redirect_url = add_query_arg('new_idea_submitted', '1', esc_url_raw($_SERVER['REQUEST_URI']));
+            wp_redirect($redirect_url);
+            exit;
+        }
     }
 }
 
 add_action('template_redirect', 'wp_roadmap_pro_handle_new_idea_submission');
+
+
