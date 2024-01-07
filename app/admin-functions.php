@@ -107,22 +107,28 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
 
     // Check for shortcode presence in the post content
     if (is_a($post, 'WP_Post')) {
-        $has_new_idea_form_shortcode = has_shortcode($post->post_content, 'new_idea_form');
-        $has_display_ideas_shortcode = has_shortcode($post->post_content, 'display_ideas');
-        $has_roadmap_shortcode = has_shortcode($post->post_content, 'roadmap');
-        $has_single_idea_shortcode = has_shortcode($post->post_content, 'single_idea');
-        $has_roadmap_tabs_shortcode = has_shortcode($post->post_content, 'roadmap_tabs');
+        // $has_new_idea_form_shortcode = has_shortcode($post->post_content, 'new_idea_form');
+        // $has_display_ideas_shortcode = has_shortcode($post->post_content, 'display_ideas');
+        // $has_roadmap_shortcode = has_shortcode($post->post_content, 'roadmap');
+        // $has_single_idea_shortcode = has_shortcode($post->post_content, 'single_idea');
+        // $has_roadmap_tabs_shortcode = has_shortcode($post->post_content, 'roadmap_tabs');
 
         // Check for block presence
         $has_block = has_block('wp-roadmap-pro/new-idea-form', $post) ||
                      has_block('wp-roadmap-pro/display-ideas', $post) ||
                      has_block('wp-roadmap-pro/roadmap-block', $post) ||
-                     has_block('wp-roadmap-pro/roadmap-tabs', $post);
+                     has_block('wp-roadmap-pro/roadmap-tabs', $post) ||
+                     has_block('wp-roadmap-pro/roadmap-tabs-block');
+
+        $has_shortcode =    has_shortcode($post->post_content, 'new_idea_form') ||
+                            has_shortcode($post->post_content, 'display_ideas') ||
+                            has_shortcode($post->post_content, 'roadmap') ||
+                            has_shortcode($post->post_content, 'single_idea') ||
+                            has_shortcode($post->post_content, 'roadmap_tabs');
     }
 
     // Enqueue styles if a shortcode or block is loaded
-    if ($has_roadmap_tabs_shortcode || $has_new_idea_form_shortcode || $has_display_ideas_shortcode || $has_roadmap_shortcode || $has_single_idea_shortcode|| $has_block || is_singular('idea')) {
-
+        if ($has_block || $has_shortcode || is_singular()) {
         // Enqueue Tailwind CSS
         $tailwind_css_url = plugin_dir_url(__FILE__) . '../dist/styles.css';
         wp_enqueue_style('wp-roadmap-tailwind-styles', $tailwind_css_url);
@@ -264,10 +270,11 @@ add_action('admin_menu', 'wp_roadmap_pro_add_admin_menu');
  *
  * This function sets up a settings section for the plugin, allowing configuration of various features and functionalities.
  */
-function wp_roadmap_pro_register_settings() {
-    register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
-}
-add_action('admin_init', 'wp_roadmap_pro_register_settings');
+// function wp_roadmap_pro_register_settings() {
+//     error_log('Registering settings for wp_roadmap_pro');
+//     register_setting('wp_roadmap_pro_settings', 'wp_roadmap_pro_settings');
+// }
+// add_action('admin_init', 'wp_roadmap_pro_register_settings');
 
 /**
  * Dynamically enables or disables comments on 'idea' post types.
@@ -303,3 +310,7 @@ function wp_roadmap_pro_redirect_single_idea($template) {
 add_filter('single_template', 'wp_roadmap_pro_redirect_single_idea');
 
 
+// add_action('admin_init', function() {
+//     error_log('admin_init action called');
+//     wp_roadmap_pro_register_settings();
+// });

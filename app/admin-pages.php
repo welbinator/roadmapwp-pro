@@ -3,15 +3,18 @@
  * Function to display WP RoadMap settings page.
  */
 function wp_roadmap_pro_settings_page() {
-
-    // Debugging: Check the currently saved default status
-    $pro_options = get_option('wp_roadmap_pro_settings');
-      
-
     // Fetch current settings
     $pro_options = get_option('wp_roadmap_pro_settings');
+    error_log('Current settings on page load: ' . print_r($pro_options, true));
+
+    // Log form submission data
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        error_log('Form submitted with data: ' . print_r($_POST, true));
+    }
+
+    $status_terms = get_terms(array('taxonomy' => 'status', 'hide_empty' => false));
     $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
-     
+    $default_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : '';
     
     
     // New Styling Section
@@ -24,10 +27,7 @@ function wp_roadmap_pro_settings_page() {
     $tabs_button_bg_color = isset($pro_options['tabs_button_bg_color']) ? $pro_options['tabs_button_bg_color'] : '#ffffff'; // Default to blue if not set
     $tabs_text_color = isset($pro_options['tabs_text_color']) ? $pro_options['tabs_text_color'] : '#000000'; // Default to blue if not set
     
-    // Fetch terms for 'status' taxonomy
-    $status_terms = get_terms(array('taxonomy' => 'status', 'hide_empty' => false));
-    
-    $default_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : '';
+   
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -57,7 +57,8 @@ function wp_roadmap_pro_settings_page() {
                         </select>
                     </td>
                 </tr>
-                <!-- Default Status Setting -->
+                
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Set Published/Pending/Draft', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -67,6 +68,8 @@ function wp_roadmap_pro_settings_page() {
                         ?>
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Single Idea Template', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -76,19 +79,11 @@ function wp_roadmap_pro_settings_page() {
                         ?>
                     </td>
                 </tr>
-                <tr valign="top" id="single_idea_page_setting" style="display: none;">
-                    <th scope="row"><?php esc_html_e('Set page for single idea', 'wp-roadmap-pro'); ?></th>
-                    <td>
-                        <select name="wp_roadmap_pro_settings[single_idea_page]">
-                            <?php
-                            $pages = get_pages();
-                            foreach ($pages as $page) {
-                                echo '<option value="' . esc_attr($page->ID) . '"' . selected($selected_page, $page->ID, false) . '>' . esc_html($page->post_title) . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
+
+
+                
+
+
                 <tr id="allow-comments-setting" valign="top">
                     <th scope="row"><?php esc_html_e('Allow Comments on Ideas', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -110,6 +105,8 @@ function wp_roadmap_pro_settings_page() {
                         ?>
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Custom "Browse Ideas" Heading', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -119,12 +116,15 @@ function wp_roadmap_pro_settings_page() {
                         ?>
                     </td>
                 </tr>
+
            
                 <tr>
                     <td style="padding:0;padding-block:20px;">
                         <h1>Styling</h1>
                     </td>
                 </tr>
+
+
             <!-- Styling section -->
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Vote Button Background Color', 'wp-roadmap-pro'); ?></th>
@@ -133,6 +133,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Vote Button Text Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -140,6 +142,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filter Tags Background Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -147,6 +151,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filter Tags Text Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -154,6 +160,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Filters Background Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -161,6 +169,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Roadmap Tabs Container Background Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -168,6 +178,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Roadmap Tabs Background Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -175,6 +187,8 @@ function wp_roadmap_pro_settings_page() {
                         <!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
                     </td>
                 </tr>
+
+
                 <tr valign="top">
                     <th scope="row"><?php esc_html_e('Roadmap Tabs Text Color', 'wp-roadmap-pro'); ?></th>
                     <td>
@@ -191,20 +205,33 @@ function wp_roadmap_pro_settings_page() {
     // Enqueue the color picker JavaScript and styles
     wp_enqueue_script('wp-color-picker');
     wp_enqueue_style('wp-color-picker');
-?>
+
+    ?>
     <script type="text/javascript">
     jQuery(document).ready(function($) {
         // Initialize color picker
         $('.wp-roadmap-color-picker').wpColorPicker();
-    
     });
     </script>
-    
-    
-
     <?php
-   
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log('Full POST Data: ' . print_r($_POST, true));
+    error_log('Form submitted with data: ' . print_r($_POST, true));
+
+    // Extracting the settings from the POST data for debugging purposes
+    $posted_settings = $_POST['wp_roadmap_pro_settings'] ?? [];
+    error_log('POST data (wp_roadmap_pro_settings): ' . print_r($posted_settings, true));
+
+    // Optionally, confirm the current settings from the database before any update
+    $current_settings = get_option('wp_roadmap_pro_settings');
+    error_log('Current settings from database before update: ' . print_r($current_settings, true));
+}
+
+
+
+
+
 
 
 /**
