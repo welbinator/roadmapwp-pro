@@ -51,9 +51,9 @@ function wp_roadmap_pro_roadmap_block_render($attributes) {
                     'posts_per_page' => -1,
                     'tax_query' => array(
                         array(
-                            'taxonomy' => 'status',
-                            'field'    => 'slug',
-                            'terms'    => $status_slug,
+                        'taxonomy' => 'status',
+                        'field'    => 'slug',
+                        'terms'    => $status_slug,
                         ),
                     ),
                 );
@@ -67,35 +67,55 @@ function wp_roadmap_pro_roadmap_block_render($attributes) {
 
                 <div class="roadmap-column">
                     <h3 style="text-align:center;"><?php echo esc_html($term->name); ?></h3>
-<?php if ($query->have_posts()) :
-                     while ($query->have_posts()) : $query->the_post();
-                         // Check post status if including pending reviews
-                         if (!$include_pending && get_post_status() !== 'publish') {
-                             continue;
-                         }
-                         ?>
-                        <div class="border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 wp-roadmap-idea">
-                            <div class="p-6">
-                                <h4 class="idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
-                                <p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo get_the_date(); ?></p>
-                                <div class="flex flex-wrap space-x-2 mt-2 idea-tags">
-                                <!-- Display tags or other taxonomies -->
+                    <?php if ($query->have_posts()) :
+                        while ($query->have_posts()) : $query->the_post();
+                        $idea_id = get_the_ID();
+                            // Check post status if including pending reviews
+                            if (!$include_pending && get_post_status() !== 'publish') {
+                                continue;
+                            }
+                            ?>
+                            <div class="border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 wp-roadmap-idea">
+                                <div class="p-6">
+                                    <h4 class="idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
+                                    <p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo get_the_date(); ?></p>
+                                    <div class="flex flex-wrap space-x-2 mt-2 idea-tags">
+                                        <!-- Display tags or other taxonomies -->
+                                    </div>
+                                    <p class="idea-excerpt"><?php the_excerpt(); ?></p>
+                                    <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">Read More</a>
                                 </div>
-                                <p class="idea-excerpt"><?php the_excerpt(); ?></p>
-                                <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">Read More</a>
-                                </div>
-                                </div>
-                                <?php endwhile;
-                                                else : ?>
-                                <p>No ideas found for <?php echo esc_html($term->name); ?>.</p>
-                                <?php endif;
-                                                wp_reset_postdata(); ?>
-                                </div> <!-- Close column -->
-                            <?php endforeach; ?>
-                            </div> <!-- Close grid -->
-                        </div>
+                                <?php if (current_user_can('administrator')): ?>
+                                    <div class="p-6 bg-gray-200">
+                                        <h6 class="text-center">Admin only</h6>
+                                        <form class="idea-status-update-form" data-idea-id="<?php echo $idea_id; ?>">
+                                            <select multiple class="status-select" name="idea_status[]">
+                                                <?php 
+                                                $statuses = get_terms('status', array('hide_empty' => false));
+                                                $current_statuses = wp_get_post_terms($idea_id, 'status', array('fields' => 'slugs'));
+                                                
+                                                foreach ($statuses as $status) {
+                                                    $selected = in_array($status->slug, $current_statuses) ? 'selected' : '';
+                                                    echo '<option value="' . esc_attr($status->slug) . '" ' . $selected . '>' . esc_html($status->name) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                            <button type="submit" class="block text-sm font-medium h-10 bg-gray-500 text-white px-4 py-2 rounded-lg update-status-button">Update</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endwhile;
+                        else : ?>
+                        <p>No ideas found for <?php echo esc_html($term->name); ?>.</p>
+                    <?php endif;
+                    wp_reset_postdata(); ?>
+                </div> <!-- Close column -->
+            <?php endforeach; ?>
+        </div> <!-- Close grid -->
+    </div>
 
-    <?php return ob_get_clean();
+        <?php return ob_get_clean();
 }
 
 
