@@ -10,16 +10,12 @@ function wp_roadmap_pro_display_ideas_shortcode() {
 
     ob_start(); // Start output buffering
 
-   
-
     // Always include 'idea-tag' taxonomy
     $taxonomies = array('idea-tag');
 
     // Include custom taxonomies 
-    
-        $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
-        $taxonomies = array_merge($taxonomies, array_keys($custom_taxonomies));
-    
+    $custom_taxonomies = get_option('wp_roadmap_custom_taxonomies', array());
+    $taxonomies = array_merge($taxonomies, array_keys($custom_taxonomies));
 
     // Exclude 'status' taxonomy
     $exclude_taxonomies = array('status');
@@ -42,7 +38,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
     <div class="roadmap_wrapper container mx-auto">
     <div class="browse_ideas_frontend">
         <?php
-    $output = '<h2>' . esc_html($new_display_ideas_heading) . '</h2>';
+        $output = '<h2>' . esc_html($new_display_ideas_heading) . '</h2>';
         if (!$hide_display_ideas_heading) {
             echo $output; 
         }
@@ -97,7 +93,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                             <h2 class="text-2xl font-bold"><a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html(get_the_title()); ?></a></h2>
         
                             <p class="text-gray-500 mt-2 text-sm">Submitted on: <?php echo get_the_date(); ?></p>
-                            <div class="flex flex-wrap space-x-2 mt-2">
+                            <div class="flex flex-wrap space-x-2 mt-2 idea-tags">
                                 <?php $terms = wp_get_post_terms($idea_id, $taxonomies);
                                 foreach ($terms as $term) :
                                     $term_link = get_term_link($term);
@@ -111,7 +107,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
                             <p class="text-gray-700 mt-4"><?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?></p>
 
         
-                            <div class="flex items-center justify-between mt-6">
+                            <div class="flex items-center justify-start mt-6 gap-6">
                                 <a class="text-blue-500 hover:underline" href="<?php echo esc_url(get_permalink()); ?>" rel="ugc">Read More</a>
                                 <div class="flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
                                     <button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr($vote_button_bg_color); ?>!important;background-image: none!important;color: <?php echo esc_attr($vote_button_text_color); ?>!important;">

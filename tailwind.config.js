@@ -3,6 +3,8 @@ module.exports = {
   content: [
     './app/shortcodes/*',
     './app/templates/*',
+    './pro/blocks/*',
+    './app/ajax-handlers.php',
    
   ],
       safelist: [
