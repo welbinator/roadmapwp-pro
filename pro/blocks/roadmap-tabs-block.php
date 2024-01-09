@@ -57,7 +57,7 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
                 </button>
             <?php endforeach; ?>
         </div>
-        <div class="mt-2 roadmap-ideas-container">
+        <div class="grid md:grid-cols-2 gap-4 mt-2 roadmap-ideas-container">
             <!-- Ideas will be loaded here via JavaScript -->
         </div>
     </div>
