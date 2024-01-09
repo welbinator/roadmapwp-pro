@@ -174,9 +174,17 @@ function wp_roadmap_pro_add_admin_menu() {
         __('RoadMap', 'wp-roadmap'), 
         'manage_options', 
         'wp-roadmap', 
-        'wp_roadmap_pro_settings_page', 
+        'edit.php?post_type=idea', 
         'dashicons-chart-line', 
         6
+    );
+
+    add_submenu_page(
+        'wp-roadmap',
+        __('Ideas', 'wp-roadmap'),
+        __('Ideas', 'wp-roadmap'),
+        'manage_options',
+        'edit.php?post_type=idea'
     );
 
     add_submenu_page(
@@ -188,13 +196,7 @@ function wp_roadmap_pro_add_admin_menu() {
         'wp_roadmap_pro_settings_page'
     );
 
-    add_submenu_page(
-        'wp-roadmap',
-        __('Ideas', 'wp-roadmap'),
-        __('Ideas', 'wp-roadmap'),
-        'manage_options',
-        'edit.php?post_type=idea'
-    );
+    
 
     add_submenu_page(
         'wp-roadmap',
@@ -309,8 +311,3 @@ function wp_roadmap_pro_redirect_single_idea($template) {
 
 add_filter('single_template', 'wp_roadmap_pro_redirect_single_idea');
 
-
-// add_action('admin_init', function() {
-//     error_log('admin_init action called');
-//     wp_roadmap_pro_register_settings();
-// });
