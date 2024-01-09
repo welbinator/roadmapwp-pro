@@ -145,6 +145,11 @@ h3.idea-title a {
 
 /* roadmap shortcode */
 
+form.idea-status-update-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 /* Media query for responsiveness */
 @media screen and (max-width: 768px) {
