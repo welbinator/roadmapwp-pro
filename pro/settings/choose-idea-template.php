@@ -44,14 +44,6 @@ function wp_roadmap_pro_single_idea_template_setting($content) {
             toggleCommentsSetting(selectedTemplate);
         }
 
-        function toggleCommentsSetting(template) {
-            if (template === "plugin") {
-                $("#allow-comments-setting").show();
-            } else {
-                $("#allow-comments-setting").hide();
-            }
-        }
-
         togglePageSetting();
         $("#wp_roadmap_single_idea_template").change(togglePageSetting);
     });

@@ -83,9 +83,9 @@ function wp_roadmap_pro_settings_page() {
 
                 
 
-                <?php $displayCommentsStyle = $pro_options['single_idea_template'] === 'plugin' ? '' : 'style="display: none;"'; ?>
+                <?php // $displayCommentsStyle = $pro_options['single_idea_template'] === 'plugin' ? '' : 'style="display: none;"'; ?>
                 
-                <tr id="allow-comments-setting" valign="top" <?php echo $displayCommentsStyle; ?>>
+                <tr id="allow-comments-setting" valign="top" <?php // echo $displayCommentsStyle; ?>>
                     <th scope="row"><?php esc_html_e('Allow Comments on Ideas', 'wp-roadmap-pro'); ?></th>
                     <td>
                         <?php

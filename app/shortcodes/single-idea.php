@@ -1,6 +1,7 @@
 <?php 
 // single idea shortcode 
 function wp_roadmap_pro_single_idea_shortcode($atts) {
+    global $post;
     // Flag to indicate the roadmap shortcode is loaded
     update_option('wp_roadmap_single_idea_shortcode_loaded', true);
 
