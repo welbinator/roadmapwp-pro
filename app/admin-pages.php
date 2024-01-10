@@ -9,10 +9,7 @@ function wp_roadmap_pro_settings_page() {
     $selected_page = isset($pro_options['single_idea_page']) ? $pro_options['single_idea_page'] : '';
     $default_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea';
 
-    // Log form submission data
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        error_log('Form submitted with data: ' . print_r($_POST, true));
-    }
+   
 
    
     
@@ -229,20 +226,6 @@ function wp_roadmap_pro_settings_page() {
     </script>
     <?php
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    error_log('Full POST Data: ' . print_r($_POST, true));
-    error_log('Form submitted with data: ' . print_r($_POST, true));
-
-    // Extracting the settings from the POST data for debugging purposes
-    $posted_settings = $_POST['wp_roadmap_pro_settings'] ?? [];
-    error_log('POST data (wp_roadmap_pro_settings): ' . print_r($posted_settings, true));
-
-    // Optionally, confirm the current settings from the database before any update
-    $current_settings = get_option('wp_roadmap_pro_settings');
-    error_log('Current settings from database before update: ' . print_r($current_settings, true));
-}
-
-
 
 /**
  * Function to display the Taxonomies management page.

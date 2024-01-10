@@ -155,7 +155,6 @@ add_action('wp_ajax_nopriv_filter_ideas', 'wp_roadmap_pro_filter_ideas');
 
 // Handles the AJAX request for deleting a custom taxonomy
 function wp_roadmap_pro_handle_delete_custom_taxonomy() {
-    error_log('Received AJAX request: ' . print_r($_POST, true));
     // Check if the nonce and taxonomy parameters are set
     if (!isset($_POST['nonce'], $_POST['taxonomy'])) {
         wp_send_json_error(array('message' => __('Missing parameters.', 'wp-roadmap')));
