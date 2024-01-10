@@ -71,11 +71,17 @@ function wp_roadmap_pro_enqueue_admin_styles($hook) {
     }
 
     // Enqueue CSS for specific plugin admin pages
-    if (in_array($hook, ['roadmap_page_wp-roadmap-taxonomies', 'roadmap_page_wp-roadmap-settings'])) {
+    if ($hook === 'roadmap_page_wp-roadmap-taxonomies') {
         $css_url = plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css';
         wp_enqueue_style('wp-roadmap-general-admin-styles', $css_url);
     }
 
+    // Enqueue CSS for specific plugin admin pages
+    if ($hook === 'roadmap_page_wp-roadmap-help') {
+        $tailwind_css_url = plugin_dir_url(__FILE__) . '../dist/styles.css';
+        wp_enqueue_style('wp-roadmap-tailwind-styles', $tailwind_css_url);
+    }
+    
     // Enqueue JS for the 'Taxonomies' admin page
     if ('roadmap_page_wp-roadmap-taxonomies' == $hook) {
         wp_enqueue_script('wp-roadmap-taxonomies-js', plugin_dir_url(__FILE__) . 'assets/js/taxonomies.js', array('jquery'), null, true);
@@ -107,11 +113,6 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
 
     // Check for shortcode presence in the post content
     if (is_a($post, 'WP_Post')) {
-        // $has_new_idea_form_shortcode = has_shortcode($post->post_content, 'new_idea_form');
-        // $has_display_ideas_shortcode = has_shortcode($post->post_content, 'display_ideas');
-        // $has_roadmap_shortcode = has_shortcode($post->post_content, 'roadmap');
-        // $has_single_idea_shortcode = has_shortcode($post->post_content, 'single_idea');
-        // $has_roadmap_tabs_shortcode = has_shortcode($post->post_content, 'roadmap_tabs');
 
         // Check for block presence
         $has_block = has_block('wp-roadmap-pro/new-idea-form', $post) ||
@@ -199,12 +200,12 @@ function wp_roadmap_pro_add_admin_menu() {
     
 
     add_submenu_page(
-        'wp-roadmap-pro',
-        __('Taxonomies', 'wp-roadmap-pro'),
-        __('Taxonomies', 'wp-roadmap-pro'),
-        'manage_options',
-        'wp-roadmap-taxonomies',
-        'wp_roadmap_pro_taxonomies_page'
+        'wp-roadmap-pro', // parent slug
+        __('Taxonomies', 'wp-roadmap-pro'), //page title
+        __('Taxonomies', 'wp-roadmap-pro'), //menu title
+        'manage_options', // capability
+        'wp-roadmap-taxonomies', // menu slug
+        'wp_roadmap_pro_taxonomies_page' // function to display the page
     );
 
     add_submenu_page(

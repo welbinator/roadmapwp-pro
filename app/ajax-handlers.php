@@ -304,7 +304,7 @@ function load_ideas_for_status() {
                 </div>
 
                 <div class="p-6">
-                    <p><?php echo get_the_excerpt(); ?></p>
+                    <p class="overflow-hidden"><?php echo get_the_excerpt(); ?></p>
                 </div>
 
                 <div class="p-6 flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">

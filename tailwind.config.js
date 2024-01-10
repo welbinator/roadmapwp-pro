@@ -5,6 +5,7 @@ module.exports = {
     './app/templates/*',
     './pro/blocks/*',
     './app/ajax-handlers.php',
+    './app/admin-pages.php',
    
   ],
       safelist: [
