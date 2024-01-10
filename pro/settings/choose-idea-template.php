@@ -31,23 +31,19 @@ function wp_roadmap_pro_single_idea_template_setting($content) {
 
     // JavaScript for toggling the page selection dropdown
     $html .= '<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        function togglePageSetting() {
-            var selectedTemplate = $("#wp_roadmap_single_idea_template").val();
-            if (selectedTemplate === "page") {
-                $("#single_idea_page_setting").show();
-            } else {
-                $("#single_idea_page_setting").hide();
+        jQuery(document).ready(function($) {
+            function togglePageSetting() {
+                var selectedTemplate = $("#wp_roadmap_single_idea_template").val();
+                if (selectedTemplate === "page") {
+                    $("#single_idea_page_setting").show();
+                } else {
+                    $("#single_idea_page_setting").hide();
+                }
             }
-
-            // Toggle Allow Comments setting
-            toggleCommentsSetting(selectedTemplate);
-        }
-
-        togglePageSetting();
-        $("#wp_roadmap_single_idea_template").change(togglePageSetting);
-    });
-</script>';
+            togglePageSetting();
+            $("#wp_roadmap_single_idea_template").change(togglePageSetting);
+        });
+    </script>';
 
     return $html;
 }
