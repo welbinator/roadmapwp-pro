@@ -289,7 +289,7 @@ function wp_roadmap_pro_help_page() {
                     <li>On Roadmap</li>
                     <li>Closed</li>
                 </ul>
-            <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">Roadmap Tabs:</a></strong><span> [roadmap_tabs status=""]</span></li>
+            <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">Roadmap Tabs:</a></strong><span> [roadmap_tabs status=""] (Pro Only)</span></li>
             <li style="font-size: 1.1em;">Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"]</li>
             <li style="font-size: 1.1em;">Possible values for status parameter (these are the default options but can be changed in Taxonomies page):</li>
                 <ul style="margin-left: 20px; margin-top: 10px;">
@@ -302,7 +302,7 @@ function wp_roadmap_pro_help_page() {
                 </ul>
         </ul>
         <hr />
-        <h2 style="font-size: 1.5em;"><a href="https://roadmapwp.com/kb_category/blocks/" target="_blank">Blocks</a></h2>
+        <h2 style="font-size: 1.5em;"><a href="https://roadmapwp.com/kb_category/blocks/" target="_blank">Blocks</a> (Pro Only)</h2>
         <hr />
         <ul>
             <li style="font-size: 1.1em;"><strong><a href="https://roadmapwp.com/kb_article/new-idea-form-block/" target="_target">New Idea Form</a></strong></li>

@@ -16,9 +16,9 @@ Text Domain: wp-roadmap-pro
 function wp_roadmap_pro_activate() {
     // Check if the free version is active
     include_once(ABSPATH . 'wp-admin/includes/plugin.php');
-    if (is_plugin_active('wproadmap/wp-roadmap.php')) {
+    if (is_plugin_active('roadmapwp-free/wp-roadmap.php')) {
         // Deactivate the free version
-        deactivate_plugins('wproadmap/wp-roadmap.php');
+        deactivate_plugins('roadmapwp-free/wp-roadmap.php');
     }
     // Additional activation code for Pro version goes here...
 }
