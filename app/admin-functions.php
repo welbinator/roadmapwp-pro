@@ -170,27 +170,27 @@ add_action('wp_enqueue_scripts', 'wp_roadmap_pro_enqueue_frontend_styles');
  */
 function wp_roadmap_pro_add_admin_menu() {
     add_menu_page(
-        __('RoadMap', 'wp-roadmap'), 
-        __('RoadMap', 'wp-roadmap'), 
+        __('RoadMap', 'wp-roadmap-pro'), 
+        __('RoadMap', 'wp-roadmap-pro'), 
         'manage_options', 
-        'wp-roadmap', 
+        'wp-roadmap-pro', 
         'edit.php?post_type=idea', 
         'dashicons-chart-line', 
         6
     );
 
     add_submenu_page(
-        'wp-roadmap',
-        __('Ideas', 'wp-roadmap'),
-        __('Ideas', 'wp-roadmap'),
+        'wp-roadmap-pro',
+        __('Ideas', 'wp-roadmap-pro'),
+        __('Ideas', 'wp-roadmap-pro'),
         'manage_options',
         'edit.php?post_type=idea'
     );
 
     add_submenu_page(
-        'wp-roadmap',
-        __('Settings', 'wp-roadmap'),
-        __('Settings', 'wp-roadmap'),
+        'wp-roadmap-pro',
+        __('Settings', 'wp-roadmap-pro'),
+        __('Settings', 'wp-roadmap-pro'),
         'manage_options',
         'wp-roadmap-settings',
         'wp_roadmap_pro_settings_page'
@@ -199,34 +199,34 @@ function wp_roadmap_pro_add_admin_menu() {
     
 
     add_submenu_page(
-        'wp-roadmap',
-        __('Taxonomies', 'wp-roadmap'),
-        __('Taxonomies', 'wp-roadmap'),
+        'wp-roadmap-pro',
+        __('Taxonomies', 'wp-roadmap-pro'),
+        __('Taxonomies', 'wp-roadmap-pro'),
         'manage_options',
         'wp-roadmap-taxonomies',
         'wp_roadmap_pro_taxonomies_page'
     );
 
     add_submenu_page(
-        'wp-roadmap',
-        __('License', 'wp-roadmap'),
-        __('License', 'wp-roadmap'),
+        'wp-roadmap-pro',
+        __('License', 'wp-roadmap-pro'),
+        __('License', 'wp-roadmap-pro'),
         'manage_options',
         'roadmapwp-license', // You can use a constant here if defined
         'roadmapwp_pro_license_page' // Ensure this function exists and renders the license page
     );
 
     add_submenu_page(
-        'wp-roadmap',
-        __('Help', 'wp-roadmap'),
-        __('Help', 'wp-roadmap'),
+        'wp-roadmap-pro',
+        __('Help', 'wp-roadmap-pro'),
+        __('Help', 'wp-roadmap-pro'),
         'manage_options',
         'wp-roadmap-help',
         'wp_roadmap_pro_help_page' // This is the function you created
     );
     
 
-    remove_submenu_page('wp-roadmap', 'wp-roadmap');
+    remove_submenu_page('wp-roadmap-pro', 'wp-roadmap-pro');
 }
 add_action('admin_menu', 'wp_roadmap_pro_add_admin_menu');
 
