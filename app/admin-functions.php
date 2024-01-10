@@ -70,18 +70,18 @@ function wp_roadmap_pro_enqueue_admin_styles($hook) {
         wp_enqueue_style('wp-roadmap-idea-admin-styles', $css_url);
     }
 
-    // Enqueue CSS for specific plugin admin pages
+    // Enqueue CSS for taxonomies admin page
     if ($hook === 'roadmap_page_wp-roadmap-taxonomies') {
         $css_url = plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css';
         wp_enqueue_style('wp-roadmap-general-admin-styles', $css_url);
     }
 
-    // Enqueue CSS for specific plugin admin pages
+    // Enqueue CSS for help page
     if ($hook === 'roadmap_page_wp-roadmap-help') {
         $tailwind_css_url = plugin_dir_url(__FILE__) . '../dist/styles.css';
         wp_enqueue_style('wp-roadmap-tailwind-styles', $tailwind_css_url);
     }
-    
+
     // Enqueue JS for the 'Taxonomies' admin page
     if ('roadmap_page_wp-roadmap-taxonomies' == $hook) {
         wp_enqueue_script('wp-roadmap-taxonomies-js', plugin_dir_url(__FILE__) . 'assets/js/taxonomies.js', array('jquery'), null, true);
@@ -238,12 +238,14 @@ add_action('admin_menu', 'wp_roadmap_pro_add_admin_menu');
  */
 
  function roadmapwp_pro_license_page() {
+
 	add_settings_section(
 		'roadmapwp_pro_license',
 		__( 'License' ),
 		'roadmapwp_pro_license_key_settings_section',
 		ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE
 	);
+
 	add_settings_field(
 		'roadmapwp_pro_license_key',
 		'<label for="roadmapwp_pro_license_key">' . __( 'License Key' ) . '</label>',
@@ -251,6 +253,7 @@ add_action('admin_menu', 'wp_roadmap_pro_add_admin_menu');
 		ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE,
 		'roadmapwp_pro_license',
 	);
+
 	?>
 	<div class="wrap">
 		<h2><?php esc_html_e( 'License Options' ); ?></h2>
