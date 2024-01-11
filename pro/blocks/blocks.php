@@ -11,8 +11,14 @@ function wp_roadmap_pro_register_blocks() {
     $blocks = array(
         'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
         'display-ideas' => 'wp_roadmap_pro_display_ideas_shortcode',
-        'single-idea' => 'wp_roadmap_pro_single_idea_shortcode',
     );
+
+    register_block_type('wp-roadmap-pro/single-idea', array(
+        'editor_script' => 'wp-roadmap-pro-blocks',
+        'render_callback' => function($atts) {
+            return wp_roadmap_pro_single_idea_shortcode($atts, true); // Passing true for the $is_block parameter
+        }
+    ));
 
     foreach ($blocks as $block_name => $callback) {
         register_block_type('wp-roadmap-pro/' . $block_name, array(
