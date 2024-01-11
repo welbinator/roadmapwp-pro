@@ -52,7 +52,7 @@
                             </PanelBody>
                         </PanelBody>
                     </InspectorControls>
-                    <p>Roadmap Block Preview</p>
+                    <p>Roadmap Block</p>
                 </div>
             );
         },

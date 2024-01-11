@@ -36,7 +36,7 @@ registerBlockType('wp-roadmap-pro/roadmap-tabs-block', {
                         ))}
                     </PanelBody>
                 </InspectorControls>
-                <p>Roadmap Tabs Block Preview</p>
+                <p>Roadmap Tabs Block</p>
             </div>
         );
     },
