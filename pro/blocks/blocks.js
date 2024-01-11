@@ -26,5 +26,16 @@
         },
     });
 
+    registerBlockType('wp-roadmap-pro/single-idea', {
+        title: __('Single Idea', 'wp-roadmap-pro'),
+        category: 'common',
+        edit: function() {
+            return createElement('p', {}, __('Single Idea | This block displays a single Idea', 'wp-roadmap-pro'));
+        },
+        save: function() {
+            return null; // Render via PHP
+        },
+    });
+
     
 })();

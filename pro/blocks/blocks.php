@@ -11,6 +11,7 @@ function wp_roadmap_pro_register_blocks() {
     $blocks = array(
         'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
         'display-ideas' => 'wp_roadmap_pro_display_ideas_shortcode',
+        'single-idea' => 'wp_roadmap_pro_single_idea_shortcode',
     );
 
     foreach ($blocks as $block_name => $callback) {
