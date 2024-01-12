@@ -119,7 +119,9 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
                      has_block('wp-roadmap-pro/display-ideas', $post) ||
                      has_block('wp-roadmap-pro/roadmap-block', $post) ||
                      has_block('wp-roadmap-pro/roadmap-tabs', $post) ||
-                     has_block('wp-roadmap-pro/roadmap-tabs-block');
+                     has_block('wp-roadmap-pro/roadmap-tabs-block', $post) ||
+                     has_block('wp-roadmap-pro/single-idea', $post);
+
 
         $has_shortcode =    has_shortcode($post->post_content, 'new_idea_form') ||
                             has_shortcode($post->post_content, 'display_ideas') ||

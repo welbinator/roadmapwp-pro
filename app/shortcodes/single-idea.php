@@ -1,6 +1,6 @@
 <?php 
 // single idea shortcode 
-function wp_roadmap_pro_single_idea_shortcode($atts) {
+function wp_roadmap_pro_single_idea_shortcode($atts, $is_block = false) {
     global $post;
     // Flag to indicate the roadmap shortcode is loaded
     update_option('wp_roadmap_single_idea_shortcode_loaded', true);
@@ -87,6 +87,11 @@ function wp_roadmap_pro_single_idea_shortcode($atts) {
         </div>
     </main>
     <?php
+
+    if ($is_block && 'idea' === get_post_type()) {
+        comments_template();
+    }
+
     return ob_get_clean();
 }
 add_shortcode('single_idea', 'wp_roadmap_pro_single_idea_shortcode');

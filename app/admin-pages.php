@@ -267,6 +267,11 @@ function wp_roadmap_pro_help_page() {
                 </div>
 
                 <div class="border-2 rounded-lg p-4">
+                    <h3 class="font-semibold text-lg"><a href="" target="_blank">[single_idea]</a> </h3>
+                    <p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
+                </div>
+
+                <div class="border-2 rounded-lg p-4">
                     <h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">[roadmap status=""]</a> </h3>
                     <p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses entered in the status parameter</p>
                     <p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"]</p>
@@ -307,6 +312,11 @@ function wp_roadmap_pro_help_page() {
             <div class="border-2 rounded-lg p-4">
                 <h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-block/" target="_blank">Display Ideas</a> </h3>
                 <p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
+            </div>
+
+            <div class="border-2 rounded-lg p-4">
+                <h3 class="font-semibold text-lg"><a href="" target="_blank">Single Idea</a> </h3>
+                <p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
             </div>
 
             <div class="border-2 rounded-lg p-4">
