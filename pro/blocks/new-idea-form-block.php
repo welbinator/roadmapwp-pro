@@ -98,13 +98,15 @@ function wp_roadmap_pro_handle_new_idea_block_submission() {
         $description = sanitize_textarea_field($_POST['idea_description']);
         $pro_options = get_option('wp_roadmap_pro_settings', []);
 
+        // default post status
+        $default_wp_post_status = isset($pro_options['default_wp_post_status']) ? $pro_options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
         // Default status term from settings
         $default_idea_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea';
 
         $idea_id = wp_insert_post(array(
             'post_title'    => $title,
             'post_content'  => $description,
-            'post_status'   => 'publish',  // Assuming you want to publish the post
+            'post_status'   => $default_wp_post_status,  // Assuming you want to publish the post
             'post_type'     => 'idea',
         ));
 
