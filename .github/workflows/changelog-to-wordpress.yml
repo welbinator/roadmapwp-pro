@@ -15,7 +15,10 @@ jobs:
 
     - name: Read Changelog and Convert to JSON
       run: jq -Rs . CHANGELOG.md > changelog.json
-
+      
+    - name: Display changelog.json
+      run: cat changelog.json
+      
     - name: Update WordPress
       env:
         WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
@@ -25,6 +28,3 @@ jobs:
              -H "Authorization: Bearer $WP_API_TOKEN" \
              -H "Content-Type: application/json" \
              --data @changelog.json
-
-    - name: Display changelog.json
-      run: cat changelog.json
