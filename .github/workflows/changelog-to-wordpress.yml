@@ -1,0 +1,31 @@
+name: Update WordPress with Changelog
+
+on:
+  push:
+    paths:
+      - 'CHANGELOG.md'
+
+jobs:
+  updateWordpress:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Read Changelog
+      id: read_changelog
+      run: |
+        echo "Reading Changelog..."
+        changelog=$(cat CHANGELOG.md)
+        echo "::set-output name=changelog::$changelog"
+
+    - name: Update WordPress
+    env:
+        WP_API_ENDPOINT: ${{ secrets.WP_API_ENDPOINT }}
+        WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
+        run: |
+        echo "Updating WordPress..."
+        curl -X POST $WP_API_ENDPOINT \
+             -H "Authorization: Bearer $WP_API_TOKEN" \
+             -H "Content-Type: application/json" \
+             -d '{"title":"New Changelog Update","content": "'"$changelog"'"}'
