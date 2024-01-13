@@ -79,29 +79,30 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
         });
 
         function loadIdeas(status) {
-            var formData = new FormData();
-            formData.append('action', 'load_ideas_for_status');
-            formData.append('status', status);
-            formData.append('selectedTaxonomies', '<?php echo implode(',', $selectedTaxonomies); ?>');
-            formData.append('nonce', nonce);
+    var formData = new FormData();
+    formData.append('action', 'load_ideas_for_status');
+    formData.append('status', status);
+    formData.append('selectedTaxonomies', '<?php echo implode(',', $selectedTaxonomies); ?>');
+    formData.append('nonce', nonce);
 
-            fetch(ajaxurl, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.data && data.data.html) {
-                    ideasContainer.innerHTML = data.data.html;
-                } else {
-                    ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading ideas:', error);
-                ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
-            });
+    fetch(ajaxurl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.data && data.data.html) {
+            ideasContainer.innerHTML = data.data.html;
+        } else {
+            ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
         }
+    })
+    .catch(error => {
+        console.error('Error loading ideas:', error);
+        ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
+    });
+}
+
 
         // Automatically load ideas for the first tab
         if (tabs.length > 0) {
