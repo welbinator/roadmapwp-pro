@@ -302,6 +302,7 @@ if ($empty_taxonomy_selected && count($taxonomy_queries) === 0) {
 
 $args = array(
     'post_type' => 'idea',
+    'post_status' => 'publish',
     'posts_per_page' => -1,
     'tax_query' => $tax_query
 );
