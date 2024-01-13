@@ -14,11 +14,12 @@ jobs:
       run: sudo apt-get install jq
 
     - name: Read Changelog and Convert to JSON
-      run: jq -Rs . CHANGELOG.md > changelog.json
+      run: |
+        jq -Rs '{title: "New Changelog Update", content: .}' CHANGELOG.md > changelog.json
       
     - name: Display changelog.json
       run: cat changelog.json
-      
+
     - name: Update WordPress
       env:
         WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
