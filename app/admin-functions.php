@@ -303,3 +303,7 @@ function wp_roadmap_pro_redirect_single_idea($template) {
 
 add_filter('single_template', 'wp_roadmap_pro_redirect_single_idea');
 
+function enqueue_new_idea_form_script() {
+    wp_enqueue_script('new-idea-form-script', plugin_dir_url(__FILE__) . '../pro/blocks/new-idea-form-block-script.js', array(), '1.0.0', true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_new_idea_form_script');

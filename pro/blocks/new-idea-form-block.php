@@ -22,8 +22,14 @@ function wp_roadmap_pro_new_idea_form_block_init() {
  *
  * @return string The HTML output for the new idea form.
  */
-function wp_roadmap_pro_new_idea_form_render() {
+function wp_roadmap_pro_new_idea_form_render($attributes) {
     update_option('wp_roadmap_new_idea_shortcode_loaded', true);
+
+    // Extract selected statuses from block attributes
+    $selected_statuses = isset($attributes['selectedStatuses']) ? $attributes['selectedStatuses'] : [];
+
+    // Convert selected statuses to a comma-separated string
+    $selected_statuses_str = implode(',', array_keys(array_filter($selected_statuses, function($status) { return $status; })));
 
     $output = '';
 
@@ -35,7 +41,7 @@ function wp_roadmap_pro_new_idea_form_render() {
     $new_submit_idea_heading = apply_filters('wp_roadmap_custom_idea_heading_text', 'Submit new Idea');
 
     $output .= '<div class="roadmap_wrapper container mx-auto">';
-    $output .= '<div class="new_idea_form__frontend">';
+    $output .= '<div class="new_idea_form__frontend" data-selected-statuses="' . esc_attr($selected_statuses_str) . '">';
     if (!$hide_submit_idea_heading) {
         $output .= '<h2>' . esc_html($new_submit_idea_heading) . '</h2>';
     }
@@ -46,7 +52,6 @@ function wp_roadmap_pro_new_idea_form_render() {
     $output .= '<li class="new_idea_form_input"><label for="idea_description">Description:</label>';
     $output .= '<textarea name="idea_description" id="idea_description" required></textarea></li>';
 
-    // The taxonomy section from your shortcode
     $taxonomies = get_object_taxonomies('idea', 'objects');
     foreach ($taxonomies as $taxonomy) {
         if ($taxonomy->name !== 'status') {
@@ -67,19 +72,19 @@ function wp_roadmap_pro_new_idea_form_render() {
         }
     }
 
-    // Nonce field for security
     $nonce = wp_create_nonce('wp_roadmap_new_idea');
     $output .= '<input type="hidden" name="wp_roadmap_new_idea_nonce" value="' . esc_attr($nonce) . '">';
 
-    // Submit button
     $output .= '<li class="new_idea_form_input"><input type="submit" value="Submit Idea"></li>';
     $output .= '</ul>';
     $output .= '</form>';
-    $output.= '</div>';
+    $output .= '</div>';
     $output .= '</div>';
 
     return $output;
 }
+
+
 
 add_action('init', 'wp_roadmap_pro_new_idea_form_block_init');
 
@@ -88,34 +93,57 @@ add_action('init', 'wp_roadmap_pro_new_idea_form_block_init');
 Function to handle the submission of the new idea form.
 */
 function wp_roadmap_pro_handle_new_idea_block_submission() {
-if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_nonce']) && wp_verify_nonce($_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea')) {
-$title = sanitize_text_field($_POST['idea_title']);
-$description = sanitize_textarea_field($_POST['idea_description']);
-$pro_options = get_option('wp_roadmap_pro_settings', []);
-$default_wp_post_status = isset($pro_options['default_wp_post_status']) ? $pro_options['default_wp_post_status'] : 'pending';
-$default_idea_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea';
-$idea_id = wp_insert_post(array(
-    'post_title'    => $title,
-    'post_content'  => $description,
-    'post_status'   => $default_wp_post_status,
-    'post_type'     => 'idea',
-));
+    if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce']) && wp_verify_nonce($_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea')) {
+        $title = sanitize_text_field($_POST['idea_title']);
+        $description = sanitize_textarea_field($_POST['idea_description']);
+        $pro_options = get_option('wp_roadmap_pro_settings', []);
 
-if ($idea_id && !is_wp_error($idea_id)) {
-    if (isset($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
-        foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
-            if ($tax_slug !== 'status') {
-                $term_ids = array_map('intval', $term_ids);
-                wp_set_object_terms($idea_id, $term_ids, $tax_slug);
+        // Default status term from settings
+        $default_idea_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea';
+
+        $idea_id = wp_insert_post(array(
+            'post_title'    => $title,
+            'post_content'  => $description,
+            'post_status'   => 'publish',  // Assuming you want to publish the post
+            'post_type'     => 'idea',
+        ));
+
+        if ($idea_id && !is_wp_error($idea_id)) {
+            // Set terms for non-status taxonomies
+            if (isset($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
+                foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
+                    if ($tax_slug !== 'status') {
+                        $term_ids = array_map('intval', $term_ids);
+                        wp_set_object_terms($idea_id, $term_ids, $tax_slug);
+                    }
+                }
             }
+
+            // Check if selected statuses is set, not empty, and contains valid numeric values
+            $valid_selected_statuses = isset($_POST['selected_statuses']) && is_array($_POST['selected_statuses']) 
+                                        && count(array_filter($_POST['selected_statuses'], 'is_numeric')) > 0;
+            
+            if ($valid_selected_statuses) {
+                $selected_status_terms = array_map('intval', $_POST['selected_statuses']);
+                wp_set_object_terms($idea_id, $selected_status_terms, 'status');
+            } else {
+                // Fallback to default status term if none or invalid selected
+                wp_set_object_terms($idea_id, array($default_idea_status_term), 'status');
+            }
+
+            // Redirect to the confirmation page
+            $redirect_url = add_query_arg('new_idea_submitted', '1', esc_url_raw($_SERVER['REQUEST_URI']));
+            wp_redirect($redirect_url);
+            exit;
         }
     }
-    wp_set_object_terms($idea_id, $default_idea_status_term, 'status');
-    $redirect_url = add_query_arg('new_idea_submitted', '1', esc_url_raw($_SERVER['REQUEST_URI']));
-    wp_redirect($redirect_url);
-    exit;
 }
-}
-}
-
 add_action('template_redirect', 'wp_roadmap_pro_handle_new_idea_block_submission');
+
+
+
+
+
+
+
+
