@@ -8,22 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Read Changelog
-      id: read_changelog
+    - name: Read Changelog and Write to Env File
       run: |
         echo "Reading Changelog..."
-        changelog=$(cat CHANGELOG.md)
-        echo "::set-output name=changelog::$changelog"
+        echo "CHANGELOG=$(cat CHANGELOG.md)" >> $GITHUB_ENV
 
-        - name: Update WordPress
-        env:
-          WP_API_ENDPOINT: ${{ secrets.WP_API_ENDPOINT }}
-          WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
-        run: |
-          echo "Updating WordPress..."
-          curl -X POST $WP_API_ENDPOINT \
-               -H "Authorization: Bearer $WP_API_TOKEN" \
-               -H "Content-Type: application/json" \
-               -d '{"title":"New Changelog Update","content": "'"$changelog"'"}'
+    - name: Update WordPress
+      env:
+        WP_API_ENDPOINT: ${{ secrets.WP_API_ENDPOINT }}
+        WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
+      run: |
+        echo "Updating WordPress..."
+        curl -X POST $WP_API_ENDPOINT \
+             -H "Authorization: Bearer $WP_API_TOKEN" \
+             -H "Content-Type: application/json" \
+             -d '{"title":"New Changelog Update","content": "'"$CHANGELOG"'"}'
