@@ -41,49 +41,56 @@ function wp_roadmap_pro_new_idea_form_render($attributes) {
     $new_submit_idea_heading = apply_filters('wp_roadmap_custom_idea_heading_text', 'Submit new Idea');
 
     $output .= '<div class="roadmap_wrapper container mx-auto">';
-    $output .= '<div class="new_idea_form__frontend" data-selected-statuses="' . esc_attr($selected_statuses_str) . '">';
+     $output .= '<div class="new_idea_form__frontend" data-selected-statuses="' . esc_attr($selected_statuses_str) . '">';
     if (!$hide_submit_idea_heading) {
         $output .= '<h2>' . esc_html($new_submit_idea_heading) . '</h2>';
     }
+
     $output .= '<form action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">';
     $output .= '<ul class="flex-outer">';
+
     $output .= '<li class="new_idea_form_input"><label for="idea_title">Title:</label>';
     $output .= '<input type="text" name="idea_title" id="idea_title" required></li>';
+    
     $output .= '<li class="new_idea_form_input"><label for="idea_description">Description:</label>';
     $output .= '<textarea name="idea_description" id="idea_description" required></textarea></li>';
 
-    $taxonomies = get_object_taxonomies('idea', 'objects');
-    foreach ($taxonomies as $taxonomy) {
+    // Retrieve the selected taxonomies from block attributes
+    $selectedTaxonomies = isset($attributes['selectedTaxonomies']) ? array_keys(array_filter($attributes['selectedTaxonomies'])) : [];
+    $ideaTaxonomies = get_object_taxonomies('idea', 'objects');
+
+    foreach ($ideaTaxonomies as $taxonomy) {
         if ($taxonomy->name !== 'status') {
-            $terms = get_terms(array('taxonomy' => $taxonomy->name, 'hide_empty' => false));
-            if (!empty($terms) && !is_wp_error($terms)) {
-                $output .= '<li class="new_idea_form_input">';
-                $output .= '<label>' . esc_html($taxonomy->labels->singular_name) . ':</label>';
-                $output .= '<div class="taxonomy-term-labels">';
-                foreach ($terms as $term) {
-                    $output .= '<label class="taxonomy-term-label">';
-                    $output .= '<input type="checkbox" name="idea_taxonomies[' . esc_attr($taxonomy->name) . '][]" value="' . esc_attr($term->term_id) . '"> ';
-                    $output .= esc_html($term->name);
-                    $output .= '</label>';
-                }
-                $output .= '</div>';
-                $output .= '</li>';
-            }
-        }
-    }
-
-    $nonce = wp_create_nonce('wp_roadmap_new_idea');
-    $output .= '<input type="hidden" name="wp_roadmap_new_idea_nonce" value="' . esc_attr($nonce) . '">';
-
-    $output .= '<li class="new_idea_form_input"><input type="submit" value="Submit Idea"></li>';
-    $output .= '</ul>';
-    $output .= '</form>';
-    $output .= '</div>';
-    $output .= '</div>';
-
-    return $output;
-}
-
+            // Display taxonomy if it's selected or if no specific taxonomies are selected
+            if (empty($selectedTaxonomies) || in_array($taxonomy->name, $selectedTaxonomies, true)) {
+                $terms = get_terms(array('taxonomy' => $taxonomy->name, 'hide_empty' => false));
+                if (!empty($terms) && !is_wp_error($terms)) {
+                    $output .= '<li class="new_idea_form_input">';
+                    $output .= '<label>' . esc_html($taxonomy->labels->singular_name) . ':</label>';
+                    $output .= '<div class="taxonomy-term-labels">';
+                    foreach ($terms as $term) {
+                        $output .= '<label class="taxonomy-term-label">';
+                        $output .= '<input type="checkbox" name="idea_taxonomies[' . esc_attr($taxonomy->name) . '][]" value="' . esc_attr($term->term_id) . '"> ';
+                        $output .= esc_html($term->name);
+                        $output .= '</label>';
+                    }
+                    $output .= '</div>';
+                    $output .= '</li>';
+                    }
+                    }
+                    }
+                    }
+                    $nonce = wp_create_nonce('wp_roadmap_new_idea');
+                    $output .= '<input type="hidden" name="wp_roadmap_new_idea_nonce" value="' . esc_attr($nonce) . '">';
+                    
+                    $output .= '<li class="new_idea_form_input"><input type="submit" value="Submit Idea"></li>';
+                    $output .= '</ul>';
+                    $output .= '</form>';
+                    $output .= '</div>';
+                    $output .= '</div>';
+                    
+                    return $output;
+                }                    
 
 
 add_action('init', 'wp_roadmap_pro_new_idea_form_block_init');
@@ -98,15 +105,15 @@ function wp_roadmap_pro_handle_new_idea_block_submission() {
         $description = sanitize_textarea_field($_POST['idea_description']);
         $pro_options = get_option('wp_roadmap_pro_settings', []);
 
-        // default post status
-        $default_wp_post_status = isset($pro_options['default_wp_post_status']) ? $pro_options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
+         // default post status
+         $default_wp_post_status = isset($pro_options['default_wp_post_status']) ? $pro_options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
         // Default status term from settings
         $default_idea_status_term = isset($pro_options['default_status_term']) ? $pro_options['default_status_term'] : 'new-idea';
 
         $idea_id = wp_insert_post(array(
             'post_title'    => $title,
             'post_content'  => $description,
-            'post_status'   => $default_wp_post_status,  // Assuming you want to publish the post
+            'post_status'   => $default_wp_post_status,
             'post_type'     => 'idea',
         ));
 
@@ -141,6 +148,8 @@ function wp_roadmap_pro_handle_new_idea_block_submission() {
     }
 }
 add_action('template_redirect', 'wp_roadmap_pro_handle_new_idea_block_submission');
+
+
 
 
 
