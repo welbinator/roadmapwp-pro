@@ -52,7 +52,7 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
     ?>
     <!-- Tabbed interface -->
     <div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
-        <div style="background-color: <?php echo esc_attr($tabs_container_bg_color); ?>;" role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-4 px-2 py-4 scrollbar-none roadmap-tabs">
+        <div style="background-color: <?php echo esc_attr($tabs_container_bg_color); ?>;" role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
             <?php foreach ($statuses as $status): ?>
                 <button style="color: <?php echo esc_attr($tabs_text_color); ?>; background-color: <?php echo esc_attr($tabs_button_bg_color); ?>;" type="button" role="tab" aria-selected="true" data-state="inactive" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr(strtolower(str_replace(' ', '-', $status))); ?>">
                     <?php echo esc_html($status); ?>
@@ -71,8 +71,18 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
         var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
         var nonce = '<?php echo wp_create_nonce('roadmap_nonce'); ?>';
 
+        // Function to reset all tabs to inactive
+        function resetTabs() {
+            tabs.forEach(function(tab) {
+                tab.setAttribute('data-state', 'inactive');
+            });
+        }
+
         tabs.forEach(function(tab) {
             tab.addEventListener('click', function() {
+                resetTabs(); // Reset all tabs to inactive
+                this.setAttribute('data-state', 'active'); // Set clicked tab to active
+
                 var status = this.getAttribute('data-status');
                 loadIdeas(status);
             });
@@ -104,10 +114,12 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
 }
 
 
-        // Automatically load ideas for the first tab
-        if (tabs.length > 0) {
-            tabs[0].click();
-        }
+        // Automatically load ideas for the first tab and set it to active
+    if (tabs.length > 0) {
+        tabs[0].click();
+        tabs[0].setAttribute('data-state', 'active');
+    }
+    
     });
     </script>
     <?php
