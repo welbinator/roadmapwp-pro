@@ -84,9 +84,9 @@ function wp_roadmap_pro_roadmap_shortcode($atts) {
                                         <?php endif;
                                     endforeach; ?>
                                     </div>
-                                    <p class="idea-excerpt"><?php the_excerpt(); ?></p>
+                                    <div class="idea-excerpt mt-4"><?php echo get_the_excerpt(); ?> <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">Read More</a></div>
                                     <div class="flex items-center justify-start mt-6 gap-6">
-                                        <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">Read More</a>
+                                        
                                         <div class="flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
                                             <button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr($vote_button_bg_color); ?>!important;background-image: none!important;color: <?php echo esc_attr($vote_button_text_color); ?>!important;">
                                                 <svg
