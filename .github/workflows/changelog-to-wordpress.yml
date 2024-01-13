@@ -10,16 +10,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Read Changelog and Write to Env File
-      run: |
-        echo "Reading Changelog..."
-        echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-        cat CHANGELOG.md >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
-        
+    - name: Install jq
+      run: sudo apt-get install jq
+
     - name: Read Changelog and Convert to JSON
-      run: |
-        jq -Rs . CHANGELOG.md > changelog.json
+      run: jq -Rs . CHANGELOG.md > changelog.json
 
     - name: Update WordPress
       env:
@@ -29,4 +24,4 @@ jobs:
         curl -X POST https://roadmapwp.com/wp-json/changelog-to-wordpress/v1/post-update \
              -H "Authorization: Bearer $WP_API_TOKEN" \
              -H "Content-Type: application/json" \
-             -d '{"title":"New Changelog Update","content": "'"$CHANGELOG"'"}'
+             --data @changelog.json
