@@ -109,7 +109,7 @@ function wp_roadmap_pro_roadmap_block_render($attributes) {
                                     endforeach; ?>
                                     </div>
                                     
-                                    <div class="idea-excerpt mt-4"><?php echo get_the_excerpt(); ?> <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">Read More...</a></div>
+                                    <div class="idea-excerpt mt-4"><?php echo get_the_excerpt(); ?> <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">read more...</a></div>
                                     <div class="flex items-center justify-start mt-6 gap-6">
                                     
                                     <div class="flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
