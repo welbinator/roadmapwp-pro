@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.5] - 2023-01-11
+
+### New
+* Added ability to choose status terms in New Idea Form block
+
+### Changed
+* Improved layout of ideas (moved read more link to directily inline with excerpt text)
+
+## [1.4.4] - 2023-01-11
+
+### New
+* Added single idea block
+
+### Changed
+* Updated help page
+
+## [1.4.3] - 2023-01-11
+
+### New
+* Enabled comments on/off for single idea shortcode
+
+### Changed
+* Updated styles of help page
+
+### Fixed
+* Fixed chose template setting
+
 ## [1.2.8] - 2023-12-25
 
 ### New
