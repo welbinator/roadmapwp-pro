@@ -255,26 +255,52 @@ function load_ideas_for_status() {
     $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
     $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
     $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
-    $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
-    
     check_ajax_referer('roadmap_nonce', 'nonce');
 
     $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+    $selectedTaxonomiesSlugs = isset($_POST['selectedTaxonomies']) ? explode(',', sanitize_text_field($_POST['selectedTaxonomies'])) : [];
 
-    $args = array(
-        'post_type' => 'idea',
-        'posts_per_page' => -1,
-        'tax_query' => array(
-            array(
-                'taxonomy' => 'status',
-                'field'    => 'slug',
-                'terms'    => $status,
-            ),
+    // Setup the tax query with the status term
+    $tax_query = array(
+        'relation' => 'AND',
+        array(
+            'taxonomy' => 'status',
+            'field'    => 'slug',
+            'terms'    => $status,
         ),
     );
 
+     // Modify the tax query if selected taxonomies are provided
+     $taxonomy_queries = array();
+     foreach ($selectedTaxonomiesSlugs as $slug) {
+         if (!empty($slug)) {
+             $terms = get_terms(array('taxonomy' => $slug, 'fields' => 'slugs'));
+             if (!is_wp_error($terms) && !empty($terms)) {
+                 $taxonomy_queries[] = array(
+                     'taxonomy' => $slug,
+                     'field'    => 'slug',
+                     'terms'    => $terms,
+                     'operator' => 'IN'
+                 );
+             }
+         }
+     }
+ 
+     // Add taxonomy queries to the tax query if any exist
+     if (!empty($taxonomy_queries)) {
+         $tax_query[] = array_merge(array('relation' => 'OR'), $taxonomy_queries);
+     }
+
+     $args = array(
+        'post_type' => 'idea',
+        'posts_per_page' => -1,
+        'tax_query' => $tax_query
+    );
+
     $query = new WP_Query($args);
+
+    error_log('Number of ideas found: ' . $query->found_posts);
 
     ob_start();
 

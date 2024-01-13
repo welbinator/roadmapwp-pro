@@ -29,6 +29,9 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
         return '<p>No statuses selected.</p>';
     }
 
+    // Retrieve selected taxonomies from attributes
+    $selectedTaxonomies = isset($attributes['selectedTaxonomies']) ? array_keys(array_filter($attributes['selectedTaxonomies'])) : [];
+
     // Convert slugs back to names for display
     $statuses = array_map(function($slug) {
         $term = get_term_by('slug', $slug, 'status');
@@ -47,7 +50,6 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
 
     ob_start();
     ?>
-
     <!-- Tabbed interface -->
     <div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
         <div style="background-color: <?php echo esc_attr($tabs_container_bg_color); ?>;" role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-4 px-2 py-4 scrollbar-none roadmap-tabs">
@@ -63,51 +65,50 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
     </div>
 
     <script type="text/javascript">
-document.addEventListener('DOMContentLoaded', function() {
-    var tabs = document.querySelectorAll('.roadmap-tab');
-    var ideasContainer = document.querySelector('.roadmap-ideas-container');
-    var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-    var nonce = '<?php echo wp_create_nonce('roadmap_nonce'); ?>';
+    document.addEventListener('DOMContentLoaded', function() {
+        var tabs = document.querySelectorAll('.roadmap-tab');
+        var ideasContainer = document.querySelector('.roadmap-ideas-container');
+        var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+        var nonce = '<?php echo wp_create_nonce('roadmap_nonce'); ?>';
 
-    tabs.forEach(function(tab) {
-        tab.addEventListener('click', function() {
-            var status = this.getAttribute('data-status');
-            loadIdeas(status);
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var status = this.getAttribute('data-status');
+                loadIdeas(status);
+            });
         });
+
+        function loadIdeas(status) {
+            var formData = new FormData();
+            formData.append('action', 'load_ideas_for_status');
+            formData.append('status', status);
+            formData.append('selectedTaxonomies', '<?php echo implode(',', $selectedTaxonomies); ?>');
+            formData.append('nonce', nonce);
+
+            fetch(ajaxurl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data && data.data.html) {
+                    ideasContainer.innerHTML = data.data.html;
+                } else {
+                    ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading ideas:', error);
+                ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
+            });
+        }
+
+        // Automatically load ideas for the first tab
+        if (tabs.length > 0) {
+            tabs[0].click();
+        }
     });
-
-    function loadIdeas(status) {
-        var formData = new FormData();
-        formData.append('action', 'load_ideas_for_status');
-        formData.append('status', status);
-        formData.append('nonce', nonce);
-
-        fetch(ajaxurl, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success && data.data && data.data.html) {
-                ideasContainer.innerHTML = data.data.html;
-            } else {
-                ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
-            }
-        })
-        .catch(error => {
-            console.error('Error loading ideas:', error);
-            ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
-        });
-    }
-
-    // Automatically load ideas for the first tab
-    if (tabs.length > 0) {
-        tabs[0].click();
-    }
-});
-</script>
-
-
+    </script>
     <?php
     return ob_get_clean();
 }
