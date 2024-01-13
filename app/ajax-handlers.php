@@ -308,7 +308,19 @@ function load_ideas_for_status() {
         while ($query->have_posts()) {
             $query->the_post();
             $idea_id = get_the_ID();
-            $tags = wp_get_post_terms($idea_id, 'idea-tag', array('fields' => 'names'));
+           // Retrieve all taxonomies associated with the 'idea' post type, excluding 'status'
+           $idea_taxonomies = get_object_taxonomies('idea', 'names');
+           $excluded_taxonomies = array('status'); // Add more taxonomy names to exclude if needed
+           $included_taxonomies = array_diff($idea_taxonomies, $excluded_taxonomies);
+           
+           // Fetch terms for each included taxonomy
+           $tags = array();
+           foreach ($included_taxonomies as $taxonomy) {
+               $terms = wp_get_post_terms($idea_id, $taxonomy, array('fields' => 'all'));
+               if (!is_wp_error($terms) && !empty($terms)) {
+                   $tags[$taxonomy] = $terms;
+               }
+           }
             $vote_count = get_post_meta($idea_id, 'idea_votes', true) ?: '0';
             
             
@@ -322,13 +334,15 @@ function load_ideas_for_status() {
 
                     <?php if (!empty($tags)) : ?>
                         <div class="flex flex-wrap space-x-2 mt-2">
-                            <?php foreach ($tags as $tag) : ?>
-                                <?php $tag_link = get_term_link($tag, 'idea-tag'); // Get the term link ?>
-                                <?php if (!is_wp_error($tag_link)) : // Check if the link is valid ?>
-                                    <a href="<?php echo esc_url($tag_link); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr($filter_tags_bg_color); ?>;color: <?php echo esc_attr($filter_tags_text_color); ?>;">
-                                        <?php echo esc_html($tag); ?>
-                                    </a>
-                                <?php endif; ?>
+                            <?php foreach ($tags as $tag_name => $tag_terms) : ?>
+                                <?php foreach ($tag_terms as $tag_term) : ?>
+                                    <?php $tag_link = get_term_link($tag_term, $tag_name); // Get the term link ?>
+                                    <?php if (!is_wp_error($tag_link)) : // Check if the link is valid ?>
+                                        <a href="<?php echo esc_url($tag_link); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr($filter_tags_bg_color); ?>;color: <?php echo esc_attr($filter_tags_text_color); ?>;">
+                                            <?php echo esc_html($tag_term->name); ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
