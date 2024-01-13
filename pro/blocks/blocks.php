@@ -9,7 +9,7 @@ function wp_roadmap_pro_register_blocks() {
 
     // Register each block
     $blocks = array(
-        'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
+        // 'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
         'display-ideas' => 'wp_roadmap_pro_display_ideas_shortcode',
     );
 
@@ -52,6 +52,13 @@ function wp_roadmap_pro_enqueue_block_editor_assets() {
                 plugin_dir_url(__FILE__) . 'build/roadmap-tabs-block.js',
                 array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'),
                 filemtime(plugin_dir_path(__FILE__) . 'build/roadmap-tabs-block.js')
+            );
+
+            wp_enqueue_script(
+                'wp-roadmap-pro-new-idea-form-block',
+                plugin_dir_url(__FILE__) . 'build/new-idea-form-block.js',
+                array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'),
+                filemtime(plugin_dir_path(__FILE__) . 'build/new-idea-form-block.js')
             );
         }
     }
