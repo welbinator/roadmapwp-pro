@@ -13,7 +13,9 @@ jobs:
     - name: Read Changelog and Write to Env File
       run: |
         echo "Reading Changelog..."
-        echo "CHANGELOG=$(cat CHANGELOG.md)" >> $GITHUB_ENV
+        echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+        cat CHANGELOG.md >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
 
     - name: Update WordPress
       env:
