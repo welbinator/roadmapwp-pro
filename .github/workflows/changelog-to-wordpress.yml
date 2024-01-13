@@ -25,4 +25,4 @@ jobs:
         curl -X POST https://roadmapwp.com/wp-json/changelog-to-wordpress/v1/post-update \
              -H "Authorization: Bearer $WP_API_TOKEN" \
              -H "Content-Type: application/json" \
-             -d '{"title":"New Changelog Update from GitHub Action","content": "This is a test update from GitHub Action."}'
+             -d '{"title":"New Changelog Update","content": "'"$CHANGELOG"'"}'
