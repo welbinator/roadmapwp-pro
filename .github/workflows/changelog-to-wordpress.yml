@@ -19,11 +19,10 @@ jobs:
 
     - name: Update WordPress
       env:
-        WP_API_ENDPOINT: ${{ secrets.WP_API_ENDPOINT }}
         WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
       run: |
         echo "Updating WordPress..."
-        curl -X POST $WP_API_ENDPOINT \
+        curl -X POST https://roadmapwp.com/wp-json/changelog-to-wordpress/v1/post-update \
              -H "Authorization: Bearer $WP_API_TOKEN" \
              -H "Content-Type: application/json" \
-             -d '{"title":"New Changelog Update","content": "'"$CHANGELOG"'"}'
+             -d '{"title":"New Changelog Update from GitHub Action","content": "This is a test update from GitHub Action."}'
