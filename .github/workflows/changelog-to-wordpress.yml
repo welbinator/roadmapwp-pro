@@ -13,12 +13,13 @@ jobs:
     - name: Install jq
       run: sudo apt-get install jq
 
-    - name: Read Changelog and Convert to JSON
+    - name: Extract Latest Changelog
       run: |
-        jq -Rs '{title: "New Changelog Update", content: .}' CHANGELOG.md > changelog.json
-      
-    - name: Display changelog.json
-      run: cat changelog.json
+        sed -n '/<!-- Latest -->/,/<!-- \/Latest -->/p' CHANGELOG.md > latest-changelog.md
+
+    - name: Convert Latest Changelog to JSON
+      run: |
+        jq -Rs '{title: "New Changelog Update", content: .}' latest-changelog.md > changelog.json
 
     - name: Update WordPress
       env:
