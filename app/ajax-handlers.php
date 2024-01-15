@@ -259,46 +259,54 @@ function load_ideas_for_status() {
     check_ajax_referer('roadmap_nonce', 'nonce');
 
     $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
-    $selectedTaxonomiesSlugs = isset($_POST['selectedTaxonomies']) ? explode(',', sanitize_text_field($_POST['selectedTaxonomies'])) : [];
+$selectedTaxonomiesSlugs = isset($_POST['selectedTaxonomies']) ? explode(',', sanitize_text_field($_POST['selectedTaxonomies'])) : [];
 
-    // Setup the tax query with the status term
-    $tax_query = array(
-        'relation' => 'AND',
-        array(
-            'taxonomy' => 'status',
-            'field'    => 'slug',
-            'terms'    => $status,
-        ),
-    );
+// Initialize the tax query with the status term
+$tax_query = array(
+    'relation' => 'AND',
+    array(
+        'taxonomy' => 'status',
+        'field'    => 'slug',
+        'terms'    => $status,
+    )
+);
 
-     // Modify the tax query if selected taxonomies are provided
-     $taxonomy_queries = array();
-     foreach ($selectedTaxonomiesSlugs as $slug) {
-         if (!empty($slug)) {
-             $terms = get_terms(array('taxonomy' => $slug, 'fields' => 'slugs'));
-             if (!is_wp_error($terms) && !empty($terms)) {
-                 $taxonomy_queries[] = array(
-                     'taxonomy' => $slug,
-                     'field'    => 'slug',
-                     'terms'    => $terms,
-                     'operator' => 'IN'
-                 );
-             }
-         }
-     }
- 
-     // Add taxonomy queries to the tax query if any exist
-     if (!empty($taxonomy_queries)) {
-         $tax_query[] = array_merge(array('relation' => 'OR'), $taxonomy_queries);
-     }
+$taxonomy_queries = array();
+$empty_taxonomy_selected = false;
 
-     $args = array(
-        'post_type' => 'idea',
-        'posts_per_page' => -1,
-        'tax_query' => $tax_query
-    );
+// Modify the tax query if selected taxonomies are provided
+foreach ($selectedTaxonomiesSlugs as $slug) {
+    if (!empty($slug)) {
+        $terms = get_terms(array('taxonomy' => $slug, 'fields' => 'slugs'));
+        if (!is_wp_error($terms) && !empty($terms)) {
+            $taxonomy_queries[] = array(
+                'taxonomy' => $slug,
+                'field'    => 'slug',
+                'terms'    => $terms,
+                'operator' => 'IN'
+            );
+        } else {
+            $empty_taxonomy_selected = true;
+        }
+    }
+}
 
-    $query = new WP_Query($args);
+if (!empty($taxonomy_queries)) {
+    $tax_query[] = array_merge(array('relation' => 'OR'), $taxonomy_queries);
+}
+
+if ($empty_taxonomy_selected && count($taxonomy_queries) === 0) {
+    wp_send_json_success(['html' => '<p>No ideas found for the selected taxonomies.</p>']);
+    return;
+}
+
+$args = array(
+    'post_type' => 'idea',
+    'posts_per_page' => -1,
+    'tax_query' => $tax_query
+);
+
+$query = new WP_Query($args);
 
     error_log('Number of ideas found: ' . $query->found_posts);
 
