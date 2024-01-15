@@ -255,26 +255,52 @@ function load_ideas_for_status() {
     $vote_button_text_color = isset($pro_options['vote_button_text_color']) ? $pro_options['vote_button_text_color'] : '#000000';
     $filter_tags_bg_color = isset($pro_options['filter_tags_bg_color']) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
     $filter_tags_text_color = isset($pro_options['filter_tags_text_color']) ? $pro_options['filter_tags_text_color'] : '#000000';
-    $filters_bg_color = isset($pro_options['filters_bg_color']) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
-    
     check_ajax_referer('roadmap_nonce', 'nonce');
 
     $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+    $selectedTaxonomiesSlugs = isset($_POST['selectedTaxonomies']) ? explode(',', sanitize_text_field($_POST['selectedTaxonomies'])) : [];
 
-    $args = array(
-        'post_type' => 'idea',
-        'posts_per_page' => -1,
-        'tax_query' => array(
-            array(
-                'taxonomy' => 'status',
-                'field'    => 'slug',
-                'terms'    => $status,
-            ),
+    // Setup the tax query with the status term
+    $tax_query = array(
+        'relation' => 'AND',
+        array(
+            'taxonomy' => 'status',
+            'field'    => 'slug',
+            'terms'    => $status,
         ),
     );
 
+     // Modify the tax query if selected taxonomies are provided
+     $taxonomy_queries = array();
+     foreach ($selectedTaxonomiesSlugs as $slug) {
+         if (!empty($slug)) {
+             $terms = get_terms(array('taxonomy' => $slug, 'fields' => 'slugs'));
+             if (!is_wp_error($terms) && !empty($terms)) {
+                 $taxonomy_queries[] = array(
+                     'taxonomy' => $slug,
+                     'field'    => 'slug',
+                     'terms'    => $terms,
+                     'operator' => 'IN'
+                 );
+             }
+         }
+     }
+ 
+     // Add taxonomy queries to the tax query if any exist
+     if (!empty($taxonomy_queries)) {
+         $tax_query[] = array_merge(array('relation' => 'OR'), $taxonomy_queries);
+     }
+
+     $args = array(
+        'post_type' => 'idea',
+        'posts_per_page' => -1,
+        'tax_query' => $tax_query
+    );
+
     $query = new WP_Query($args);
+
+    error_log('Number of ideas found: ' . $query->found_posts);
 
     ob_start();
 
@@ -282,7 +308,19 @@ function load_ideas_for_status() {
         while ($query->have_posts()) {
             $query->the_post();
             $idea_id = get_the_ID();
-            $tags = wp_get_post_terms($idea_id, 'idea-tag', array('fields' => 'names'));
+           // Retrieve all taxonomies associated with the 'idea' post type, excluding 'status'
+           $idea_taxonomies = get_object_taxonomies('idea', 'names');
+           $excluded_taxonomies = array('status'); // Add more taxonomy names to exclude if needed
+           $included_taxonomies = array_diff($idea_taxonomies, $excluded_taxonomies);
+           
+           // Fetch terms for each included taxonomy
+           $tags = array();
+           foreach ($included_taxonomies as $taxonomy) {
+               $terms = wp_get_post_terms($idea_id, $taxonomy, array('fields' => 'all'));
+               if (!is_wp_error($terms) && !empty($terms)) {
+                   $tags[$taxonomy] = $terms;
+               }
+           }
             $vote_count = get_post_meta($idea_id, 'idea_votes', true) ?: '0';
             
             
@@ -296,13 +334,15 @@ function load_ideas_for_status() {
 
                     <?php if (!empty($tags)) : ?>
                         <div class="flex flex-wrap space-x-2 mt-2">
-                            <?php foreach ($tags as $tag) : ?>
-                                <?php $tag_link = get_term_link($tag, 'idea-tag'); // Get the term link ?>
-                                <?php if (!is_wp_error($tag_link)) : // Check if the link is valid ?>
-                                    <a href="<?php echo esc_url($tag_link); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr($filter_tags_bg_color); ?>;color: <?php echo esc_attr($filter_tags_text_color); ?>;">
-                                        <?php echo esc_html($tag); ?>
-                                    </a>
-                                <?php endif; ?>
+                            <?php foreach ($tags as $tag_name => $tag_terms) : ?>
+                                <?php foreach ($tag_terms as $tag_term) : ?>
+                                    <?php $tag_link = get_term_link($tag_term, $tag_name); // Get the term link ?>
+                                    <?php if (!is_wp_error($tag_link)) : // Check if the link is valid ?>
+                                        <a href="<?php echo esc_url($tag_link); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr($filter_tags_bg_color); ?>;color: <?php echo esc_attr($filter_tags_text_color); ?>;">
+                                            <?php echo esc_html($tag_term->name); ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
