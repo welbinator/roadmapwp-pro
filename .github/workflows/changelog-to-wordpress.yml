@@ -2,6 +2,11 @@ name: Update WordPress with Changelog
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Changelog Version'
+        required: true
+        default: '1.0.0'
 
 jobs:
   updateWordpress:
@@ -13,13 +18,17 @@ jobs:
     - name: Install jq
       run: sudo apt-get install jq
 
-    - name: Extract Latest Changelog
+    - name: Extract Specific Changelog Block
       run: |
-        sed -n '/<!-- Latest -->/,/<!-- \/Latest -->/p' CHANGELOG.md > latest-changelog.md
+        VERSION_HEADER="## [${{ github.event.inputs.version }}]"
+        VERSION_HEADER_ESCAPED=$(printf '%s\n' "$VERSION_HEADER" | sed -e 's/[]\/$*.^[]/\\&/g')
+        lines_under_version_header=$(awk "/$VERSION_HEADER_ESCAPED/"' {p=1; next} p && /^## \[/ {p=0} p' CHANGELOG.md)
+        echo "$lines_under_version_header" > specific-changelog.md
 
-    - name: Convert Latest Changelog to JSON
+    - name: Convert Extracted Changelog to JSON
       run: |
-        jq -Rs '{title: "New Changelog Update", content: .}' latest-changelog.md > changelog.json
+        VERSION="${{ github.event.inputs.version }}"
+        jq -Rs --arg version "$VERSION" '{title: ("RoadMapWP Pro " + $version + " is here!"), content: .}' specific-changelog.md > changelog.json
 
     - name: Update WordPress
       env:

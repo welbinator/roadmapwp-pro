@@ -5,16 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- Latest -->
 ## [2.0.0] - 2023-01-15
 
 ### New
-* Added ability to choose taxonomies to new idea form and roadmap tabs block
+* Added ability to select taxonomies in roadmap tabs block
+* Added ability to select taxonomies in the New Idea Form block
+* Added visual indication of actively selected tabs in Roadmap Tabs block and roadmap_tabs shortcode
 
 ### Changed
 * Fixed issue where correct tags weren't being displayed
+* Fixed Roadmap Tabs block so that it only displays published ideas
 
-<!-- /Latest -->
 ## [1.4.5] - 2023-01-11
 
 ### New
