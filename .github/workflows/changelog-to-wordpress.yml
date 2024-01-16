@@ -27,7 +27,8 @@ jobs:
 
     - name: Convert Extracted Changelog to JSON
       run: |
-        jq -Rs '{title: "Changelog Update for Version ${{ github.event.inputs.version }}", content: .}' specific-changelog.md > changelog.json
+        VERSION="${{ github.event.inputs.version }}"
+        jq -Rs --arg version "$VERSION" '{title: ("RoadMapWP Pro " + $version + " is here!"), content: .}' specific-changelog.md > changelog.json
 
     - name: Update WordPress
       env:
