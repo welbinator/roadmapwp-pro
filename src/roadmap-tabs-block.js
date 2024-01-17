@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { useSelect } = wp.data;
-const { CheckboxControl, PanelBody } = wp.components;
+const { CheckboxControl, PanelBody, SelectControl } = wp.components;
 const { InspectorControls } = wp.blockEditor;
 
 registerBlockType('wp-roadmap-pro/roadmap-tabs-block', {
@@ -15,34 +15,41 @@ registerBlockType('wp-roadmap-pro/roadmap-tabs-block', {
             type: 'object',
             default: {},
         },
+        defaultStatus: {
+            type: 'string',
+            default: '',
+        },
     },
     edit: function(props) {
         const { attributes, setAttributes } = props;
-
-        // Fetch statuses
+    
+        // Fetch statuses and taxonomies using hooks at the top level
         const statuses = useSelect(select => select('core').getEntityRecords('taxonomy', 'status', { per_page: -1 }), []);
-
-        // Fetch taxonomies associated with 'idea' post type and exclude 'status'
         const ideaTaxonomies = useSelect(select => {
             const allTaxonomies = select('core').getTaxonomies();
             return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'status') : [];
         }, []);
-
+    
+        // Update functions for selected statuses and taxonomies
         const updateSelectedStatuses = (termSlug, isChecked) => {
             const newStatuses = { ...attributes.selectedStatuses, [termSlug]: isChecked };
             setAttributes({ selectedStatuses: newStatuses });
         };
-
         const updateSelectedTaxonomies = (taxonomySlug, isChecked) => {
             const newTaxonomies = { ...attributes.selectedTaxonomies, [taxonomySlug]: isChecked };
             setAttributes({ selectedTaxonomies: newTaxonomies });
         };
-
+    
+        // Conditional rendering after hooks
+        if (!statuses) {
+            return <p>Loading statuses...</p>;
+        }
+    
         return (
             <div>
                 <InspectorControls>
                     <PanelBody title="Select Statuses">
-                        {statuses && statuses.map(term => (
+                        {statuses.map(term => (
                             <CheckboxControl
                                 key={term.id}
                                 label={term.name}
@@ -61,12 +68,27 @@ registerBlockType('wp-roadmap-pro/roadmap-tabs-block', {
                             />
                         ))}
                     </PanelBody>
+                    <PanelBody title="Default Status">
+                        <SelectControl
+                            label="Select a Default Status"
+                            value={attributes.defaultStatus}
+                            options={[
+                                { label: 'Select Status', value: '' },
+                                ...statuses.map(status => ({
+                                    label: status.name,
+                                    value: status.slug,
+                                })),
+                            ]}
+                            onChange={(value) => setAttributes({ defaultStatus: value })}
+                        />
+                    </PanelBody>
                 </InspectorControls>
                 <p>Roadmap Tabs Block</p>
             </div>
         );
     },
     save: function() {
-        return null; // Render in PHP
+        // Content is rendered in PHP, return null for the save function
+        return null;
     }
 });
