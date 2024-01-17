@@ -29,6 +29,9 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
         return '<p>No statuses selected.</p>';
     }
 
+    // Retrieve the default status from attributes
+    $default_status = isset($attributes['defaultStatus']) ? $attributes['defaultStatus'] : '';
+
     // Retrieve selected taxonomies from attributes
     $selectedTaxonomies = isset($attributes['selectedTaxonomies']) ? array_keys(array_filter($attributes['selectedTaxonomies'])) : [];
 
@@ -54,7 +57,7 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
     <div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
         <div style="background-color: <?php echo esc_attr($tabs_container_bg_color); ?>;" role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
             <?php foreach ($statuses as $status): ?>
-                <button style="color: <?php echo esc_attr($tabs_text_color); ?>; background-color: <?php echo esc_attr($tabs_button_bg_color); ?>;" type="button" role="tab" aria-selected="true" data-state="inactive" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr(strtolower(str_replace(' ', '-', $status))); ?>">
+                <button style="color: <?php echo esc_attr($tabs_text_color); ?>; background-color: <?php echo esc_attr($tabs_button_bg_color); ?>;" type="button" role="tab" aria-selected="<?php echo ($status == $default_status) ? 'true' : 'false'; ?>" data-state="<?php echo ($status == $default_status) ? 'active' : 'inactive'; ?>" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr(strtolower(str_replace(' ', '-', $status))); ?>">
                     <?php echo esc_html($status); ?>
                 </button>
             <?php endforeach; ?>
@@ -65,64 +68,65 @@ function wp_roadmap_pro_roadmap_tabs_block_render($attributes) {
     </div>
 
     <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        var tabs = document.querySelectorAll('.roadmap-tab');
-        var ideasContainer = document.querySelector('.roadmap-ideas-container');
-        var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-        var nonce = '<?php echo wp_create_nonce('roadmap_nonce'); ?>';
+document.addEventListener('DOMContentLoaded', function() {
+    var tabs = document.querySelectorAll('.roadmap-tab');
+    var ideasContainer = document.querySelector('.roadmap-ideas-container');
+    var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+    var nonce = '<?php echo wp_create_nonce('roadmap_nonce'); ?>';
 
-        // Function to reset all tabs to inactive
-        function resetTabs() {
-            tabs.forEach(function(tab) {
-                tab.setAttribute('data-state', 'inactive');
-            });
-        }
-
+    // Function to reset all tabs to inactive
+    function resetTabs() {
         tabs.forEach(function(tab) {
-            tab.addEventListener('click', function() {
-                resetTabs(); // Reset all tabs to inactive
-                this.setAttribute('data-state', 'active'); // Set clicked tab to active
-
-                var status = this.getAttribute('data-status');
-                loadIdeas(status);
-            });
+            tab.setAttribute('data-state', 'inactive');
         });
-
-        function loadIdeas(status) {
-    var formData = new FormData();
-    formData.append('action', 'load_ideas_for_status');
-    formData.append('status', status);
-    formData.append('selectedTaxonomies', '<?php echo implode(',', $selectedTaxonomies); ?>');
-    formData.append('nonce', nonce);
-
-    fetch(ajaxurl, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success && data.data && data.data.html) {
-            ideasContainer.innerHTML = data.data.html;
-        } else {
-            ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
-        }
-    })
-    .catch(error => {
-        console.error('Error loading ideas:', error);
-        ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
-    });
-}
-
-
-        // Automatically load ideas for the first tab and set it to active
-    if (tabs.length > 0) {
-        tabs[0].click();
-        tabs[0].setAttribute('data-state', 'active');
     }
-    
+
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            resetTabs(); // Reset all tabs to inactive
+            this.setAttribute('data-state', 'active'); // Set clicked tab to active
+
+            var status = this.getAttribute('data-status');
+            loadIdeas(status);
+        });
     });
-    </script>
-    <?php
+
+    function loadIdeas(status) {
+        var formData = new FormData();
+        formData.append('action', 'load_ideas_for_status');
+        formData.append('status', status);
+        formData.append('selectedTaxonomies', '<?php echo implode(',', $selectedTaxonomies); ?>');
+        formData.append('nonce', nonce);
+
+        fetch(ajaxurl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data && data.data.html) {
+                ideasContainer.innerHTML = data.data.html;
+            } else {
+                ideasContainer.innerHTML = '<p>Error: Invalid response format.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading ideas:', error);
+            ideasContainer.innerHTML = '<p>Error loading ideas.</p>';
+        });
+    }
+
+    // Automatically load ideas for the default tab and set it to active
+    var defaultTab = document.querySelector('.roadmap-tab[data-status="<?php echo esc_attr(strtolower(str_replace(' ', '-', $default_status))); ?>"]');
+    if (defaultTab) {
+        defaultTab.click();
+    } else if (tabs.length > 0) {
+        tabs[0].click(); // Fallback to the first tab if default is not found
+    }
+});
+</script>
+
+<?php
     return ob_get_clean();
 }
 
