@@ -11,12 +11,12 @@ jQuery(document).ready(function($) {
         }
     
         $.ajax({
-            url: wpRoadmapAjax.ajax_url,
+            url: roadmapwpAjax.ajax_url,
             type: 'post',
             data: {
                 action: 'delete_custom_taxonomy',
                 taxonomy: taxonomy, // Ensure this parameter is correctly included
-                nonce: wpRoadmapAjax.delete_taxonomy_nonce
+                nonce: roadmapwpAjax.delete_taxonomy_nonce
             },
             success: function(response) {
                 if (response.success) {
@@ -39,13 +39,13 @@ jQuery(document).ready(function($) {
         }).get();
     
         $.ajax({
-            url: wpRoadmapAjax.ajax_url,
+            url: roadmapwpAjax.ajax_url,
             type: 'post',
             data: {
                 action: 'delete_selected_terms',
                 taxonomy: taxonomy,
                 terms: selectedTerms,
-                nonce: wpRoadmapAjax.delete_terms_nonce
+                nonce: roadmapwpAjax.delete_terms_nonce
             },
             success: function(response) {
                 if (response.success) {

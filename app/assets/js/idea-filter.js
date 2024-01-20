@@ -15,12 +15,12 @@ jQuery(document).ready(function($) {
         });
        
         $.ajax({
-            url: wpRoadMapFilterAjax.ajax_url,
+            url: RoadMapWPFilterAjax.ajax_url,
             type: 'POST',
             data: {
                 'action': 'filter_ideas',
                 'filter_data': filterData,
-                'nonce': wpRoadMapFilterAjax.nonce // Include the nonce for security
+                'nonce': RoadMapWPFilterAjax.nonce // Include the nonce for security
             },
             success: function(response) {
                 console.log('AJAX request successful. Response:', response);
