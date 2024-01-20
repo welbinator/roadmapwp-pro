@@ -14,17 +14,17 @@ Text Domain: roadmapwp-pro
 
 // This function will be called when the Pro version is activated.
 function wp_roadmap_pro_activate() {
-    // Check if the free version is active
-    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
-    if (is_plugin_active('roadmapwp-free/wp-roadmap.php')) {
-        // Deactivate the free version
-        deactivate_plugins('roadmapwp-free/wp-roadmap.php');
-    }
-    // Additional activation code for Pro version goes here...
+	// Check if the free version is active
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	if ( is_plugin_active( 'roadmapwp-free/wp-roadmap.php' ) ) {
+		// Deactivate the free version
+		deactivate_plugins( 'roadmapwp-free/wp-roadmap.php' );
+	}
+	// Additional activation code for Pro version goes here...
 }
 
 // Register the activation hook for the Pro version
-register_activation_hook(__FILE__, 'wp_roadmap_pro_activate');
+register_activation_hook( __FILE__, 'wp_roadmap_pro_activate' );
 
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'ROADMAPWP_PRO_STORE_URL', 'https://roadmapwp.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
@@ -36,20 +36,24 @@ define( 'ROADMAPWP_PRO_ITEM_NAME', 'RoadMapWP' ); // you should use your own CON
 define( 'ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE', 'roadmapwp-license' );
 
 if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-	// load our custom updater if it doesn't already exist 
-	include dirname( __FILE__ ) . '/EDD_SL_Plugin_Updater.php';
+	// load our custom updater if it doesn't already exist
+	include __DIR__ . '/EDD_SL_Plugin_Updater.php';
 }
 
 // retrieve our license key from the DB
-$license_key = trim( get_option( 'roadmapwp_pro_license_key' ) ); 
+$license_key = trim( get_option( 'roadmapwp_pro_license_key' ) );
 // setup the updater
-$edd_updater = new EDD_SL_Plugin_Updater( ROADMAPWP_PRO_STORE_URL, __FILE__, array(
-	'version' 	=> '2.0.1',		// current version number
-	'license' 	=> $license_key,	// license key (used get_option above to retrieve from DB)
-	'item_id'       => ROADMAPWP_PRO_ITEM_ID,	// id of this plugin
-	'author' 	=> 'James Welbes',	// author of this plugin
-        'beta'          => false                // set to true if you wish customers to receive update notifications of beta releases
-) );
+$edd_updater = new EDD_SL_Plugin_Updater(
+	ROADMAPWP_PRO_STORE_URL,
+	__FILE__,
+	array(
+		'version' => '2.0.1',     // current version number
+		'license' => $license_key,    // license key (used get_option above to retrieve from DB)
+		'item_id' => ROADMAPWP_PRO_ITEM_ID,   // id of this plugin
+		'author'  => 'James Welbes',  // author of this plugin
+		'beta'    => false,                // set to true if you wish customers to receive update notifications of beta releases
+	)
+);
 
 /**
  * Adds content to the settings section.
@@ -105,7 +109,7 @@ add_action( 'admin_init', 'roadmapwp_pro_register_option' );
 /**
  * Sanitizes the license key.
  *
- * @param string  $new The license key.
+ * @param string $new The license key.
  * @return string
  */
 function edd_sanitize_license( $new ) {
@@ -393,91 +397,93 @@ function roadmapwp_pro_admin_notices() {
 add_action( 'admin_notices', 'roadmapwp_pro_admin_notices' );
 
 // Include pro settings
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
 
 // Include enable comments feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments.php';
 
 // Include custom taxonomies feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
 
 // Include default idea status feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-status.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-status.php';
 
 // Include choose idea template feature
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
 
 // Include blocks
-include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
 
 // Include roadmap block
-include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-block.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-block.php';
 
 // Include roadmap tabs block
-include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-tabs-block.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-tabs-block.php';
 
 // Include new idea form block
-include_once plugin_dir_path( __FILE__ ) . 'pro/blocks/new-idea-form-block.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/new-idea-form-block.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';
 
 // Include custom submit idea heading setting
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading.php';
 
 // Include default idea status setting
-include_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
 // Include necessary files
-require_once plugin_dir_path(__FILE__) . 'app/admin-functions.php';
-require_once plugin_dir_path(__FILE__) . 'app/cpt-ideas.php';
-require_once plugin_dir_path(__FILE__) . 'app/ajax-handlers.php';
-require_once plugin_dir_path(__FILE__) . 'app/admin-pages.php';
-require_once plugin_dir_path(__FILE__) . 'app/shortcodes/new-idea-form.php';
-require_once plugin_dir_path(__FILE__) . 'app/shortcodes/display-ideas.php';
-require_once plugin_dir_path(__FILE__) . 'app/shortcodes/roadmap.php';
-require_once plugin_dir_path(__FILE__) . 'app/shortcodes/roadmap-tabs.php';
-require_once plugin_dir_path(__FILE__) . 'app/shortcodes/single-idea.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/admin-functions.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/cpt-ideas.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/ajax-handlers.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/new-idea-form.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/display-ideas.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap-tabs.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/single-idea.php';
 
 function wp_roadmap_pro_on_activation() {
-    // Directly call the function that registers your taxonomies here
-    wp_roadmap_pro_register_default_taxonomies();
+	// Directly call the function that registers your taxonomies here
+	wp_roadmap_pro_register_default_taxonomies();
 
-    // Now add the terms
-    $status_terms = array('New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed');
-    foreach ($status_terms as $term) {
-        if (!term_exists($term, 'status')) {
-            $result = wp_insert_term($term, 'status');
-            if (is_wp_error($result)) {
-                error_log('Error inserting term ' . $term . ': ' . $result->get_error_message());
-            }
-        }
-    }
+	// Now add the terms
+	$status_terms = array( 'New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed' );
+	foreach ( $status_terms as $term ) {
+		if ( ! term_exists( $term, 'status' ) ) {
+			$result = wp_insert_term( $term, 'status' );
+			if ( is_wp_error( $result ) ) {
+				error_log( 'Error inserting term ' . $term . ': ' . $result->get_error_message() );
+			}
+		}
+	}
 }
 
-register_activation_hook(__FILE__, 'wp_roadmap_pro_on_activation');
+register_activation_hook( __FILE__, 'wp_roadmap_pro_on_activation' );
 
-function wp_roadmap_pro_custom_template($template) {
-    global $post;
+function wp_roadmap_pro_custom_template( $template ) {
+	global $post;
 
-    if ('idea' === $post->post_type) {
-        $pro_options = get_option('wp_roadmap_pro_settings');
-        $chosen_idea_template = isset($pro_options['single_idea_template']) ? $pro_options['single_idea_template'] : 'plugin';
+	if ( 'idea' === $post->post_type ) {
+		$pro_options          = get_option( 'wp_roadmap_pro_settings' );
+		$chosen_idea_template = isset( $pro_options['single_idea_template'] ) ? $pro_options['single_idea_template'] : 'plugin';
 
-        if ($chosen_idea_template === 'plugin' && file_exists(plugin_dir_path(__FILE__) . 'app/templates/template-single-idea.php')) {
-            return plugin_dir_path(__FILE__) . 'app/templates/template-single-idea.php';
-        }
-    }
+		if ( $chosen_idea_template === 'plugin' && file_exists( plugin_dir_path( __FILE__ ) . 'app/templates/template-single-idea.php' ) ) {
+			return plugin_dir_path( __FILE__ ) . 'app/templates/template-single-idea.php';
+		}
+	}
 
-    return $template;
+	return $template;
 }
 
-add_filter('single_template', 'wp_roadmap_pro_custom_template');
+add_filter( 'single_template', 'wp_roadmap_pro_custom_template' );
 
 function wp_roadmap_pro_log_all_status_terms() {
-    $terms = get_terms(array(
-        'taxonomy' => 'status',
-        'hide_empty' => false,
-    ));
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'status',
+			'hide_empty' => false,
+		)
+	);
 }
-add_action('init', 'wp_roadmap_pro_log_all_status_terms');
+add_action( 'init', 'wp_roadmap_pro_log_all_status_terms' );
