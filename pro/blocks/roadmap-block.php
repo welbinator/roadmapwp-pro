@@ -1,7 +1,15 @@
 <?php
-// Include in your plugin's main file or in the functions.php of your theme.
+/**
+ * This file handles the registration and rendering of the 'Roadmap Block' for the RoadMapWP Pro plugin.
+ * It includes functions to register the block and its script, as well as to render the block in the editor.
+ */
 
-function wp_roadmap_pro_register_roadmap_block() {
+namespace RoadMapWP\Pro\Blocks;
+
+/**
+ * Registers the 'Roadmap Block' and its associated script.
+ */
+function register_roadmap_block() {
 	// Register the block script
 	wp_register_script(
 		'roadmapwp-pro-roadmap-block',
@@ -14,15 +22,20 @@ function wp_roadmap_pro_register_roadmap_block() {
 		'roadmapwp-pro/roadmap-block',
 		array(
 			'editor_script'   => 'roadmapwp-pro-roadmap-block',
-			'render_callback' => 'wp_roadmap_pro_roadmap_block_render',
+			'render_callback' => 'RoadMapWP\Pro\Blocks\roadmap_block_render',
 		)
 	);
 }
 
-add_action( 'init', 'wp_roadmap_pro_register_roadmap_block' );
+add_action( 'init', 'RoadMapWP\Pro\Blocks\register_roadmap_block' );
 
-// The render callback function for the block
-function wp_roadmap_pro_roadmap_block_render( $attributes ) {
+/**
+ * Renders the 'Roadmap Block' in the block editor.
+ *
+ * @param array $attributes The attributes of the block.
+ * @return string The rendered HTML of the block.
+ */
+function roadmap_block_render( $attributes ) {
 	// Check if selectedStatuses attribute is set and is an array
 	if ( isset( $attributes['selectedStatuses'] ) && is_array( $attributes['selectedStatuses'] ) ) {
 		$selected_statuses = array_keys( array_filter( $attributes['selectedStatuses'] ) );
@@ -85,7 +98,7 @@ function wp_roadmap_pro_roadmap_block_render( $attributes ) {
 					$args['post_status'] = array( 'publish', 'pending' );
 				}
 
-				$query = new WP_Query( $args );
+				$query = new \WP_Query( $args );
 				?>
 
 				<div class="roadmap-column">
