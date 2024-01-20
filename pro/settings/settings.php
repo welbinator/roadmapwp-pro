@@ -1,5 +1,19 @@
 <?php
-function wp_roadmap_pro_settings_validate( $input ) {
+/**
+ * This file contains functionality to validate and register settings for RoadMapWP Pro.
+ *
+ * @package RoadMapWP\Pro\Settings
+ */
+
+namespace RoadMapWP\Pro\Settings;
+
+/**
+ * Validates and sanitizes the input settings for RoadMapWP Pro.
+ *
+ * @param array $input The array of input settings to be validated.
+ * @return array The validated and sanitized settings.
+ */
+function settings_validate( $input ) {
 	// Initialize an array to hold the validated settings
 	$validated_settings = array();
 
@@ -127,8 +141,8 @@ function wp_roadmap_pro_settings_validate( $input ) {
 	return $validated_settings;
 }
 
-function wp_roadmap_pro_register_settings() {
-	register_setting( 'wp_roadmap_pro_settings', 'wp_roadmap_pro_settings', 'wp_roadmap_pro_settings_validate' );
+function register_settings() {
+    register_setting( 'wp_roadmap_pro_settings', 'wp_roadmap_pro_settings', __NAMESPACE__ . '\\settings_validate' );
 }
 
-add_action( 'admin_init', 'wp_roadmap_pro_register_settings' );
+add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );
