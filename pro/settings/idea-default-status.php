@@ -1,10 +1,19 @@
 <?php
 /**
- * Adds the functionality to set the default status of new ideas in the Pro version.
+ * This file contains functionality for setting the default status of new ideas in the RoadMapWP Pro plugin.
+ *
+ * @package RoadMapWP\Pro\Settings
  */
 
-// Hook into the settings page of the free version to add the default status setting
-function wp_roadmap_pro_default_idea_status_setting( $content ) {
+namespace RoadMapWP\Pro\Settings;
+
+/**
+ * Adds a setting to the settings page for setting the default status of new ideas.
+ *
+ * @param string $content The existing content in the settings page.
+ * @return string Modified settings content with the default status setting.
+ */
+function default_idea_status_setting( $content ) {
 	// Fetch the current settings
 	$pro_options            = get_option( 'wp_roadmap_pro_settings', array() );
 	$default_wp_post_status = isset( $pro_options['default_wp_post_status'] ) ? $pro_options['default_wp_post_status'] : 'pending';
@@ -25,4 +34,4 @@ function wp_roadmap_pro_default_idea_status_setting( $content ) {
 	return $html;
 }
 
-add_filter( 'wp_roadmap_default_idea_status_setting', 'wp_roadmap_pro_default_idea_status_setting' );
+add_filter( 'wp_roadmap_default_idea_status_setting', __NAMESPACE__ . '\\default_idea_status_setting' );
