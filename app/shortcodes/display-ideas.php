@@ -1,10 +1,24 @@
 <?php
 /**
+ * Shortcodes for Displaying Ideas in RoadMapWP Pro.
+ * 
+ * This file contains functions for shortcodes used in the RoadMapWP Pro plugin.
+ * These shortcodes are responsible for rendering and displaying ideas in various formats.
+ * 
+ * @package RoadMapWP\Pro\Shortcodes
+ */
+
+namespace RoadMapWP\Pro\Shortcodes;
+
+/**
  * Shortcode to display ideas.
+ *
+ * Outputs a collection of ideas in a grid or list format, depending on the implementation.
+ * This shortcode allows users to view ideas posted within the RoadMapWP Pro system.
  *
  * @return string The HTML output for displaying ideas.
  */
-function wp_roadmap_pro_display_ideas_shortcode() {
+function display_ideas_shortcode() {
 	// Flag to indicate the display ideas shortcode is loaded
 	update_option( 'wp_roadmap_ideas_shortcode_loaded', true );
 
@@ -187,4 +201,4 @@ function wp_roadmap_pro_display_ideas_shortcode() {
 	return ob_get_clean(); // Return the buffered output
 }
 
-add_shortcode( 'display_ideas', 'wp_roadmap_pro_display_ideas_shortcode' );
+add_shortcode( 'display_ideas', __NAMESPACE__ . '\\display_ideas_shortcode' );

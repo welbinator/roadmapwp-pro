@@ -10,7 +10,7 @@ function wp_roadmap_pro_register_blocks() {
 	// Register each block
 	$blocks = array(
 		// 'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
-		'display-ideas' => 'wp_roadmap_pro_display_ideas_shortcode',
+		'display-ideas' => 'RoadMapWP\Pro\Shortcodes\display_ideas_shortcode',
 	);
 
 	register_block_type(
