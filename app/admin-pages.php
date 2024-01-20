@@ -79,10 +79,10 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Single Idea Template', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<?php
-						// This filter will be handled in choose-idea-template.php
-						echo apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
-						?>
+					<?php
+					// This filter will be handled in choose-idea-template.php
+					echo apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+					?>
 					</td>
 				</tr>
 

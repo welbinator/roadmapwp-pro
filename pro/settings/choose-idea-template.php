@@ -1,12 +1,14 @@
 <?php
 /**
- * Adds the functionality to choose between a custom template or default theme template for single idea content in the Pro version.
+ * This file handles the functionality of choosing between a custom template or the default theme template for single idea content in the Pro version of the plugin.
  */
 
-// Hook into the settings page of the free version to add the choose template setting
-add_filter( 'wp_roadmap_single_idea_template_setting', 'wp_roadmap_pro_single_idea_template_setting' );
+namespace RoadMapWP\Pro\Templates;
 
-function wp_roadmap_pro_single_idea_template_setting( $content ) {
+/**
+ * Adds a filter to modify the single idea template setting.
+ */
+function single_idea_template_setting( $content ) {
 	$pro_options     = get_option( 'wp_roadmap_pro_settings', array() );
 	$chosen_template = isset( $pro_options['single_idea_template'] ) ? $pro_options['single_idea_template'] : 'plugin';
 	$selected_page   = isset( $pro_options['single_idea_page'] ) ? $pro_options['single_idea_page'] : '';
@@ -50,10 +52,14 @@ function wp_roadmap_pro_single_idea_template_setting( $content ) {
 
 	return $html;
 }
-
-
-// Implement the template choice functionality
-function wp_roadmap_pro_template_include( $template ) {
+add_filter( 'wp_roadmap_single_idea_template_setting', 'RoadMapWP\Pro\Templates\single_idea_template_setting' );
+/**
+ * Determines the template to include based on the selected option.
+ *
+ * @param string $template The path to the template file.
+ * @return string The modified path to the template file.
+ */
+function template_include( $template ) {
 	if ( is_singular( 'idea' ) ) {
 		$pro_options = get_option( 'wp_roadmap_pro_settings', array() );
 		if ( isset( $pro_options['single_idea_template'] ) ) {
@@ -74,9 +80,12 @@ function wp_roadmap_pro_template_include( $template ) {
 	}
 	return $template;
 }
-add_filter( 'template_include', 'wp_roadmap_pro_template_include' );
+add_filter( 'template_include', 'RoadMapWP\Pro\Templates\template_include' );
 
-function wp_roadmap_pro_handle_single_idea_redirection() {
+/**
+ * Handles redirection for single idea pages when a specific template is selected.
+ */
+function handle_single_idea_redirection() {
 	if ( is_singular( 'idea' ) ) {
 		$pro_options = get_option( 'wp_roadmap_pro_settings', array() );
 		if ( isset( $pro_options['single_idea_template'] ) && $pro_options['single_idea_template'] === 'page' && isset( $pro_options['single_idea_page'] ) ) {
@@ -89,4 +98,4 @@ function wp_roadmap_pro_handle_single_idea_redirection() {
 		}
 	}
 }
-add_action( 'template_redirect', 'wp_roadmap_pro_handle_single_idea_redirection' );
+add_action( 'template_redirect', 'RoadMapWP\Pro\Templates\handle_single_idea_redirection' );
