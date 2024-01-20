@@ -102,7 +102,7 @@ function display_ideas_shortcode() {
 			'post_type'      => 'idea',
 			'posts_per_page' => -1, // Adjust as needed
 		);
-		$query = new WP_Query( $args );
+		$query = new \WP_Query( $args );
 
 		if ( $query->have_posts() ) :
 			?>

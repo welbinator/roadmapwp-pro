@@ -98,7 +98,7 @@ function filter_ideas() {
 	$filter_tags_bg_color   = sanitize_hex_color( $pro_options['filter_tags_bg_color'] );
 	$filter_tags_text_color = sanitize_hex_color( $pro_options['filter_tags_text_color'] );
 
-	$query = new WP_Query( $args );
+	$query = new \WP_Query( $args );
 	if ( $query->have_posts() ) : ?>
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
 			<?php
