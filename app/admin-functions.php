@@ -85,7 +85,7 @@ function wp_roadmap_pro_enqueue_admin_styles($hook) {
     // Enqueue JS for the 'Taxonomies' admin page
     if ('roadmap_page_wp-roadmap-taxonomies' == $hook) {
         wp_enqueue_script('wp-roadmap-taxonomies-js', plugin_dir_url(__FILE__) . 'assets/js/taxonomies.js', array('jquery'), null, true);
-        wp_localize_script('wp-roadmap-taxonomies-js', 'wpRoadmapAjax', array(
+        wp_localize_script('wp-roadmap-taxonomies-js', 'roadmapwpAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'delete_taxonomy_nonce' => wp_create_nonce('wp_roadmap_delete_taxonomy_nonce'),
             'delete_terms_nonce' => wp_create_nonce('wp_roadmap_delete_terms_nonce')
@@ -143,19 +143,19 @@ function wp_roadmap_pro_enqueue_frontend_styles() {
 
         // Enqueue scripts and localize them as before
         wp_enqueue_script('wp-roadmap-voting', plugin_dir_url(__FILE__) . 'assets/js/voting.js', array('jquery'), null, true);
-        wp_localize_script('wp-roadmap-voting', 'wpRoadMapVotingAjax', array(
+        wp_localize_script('wp-roadmap-voting', 'RoadMapWPVotingAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-vote-nonce')
         ));
 
         wp_enqueue_script('wp-roadmap-idea-filter', plugin_dir_url(__FILE__) . 'assets/js/idea-filter.js', array('jquery'), '', true);
-        wp_localize_script('wp-roadmap-idea-filter', 'wpRoadMapFilterAjax', array(
+        wp_localize_script('wp-roadmap-idea-filter', 'RoadMapWPFilterAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-idea-filter-nonce')
         ));
 
         wp_enqueue_script('wp-roadmap-admin-frontend', plugin_dir_url(__FILE__) . 'assets/js/admin-frontend.js', array('jquery'), '', true);
-        wp_localize_script('wp-roadmap-admin-frontend', 'wpRoadMapAdminFrontendAjax', array(
+        wp_localize_script('wp-roadmap-admin-frontend', 'RoadMapWPAdminFrontendAjax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('wp-roadmap-admin-frontend-nonce')
         ));
