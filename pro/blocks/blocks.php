@@ -1,5 +1,17 @@
 <?php
-function wp_roadmap_pro_register_blocks() {
+/**
+ * This file contains functions to register and enqueue block editor assets for the RoadMapWP Pro plugin.
+ * It includes the registration of custom blocks and enqueuing of necessary scripts for the block editor.
+ */
+
+namespace RoadMapWP\Pro;
+
+/**
+ * Registers custom blocks for the RoadMapWP Pro plugin.
+ * 
+ * This function registers scripts used by the blocks and the blocks themselves, setting up render callbacks as necessary.
+ */
+function register_blocks() {
 	// Block Editor Script
 	wp_register_script(
 		'roadmapwp-pro-blocks',
@@ -9,7 +21,6 @@ function wp_roadmap_pro_register_blocks() {
 
 	// Register each block
 	$blocks = array(
-		// 'new-idea-form' => 'wp_roadmap_pro_new_idea_form_shortcode',
 		'display-ideas' => 'RoadMapWP\Pro\Shortcodes\display_ideas_shortcode',
 	);
 
@@ -34,10 +45,15 @@ function wp_roadmap_pro_register_blocks() {
 	}
 }
 
-add_action( 'init', 'wp_roadmap_pro_register_blocks' );
+add_action( 'init', 'RoadMapWP\Pro\register_blocks' );
 
 
-function wp_roadmap_pro_enqueue_block_editor_assets() {
+/**
+ * Enqueues block editor assets for the RoadMapWP Pro plugin.
+ * 
+ * This function checks if the current screen is the block editor and enqueues scripts for the custom blocks.
+ */
+function enqueue_block_editor_assets() {
 	if ( function_exists( 'get_current_screen' ) ) {
 		$screen = get_current_screen();
 		if ( $screen && $screen->is_block_editor() ) {
@@ -70,4 +86,4 @@ function wp_roadmap_pro_enqueue_block_editor_assets() {
 	}
 }
 
-add_action( 'enqueue_block_editor_assets', 'wp_roadmap_pro_enqueue_block_editor_assets' );
+add_action( 'enqueue_block_editor_assets', 'RoadMapWP\Pro\enqueue_block_editor_assets' );

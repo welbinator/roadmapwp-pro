@@ -1,6 +1,21 @@
 <?php
-// single idea shortcode
-function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
+/**
+ * Shortcode to display a single idea.
+ * 
+ * This file contains the shortcode for displaying a detailed view of a single idea,
+ * including its title, content, and metadata such as vote count and taxonomy terms.
+ */
+
+namespace RoadMapWP\Shortcodes;
+
+/**
+ * Renders a single idea using a shortcode.
+ * 
+ * @param array $atts Shortcode attributes.
+ * @param bool $is_block Flag to indicate if called from a block.
+ * @return string HTML content of the single idea.
+ */
+function single_idea_shortcode($atts, $is_block = false) {
 	global $post;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );
@@ -95,4 +110,4 @@ function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
 
 	return ob_get_clean();
 }
-add_shortcode( 'single_idea', 'wp_roadmap_pro_single_idea_shortcode' );
+add_shortcode('single_idea', 'RoadMapWP\Shortcodes\single_idea_shortcode');
