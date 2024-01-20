@@ -30,9 +30,9 @@ function single_idea_shortcode($atts, $is_block = false) {
 	// Fetch options for styling (assumed to be saved in your options table)
 	$pro_options            = get_option( 'wp_roadmap_pro_settings', array() );
 	$vote_button_bg_color   = $pro_options['vote_button_bg_color'] ?? '#ff0000';
-	$vote_button_text_color = $pro_options['vote_button_text_color'] ?? '#000000';
+	$vote_button_text_color = $pro_options['vote_button_text_color'] ?? '#ffffff';
 	$filter_tags_bg_color   = $pro_options['filter_tags_bg_color'] ?? '#ff0000';
-	$filter_tags_text_color = $pro_options['filter_tags_text_color'] ?? '#000000';
+	$filter_tags_text_color = $pro_options['filter_tags_text_color'] ?? '#ffffff';
 
 	// Get vote count
 	$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
@@ -62,7 +62,7 @@ function single_idea_shortcode($atts, $is_block = false) {
 					$term_link = get_term_link( $term );
 					if ( ! is_wp_error( $term_link ) ) {
 						?>
-						<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+						<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 						<?php
 					}
 				}

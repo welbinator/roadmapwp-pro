@@ -50,9 +50,9 @@ function roadmap_block_render( $attributes ) {
 	// Retrieve color settings
 	$pro_options            = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color   = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000';
+	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000';
+	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 
 	$num_statuses  = count( $selected_statuses );
 	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 3
@@ -125,7 +125,7 @@ function roadmap_block_render( $attributes ) {
 										$term_link = get_term_link( $term );
 										if ( ! is_wp_error( $term_link ) ) :
 											?>
-											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 											<?php
 										endif;
 									endforeach;

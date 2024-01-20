@@ -25,14 +25,14 @@ function display_settings_page() {
 	$default_status_term = isset( $pro_options['default_status_term'] ) ? $pro_options['default_status_term'] : 'new-idea';
 
 	// New Styling Section
-	$vote_button_bg_color    = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#0000ff'; // Default to blue if not set
-	$vote_button_text_color  = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000'; // Default to blue if not set
-	$filter_tags_bg_color    = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#0000ff'; // Default to blue if not set
-	$filter_tags_text_color  = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000'; // Default to blue if not set
-	$filters_bg_color        = isset( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '#f5f5f5'; // Default to blue if not set
-	$tabs_container_bg_color = isset( $pro_options['tabs_container_bg_color'] ) ? $pro_options['tabs_container_bg_color'] : '#dddddd'; // Default to blue if not set
-	$tabs_button_bg_color    = isset( $pro_options['tabs_button_bg_color'] ) ? $pro_options['tabs_button_bg_color'] : '#ffffff'; // Default to blue if not set
-	$tabs_text_color         = isset( $pro_options['tabs_text_color'] ) ? $pro_options['tabs_text_color'] : '#000000'; // Default to blue if not set
+	$vote_button_bg_color    = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#0000ff';
+	$vote_button_text_color  = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
+	$filter_tags_bg_color    = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#0000ff';
+	$filter_tags_text_color  = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
+	$filters_bg_color        = isset( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '#f5f5f5';
+	$tabs_container_bg_color = isset( $pro_options['tabs_container_bg_color'] ) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
+	$tabs_button_bg_color    = isset( $pro_options['tabs_button_bg_color'] ) ? $pro_options['tabs_button_bg_color'] : '#ffffff';
+	$tabs_text_color         = isset( $pro_options['tabs_text_color'] ) ? $pro_options['tabs_text_color'] : '#000000';
 
 	?>
 	<div class="wrap">
@@ -139,7 +139,7 @@ function display_settings_page() {
 					<th scope="row"><?php esc_html_e( 'Vote Button Background Color', 'roadmapwp-pro' ); ?></th>
 					<td>
 						<input type="text" name="wp_roadmap_pro_settings[vote_button_bg_color]" value="<?php echo esc_attr( $vote_button_bg_color ); ?>" class="wp-roadmap-color-picker"/>
-						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
+						
 					</td>
 				</tr>
 

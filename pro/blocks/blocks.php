@@ -29,7 +29,8 @@ function register_blocks() {
 		array(
 			'editor_script'   => 'roadmapwp-pro-blocks',
 			'render_callback' => function ( $atts ) {
-				return wp_roadmap_pro_single_idea_shortcode( $atts, true ); // Passing true for the $is_block parameter
+				return \RoadMapWP\Shortcodes\single_idea_shortcode( $atts, true );
+ // Passing true for the $is_block parameter
 			},
 		)
 	);
