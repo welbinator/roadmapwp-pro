@@ -3,7 +3,7 @@ const { useSelect } = wp.data;
 const { CheckboxControl, PanelBody, SelectControl } = wp.components;
 const { InspectorControls } = wp.blockEditor;
 
-registerBlockType('wp-roadmap-pro/roadmap-tabs-block', {
+registerBlockType('roadmapwp-pro/roadmap-tabs-block', {
     title: 'Roadmap Tabs Block',
     category: 'common',
     attributes: {

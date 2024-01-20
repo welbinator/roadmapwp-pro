@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WP Road Map Pro
+Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
 Version:     2.0.1
@@ -8,7 +8,7 @@ Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: wp-roadmap-pro
+Text Domain: roadmapwp-pro
 */
 
 
@@ -182,36 +182,36 @@ function roadmapwp_pro_activate_license() {
 				case 'expired':
 					$message = sprintf(
 						/* translators: the license key expiration date */
-						__( 'Your license key expired on %s.', 'wp-roadmap-pro' ),
+						__( 'Your license key expired on %s.', 'roadmapwp-pro' ),
 						date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 					);
 					break;
 
 				case 'disabled':
 				case 'revoked':
-					$message = __( 'Your license key has been disabled.', 'wp-roadmap-pro' );
+					$message = __( 'Your license key has been disabled.', 'roadmapwp-pro' );
 					break;
 
 				case 'missing':
-					$message = __( 'Invalid license.', 'wp-roadmap-pro' );
+					$message = __( 'Invalid license.', 'roadmapwp-pro' );
 					break;
 
 				case 'invalid':
 				case 'site_inactive':
-					$message = __( 'Your license is not active for this URL.', 'wp-roadmap-pro' );
+					$message = __( 'Your license is not active for this URL.', 'roadmapwp-pro' );
 					break;
 
 				case 'item_name_mismatch':
 					/* translators: the plugin name */
-					$message = sprintf( __( 'This appears to be an invalid license key for %s.', 'wp-roadmap-pro' ), ROADMAPWP_PRO_ITEM_NAME );
+					$message = sprintf( __( 'This appears to be an invalid license key for %s.', 'roadmapwp-pro' ), ROADMAPWP_PRO_ITEM_NAME );
 					break;
 
 				case 'no_activations_left':
-					$message = __( 'Your license key has reached its activation limit.', 'wp-roadmap-pro' );
+					$message = __( 'Your license key has reached its activation limit.', 'roadmapwp-pro' );
 					break;
 
 				default:
-					$message = __( 'An error occurred, please try again.', 'wp-roadmap-pro' );
+					$message = __( 'An error occurred, please try again.', 'roadmapwp-pro' );
 					break;
 			}
 		}

@@ -29,7 +29,7 @@ function wp_roadmap_pro_custom_taxonomy_content() {
 if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($_POST['new_term']) && !empty($_POST['taxonomy_slug'])) {
     // Verify the nonce for security
     if (!isset($_POST['wp_roadmap_add_term_nonce']) || !wp_verify_nonce($_POST['wp_roadmap_add_term_nonce'], 'add_term_to_' . $_POST['taxonomy_slug'])) {
-        wp_die(esc_html__('Nonce verification failed.', 'wp-roadmap-pro'));
+        wp_die(esc_html__('Nonce verification failed.', 'roadmapwp-pro'));
     }
 
     $new_term = sanitize_text_field($_POST['new_term']);
