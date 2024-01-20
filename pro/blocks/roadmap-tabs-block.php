@@ -4,14 +4,14 @@
 function wp_roadmap_pro_register_roadmap_tabs_block() {
     // Register the block script
     wp_register_script(
-        'wp-roadmap-pro-roadmap-tabs-block',
+        'roadmapwp-pro-roadmap-tabs-block',
         plugin_dir_url(__FILE__) . '../../build/roadmap-tabs-block.js',
         array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-api-fetch')
     );
 
     // Register the block
-    register_block_type('wp-roadmap-pro/roadmap-tabs-block', array(
-        'editor_script' => 'wp-roadmap-pro-roadmap-tabs-block',
+    register_block_type('roadmapwp-pro/roadmap-tabs-block', array(
+        'editor_script' => 'roadmapwp-pro-roadmap-tabs-block',
         'render_callback' => 'wp_roadmap_pro_roadmap_tabs_block_render',
     ));
 }

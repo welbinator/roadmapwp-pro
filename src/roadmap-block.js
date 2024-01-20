@@ -3,7 +3,7 @@
     const { CheckboxControl, RadioControl, PanelBody } = wp.components;
     const { InspectorControls } = wp.blockEditor;
 
-    registerBlockType('wp-roadmap-pro/roadmap-block', {
+    registerBlockType('roadmapwp-pro/roadmap-block', {
         title: 'Roadmap Block',
         category: 'common',
         attributes: {

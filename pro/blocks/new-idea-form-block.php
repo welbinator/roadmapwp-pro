@@ -5,14 +5,14 @@
 function wp_roadmap_pro_new_idea_form_block_init() {
     // Register the block script
     wp_register_script(
-        'wp-roadmap-pro-new-idea-form-block',
+        'roadmapwp-pro-new-idea-form-block',
         plugin_dir_url(__FILE__) . '../../build/new-idea-form-block.js',
         array('wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'wp-api-fetch')
     );
 
     // Register the block
-    register_block_type('wp-roadmap-pro/new-idea-form', array(
-        'editor_script' => 'wp-roadmap-pro-new-idea-form-block',
+    register_block_type('roadmapwp-pro/new-idea-form', array(
+        'editor_script' => 'roadmapwp-pro-new-idea-form-block',
         'render_callback' => 'wp_roadmap_pro_new_idea_form_render'
     ));
 }

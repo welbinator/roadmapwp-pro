@@ -3,7 +3,7 @@ const { InspectorControls, useBlockProps } = wp.blockEditor;
 const { PanelBody, CheckboxControl } = wp.components;
 const { useSelect } = wp.data;
 
-registerBlockType('wp-roadmap-pro/new-idea-form', {
+registerBlockType('roadmapwp-pro/new-idea-form', {
     title: 'New Idea Form',
     category: 'common',
     attributes: {
