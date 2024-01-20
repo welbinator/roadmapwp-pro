@@ -1,13 +1,18 @@
 <?php
-// Hook into the filter provided by the free version
-add_filter( 'wp_roadmap_pro_add_taxonomy_feature', 'wp_roadmap_pro_custom_taxonomy_content' );
+/**
+ * This file handles the custom taxonomy management in the Pro version of the RoadMapWP plugin.
+ *
+ * @package RoadMapWP\Pro
+ */
+
+namespace RoadMapWP\Pro;
 
 /**
- * Outputs the HTML content for the custom taxonomy management in the Pro version.
+ * Outputs the HTML content for custom taxonomy management.
  *
- * @return string The HTML output for the custom taxonomy management.
+ * @return string The HTML output for custom taxonomy management.
  */
-function wp_roadmap_pro_custom_taxonomy_content() {
+function custom_taxonomy_content() {
 	ob_start();
 
 	// Flag to trigger JavaScript redirection
@@ -195,3 +200,5 @@ function wp_roadmap_pro_custom_taxonomy_content() {
 
 	return ob_get_clean();
 }
+
+add_filter( 'wp_roadmap_pro_add_taxonomy_feature', __NAMESPACE__ . '\\custom_taxonomy_content' );
