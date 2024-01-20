@@ -1,10 +1,21 @@
 <?php
 /**
  * Shortcode to display the roadmap.
- *
- * @return string The HTML output for displaying the roadmap.
+ * 
+ * This file contains a shortcode function that renders a roadmap layout
+ * with different statuses. It fetches ideas from a custom post type and
+ * displays them according to their assigned status.
  */
-function wp_roadmap_pro_roadmap_shortcode( $atts ) {
+
+namespace RoadMapWP\Shortcodes;
+
+/**
+ * Renders the roadmap layout with ideas sorted by status.
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string HTML output for displaying the roadmap.
+ */
+function roadmap_shortcode( $atts ) {
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_roadmap_shortcode_loaded', true );
 
@@ -72,7 +83,7 @@ function wp_roadmap_pro_roadmap_shortcode( $atts ) {
 						),
 					),
 				);
-				$query = new WP_Query( $args );
+				$query = new \WP_Query( $args );
 				?>
 				<div class="roadmap-column">
 					<h3 style="text-align:center;"><?php echo esc_html__( $status, 'roadmapwp-pro' ); ?></h3>
@@ -162,4 +173,4 @@ function wp_roadmap_pro_roadmap_shortcode( $atts ) {
 	<?php
 	return ob_get_clean(); // Return the buffered output
 }
-add_shortcode( 'roadmap', 'wp_roadmap_pro_roadmap_shortcode' );
+add_shortcode( 'roadmap', __NAMESPACE__ . '\\roadmap_shortcode' );
