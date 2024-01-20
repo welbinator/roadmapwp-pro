@@ -210,7 +210,7 @@ function wp_roadmap_pro_add_admin_menu() {
 		__( 'Settings', 'roadmapwp-pro' ),
 		'manage_options',
 		'wp-roadmap-settings',
-		'wp_roadmap_pro_settings_page'
+		'RoadMapWP\Pro\display_settings_page'
 	);
 
 	add_submenu_page(
@@ -219,7 +219,7 @@ function wp_roadmap_pro_add_admin_menu() {
 		__( 'Taxonomies', 'roadmapwp-pro' ), // menu title
 		'manage_options', // capability
 		'wp-roadmap-taxonomies', // menu slug
-		'wp_roadmap_pro_taxonomies_page' // function to display the page
+		'RoadMapWP\Pro\display_taxonomies_page' // function to display the page
 	);
 
 	add_submenu_page(
@@ -237,7 +237,7 @@ function wp_roadmap_pro_add_admin_menu() {
 		__( 'Help', 'roadmapwp-pro' ),
 		'manage_options',
 		'wp-roadmap-help',
-		'wp_roadmap_pro_help_page' // This is the function you created
+		'RoadMapWP\Pro\display_help_page' // This is the function you created
 	);
 
 	remove_submenu_page( 'roadmapwp-pro', 'roadmapwp-pro' );

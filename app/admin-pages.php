@@ -1,8 +1,18 @@
 <?php
 /**
- * Function to display WP RoadMap settings page.
+ * This file handles the settings, taxonomies, and help pages for RoadMapWP Pro.
+ *
+ * @package RoadMapWP\Pro
  */
-function wp_roadmap_pro_settings_page() {
+
+namespace RoadMapWP\Pro;
+
+/**
+ * Displays WP RoadMap settings page.
+ *
+ * @return void
+ */
+function display_settings_page() {
 	// Fetch current settings
 	$pro_options         = get_option( 'wp_roadmap_pro_settings', array( 'default_status_term' => 'new-idea' ) );
 	$status_terms        = get_terms(
@@ -227,10 +237,13 @@ function wp_roadmap_pro_settings_page() {
 }
 
 /**
- * Function to display the Taxonomies management page.
- * This function allows adding terms to the "Tags" taxonomy.
+ * Displays the Taxonomies management page.
+ *
+ * Allows adding terms to the "Tags" taxonomy.
+ *
+ * @return void
  */
-function wp_roadmap_pro_taxonomies_page() {
+function display_taxonomies_page() {
 	// Check if the current user has the 'manage_options' capability
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'roadmapwp-pro' ) );
@@ -243,7 +256,12 @@ function wp_roadmap_pro_taxonomies_page() {
 	echo $pro_feature;
 }
 
-function wp_roadmap_pro_help_page() {
+/**
+ * Displays the help page for RoadMapWP Pro.
+ *
+ * @return void
+ */
+function display_help_page() {
 	?>
 	<div class="wrap">
 	
