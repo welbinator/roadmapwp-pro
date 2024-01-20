@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
             url: RoadMapWPVotingAjax.ajax_url,
             type: 'post',
             data: {
-                action: 'wp_roadmap_handle_vote',
+                action: 'wp_ajax_' + 'wp_roadmap_pro_handle_vote',
                 post_id: post_id,
                 nonce: RoadMapWPVotingAjax.nonce
             },
