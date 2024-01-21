@@ -1,10 +1,21 @@
 <?php
 /**
  * Shortcode to display the roadmap.
- *
- * @return string The HTML output for displaying the roadmap.
+ * 
+ * This file contains a shortcode function that renders a roadmap layout
+ * with different statuses. It fetches ideas from a custom post type and
+ * displays them according to their assigned status.
  */
-function wp_roadmap_pro_roadmap_shortcode( $atts ) {
+
+namespace RoadMapWP\Shortcodes;
+
+/**
+ * Renders the roadmap layout with ideas sorted by status.
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string HTML output for displaying the roadmap.
+ */
+function roadmap_shortcode( $atts ) {
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_roadmap_shortcode_loaded', true );
 
@@ -36,9 +47,9 @@ function wp_roadmap_pro_roadmap_shortcode( $atts ) {
 	// Retrieve color settings
 	$pro_options            = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color   = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000';
+	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000';
+	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 
 	$num_statuses  = count( $statuses );
 	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 4
@@ -72,7 +83,7 @@ function wp_roadmap_pro_roadmap_shortcode( $atts ) {
 						),
 					),
 				);
-				$query = new WP_Query( $args );
+				$query = new \WP_Query( $args );
 				?>
 				<div class="roadmap-column">
 					<h3 style="text-align:center;"><?php echo esc_html__( $status, 'roadmapwp-pro' ); ?></h3>
@@ -94,7 +105,7 @@ function wp_roadmap_pro_roadmap_shortcode( $atts ) {
 										$term_link = get_term_link( $term );
 										if ( ! is_wp_error( $term_link ) ) :
 											?>
-											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 											<?php
 										endif;
 									endforeach;
@@ -162,4 +173,4 @@ function wp_roadmap_pro_roadmap_shortcode( $atts ) {
 	<?php
 	return ob_get_clean(); // Return the buffered output
 }
-add_shortcode( 'roadmap', 'wp_roadmap_pro_roadmap_shortcode' );
+add_shortcode( 'roadmap', __NAMESPACE__ . '\\roadmap_shortcode' );

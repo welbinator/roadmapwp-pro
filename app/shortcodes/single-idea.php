@@ -1,6 +1,21 @@
 <?php
-// single idea shortcode
-function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
+/**
+ * Shortcode to display a single idea.
+ * 
+ * This file contains the shortcode for displaying a detailed view of a single idea,
+ * including its title, content, and metadata such as vote count and taxonomy terms.
+ */
+
+namespace RoadMapWP\Shortcodes;
+
+/**
+ * Renders a single idea using a shortcode.
+ * 
+ * @param array $atts Shortcode attributes.
+ * @param bool $is_block Flag to indicate if called from a block.
+ * @return string HTML content of the single idea.
+ */
+function single_idea_shortcode($atts, $is_block = false) {
 	global $post;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );
@@ -9,15 +24,15 @@ function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
 	$post    = get_post( $idea_id );
 
 	if ( ! $post || $post->post_type !== 'idea' ) {
-		return '<p>' . esc_html__( 'Idea not found.', 'wp-roadmap' ) . '</p>';
+		return '<p>' . esc_html__( 'Idea not found.', 'roadmapwp-pro' ) . '</p>';
 	}
 
 	// Fetch options for styling (assumed to be saved in your options table)
 	$pro_options            = get_option( 'wp_roadmap_pro_settings', array() );
 	$vote_button_bg_color   = $pro_options['vote_button_bg_color'] ?? '#ff0000';
-	$vote_button_text_color = $pro_options['vote_button_text_color'] ?? '#000000';
+	$vote_button_text_color = $pro_options['vote_button_text_color'] ?? '#ffffff';
 	$filter_tags_bg_color   = $pro_options['filter_tags_bg_color'] ?? '#ff0000';
-	$filter_tags_text_color = $pro_options['filter_tags_text_color'] ?? '#000000';
+	$filter_tags_text_color = $pro_options['filter_tags_text_color'] ?? '#ffffff';
 
 	// Get vote count
 	$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
@@ -47,7 +62,7 @@ function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
 					$term_link = get_term_link( $term );
 					if ( ! is_wp_error( $term_link ) ) {
 						?>
-						<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+						<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 						<?php
 					}
 				}
@@ -82,7 +97,7 @@ function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
 			</div>
 
 			<footer class="entry-footer">
-				<?php edit_post_link( __( 'Edit', 'wp-roadmap' ), '<span class="edit-link">', '</span>', $post->ID ); ?>
+				<?php edit_post_link( __( 'Edit', 'roadmapwp-pro' ), '<span class="edit-link">', '</span>', $post->ID ); ?>
 			</footer>
 		</article>
 		</div>
@@ -95,4 +110,4 @@ function wp_roadmap_pro_single_idea_shortcode( $atts, $is_block = false ) {
 
 	return ob_get_clean();
 }
-add_shortcode( 'single_idea', 'wp_roadmap_pro_single_idea_shortcode' );
+add_shortcode('single_idea', 'RoadMapWP\Shortcodes\single_idea_shortcode');

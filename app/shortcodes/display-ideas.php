@@ -1,10 +1,24 @@
 <?php
 /**
+ * Shortcodes for Displaying Ideas in RoadMapWP Pro.
+ * 
+ * This file contains functions for shortcodes used in the RoadMapWP Pro plugin.
+ * These shortcodes are responsible for rendering and displaying ideas in various formats.
+ * 
+ * @package RoadMapWP\Pro\Shortcodes
+ */
+
+namespace RoadMapWP\Pro\Shortcodes;
+
+/**
  * Shortcode to display ideas.
+ *
+ * Outputs a collection of ideas in a grid or list format, depending on the implementation.
+ * This shortcode allows users to view ideas posted within the RoadMapWP Pro system.
  *
  * @return string The HTML output for displaying ideas.
  */
-function wp_roadmap_pro_display_ideas_shortcode() {
+function display_ideas_shortcode() {
 	// Flag to indicate the display ideas shortcode is loaded
 	update_option( 'wp_roadmap_ideas_shortcode_loaded', true );
 
@@ -24,9 +38,9 @@ function wp_roadmap_pro_display_ideas_shortcode() {
 	// Retrieve color settings
 	$pro_options            = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color   = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000';
+	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000';
+	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 	$filters_bg_color       = isset( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
 	// Check if the pro version is installed and settings are enabled
@@ -88,7 +102,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
 			'post_type'      => 'idea',
 			'posts_per_page' => -1, // Adjust as needed
 		);
-		$query = new WP_Query( $args );
+		$query = new \WP_Query( $args );
 
 		if ( $query->have_posts() ) :
 			?>
@@ -112,7 +126,7 @@ function wp_roadmap_pro_display_ideas_shortcode() {
 									$term_link = get_term_link( $term );
 									if ( ! is_wp_error( $term_link ) ) :
 										?>
-										<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+										<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 										<?php
 									endif;
 								endforeach;
@@ -187,4 +201,4 @@ function wp_roadmap_pro_display_ideas_shortcode() {
 	return ob_get_clean(); // Return the buffered output
 }
 
-add_shortcode( 'display_ideas', 'wp_roadmap_pro_display_ideas_shortcode' );
+add_shortcode( 'display_ideas', __NAMESPACE__ . '\\display_ideas_shortcode' );

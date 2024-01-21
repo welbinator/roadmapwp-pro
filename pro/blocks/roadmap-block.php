@@ -1,7 +1,15 @@
 <?php
-// Include in your plugin's main file or in the functions.php of your theme.
+/**
+ * This file handles the registration and rendering of the 'Roadmap Block' for the RoadMapWP Pro plugin.
+ * It includes functions to register the block and its script, as well as to render the block in the editor.
+ */
 
-function wp_roadmap_pro_register_roadmap_block() {
+namespace RoadMapWP\Pro\Blocks;
+
+/**
+ * Registers the 'Roadmap Block' and its associated script.
+ */
+function register_roadmap_block() {
 	// Register the block script
 	wp_register_script(
 		'roadmapwp-pro-roadmap-block',
@@ -14,15 +22,20 @@ function wp_roadmap_pro_register_roadmap_block() {
 		'roadmapwp-pro/roadmap-block',
 		array(
 			'editor_script'   => 'roadmapwp-pro-roadmap-block',
-			'render_callback' => 'wp_roadmap_pro_roadmap_block_render',
+			'render_callback' => 'RoadMapWP\Pro\Blocks\roadmap_block_render',
 		)
 	);
 }
 
-add_action( 'init', 'wp_roadmap_pro_register_roadmap_block' );
+add_action( 'init', 'RoadMapWP\Pro\Blocks\register_roadmap_block' );
 
-// The render callback function for the block
-function wp_roadmap_pro_roadmap_block_render( $attributes ) {
+/**
+ * Renders the 'Roadmap Block' in the block editor.
+ *
+ * @param array $attributes The attributes of the block.
+ * @return string The rendered HTML of the block.
+ */
+function roadmap_block_render( $attributes ) {
 	// Check if selectedStatuses attribute is set and is an array
 	if ( isset( $attributes['selectedStatuses'] ) && is_array( $attributes['selectedStatuses'] ) ) {
 		$selected_statuses = array_keys( array_filter( $attributes['selectedStatuses'] ) );
@@ -37,9 +50,9 @@ function wp_roadmap_pro_roadmap_block_render( $attributes ) {
 	// Retrieve color settings
 	$pro_options            = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color   = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000';
+	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000';
+	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 
 	$num_statuses  = count( $selected_statuses );
 	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 3
@@ -85,7 +98,7 @@ function wp_roadmap_pro_roadmap_block_render( $attributes ) {
 					$args['post_status'] = array( 'publish', 'pending' );
 				}
 
-				$query = new WP_Query( $args );
+				$query = new \WP_Query( $args );
 				?>
 
 				<div class="roadmap-column">
@@ -112,7 +125,7 @@ function wp_roadmap_pro_roadmap_block_render( $attributes ) {
 										$term_link = get_term_link( $term );
 										if ( ! is_wp_error( $term_link ) ) :
 											?>
-											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 											<?php
 										endif;
 									endforeach;

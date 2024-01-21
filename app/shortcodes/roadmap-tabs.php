@@ -1,5 +1,20 @@
 <?php
-function wp_roadmap_pro_roadmap_tabs_shortcode( $atts ) {
+/**
+ * RoadMapWP Pro Plugin - Roadmap Tabs Shortcode
+ *
+ * This file contains the shortcode [roadmap_tabs] which is used to display
+ * a tabbed interface for roadmap statuses in the RoadMapWP Pro plugin.
+ */
+
+namespace RoadMapWP\Pro;
+
+/**
+ * Shortcode to display roadmap tabs.
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string HTML output for the roadmap tabs.
+ */
+function roadmap_tabs_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'status'        => '',
@@ -43,9 +58,9 @@ function wp_roadmap_pro_roadmap_tabs_shortcode( $atts ) {
 
 	$pro_options             = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color    = ! empty( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '';
-	$vote_button_text_color  = ! empty( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '';
+	$vote_button_text_color  = ! empty( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color    = ! empty( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '';
-	$filter_tags_text_color  = ! empty( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '';
+	$filter_tags_text_color  = ! empty( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 	$filters_bg_color        = ! empty( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '';
 	$tabs_container_bg_color = ! empty( $pro_options['tabs_container_bg_color'] ) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
 	$tabs_text_color         = ! empty( $pro_options['tabs_text_color'] ) ? $pro_options['tabs_text_color'] : '#000000';
@@ -140,4 +155,4 @@ function wp_roadmap_pro_roadmap_tabs_shortcode( $atts ) {
 
 	return ob_get_clean(); // Return the buffered output
 }
-add_shortcode( 'roadmap_tabs', 'wp_roadmap_pro_roadmap_tabs_shortcode' );
+add_shortcode( 'roadmap_tabs', __NAMESPACE__ . '\\roadmap_tabs_shortcode' );

@@ -1,33 +1,52 @@
 <?php
-// Show or hide display ideas heading
-add_filter(
-	'wp_roadmap_hide_display_ideas_heading',
-	function ( $hide_display_ideas_heading ) {
-		$pro_options = get_option( 'wp_roadmap_pro_settings', array() );
-		return ! empty( $pro_options['hide_display_ideas_heading'] );
-	}
-);
+/**
+ * This file contains functions for managing display settings of idea headings in the RoadMapWP Pro plugin.
+ *
+ * @package RoadMapWP\Pro\Settings
+ */
 
-// Filter for custom display ideas heading text
-add_filter(
-	'wp_roadmap_custom_display_ideas_heading_text',
-	function ( $default_heading ) {
-		$pro_options = get_option( 'wp_roadmap_pro_settings', array() );
-		return ! empty( $pro_options['custom_display_ideas_heading'] ) ? $pro_options['custom_display_ideas_heading'] : $default_heading;
-	}
-);
+namespace RoadMapWP\Pro\Settings;
 
-// Filter for adding new heading text field in settings
-add_filter(
-	'wp_roadmap_hide_display_ideas_heading_setting',
-	function ( $content ) {
-		$pro_options                        = get_option( 'wp_roadmap_pro_settings', array() );
-		$hide_display_ideas_heading_checked = isset( $pro_options['hide_display_ideas_heading'] ) && $pro_options['hide_display_ideas_heading'] == '1' ? 'checked' : '';
-		$new_display_ideas_heading          = isset( $pro_options['custom_display_ideas_heading'] ) ? $pro_options['custom_display_ideas_heading'] : '';
+/**
+ * Determines whether to hide the display ideas heading based on the plugin settings.
+ *
+ * @param bool $hide_display_ideas_heading Current value of the setting.
+ * @return bool New value of the setting.
+ */
+function hide_display_ideas_heading( $hide_display_ideas_heading ) {
+    $pro_options = get_option( 'wp_roadmap_pro_settings', array() );
+    return ! empty( $pro_options['hide_display_ideas_heading'] );
+}
 
-		$content  = '<label>Hide Heading: </label>';
-		$content .= '<input type="checkbox" name="wp_roadmap_pro_settings[hide_display_ideas_heading]" id="hide_display_ideas_heading" value="1" ' . $hide_display_ideas_heading_checked . ' />';
-		$content .= '<br/>';
+add_filter( 'wp_roadmap_hide_display_ideas_heading', __NAMESPACE__ . '\\hide_display_ideas_heading' );
+
+/**
+ * Customizes the display ideas heading text based on the plugin settings.
+ *
+ * @param string $default_heading The default heading text.
+ * @return string New heading text.
+ */
+function custom_display_ideas_heading_text( $default_heading ) {
+    $pro_options = get_option( 'wp_roadmap_pro_settings', array() );
+    return ! empty( $pro_options['custom_display_ideas_heading'] ) ? $pro_options['custom_display_ideas_heading'] : $default_heading;
+}
+
+add_filter( 'wp_roadmap_custom_display_ideas_heading_text', __NAMESPACE__ . '\\custom_display_ideas_heading_text' );
+
+/**
+ * Adds new heading text field in the settings.
+ *
+ * @param string $content The current settings content.
+ * @return string Modified settings content with the new field.
+ */
+function hide_display_ideas_heading_setting( $content ) {
+    $pro_options                        = get_option( 'wp_roadmap_pro_settings', array() );
+    $hide_display_ideas_heading_checked = isset( $pro_options['hide_display_ideas_heading'] ) && $pro_options['hide_display_ideas_heading'] == '1' ? 'checked' : '';
+    $new_display_ideas_heading          = isset( $pro_options['custom_display_ideas_heading'] ) ? $pro_options['custom_display_ideas_heading'] : '';
+
+    $content  = '<label>Hide Heading: </label>';
+    $content .= '<input type="checkbox" name="wp_roadmap_pro_settings[hide_display_ideas_heading]" id="hide_display_ideas_heading" value="1" ' . $hide_display_ideas_heading_checked . ' />';
+    $content .= '<br/>';
 
 		// Add JavaScript to toggle the visibility of the label and input field based on checkbox state
 		$content .= '<script>
@@ -54,9 +73,10 @@ add_filter(
         });
     </script>';
 
-		$content .= '<label for="custom_display_ideas_heading">Custom Heading: </label>';
-		$content .= '<input type="text" name="wp_roadmap_pro_settings[custom_display_ideas_heading]" value="' . esc_attr( $new_display_ideas_heading ) . '" />';
+	$content .= '<label for="custom_display_ideas_heading">Custom Heading: </label>';
+    $content .= '<input type="text" name="wp_roadmap_pro_settings[custom_display_ideas_heading]" value="' . esc_attr( $new_display_ideas_heading ) . '" />';
 
-		return $content;
-	}
-);
+    return $content;
+}
+
+add_filter( 'wp_roadmap_hide_display_ideas_heading_setting', __NAMESPACE__ . '\\hide_display_ideas_heading_setting' );

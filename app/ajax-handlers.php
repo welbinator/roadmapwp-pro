@@ -1,8 +1,17 @@
 <?php
 /**
- * Ajax handling for voting functionality.
+ * Plugin Name: RoadMapWP Pro
+ * Description: Ajax handling for voting functionality and other interactions in RoadMapWP Pro.
+ * Version: 1.0
+ * Author: Your Name
  */
-function wp_roadmap_pro_handle_vote() {
+
+namespace RoadMapWP\Pro\Ajax;
+
+/**
+ * Handles voting functionality via AJAX.
+ */
+function handle_vote() {
 	check_ajax_referer( 'wp-roadmap-vote-nonce', 'nonce' );
 
 	$post_id = intval( $_POST['post_id'] );
@@ -40,13 +49,13 @@ function wp_roadmap_pro_handle_vote() {
 	wp_die();
 }
 
-add_action( 'wp_ajax_wp_roadmap_handle_vote', 'wp_roadmap_pro_handle_vote' );
-add_action( 'wp_ajax_nopriv_wp_roadmap_handle_vote', 'wp_roadmap_pro_handle_vote' );
+add_action( 'wp_ajax_wp_roadmap_handle_vote', __NAMESPACE__ . '\\handle_vote' );
+add_action( 'wp_ajax_nopriv_wp_roadmap_handle_vote', __NAMESPACE__ . '\\handle_vote' );
 
 /**
- * Handle AJAX requests for ideas filter.
+ * Handles AJAX requests for filtering ideas.
  */
-function wp_roadmap_pro_filter_ideas() {
+function filter_ideas() {
 	check_ajax_referer( 'wp-roadmap-idea-filter-nonce', 'nonce' );
 
 	$filter_data = $_POST['filter_data'];
@@ -58,9 +67,9 @@ function wp_roadmap_pro_filter_ideas() {
 	// Retrieve color settings
 	$pro_options            = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color   = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000';
+	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000';
+	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 	$filters_bg_color       = isset( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '#f5f5f5';
 
 	foreach ( $filter_data as $taxonomy => $data ) {
@@ -89,7 +98,7 @@ function wp_roadmap_pro_filter_ideas() {
 	$filter_tags_bg_color   = sanitize_hex_color( $pro_options['filter_tags_bg_color'] );
 	$filter_tags_text_color = sanitize_hex_color( $pro_options['filter_tags_text_color'] );
 
-	$query = new WP_Query( $args );
+	$query = new \WP_Query( $args );
 	if ( $query->have_posts() ) : ?>
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
 			<?php
@@ -102,7 +111,7 @@ function wp_roadmap_pro_filter_ideas() {
 					<div class="p-6">
 						<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 	
-						<p class="text-gray-500 mt-2 text-sm"><?php esc_html_e( 'Submitted on:', 'wp-roadmap' ); ?> <?php echo get_the_date(); ?></p>
+						<p class="text-gray-500 mt-2 text-sm"><?php esc_html_e( 'Submitted on:', 'roadmapwp-pro' ); ?> <?php echo get_the_date(); ?></p>
 						<div class="flex flex-wrap space-x-2 mt-2">
 							<?php
 							$terms = wp_get_post_terms( $idea_id, $display_taxonomies );
@@ -110,7 +119,7 @@ function wp_roadmap_pro_filter_ideas() {
 								$term_link = get_term_link( $term );
 								if ( ! is_wp_error( $term_link ) ) :
 									?>
-									<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>; color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+									<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>; color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
 									<?php
 								endif;
 							endforeach;
@@ -155,7 +164,7 @@ function wp_roadmap_pro_filter_ideas() {
 			<?php endwhile; ?>
 		</div>
 	<?php else : ?>
-		<p><?php esc_html_e( 'No ideas found.', 'wp-roadmap' ); ?></p>
+		<p><?php esc_html_e( 'No ideas found.', 'roadmapwp-pro' ); ?></p>
 		<?php
 	endif;
 
@@ -164,16 +173,18 @@ function wp_roadmap_pro_filter_ideas() {
 }
 
 
-add_action( 'wp_ajax_filter_ideas', 'wp_roadmap_pro_filter_ideas' );
-add_action( 'wp_ajax_nopriv_filter_ideas', 'wp_roadmap_pro_filter_ideas' );
+add_action( 'wp_ajax_filter_ideas', __NAMESPACE__ . '\\filter_ideas' );
+add_action( 'wp_ajax_nopriv_filter_ideas', __NAMESPACE__ . '\\filter_ideas' );
 
 
 
-// Handles the AJAX request for deleting a custom taxonomy
-function wp_roadmap_pro_handle_delete_custom_taxonomy() {
+/**
+ * Handles the AJAX request for deleting a custom taxonomy.
+ */
+function handle_delete_custom_taxonomy() {
 	// Check if the nonce and taxonomy parameters are set
 	if ( ! isset( $_POST['nonce'], $_POST['taxonomy'] ) ) {
-		wp_send_json_error( array( 'message' => __( 'Missing parameters.', 'wp-roadmap' ) ) );
+		wp_send_json_error( array( 'message' => __( 'Missing parameters.', 'roadmapwp-pro' ) ) );
 		return;
 	}
 
@@ -182,7 +193,7 @@ function wp_roadmap_pro_handle_delete_custom_taxonomy() {
 
 	// Verify the nonce
 	if ( ! wp_verify_nonce( $_POST['nonce'], 'wp_roadmap_delete_taxonomy_nonce' ) ) {
-		wp_send_json_error( array( 'message' => __( 'Nonce verification failed.', 'wp-roadmap' ) ) );
+		wp_send_json_error( array( 'message' => __( 'Nonce verification failed.', 'roadmapwp-pro' ) ) );
 		return;
 	}
 
@@ -195,14 +206,16 @@ function wp_roadmap_pro_handle_delete_custom_taxonomy() {
 		update_option( 'wp_roadmap_custom_taxonomies', $custom_taxonomies );
 		wp_send_json_success();
 	} else {
-		wp_send_json_error( array( 'message' => __( 'Taxonomy not found.', 'wp-roadmap' ) ) );
+		wp_send_json_error( array( 'message' => __( 'Taxonomy not found.', 'roadmapwp-pro' ) ) );
 	}
 }
-add_action( 'wp_ajax_delete_custom_taxonomy', 'wp_roadmap_pro_handle_delete_custom_taxonomy' );
+add_action( 'wp_ajax_delete_custom_taxonomy', __NAMESPACE__ . '\\handle_delete_custom_taxonomy' );
 
 
-// Handles the AJAX request for deleting selected terms
-function wp_roadmap_pro_handle_delete_selected_terms() {
+/**
+ * Handles the AJAX request for deleting selected terms.
+ */
+function handle_delete_selected_terms() {
 	check_ajax_referer( 'wp_roadmap_delete_terms_nonce', 'nonce' );
 
 	$taxonomy            = sanitize_text_field( $_POST['taxonomy'] );
@@ -225,10 +238,13 @@ function wp_roadmap_pro_handle_delete_selected_terms() {
 
 	wp_die(); // This is important to terminate immediately and return a proper response
 }
-add_action( 'wp_ajax_delete_selected_terms', 'wp_roadmap_pro_handle_delete_selected_terms' );
+add_action( 'wp_ajax_delete_selected_terms', __NAMESPACE__ . '\\handle_delete_selected_terms' );
 
 
-function wp_roadmap_pro_update_idea_status() {
+/**
+ * Updates idea status via AJAX.
+ */
+function update_idea_status() {
 	check_ajax_referer( 'wp-roadmap-admin-frontend-nonce', 'nonce' );
 
 	$idea_id  = isset( $_POST['idea_id'] ) ? intval( $_POST['idea_id'] ) : 0;
@@ -257,15 +273,18 @@ function wp_roadmap_pro_update_idea_status() {
 		wp_send_json_error( 'Invalid data' );
 	}
 }
-add_action( 'wp_ajax_update_idea_status', 'wp_roadmap_pro_update_idea_status' );
+add_action( 'wp_ajax_update_idea_status', __NAMESPACE__ . '\\update_idea_status' );
 
 
+/**
+ * Loads ideas for a given status via AJAX.
+ */
 function load_ideas_for_status() {
 	$pro_options            = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color   = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#000000';
+	$vote_button_text_color = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#000000';
+	$filter_tags_text_color = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
@@ -323,9 +342,7 @@ function load_ideas_for_status() {
 		'tax_query'      => $tax_query,
 	);
 
-	$query = new WP_Query( $args );
-
-	error_log( 'Number of ideas found: ' . $query->found_posts );
+	$query = new \WP_Query( $args );
 
 	ob_start();
 
@@ -362,7 +379,7 @@ function load_ideas_for_status() {
 								<?php foreach ( $tag_terms as $tag_term ) : ?>
 									<?php $tag_link = get_term_link( $tag_term, $tag_name ); // Get the term link ?>
 									<?php if ( ! is_wp_error( $tag_link ) ) : // Check if the link is valid ?>
-										<a href="<?php echo esc_url( $tag_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;">
+										<a href="<?php echo esc_url( $tag_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;">
 											<?php echo esc_html( $tag_term->name ); ?>
 										</a>
 									<?php endif; ?>
@@ -414,8 +431,8 @@ function load_ideas_for_status() {
 	$html = ob_get_clean();
 	wp_send_json_success( array( 'html' => $html ) );
 }
-add_action( 'wp_ajax_load_ideas_for_status', 'load_ideas_for_status' );
-add_action( 'wp_ajax_nopriv_load_ideas_for_status', 'load_ideas_for_status' );
+add_action( 'wp_ajax_load_ideas_for_status', __NAMESPACE__ . '\\load_ideas_for_status' );
+add_action( 'wp_ajax_nopriv_load_ideas_for_status', __NAMESPACE__ . '\\load_ideas_for_status' );
 
 
 

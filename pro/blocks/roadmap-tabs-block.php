@@ -1,7 +1,14 @@
 <?php
-// Include this file in your plugin's main file or functions.php of your theme.
+/**
+ * This file includes functions related to the registration and rendering of the 'Roadmap Tabs Block' for the RoadMapWP Pro plugin.
+ */
 
-function wp_roadmap_pro_register_roadmap_tabs_block() {
+namespace RoadMapWP\Pro\Blocks;
+
+/**
+ * Registers the 'Roadmap Tabs Block' and its associated script.
+ */
+function register_roadmap_tabs_block() {
 	// Register the block script
 	wp_register_script(
 		'roadmapwp-pro-roadmap-tabs-block',
@@ -14,15 +21,20 @@ function wp_roadmap_pro_register_roadmap_tabs_block() {
 		'roadmapwp-pro/roadmap-tabs-block',
 		array(
 			'editor_script'   => 'roadmapwp-pro-roadmap-tabs-block',
-			'render_callback' => 'wp_roadmap_pro_roadmap_tabs_block_render',
+			'render_callback' => 'RoadMapWP\Pro\Blocks\roadmap_tabs_block_render',
 		)
 	);
 }
 
-add_action( 'init', 'wp_roadmap_pro_register_roadmap_tabs_block' );
+add_action( 'init', 'RoadMapWP\Pro\Blocks\register_roadmap_tabs_block' );
 
-// The render callback function for the block
-function wp_roadmap_pro_roadmap_tabs_block_render( $attributes ) {
+/**
+ * Renders the 'Roadmap Tabs Block' in the block editor.
+ *
+ * @param array $attributes The attributes of the block.
+ * @return string The rendered HTML of the block.
+ */
+function roadmap_tabs_block_render( $attributes ) {
 	if ( ! isset( $attributes['selectedStatuses'] ) || ! is_array( $attributes['selectedStatuses'] ) ) {
 		return '<p>No statuses selected.</p>';
 	}
@@ -49,9 +61,9 @@ function wp_roadmap_pro_roadmap_tabs_block_render( $attributes ) {
 
 	$pro_options             = get_option( 'wp_roadmap_pro_settings' );
 	$vote_button_bg_color    = ! empty( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '';
-	$vote_button_text_color  = ! empty( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '';
+	$vote_button_text_color  = ! empty( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color    = ! empty( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '';
-	$filter_tags_text_color  = ! empty( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '';
+	$filter_tags_text_color  = ! empty( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
 	$filters_bg_color        = ! empty( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '';
 	$tabs_container_bg_color = ! empty( $pro_options['tabs_container_bg_color'] ) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
 	$tabs_text_color         = ! empty( $pro_options['tabs_text_color'] ) ? $pro_options['tabs_text_color'] : '#000000';

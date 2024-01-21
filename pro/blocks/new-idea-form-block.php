@@ -1,8 +1,15 @@
 <?php
 /**
- * Function to register the Gutenberg block for the New Idea Form.
+ * This file contains functions for registering and rendering the 'New Idea Form' block in the RoadMapWP Pro plugin.
+ * It includes functions to initialize the block, handle its rendering, and process form submissions.
  */
-function wp_roadmap_pro_new_idea_form_block_init() {
+
+namespace RoadMapWP\Pro\Blocks;
+
+/**
+ * Initializes the 'New Idea Form' block by registering its script and block type.
+ */
+function new_idea_form_block_init() {
 	// Register the block script
 	wp_register_script(
 		'roadmapwp-pro-new-idea-form-block',
@@ -15,17 +22,18 @@ function wp_roadmap_pro_new_idea_form_block_init() {
 		'roadmapwp-pro/new-idea-form',
 		array(
 			'editor_script'   => 'roadmapwp-pro-new-idea-form-block',
-			'render_callback' => 'wp_roadmap_pro_new_idea_form_render',
+			'render_callback' => 'RoadMapWP\Pro\Blocks\new_idea_form_render',
 		)
 	);
 }
 
 /**
- * Function to render the New Idea Form.
+ * Renders the 'New Idea Form' block.
  *
+ * @param array $attributes The block attributes.
  * @return string The HTML output for the new idea form.
  */
-function wp_roadmap_pro_new_idea_form_render( $attributes ) {
+function new_idea_form_render( $attributes ) {
 	update_option( 'wp_roadmap_new_idea_shortcode_loaded', true );
 
 	// Extract selected statuses from block attributes
@@ -111,13 +119,12 @@ function wp_roadmap_pro_new_idea_form_render( $attributes ) {
 }
 
 
-add_action( 'init', 'wp_roadmap_pro_new_idea_form_block_init' );
+add_action( 'init', 'RoadMapWP\Pro\Blocks\new_idea_form_block_init' );
 
 /**
-
-Function to handle the submission of the new idea form.
+ * Handles the submission of the new idea form block.
  */
-function wp_roadmap_pro_handle_new_idea_block_submission() {
+function handle_new_idea_block_submission() {
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) && wp_verify_nonce( $_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea' ) ) {
 		$title       = sanitize_text_field( $_POST['idea_title'] );
 		$description = sanitize_textarea_field( $_POST['idea_description'] );
@@ -167,4 +174,4 @@ function wp_roadmap_pro_handle_new_idea_block_submission() {
 		}
 	}
 }
-add_action( 'template_redirect', 'wp_roadmap_pro_handle_new_idea_block_submission' );
+add_action( 'template_redirect', 'RoadMapWP\Pro\Blocks\handle_new_idea_block_submission' );
