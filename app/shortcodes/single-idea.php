@@ -28,11 +28,11 @@ function single_idea_shortcode($atts, $is_block = false) {
 	}
 
 	// Fetch options for styling (assumed to be saved in your options table)
-	$pro_options            = get_option( 'wp_roadmap_pro_settings', array() );
-	$vote_button_bg_color   = $pro_options['vote_button_bg_color'] ?? '#ff0000';
-	$vote_button_text_color = $pro_options['vote_button_text_color'] ?? '#ffffff';
-	$filter_tags_bg_color   = $pro_options['filter_tags_bg_color'] ?? '#ff0000';
-	$filter_tags_text_color = $pro_options['filter_tags_text_color'] ?? '#ffffff';
+	$options            = get_option( 'wp_roadmap_settings', array() );
+	$vote_button_bg_color   = $options['vote_button_bg_color'] ?? '#ff0000';
+	$vote_button_text_color = $options['vote_button_text_color'] ?? '#ffffff';
+	$filter_tags_bg_color   = $options['filter_tags_bg_color'] ?? '#ff0000';
+	$filter_tags_text_color = $options['filter_tags_text_color'] ?? '#ffffff';
 
 	// Get vote count
 	$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';

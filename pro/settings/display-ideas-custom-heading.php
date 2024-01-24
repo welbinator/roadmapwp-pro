@@ -14,8 +14,8 @@ namespace RoadMapWP\Pro\Settings;
  * @return bool New value of the setting.
  */
 function hide_display_ideas_heading( $hide_display_ideas_heading ) {
-    $pro_options = get_option( 'wp_roadmap_pro_settings', array() );
-    return ! empty( $pro_options['hide_display_ideas_heading'] );
+    $options = get_option( 'wp_roadmap_settings', array() );
+    return ! empty( $options['hide_display_ideas_heading'] );
 }
 
 add_filter( 'wp_roadmap_hide_display_ideas_heading', __NAMESPACE__ . '\\hide_display_ideas_heading' );
@@ -27,8 +27,8 @@ add_filter( 'wp_roadmap_hide_display_ideas_heading', __NAMESPACE__ . '\\hide_dis
  * @return string New heading text.
  */
 function custom_display_ideas_heading_text( $default_heading ) {
-    $pro_options = get_option( 'wp_roadmap_pro_settings', array() );
-    return ! empty( $pro_options['custom_display_ideas_heading'] ) ? $pro_options['custom_display_ideas_heading'] : $default_heading;
+    $options = get_option( 'wp_roadmap_settings', array() );
+    return ! empty( $options['custom_display_ideas_heading'] ) ? $options['custom_display_ideas_heading'] : $default_heading;
 }
 
 add_filter( 'wp_roadmap_custom_display_ideas_heading_text', __NAMESPACE__ . '\\custom_display_ideas_heading_text' );
@@ -40,12 +40,12 @@ add_filter( 'wp_roadmap_custom_display_ideas_heading_text', __NAMESPACE__ . '\\c
  * @return string Modified settings content with the new field.
  */
 function hide_display_ideas_heading_setting( $content ) {
-    $pro_options                        = get_option( 'wp_roadmap_pro_settings', array() );
-    $hide_display_ideas_heading_checked = isset( $pro_options['hide_display_ideas_heading'] ) && $pro_options['hide_display_ideas_heading'] == '1' ? 'checked' : '';
-    $new_display_ideas_heading          = isset( $pro_options['custom_display_ideas_heading'] ) ? $pro_options['custom_display_ideas_heading'] : '';
+    $options                        = get_option( 'wp_roadmap_settings', array() );
+    $hide_display_ideas_heading_checked = isset( $options['hide_display_ideas_heading'] ) && $options['hide_display_ideas_heading'] == '1' ? 'checked' : '';
+    $new_display_ideas_heading          = isset( $options['custom_display_ideas_heading'] ) ? $options['custom_display_ideas_heading'] : '';
 
     $content  = '<label>Hide Heading: </label>';
-    $content .= '<input type="checkbox" name="wp_roadmap_pro_settings[hide_display_ideas_heading]" id="hide_display_ideas_heading" value="1" ' . $hide_display_ideas_heading_checked . ' />';
+    $content .= '<input type="checkbox" name="wp_roadmap_settings[hide_display_ideas_heading]" id="hide_display_ideas_heading" value="1" ' . $hide_display_ideas_heading_checked . ' />';
     $content .= '<br/>';
 
 		// Add JavaScript to toggle the visibility of the label and input field based on checkbox state
@@ -53,7 +53,7 @@ function hide_display_ideas_heading_setting( $content ) {
         document.addEventListener("DOMContentLoaded", function() {
             var checkbox = document.getElementById("hide_display_ideas_heading");
             var label = document.querySelector("label[for=\'custom_display_ideas_heading\']");
-            var input = document.querySelector("input[name=\'wp_roadmap_pro_settings[custom_display_ideas_heading]\']");
+            var input = document.querySelector("input[name=\'wp_roadmap_settings[custom_display_ideas_heading]\']");
 
             checkbox.addEventListener("change", function() {
                 if (checkbox.checked) {
@@ -74,7 +74,7 @@ function hide_display_ideas_heading_setting( $content ) {
     </script>';
 
 	$content .= '<label for="custom_display_ideas_heading">Custom Heading: </label>';
-    $content .= '<input type="text" name="wp_roadmap_pro_settings[custom_display_ideas_heading]" value="' . esc_attr( $new_display_ideas_heading ) . '" />';
+    $content .= '<input type="text" name="wp_roadmap_settings[custom_display_ideas_heading]" value="' . esc_attr( $new_display_ideas_heading ) . '" />';
 
     return $content;
 }

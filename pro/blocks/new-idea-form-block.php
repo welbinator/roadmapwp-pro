@@ -128,12 +128,12 @@ function handle_new_idea_block_submission() {
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) && wp_verify_nonce( $_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea' ) ) {
 		$title       = sanitize_text_field( $_POST['idea_title'] );
 		$description = sanitize_textarea_field( $_POST['idea_description'] );
-		$pro_options = get_option( 'wp_roadmap_pro_settings', array() );
+		$options = get_option( 'wp_roadmap_settings', array() );
 
 		// default post status
-		$default_wp_post_status = isset( $pro_options['default_wp_post_status'] ) ? $pro_options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
+		$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
 		// Default status term from settings
-		$default_idea_status_term = isset( $pro_options['default_status_term'] ) ? $pro_options['default_status_term'] : 'new-idea';
+		$default_idea_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 		$idea_id = wp_insert_post(
 			array(

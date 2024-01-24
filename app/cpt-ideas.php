@@ -12,7 +12,7 @@ namespace RoadMapWP\Pro;
  * Register the custom post type.
  */
 function register_idea_post_type() {
-	$pro_options = get_option( 'wp_roadmap_pro_settings' );
+	$options = get_option( 'wp_roadmap_settings' );
 
 	$supports = array( 'title', 'editor', 'author' ); // include 'comments' support.
 

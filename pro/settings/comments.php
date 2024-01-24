@@ -14,10 +14,10 @@ namespace RoadMapWP\Pro;
  * @return string Modified HTML with the checkbox for enabling comments.
  */
 function enable_comments( $content ) {
-    $pro_options    = get_option( 'wp_roadmap_pro_settings', array() );
-    $allow_comments = isset( $pro_options['allow_comments'] ) ? $pro_options['allow_comments'] : '';
+    $options    = get_option( 'wp_roadmap_settings', array() );
+    $allow_comments = isset( $options['allow_comments'] ) ? $options['allow_comments'] : '';
 
-    $html = '<input type="checkbox" name="wp_roadmap_pro_settings[allow_comments]" value="1"' . checked( 1, $allow_comments, false ) . '/>';
+    $html = '<input type="checkbox" name="wp_roadmap_settings[allow_comments]" value="1"' . checked( 1, $allow_comments, false ) . '/>';
     return $html;
 }
 

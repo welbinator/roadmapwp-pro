@@ -287,10 +287,10 @@ function license_page() {
  */
 function filter_comments_open( $open, $post_id ) {
 	$post        = get_post( $post_id );
-	$pro_options = get_option( 'wp_roadmap_pro_settings' );
+	$options = get_option( 'wp_roadmap_settings' );
 
 	if ( $post->post_type == 'idea' ) {
-		return isset( $pro_options['allow_comments'] ) && $pro_options['allow_comments'] == 1;
+		return isset( $options['allow_comments'] ) && $options['allow_comments'] == 1;
 	}
 	return $open;
 }
@@ -300,9 +300,9 @@ function redirect_single_idea( $template ) {
 	global $post;
 
 	if ( 'idea' === $post->post_type ) {
-		$pro_options         = get_option( 'wp_roadmap_pro_settings' );
-		$single_idea_page_id = isset( $pro_options['single_idea_page'] ) ? $pro_options['single_idea_page'] : '';
-		$chosen_template     = isset( $pro_options['single_idea_template'] ) ? $pro_options['single_idea_template'] : 'plugin';
+		$options         = get_option( 'wp_roadmap_settings' );
+		$single_idea_page_id = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
+		$chosen_template     = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
 
 	}
 

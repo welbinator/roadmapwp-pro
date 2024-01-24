@@ -89,10 +89,10 @@ function handle_new_idea_submission() {
 		$title       = sanitize_text_field( $_POST['idea_title'] );
 		$description = sanitize_textarea_field( $_POST['idea_description'] );
 
-		$pro_options = get_option( 'wp_roadmap_pro_settings', array() );
+		$options = get_option( 'wp_roadmap_settings', array() );
 		// Retrieve the WordPress default post status setting
-		$default_wp_post_status   = isset( $pro_options['default_wp_post_status'] ) ? $pro_options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
-		$default_idea_status_term = isset( $pro_options['default_status_term'] ) ? $pro_options['default_status_term'] : 'new-idea'; // Replace 'new-idea' with your actual default term slug
+		$default_wp_post_status   = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
+		$default_idea_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea'; // Replace 'new-idea' with your actual default term slug
 
 		$idea_id = wp_insert_post(
 			array(
