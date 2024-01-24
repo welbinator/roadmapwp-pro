@@ -14,38 +14,38 @@ namespace RoadMapWP\Pro;
  */
 function display_settings_page() {
 	// Fetch current settings
-	$pro_options         = get_option( 'wp_roadmap_pro_settings', array( 'default_status_term' => 'new-idea' ) );
+	$options         = get_option( 'wp_roadmap_settings', array( 'default_status_term' => 'new-idea' ) );
 	$status_terms        = get_terms(
 		array(
 			'taxonomy'   => 'status',
 			'hide_empty' => false,
 		)
 	);
-	$selected_page       = isset( $pro_options['single_idea_page'] ) ? $pro_options['single_idea_page'] : '';
-	$default_status_term = isset( $pro_options['default_status_term'] ) ? $pro_options['default_status_term'] : 'new-idea';
+	$selected_page       = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
+	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 	// New Styling Section
-	$vote_button_bg_color    = isset( $pro_options['vote_button_bg_color'] ) ? $pro_options['vote_button_bg_color'] : '#0000ff';
-	$vote_button_text_color  = isset( $pro_options['vote_button_text_color'] ) ? $pro_options['vote_button_text_color'] : '#ffffff';
-	$filter_tags_bg_color    = isset( $pro_options['filter_tags_bg_color'] ) ? $pro_options['filter_tags_bg_color'] : '#0000ff';
-	$filter_tags_text_color  = isset( $pro_options['filter_tags_text_color'] ) ? $pro_options['filter_tags_text_color'] : '#ffffff';
-	$filters_bg_color        = isset( $pro_options['filters_bg_color'] ) ? $pro_options['filters_bg_color'] : '#f5f5f5';
-	$tabs_container_bg_color = isset( $pro_options['tabs_container_bg_color'] ) ? $pro_options['tabs_container_bg_color'] : '#dddddd';
-	$tabs_button_bg_color    = isset( $pro_options['tabs_button_bg_color'] ) ? $pro_options['tabs_button_bg_color'] : '#ffffff';
-	$tabs_text_color         = isset( $pro_options['tabs_text_color'] ) ? $pro_options['tabs_text_color'] : '#000000';
+	$vote_button_bg_color    = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#0000ff';
+	$vote_button_text_color  = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
+	$filter_tags_bg_color    = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#0000ff';
+	$filter_tags_text_color  = isset( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
+	$filters_bg_color        = isset( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '#f5f5f5';
+	$tabs_container_bg_color = isset( $options['tabs_container_bg_color'] ) ? $options['tabs_container_bg_color'] : '#dddddd';
+	$tabs_button_bg_color    = isset( $options['tabs_button_bg_color'] ) ? $options['tabs_button_bg_color'] : '#ffffff';
+	$tabs_text_color         = isset( $options['tabs_text_color'] ) ? $options['tabs_text_color'] : '#000000';
 
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 		<form action="options.php" method="post">
 		<?php
-		settings_fields( 'wp_roadmap_pro_settings' );
-		do_settings_sections( 'wp_roadmap_pro_settings' );
-		wp_nonce_field( 'wp_roadmap_pro_settings_action', 'wp_roadmap_pro_settings_nonce' );
+		settings_fields( 'wp_roadmap_settings' );
+		do_settings_sections( 'wp_roadmap_settings' );
+		wp_nonce_field( 'wp_roadmap_settings_action', 'wp_roadmap_settings_nonce' );
 		?>
 			<?php
-			settings_fields( 'wp_roadmap_pro_settings' );
-			do_settings_sections( 'wp_roadmap_pro_settings' );
+			settings_fields( 'wp_roadmap_settings' );
+			do_settings_sections( 'wp_roadmap_settings' );
 			?>
 
 			<table class="form-table">
@@ -54,7 +54,7 @@ function display_settings_page() {
 			<tr valign="top">
 				<th scope="row"><?php esc_html_e( 'Set Default Status Term for New Ideas', 'roadmapwp-pro' ); ?></th>
 				<td>
-					<select name="wp_roadmap_pro_settings[default_status_term]">
+					<select name="wp_roadmap_settings[default_status_term]">
 						<?php foreach ( $status_terms as $term ) : ?>
 							<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $default_status_term, $term->slug ); ?>>
 								<?php echo esc_html( $term->name ); ?>
@@ -138,7 +138,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Vote Button Background Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[vote_button_bg_color]" value="<?php echo esc_attr( $vote_button_bg_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[vote_button_bg_color]" value="<?php echo esc_attr( $vote_button_bg_color ); ?>" class="wp-roadmap-color-picker"/>
 						
 					</td>
 				</tr>
@@ -147,7 +147,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Vote Button Text Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[vote_button_text_color]" value="<?php echo esc_attr( $vote_button_text_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[vote_button_text_color]" value="<?php echo esc_attr( $vote_button_text_color ); ?>" class="wp-roadmap-color-picker"/>
 					   
 					</td>
 					
@@ -162,7 +162,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Filter Tags Background Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[filter_tags_bg_color]" value="<?php echo esc_attr( $filter_tags_bg_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[filter_tags_bg_color]" value="<?php echo esc_attr( $filter_tags_bg_color ); ?>" class="wp-roadmap-color-picker"/>
 						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
 					</td>
 				</tr>
@@ -171,7 +171,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Filter Tags Text Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[filter_tags_text_color]" value="<?php echo esc_attr( $filter_tags_text_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[filter_tags_text_color]" value="<?php echo esc_attr( $filter_tags_text_color ); ?>" class="wp-roadmap-color-picker"/>
 						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
 					</td>
 				</tr>
@@ -180,7 +180,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Filters Background Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[filters_bg_color]" value="<?php echo esc_attr( $filters_bg_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[filters_bg_color]" value="<?php echo esc_attr( $filters_bg_color ); ?>" class="wp-roadmap-color-picker"/>
 						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
 					</td>
 				</tr>
@@ -194,7 +194,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Roadmap Tabs Container Background Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[tabs_container_bg_color]" value="<?php echo esc_attr( $tabs_container_bg_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[tabs_container_bg_color]" value="<?php echo esc_attr( $tabs_container_bg_color ); ?>" class="wp-roadmap-color-picker"/>
 						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
 					</td>
 				</tr>
@@ -203,7 +203,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Roadmap Tabs Background Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[tabs_button_bg_color]" value="<?php echo esc_attr( $tabs_button_bg_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[tabs_button_bg_color]" value="<?php echo esc_attr( $tabs_button_bg_color ); ?>" class="wp-roadmap-color-picker"/>
 						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
 					</td>
 				</tr>
@@ -212,7 +212,7 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Roadmap Tabs Text Color', 'roadmapwp-pro' ); ?></th>
 					<td>
-						<input type="text" name="wp_roadmap_pro_settings[tabs_text_color]" value="<?php echo esc_attr( $tabs_text_color ); ?>" class="wp-roadmap-color-picker"/>
+						<input type="text" name="wp_roadmap_settings[tabs_text_color]" value="<?php echo esc_attr( $tabs_text_color ); ?>" class="wp-roadmap-color-picker"/>
 						<!-- <button type="button" class="wp-roadmap-reset-color" data-default-color="#0000ff">Reset</button> -->
 					</td>
 				</tr>

@@ -15,11 +15,11 @@ namespace RoadMapWP\Pro\Settings;
  */
 function default_idea_status_setting( $content ) {
 	// Fetch the current settings
-	$pro_options            = get_option( 'wp_roadmap_pro_settings', array() );
-	$default_wp_post_status = isset( $pro_options['default_wp_post_status'] ) ? $pro_options['default_wp_post_status'] : 'pending';
+	$options            = get_option( 'wp_roadmap_settings', array() );
+	$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending';
 
 	// Create the HTML for the dropdown
-	$html     = '<select name="wp_roadmap_pro_settings[default_wp_post_status]">';
+	$html     = '<select name="wp_roadmap_settings[default_wp_post_status]">';
 	$statuses = array(
 		'publish' => 'Publish',
 		'pending' => 'Pending Review',

@@ -3,7 +3,7 @@
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     2.0.2
+Version:     2.0.3
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
@@ -47,7 +47,7 @@ $edd_updater = new EDD_SL_Plugin_Updater(
 	ROADMAPWP_PRO_STORE_URL,
 	__FILE__,
 	array(
-		'version' => '2.0.2',     // current version number
+		'version' => '2.0.3',     // current version number
 		'license' => $license_key,    // license key (used get_option above to retrieve from DB)
 		'item_id' => ROADMAPWP_PRO_ITEM_ID,   // id of this plugin
 		'author'  => 'James Welbes',  // author of this plugin
@@ -465,8 +465,8 @@ function wp_roadmap_pro_custom_template( $template ) {
 	global $post;
 
 	if ( 'idea' === $post->post_type ) {
-		$pro_options          = get_option( 'wp_roadmap_pro_settings' );
-		$chosen_idea_template = isset( $pro_options['single_idea_template'] ) ? $pro_options['single_idea_template'] : 'plugin';
+		$options          = get_option( 'wp_roadmap_settings' );
+		$chosen_idea_template = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
 
 		if ( $chosen_idea_template === 'plugin' && file_exists( plugin_dir_path( __FILE__ ) . 'app/templates/template-single-idea.php' ) ) {
 			return plugin_dir_path( __FILE__ ) . 'app/templates/template-single-idea.php';
