@@ -4,7 +4,7 @@
  * It includes the registration of custom blocks and enqueuing of necessary scripts for the block editor.
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Blocks;
 
 /**
  * Registers custom blocks for the RoadMapWP Pro plugin.
@@ -21,7 +21,7 @@ function register_blocks() {
 
 	// Register each block
 	$blocks = array(
-		'display-ideas' => 'RoadMapWP\Pro\Shortcodes\display_ideas_shortcode',
+		'display-ideas' => 'RoadMapWP\Pro\Shortcodes\DisplayIdeas\display_ideas_shortcode',
 	);
 
 	register_block_type(
@@ -29,7 +29,7 @@ function register_blocks() {
 		array(
 			'editor_script'   => 'roadmapwp-pro-blocks',
 			'render_callback' => function ( $atts ) {
-				return \RoadMapWP\Shortcodes\single_idea_shortcode( $atts, true );
+				return \RoadMapWP\Pro\Shortcodes\SingleIdea\single_idea_shortcode( $atts, true );
  // Passing true for the $is_block parameter
 			},
 		)
@@ -46,7 +46,7 @@ function register_blocks() {
 	}
 }
 
-add_action( 'init', 'RoadMapWP\Pro\register_blocks' );
+add_action( 'init', __NAMESPACE__ . '\register_blocks' );
 
 
 /**
@@ -87,4 +87,4 @@ function enqueue_block_editor_assets() {
 	}
 }
 
-add_action( 'enqueue_block_editor_assets', 'RoadMapWP\Pro\enqueue_block_editor_assets' );
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );

@@ -2,10 +2,10 @@
 /**
  * This file adds functionality to enable or disable comments on ideas in the RoadMapWP Pro plugin.
  *
- * @package RoadMapWP\Pro
+ * @package RoadMapWP\Pro\Settings\Comments
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Settings\Comments;
 
 /**
  * Enables or disables comments on ideas.

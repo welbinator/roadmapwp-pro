@@ -2,10 +2,10 @@
 /**
  * This file handles the registration of default status settings in the RoadMapWP Pro plugin.
  *
- * @package RoadMapWP\Pro
+ * @package RoadMapWP\Pro\Settings\DefaultStatus
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Settings\DefaultStatus;
 
 /**
  * Registers the default status setting for the RoadMapWP Pro plugin.

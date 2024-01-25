@@ -5,10 +5,10 @@
  * This file contains functions for shortcodes used in the RoadMapWP Pro plugin.
  * These shortcodes are responsible for rendering and displaying ideas in various formats.
  * 
- * @package RoadMapWP\Pro\Shortcodes
+ * @package RoadMapWP\Pro\Shortcodes\DisplayIdeas
  */
 
-namespace RoadMapWP\Pro\Shortcodes;
+namespace RoadMapWP\Pro\Shortcodes\DisplayIdeas;
 
 /**
  * Shortcode to display ideas.

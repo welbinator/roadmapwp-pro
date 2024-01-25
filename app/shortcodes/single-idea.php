@@ -6,7 +6,7 @@
  * including its title, content, and metadata such as vote count and taxonomy terms.
  */
 
-namespace RoadMapWP\Shortcodes;
+namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 
 /**
  * Renders a single idea using a shortcode.
@@ -110,4 +110,4 @@ function single_idea_shortcode($atts, $is_block = false) {
 
 	return ob_get_clean();
 }
-add_shortcode('single_idea', 'RoadMapWP\Shortcodes\single_idea_shortcode');
+add_shortcode('single_idea', __NAMESPACE__ . '\single_idea_shortcode');

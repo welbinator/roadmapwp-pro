@@ -2,10 +2,10 @@
 /**
  * This file handles the custom taxonomy management in the Pro version of the RoadMapWP plugin.
  *
- * @package RoadMapWP\Pro
+ * @package RoadMapWP\Pro\Settings\Taxonomies
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Settings\Taxonomies;
 
 /**
  * Outputs the HTML content for custom taxonomy management.

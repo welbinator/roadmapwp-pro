@@ -2,10 +2,10 @@
 /**
  * This file contains functionality for setting the default status of new ideas in the RoadMapWP Pro plugin.
  *
- * @package RoadMapWP\Pro\Settings
+ * @package RoadMapWP\Pro\Settings\IdeaDefaultPostStatus
  */
 
-namespace RoadMapWP\Pro\Settings;
+namespace RoadMapWP\Pro\Settings\IdeaDefaultPostStatus;
 
 /**
  * Adds a setting to the settings page for setting the default status of new ideas.

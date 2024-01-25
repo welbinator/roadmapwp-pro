@@ -8,7 +8,7 @@
  * users to interact with the 'idea' custom post type within the plugin.
  */
 
- namespace RoadMapWP\Pro\Shortcodes;
+ namespace RoadMapWP\Pro\Shortcodes\NewIdeaForm;
 
 /**
  * Shortcode to display the new idea submission form.
@@ -16,7 +16,7 @@
  * @return string The HTML output for the new idea form.
  */
 function new_idea_form_shortcode() {
-	update_option( 'wp_roadmap_new_idea_shortcode_loaded', true );
+	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	$output = '';
 

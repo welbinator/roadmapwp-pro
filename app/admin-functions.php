@@ -1,19 +1,19 @@
 <?php
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Admin\Functions;
 
 /**
- * Check for the presence of specific shortcodes on the page and set options for enqueuing CSS files.
+ * Checks if the 'new_idea_form' shortcode is present on the current page.
+ * Sets an option for enqueuing related CSS files if the shortcode is found.
  */
-
-function check_for_new_idea_shortcode() {
+function check_for_new_idea_form_shortcode() {
 	global $post;
 
 	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'new_idea_form' ) ) {
-		update_option( 'wp_roadmap_new_idea_shortcode_loaded', true );
+		update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 	}
 }
-add_action( 'wp', __NAMESPACE__ . '\\check_for_new_idea_shortcode' );
+add_action( 'wp', __NAMESPACE__ . '\\check_for_new_idea_form_shortcode' );
 
 /**
  * Checks if the 'display_ideas' shortcode is present on the current page.
@@ -204,80 +204,45 @@ function add_admin_menu() {
 
 	add_submenu_page(
 		'roadmapwp-pro',
-		__( 'Settings', 'roadmapwp-pro' ),
-		__( 'Settings', 'roadmapwp-pro' ),
+		__('Settings', 'roadmapwp-pro'),
+		__('Settings', 'roadmapwp-pro'),
 		'manage_options',
 		'wp-roadmap-settings',
-		'RoadMapWP\Pro\display_settings_page'
+		'RoadMapWP\Pro\Admin\Pages\display_settings_page'
 	);
-
+	
 	add_submenu_page(
 		'roadmapwp-pro', // parent slug
-		__( 'Taxonomies', 'roadmapwp-pro' ), // page title
-		__( 'Taxonomies', 'roadmapwp-pro' ), // menu title
+		__('Taxonomies', 'roadmapwp-pro'), // page title
+		__('Taxonomies', 'roadmapwp-pro'), // menu title
 		'manage_options', // capability
 		'wp-roadmap-taxonomies', // menu slug
-		'RoadMapWP\Pro\display_taxonomies_page' // function to display the page
+		'RoadMapWP\Pro\Admin\Pages\display_taxonomies_page' // function to display the page
 	);
-
+	
 	add_submenu_page(
 		'roadmapwp-pro',
-		__( 'License', 'roadmapwp-pro' ),
-		__( 'License', 'roadmapwp-pro' ),
+		__('License', 'roadmapwp-pro'),
+		__('License', 'roadmapwp-pro'),
 		'manage_options',
-		'roadmapwp-license', // You can use a constant here if defined
-		'RoadMapWP\Pro\license_page' // Ensure this function exists and renders the license page
+		'roadmapwp-license',
+		'RoadMapWP\Pro\Admin\Pages\license_page'
 	);
-
+	
 	add_submenu_page(
 		'roadmapwp-pro',
-		__( 'Help', 'roadmapwp-pro' ),
-		__( 'Help', 'roadmapwp-pro' ),
+		__('Help', 'roadmapwp-pro'),
+		__('Help', 'roadmapwp-pro'),
 		'manage_options',
 		'wp-roadmap-help',
-		'RoadMapWP\Pro\display_help_page' // This is the function you created
+		'RoadMapWP\Pro\Admin\Pages\display_help_page'
 	);
+	
 
 	remove_submenu_page( 'roadmapwp-pro', 'roadmapwp-pro' );
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\\add_admin_menu' );
 
-/**
- * Adds the plugin license page to the admin menu.
- *
- * @return void
- */
-function license_page() {
-
-	add_settings_section(
-		'roadmapwp_pro_license',
-		__( 'License' ),
-		'roadmapwp_pro_license_key_settings_section',
-		ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE
-	);
-
-	add_settings_field(
-		'roadmapwp_pro_license_key',
-		'<label for="roadmapwp_pro_license_key">' . __( 'License Key' ) . '</label>',
-		'roadmapwp_pro_license_key_settings_field',
-		ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE,
-		'roadmapwp_pro_license',
-	);
-
-	?>
-	<div class="wrap">
-		<h2><?php esc_html_e( 'License Options' ); ?></h2>
-		<form method="post" action="options.php">
-
-			<?php
-			do_settings_sections( ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE );
-			settings_fields( 'roadmapwp_pro_license' );
-			submit_button();
-			?>
-
-		</form>
-	<?php
-}
 /**
  * Dynamically enables or disables comments on 'idea' post types.
  *
