@@ -1,10 +1,4 @@
 <?php
-/**
- * Plugin Name: RoadMapWP Pro
- * Description: Functionality for managing custom post types and taxonomies in RoadMapWP Pro.
- * Version: 1.0
- * Author: Your Name
- */
 
 namespace RoadMapWP\Pro\CPT;
 
