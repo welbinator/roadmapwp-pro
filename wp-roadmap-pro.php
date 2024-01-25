@@ -11,6 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: roadmapwp-pro
 */
 
+
 // This function will be called when the Pro version is activated.
 function rmwp_pro_activate() {
 	// Check if the free version is active
