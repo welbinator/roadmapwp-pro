@@ -1,5 +1,4 @@
 <?php
-namespace RoadMapWP\Pro;
 /*
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
@@ -13,7 +12,7 @@ Text Domain: roadmapwp-pro
 */
 
 // This function will be called when the Pro version is activated.
-function activate() {
+function rmwp_pro_activate() {
 	// Check if the free version is active
 	include_once ABSPATH . 'wp-admin/includes/plugin.php';
 	if ( is_plugin_active( 'roadmapwp-free/wp-roadmap.php' ) ) {
@@ -24,13 +23,13 @@ function activate() {
 }
 
 // Register the activation hook for the Pro version
-register_activation_hook( __FILE__, __NAMESPACE__ . '\activate' );
+register_activation_hook( __FILE__, 'rmwp_pro_activate' );
 
 
 /**
  * This is a means of catching errors from the activation method above and displaying it to the customer
  */
-function admin_notices() {
+function rmwp_pro_admin_notices() {
 	if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['message'] ) ) {
 
 		switch ( $_GET['sl_activation'] ) {
@@ -52,7 +51,7 @@ function admin_notices() {
 		}
 	}
 }
-add_action( 'admin_notices', __NAMESPACE__ . '\admin_notices' );
+add_action( 'admin_notices', 'rmwp_pro_admin_notices' );
 
 define( 'WP_ROADMAP_PRO', __FILE__ );
 
@@ -106,7 +105,7 @@ require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap-tabs.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/single-idea.php';
 
-function on_activation() {
+function rmwp_pro_on_activation() {
 	// Directly call the function that registers your taxonomies here
 	\RoadMapWP\Pro\CPT\register_default_idea_taxonomies();
 
@@ -122,9 +121,9 @@ function on_activation() {
 	}
 }
 
-register_activation_hook( __FILE__, __NAMESPACE__ . '\on_activation' );
+register_activation_hook( __FILE__, 'rmwp_pro_on_activation' );
 
-function custom_template( $template ) {
+function rmwp_pro_custom_template( $template ) {
 	global $post;
 
 	if ( 'idea' === $post->post_type ) {
@@ -139,9 +138,9 @@ function custom_template( $template ) {
 	return $template;
 }
 
-add_filter( 'single_template', __NAMESPACE__ . '\custom_template' );
+add_filter( 'single_template', 'rmwp_pro_custom_template' );
 
-function log_all_status_terms() {
+function rmwp_pro_log_all_status_terms() {
 	$terms = get_terms(
 		array(
 			'taxonomy'   => 'status',
@@ -149,4 +148,4 @@ function log_all_status_terms() {
 		)
 	);
 }
-add_action( 'init', __NAMESPACE__ . '\log_all_status_terms' );
+add_action( 'init', 'rmwp_pro_log_all_status_terms' );
