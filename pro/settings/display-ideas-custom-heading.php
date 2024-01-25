@@ -2,10 +2,10 @@
 /**
  * This file contains functions for managing display settings of idea headings in the RoadMapWP Pro plugin.
  *
- * @package RoadMapWP\Pro\Settings
+ * @package RoadMapWP\Pro\Settings\DisplayIdeas\CustomHeading
  */
 
-namespace RoadMapWP\Pro\Settings;
+namespace RoadMapWP\Pro\Settings\DisplayIdeasCustomHeading;
 
 /**
  * Determines whether to hide the display ideas heading based on the plugin settings.

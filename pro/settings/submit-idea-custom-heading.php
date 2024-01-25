@@ -2,10 +2,10 @@
 /**
  * This file contains filters to modify the idea heading settings in RoadMapWP Pro.
  *
- * @package RoadMapWP\Pro\IdeaHeading
+ * @package RoadMapWP\Pro\Settings\SubmitIdeaCustomHeading
  */
 
-namespace RoadMapWP\Pro\IdeaHeading;
+namespace RoadMapWP\Pro\Settings\SubmitIdeaCustomHeading;
 
 /**
  * Determines whether to hide the custom idea heading based on settings.

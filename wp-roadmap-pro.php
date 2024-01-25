@@ -406,7 +406,7 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments.php';
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
 
 // Include default idea status feature
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-status.php';
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-post-status.php';
 
 // Include choose idea template feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
@@ -433,10 +433,11 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-he
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
 // Include necessary files
+require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-functions.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/cpt-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/ajax-handlers.php';
-require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
+
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/new-idea-form.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';

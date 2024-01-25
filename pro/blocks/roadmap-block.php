@@ -4,7 +4,7 @@
  * It includes functions to register the block and its script, as well as to render the block in the editor.
  */
 
-namespace RoadMapWP\Pro\Blocks;
+namespace RoadMapWP\Pro\Blocks\Roadmap;
 
 /**
  * Registers the 'Roadmap Block' and its associated script.
@@ -22,12 +22,12 @@ function register_roadmap_block() {
 		'roadmapwp-pro/roadmap-block',
 		array(
 			'editor_script'   => 'roadmapwp-pro-roadmap-block',
-			'render_callback' => 'RoadMapWP\Pro\Blocks\roadmap_block_render',
+			'render_callback' => __NAMESPACE__ . '\roadmap_block_render',
 		)
 	);
 }
 
-add_action( 'init', 'RoadMapWP\Pro\Blocks\register_roadmap_block' );
+add_action( 'init', __NAMESPACE__ . '\register_roadmap_block' );
 
 /**
  * Renders the 'Roadmap Block' in the block editor.

@@ -3,7 +3,7 @@
  * This file handles the functionality of choosing between a custom template or the default theme template for single idea content in the Pro version of the plugin.
  */
 
-namespace RoadMapWP\Pro\Templates;
+namespace RoadMapWP\Pro\Settings\ChooseTemplate;
 
 /**
  * Adds a filter to modify the single idea template setting.
@@ -52,7 +52,7 @@ function single_idea_template_setting( $content ) {
 
 	return $html;
 }
-add_filter( 'wp_roadmap_single_idea_template_setting', 'RoadMapWP\Pro\Templates\single_idea_template_setting' );
+add_filter( 'wp_roadmap_single_idea_template_setting', __NAMESPACE__ . '\single_idea_template_setting' );
 /**
  * Determines the template to include based on the selected option.
  *
@@ -80,7 +80,7 @@ function template_include( $template ) {
 	}
 	return $template;
 }
-add_filter( 'template_include', 'RoadMapWP\Pro\Templates\template_include' );
+add_filter( 'template_include', __NAMESPACE__ . '\template_include' );
 
 /**
  * Handles redirection for single idea pages when a specific template is selected.
@@ -98,4 +98,4 @@ function handle_single_idea_redirection() {
 		}
 	}
 }
-add_action( 'template_redirect', 'RoadMapWP\Pro\Templates\handle_single_idea_redirection' );
+add_action( 'template_redirect', __NAMESPACE__ . '\handle_single_idea_redirection' );

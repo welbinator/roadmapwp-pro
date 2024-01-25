@@ -6,7 +6,7 @@
  * a tabbed interface for roadmap statuses in the RoadMapWP Pro plugin.
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Shortcodes\RoadmapTabs;
 
 /**
  * Shortcode to display roadmap tabs.

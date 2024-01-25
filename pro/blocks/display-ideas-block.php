@@ -4,7 +4,7 @@
  * It ensures that the block is registered correctly in WordPress and rendered using the corresponding shortcode function.
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\Blocks\DisplayIdeas;
 
 // Ensure ABSPATH is defined for security
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,4 +44,4 @@ function register_display_ideas_block() {
 		);
 	}
 }
-add_action( 'init', 'RoadMapWP\Pro\\register_display_ideas_block' );
+add_action( 'init', __NAMESPACE__ . '\register_display_ideas_block' );

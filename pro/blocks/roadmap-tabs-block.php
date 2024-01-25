@@ -3,7 +3,7 @@
  * This file includes functions related to the registration and rendering of the 'Roadmap Tabs Block' for the RoadMapWP Pro plugin.
  */
 
-namespace RoadMapWP\Pro\Blocks;
+namespace RoadMapWP\Pro\Blocks\RoadmapTabs;
 
 /**
  * Registers the 'Roadmap Tabs Block' and its associated script.
@@ -21,12 +21,12 @@ function register_roadmap_tabs_block() {
 		'roadmapwp-pro/roadmap-tabs-block',
 		array(
 			'editor_script'   => 'roadmapwp-pro-roadmap-tabs-block',
-			'render_callback' => 'RoadMapWP\Pro\Blocks\roadmap_tabs_block_render',
+			'render_callback' => __NAMESPACE__ . '\roadmap_tabs_block_render',
 		)
 	);
 }
 
-add_action( 'init', 'RoadMapWP\Pro\Blocks\register_roadmap_tabs_block' );
+add_action( 'init', __NAMESPACE__ . '\register_roadmap_tabs_block' );
 
 /**
  * Renders the 'Roadmap Tabs Block' in the block editor.
@@ -80,7 +80,7 @@ function roadmap_tabs_block_render( $attributes ) {
 				</button>
 			<?php endforeach; ?>
 		</div>
-		<div class="grid md:grid-cols-2 gap-4 mt-2 roadmap-ideas-container">
+		<div class="grid md:grid-cols-3 gap-4 mt-2 roadmap-ideas-container">
 			<!-- Ideas will be loaded here via JavaScript -->
 		</div>
 	</div>

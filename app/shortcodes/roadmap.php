@@ -7,7 +7,7 @@
  * displays them according to their assigned status.
  */
 
-namespace RoadMapWP\Shortcodes;
+namespace RoadMapWP\Shortcodes\Roadmap;
 
 /**
  * Renders the roadmap layout with ideas sorted by status.

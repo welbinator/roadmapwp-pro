@@ -4,7 +4,7 @@
  * It includes functions to initialize the block, handle its rendering, and process form submissions.
  */
 
-namespace RoadMapWP\Pro\Blocks;
+namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
 
 /**
  * Initializes the 'New Idea Form' block by registering its script and block type.
@@ -22,7 +22,7 @@ function new_idea_form_block_init() {
 		'roadmapwp-pro/new-idea-form',
 		array(
 			'editor_script'   => 'roadmapwp-pro-new-idea-form-block',
-			'render_callback' => 'RoadMapWP\Pro\Blocks\new_idea_form_render',
+			'render_callback' => __NAMESPACE__ . '\new_idea_form_render',
 		)
 	);
 }
@@ -34,7 +34,7 @@ function new_idea_form_block_init() {
  * @return string The HTML output for the new idea form.
  */
 function new_idea_form_render( $attributes ) {
-	update_option( 'wp_roadmap_new_idea_shortcode_loaded', true );
+	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	// Extract selected statuses from block attributes
 	$selected_statuses = isset( $attributes['selectedStatuses'] ) ? $attributes['selectedStatuses'] : array();
@@ -119,7 +119,7 @@ function new_idea_form_render( $attributes ) {
 }
 
 
-add_action( 'init', 'RoadMapWP\Pro\Blocks\new_idea_form_block_init' );
+add_action( 'init', __NAMESPACE__ . '\new_idea_form_block_init' );
 
 /**
  * Handles the submission of the new idea form block.
@@ -174,4 +174,4 @@ function handle_new_idea_block_submission() {
 		}
 	}
 }
-add_action( 'template_redirect', 'RoadMapWP\Pro\Blocks\handle_new_idea_block_submission' );
+add_action( 'template_redirect', __NAMESPACE__ . '\handle_new_idea_block_submission' );
