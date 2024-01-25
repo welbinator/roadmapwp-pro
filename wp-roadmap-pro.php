@@ -1,4 +1,5 @@
 <?php
+namespace RoadMapWP\Pro;
 /*
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
@@ -10,8 +11,6 @@ License:     GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: roadmapwp-pro
 */
-
-namespace RoadMapWP\Pro;
 
 // This function will be called when the Pro version is activated.
 function activate() {
