@@ -1,11 +1,4 @@
 <?php
-/**
- * Plugin Name: RoadMapWP Pro
- * Description: Ajax handling for voting functionality and other interactions in RoadMapWP Pro.
- * Version: 1.0
- * Author: Your Name
- */
-
 namespace RoadMapWP\Pro\Ajax;
 
 /**
