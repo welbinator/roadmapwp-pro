@@ -6,7 +6,7 @@
  * Author: Your Name
  */
 
-namespace RoadMapWP\Pro;
+namespace RoadMapWP\Pro\CPT;
 
 /**
  * Register the custom post type.
