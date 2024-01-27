@@ -292,8 +292,8 @@ function display_help_page() {
 					<div class="border-2 rounded-lg p-4">
 						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">[roadmap status=""]</a> </h3>
 						<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses entered in the status parameter</p>
-						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"]</p>
-						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: <strong>[roadmap status="Up Next, On Roadmap"]</strong></p>
+						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the <a class="text-blue-600" href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies page</a>):</p>
 						<ul class="list-disc list-inside mt-2 ml-4">
 						<li>New Idea</li>
 							<li>Not Now</li>
@@ -307,8 +307,8 @@ function display_help_page() {
 					<div class="border-2 rounded-lg p-4">
 						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">[roadmap_tabs status=""]</a> </h3>
 						<p class="text-gray-500 leading-6">Displays tabs based on statuses entered in the status parameter. Clicking a tab displays corresponding ideas</p>
-						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"]</p>
-						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: <strong>[roadmap_tabs status="Up Next, On Roadmap"]</strong></p>
+						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the <a class="text-blue-600" href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies page</a>):</p>
 						<ul class="list-disc list-inside mt-2 ml-4">
 						<li>New Idea</li>
 							<li>Not Now</li>
@@ -320,7 +320,7 @@ function display_help_page() {
 					</div>                
 				</div><!-- grid gap-6 -->
 			</div>
-			<h2 class="text-xl font-bold tracking-tight mt-6 mb-2 cursor-pointer">
+			<h2 class="text-xl font-bold tracking-tight mb-2 cursor-pointer">
 				Blocks <span id="blocks-toggle" class="cursor-pointer" style="font-size: .6em;">expand</span>
 			</h2>
 			<div id="blocks-content" class="hidden">
@@ -370,9 +370,23 @@ function display_help_page() {
 						</ul>
 					</div>
 				</div><!-- grid gap-6 -->
-			</div>
-		</div>
-	</div>
+			</div><!-- blocks content -->
+			<h2 class="text-xl font-bold tracking-tight mb-2 cursor-pointer">
+					Taxonomies <span id="taxonomies-toggle" class="cursor-pointer" style="font-size:.6em;">expand</span>
+			</h2>
+			
+			<div id="taxonomies-content" class="hidden">
+				<div class="grid gap-6">
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/taxonomies" target="_blank">Taxonomies</a></h3>
+						<p class="text-gray-500 leading-6">RoadMapWP comes with a Tags taxonomy by default. Free users can navigate to <strong>RoadMap</strong> > <strong><a href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies</a></strong> to add and delete terms from the Tags taxonomy.</p>
+						<p class="text-gray-500 leading-6">Pro users can create their own custom taxonomies on the same page. Once a new taxonomy is created, simply add the desired terms and they will become available to users on the front end who are submitting new ideas.</p>
+					</div>
+				</div>
+			</div><!-- taxonomies content -->
+
+		</div><!-- container -->
+	</div><!-- wrap -->
 	
 	<?php
 }
