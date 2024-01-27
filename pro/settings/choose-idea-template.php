@@ -9,7 +9,7 @@ namespace RoadMapWP\Pro\Settings\ChooseTemplate;
  * Adds a filter to modify the single idea template setting.
  */
 function single_idea_template_setting( $content ) {
-	$options     = get_option( 'wp_roadmap_settings', array() );
+	$options         = get_option( 'wp_roadmap_settings', array() );
 	$chosen_template = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
 	$selected_page   = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
 

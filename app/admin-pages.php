@@ -15,7 +15,7 @@ namespace RoadMapWP\Pro\Admin\Pages;
  */
 function display_settings_page() {
 	// Fetch current settings
-	$options         = get_option( 'wp_roadmap_settings', array( 'default_status_term' => 'new-idea' ) );
+	$options             = get_option( 'wp_roadmap_settings', array( 'default_status_term' => 'new-idea' ) );
 	$status_terms        = get_terms(
 		array(
 			'taxonomy'   => 'status',
@@ -268,107 +268,111 @@ function display_help_page() {
 	
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 		<div class="container px-4 md:px-6 mt-6">
-		
-		<h2 class="text-xl font-bold tracking-tight mb-2"><a href="https://roadmapwp.com/kb_category/shortcodes/" target="_blank">Shortcodes</a></h2>
-		
-			<div class="grid gap-6">
-				<div class="border-2 rounded-lg p-4">
-					<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/new-idea-form-shortcode/" target="_blank">[new_idea_form]</a></h3>
-					<p class="text-gray-500 leading-6">Displays form for submitting ideas</p>
-				</div>
+			<h2 class="text-xl font-bold tracking-tight mb-2 cursor-pointer">
+				Shortcodes <span id="shortcodes-toggle" class="cursor-pointer" style="font-size:.6em;">expand</span>
+			</h2>
+			
+			<div id="shortcodes-content" class="hidden">
+				<div class="grid gap-6">
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/new-idea-form-shortcode/" target="_blank">[new_idea_form]</a></h3>
+						<p class="text-gray-500 leading-6">Displays form for submitting ideas</p>
+					</div>
 
-				<div class="border-2 rounded-lg p-4">
-					<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-shortcode/" target="_blank">[display_ideas]</a> </h3>
-					<p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
-				</div>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-shortcode/" target="_blank">[display_ideas]</a> </h3>
+						<p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
+					</div>
 
-				<div class="border-2 rounded-lg p-4">
-					<h3 class="font-semibold text-lg"><a href="" target="_blank">[single_idea]</a> </h3>
-					<p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
-				</div>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="" target="_blank">[single_idea]</a> </h3>
+						<p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
+					</div>
 
-				<div class="border-2 rounded-lg p-4">
-					<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">[roadmap status=""]</a> </h3>
-					<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses entered in the status parameter</p>
-					<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"]</p>
-					<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
-					<ul class="list-disc list-inside mt-2 ml-4">
-					<li>New Idea</li>
-						<li>Not Now</li>
-						<li>Maybe</li>
-						<li>Up Next</li>
-						<li>On Roadmap</li>
-						<li>Closed</li>
-					</ul>
-				</div>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">[roadmap status=""]</a> </h3>
+						<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses entered in the status parameter</p>
+						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap status="Up Next, On Roadmap"]</p>
+						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+						<ul class="list-disc list-inside mt-2 ml-4">
+						<li>New Idea</li>
+							<li>Not Now</li>
+							<li>Maybe</li>
+							<li>Up Next</li>
+							<li>On Roadmap</li>
+							<li>Closed</li>
+						</ul>
+					</div>
 
-				<div class="border-2 rounded-lg p-4">
-					<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">[roadmap_tabs status=""]</a> </h3>
-					<p class="text-gray-500 leading-6">Displays tabs based on statuses entered in the status parameter. Clicking a tab displays corresponding ideas</p>
-					<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"]</p>
-					<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
-					<ul class="list-disc list-inside mt-2 ml-4">
-					<li>New Idea</li>
-						<li>Not Now</li>
-						<li>Maybe</li>
-						<li>Up Next</li>
-						<li>On Roadmap</li>
-						<li>Closed</li>
-					</ul>
-				</div>                
-		</div><!-- grid gap-6 -->
-		
-		<h2 class="text-xl font-bold tracking-tight mt-6 mb-2"><a href="https://roadmapwp.com/kb_category/blocks/" target="_blank">Blocks</a></h2>
-		<div class="grid gap-6">
-			<div class="border-2 rounded-lg p-4">
-				<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/new-idea-form-block/" target="_target">New Idea Form</a> </h3>
-				<p class="text-gray-500 leading-6">Displays form for submitting ideas</p>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">[roadmap_tabs status=""]</a> </h3>
+						<p class="text-gray-500 leading-6">Displays tabs based on statuses entered in the status parameter. Clicking a tab displays corresponding ideas</p>
+						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: [roadmap_tabs status="Up Next, On Roadmap"]</p>
+						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+						<ul class="list-disc list-inside mt-2 ml-4">
+						<li>New Idea</li>
+							<li>Not Now</li>
+							<li>Maybe</li>
+							<li>Up Next</li>
+							<li>On Roadmap</li>
+							<li>Closed</li>
+						</ul>
+					</div>                
+				</div><!-- grid gap-6 -->
 			</div>
+			<h2 class="text-xl font-bold tracking-tight mt-6 mb-2 cursor-pointer">
+				Blocks <span id="blocks-toggle" class="cursor-pointer" style="font-size: .6em;">expand</span>
+			</h2>
+			<div id="blocks-content" class="hidden">
+				<div class="grid gap-6">
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/new-idea-form-block/" target="_target">New Idea Form</a> </h3>
+						<p class="text-gray-500 leading-6">Displays form for submitting ideas</p>
+					</div>
 
-			<div class="border-2 rounded-lg p-4">
-				<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-block/" target="_blank">Display Ideas</a> </h3>
-				<p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
-			</div>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-block/" target="_blank">Display Ideas</a> </h3>
+						<p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
+					</div>
 
-			<div class="border-2 rounded-lg p-4">
-				<h3 class="font-semibold text-lg"><a href="" target="_blank">Single Idea</a> </h3>
-				<p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
-			</div>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="" target="_blank">Single Idea</a> </h3>
+						<p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
+					</div>
 
-			<div class="border-2 rounded-lg p-4">
-				<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-block/" target="_blank">Roadmap</a> </h3>
-				<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses selected.</p>
-				<p class="text-gray-500 leading-6">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
-				<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
-				<ul class="list-disc list-inside mt-2 ml-4">
-					<li>New Idea</li>
-					<li>Not Now</li>
-					<li>Maybe</li>
-					<li>Up Next</li>
-					<li>On Roadmap</li>
-					<li>Closed</li>
-				</ul>
-			</div>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-block/" target="_blank">Roadmap</a> </h3>
+						<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses selected.</p>
+						<p class="text-gray-500 leading-6">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
+						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+						<ul class="list-disc list-inside mt-2 ml-4">
+							<li>New Idea</li>
+							<li>Not Now</li>
+							<li>Maybe</li>
+							<li>Up Next</li>
+							<li>On Roadmap</li>
+							<li>Closed</li>
+						</ul>
+					</div>
 
-			<div class="border-2 rounded-lg p-4">
-				<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-tabs-block/" target="_blank">Roadmap Tabs</a> </h3>
-				<p class="text-gray-500 leading-6">Displays tabs based on statuses selected. Clicking a tab displays corresponding ideas</p>
-				<p class="text-gray-500 leading-6">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
-				<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
-				<ul class="list-disc list-inside mt-2 ml-4">
-					<li>New Idea</li>
-					<li>Not Now</li>
-					<li>Maybe</li>
-					<li>Up Next</li>
-					<li>On Roadmap</li>
-					<li>Closed</li>
-				</ul>
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-tabs-block/" target="_blank">Roadmap Tabs</a> </h3>
+						<p class="text-gray-500 leading-6">Displays tabs based on statuses selected. Clicking a tab displays corresponding ideas</p>
+						<p class="text-gray-500 leading-6">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
+						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+						<ul class="list-disc list-inside mt-2 ml-4">
+							<li>New Idea</li>
+							<li>Not Now</li>
+							<li>Maybe</li>
+							<li>Up Next</li>
+							<li>On Roadmap</li>
+							<li>Closed</li>
+						</ul>
+					</div>
+				</div><!-- grid gap-6 -->
 			</div>
-		</div><!-- grid gap-6 -->
-		<!-- Add more content or instructions here as needed -->
+		</div>
 	</div>
-
-</div>
 	
 	<?php
 }

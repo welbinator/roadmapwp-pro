@@ -4,7 +4,7 @@
  */
 
 // Retrieve color settings
-$options            = get_option( 'wp_roadmap_settings' );
+$options                = get_option( 'wp_roadmap_settings' );
 $allow_comments         = isset( $options['allow_comments'] ) ? $options['allow_comments'] : false;
 $vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
 $vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';

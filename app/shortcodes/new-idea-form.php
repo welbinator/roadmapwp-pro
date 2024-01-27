@@ -2,13 +2,13 @@
 /**
  * Shortcodes for RoadMapWP Pro Plugin
  *
- * This file contains shortcodes used in the RoadMapWP Pro plugin. 
- * It includes shortcodes for displaying a new idea submission form 
+ * This file contains shortcodes used in the RoadMapWP Pro plugin.
+ * It includes shortcodes for displaying a new idea submission form
  * and handling the submission of these ideas. The shortcodes enable
  * users to interact with the 'idea' custom post type within the plugin.
  */
 
- namespace RoadMapWP\Pro\Shortcodes\NewIdeaForm;
+namespace RoadMapWP\Pro\Shortcodes\NewIdeaForm;
 
 /**
  * Shortcode to display the new idea submission form.

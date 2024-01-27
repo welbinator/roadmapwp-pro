@@ -32,7 +32,7 @@ add_action( 'wp', __NAMESPACE__ . '\\check_for_ideas_shortcode' );
  * Checks if the 'roadmap' shortcode is present on the current page.
  * Sets an option for enqueuing related CSS files if the shortcode is found.
  */
- function check_for_roadmap_shortcode() {
+function check_for_roadmap_shortcode() {
 	global $post;
 
 	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'roadmap' ) ) {
@@ -60,7 +60,7 @@ add_action( 'wp', __NAMESPACE__ . '\\check_for_single_idea_shortcode' );
  * @param string $hook The current admin page hook.
  */
 function enqueue_admin_styles( $hook ) {
-    global $post;
+	global $post;
 
 	// Enqueue CSS for 'idea' post type editor
 	if ( 'post.php' == $hook && isset( $post ) && 'idea' == $post->post_type ) {
@@ -93,6 +93,12 @@ function enqueue_admin_styles( $hook ) {
 			)
 		);
 	}
+	// Enqueue JS for the help page
+    if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
+        $js_url = plugin_dir_url( __FILE__ ) . 'assets/js/admin.js';
+        wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), null, true );
+    }
+
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_styles' );
 
@@ -162,7 +168,7 @@ function enqueue_frontend_styles() {
 			)
 		);
 
-		wp_enqueue_script( 'wp-roadmap-admin-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/admin-frontend.js', array( 'jquery' ), '', true );
+		wp_enqueue_script( 'wp-roadmap-admin-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/frontend.js', array( 'jquery' ), '', true );
 		wp_localize_script(
 			'wp-roadmap-admin-frontend',
 			'RoadMapWPAdminFrontendAjax',
@@ -204,40 +210,39 @@ function add_admin_menu() {
 
 	add_submenu_page(
 		'roadmapwp-pro',
-		__('Settings', 'roadmapwp-pro'),
-		__('Settings', 'roadmapwp-pro'),
+		__( 'Settings', 'roadmapwp-pro' ),
+		__( 'Settings', 'roadmapwp-pro' ),
 		'manage_options',
 		'wp-roadmap-settings',
 		'RoadMapWP\Pro\Admin\Pages\display_settings_page'
 	);
-	
+
 	add_submenu_page(
 		'roadmapwp-pro', // parent slug
-		__('Taxonomies', 'roadmapwp-pro'), // page title
-		__('Taxonomies', 'roadmapwp-pro'), // menu title
+		__( 'Taxonomies', 'roadmapwp-pro' ), // page title
+		__( 'Taxonomies', 'roadmapwp-pro' ), // menu title
 		'manage_options', // capability
 		'wp-roadmap-taxonomies', // menu slug
 		'RoadMapWP\Pro\Admin\Pages\display_taxonomies_page' // function to display the page
 	);
-	
+
 	add_submenu_page(
 		'roadmapwp-pro',
-		__('License', 'roadmapwp-pro'),
-		__('License', 'roadmapwp-pro'),
+		__( 'License', 'roadmapwp-pro' ),
+		__( 'License', 'roadmapwp-pro' ),
 		'manage_options',
 		'roadmapwp-license',
 		'RoadMapWP\Pro\Admin\Pages\license_page'
 	);
-	
+
 	add_submenu_page(
 		'roadmapwp-pro',
-		__('Help', 'roadmapwp-pro'),
-		__('Help', 'roadmapwp-pro'),
+		__( 'Help', 'roadmapwp-pro' ),
+		__( 'Help', 'roadmapwp-pro' ),
 		'manage_options',
 		'wp-roadmap-help',
 		'RoadMapWP\Pro\Admin\Pages\display_help_page'
 	);
-	
 
 	remove_submenu_page( 'roadmapwp-pro', 'roadmapwp-pro' );
 }
@@ -251,7 +256,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\\add_admin_menu' );
  * @return bool Modified status of comments open.
  */
 function filter_comments_open( $open, $post_id ) {
-	$post        = get_post( $post_id );
+	$post    = get_post( $post_id );
 	$options = get_option( 'wp_roadmap_settings' );
 
 	if ( $post->post_type == 'idea' ) {
@@ -265,7 +270,7 @@ function redirect_single_idea( $template ) {
 	global $post;
 
 	if ( 'idea' === $post->post_type ) {
-		$options         = get_option( 'wp_roadmap_settings' );
+		$options             = get_option( 'wp_roadmap_settings' );
 		$single_idea_page_id = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
 		$chosen_template     = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
 

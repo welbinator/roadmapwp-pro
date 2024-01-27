@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Renders the 'Display Ideas' block.
- * 
+ *
  * This function checks if the corresponding shortcode function exists and returns its output.
- * 
+ *
  * @return string The output of the shortcode function or an empty string if the function doesn't exist.
  */
 function display_ideas_block_render() {
@@ -30,7 +30,7 @@ function display_ideas_block_render() {
 
 /**
  * Registers the 'Display Ideas' block.
- * 
+ *
  * This function registers the block type in WordPress, specifying the render callback function.
  */
 function register_display_ideas_block() {

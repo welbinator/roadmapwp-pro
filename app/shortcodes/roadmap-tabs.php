@@ -56,7 +56,7 @@ function roadmap_tabs_shortcode( $atts ) {
 		}
 	}
 
-	$options             = get_option( 'wp_roadmap_settings' );
+	$options                 = get_option( 'wp_roadmap_settings' );
 	$vote_button_bg_color    = ! empty( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '';
 	$vote_button_text_color  = ! empty( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color    = ! empty( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '';
