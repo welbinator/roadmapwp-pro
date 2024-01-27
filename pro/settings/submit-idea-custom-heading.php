@@ -14,8 +14,8 @@ namespace RoadMapWP\Pro\Settings\SubmitIdeaCustomHeading;
  * @return bool Updated hide setting.
  */
 function hide_custom_idea_heading( $hide_submit_idea_heading ) {
-    $options = get_option( 'wp_roadmap_settings', array() );
-    return !empty( $options['hide_custom_idea_heading'] );
+	$options = get_option( 'wp_roadmap_settings', array() );
+	return ! empty( $options['hide_custom_idea_heading'] );
 }
 
 add_filter( 'wp_roadmap_hide_custom_idea_heading', __NAMESPACE__ . '\\hide_custom_idea_heading' );
@@ -27,8 +27,8 @@ add_filter( 'wp_roadmap_hide_custom_idea_heading', __NAMESPACE__ . '\\hide_custo
  * @return string Updated heading text.
  */
 function custom_idea_heading_text( $default_heading ) {
-    $options = get_option( 'wp_roadmap_settings', array() );
-    return !empty( $options['custom_idea_heading'] ) ? $options['custom_idea_heading'] : $default_heading;
+	$options = get_option( 'wp_roadmap_settings', array() );
+	return ! empty( $options['custom_idea_heading'] ) ? $options['custom_idea_heading'] : $default_heading;
 }
 
 add_filter( 'wp_roadmap_custom_idea_heading_text', __NAMESPACE__ . '\\custom_idea_heading_text' );
@@ -40,17 +40,17 @@ add_filter( 'wp_roadmap_custom_idea_heading_text', __NAMESPACE__ . '\\custom_ide
  * @return string Modified content with new settings.
  */
 function hide_custom_idea_heading_setting( $content ) {
-    $options                      = get_option( 'wp_roadmap_settings', array() );
-    $hide_submit_idea_heading_checked = ! empty( $options['hide_custom_idea_heading'] ) ? 'checked' : '';
-    $new_submit_idea_heading          = isset( $options['custom_idea_heading'] ) ? $options['custom_idea_heading'] : '';
+	$options                          = get_option( 'wp_roadmap_settings', array() );
+	$hide_submit_idea_heading_checked = ! empty( $options['hide_custom_idea_heading'] ) ? 'checked' : '';
+	$new_submit_idea_heading          = isset( $options['custom_idea_heading'] ) ? $options['custom_idea_heading'] : '';
 
-    // Checkbox for hiding the custom heading
-    $content  = '<label>Hide Heading: </label>';
-    $content .= '<input type="checkbox" name="wp_roadmap_settings[hide_custom_idea_heading]" id="hide_custom_idea_heading" value="1" ' . $hide_submit_idea_heading_checked . ' />';
-    $content .= '<br/>';
+	// Checkbox for hiding the custom heading
+	$content  = '<label>Hide Heading: </label>';
+	$content .= '<input type="checkbox" name="wp_roadmap_settings[hide_custom_idea_heading]" id="hide_custom_idea_heading" value="1" ' . $hide_submit_idea_heading_checked . ' />';
+	$content .= '<br/>';
 
-    // JavaScript for toggling the visibility of the custom heading input
-    $content .= '<script>
+	// JavaScript for toggling the visibility of the custom heading input
+	$content .= '<script>
     document.addEventListener("DOMContentLoaded", function() {
         var checkbox = document.getElementById("hide_custom_idea_heading");
         var label = document.querySelector("label[for=\'custom_idea_heading\']");
@@ -71,10 +71,10 @@ function hide_custom_idea_heading_setting( $content ) {
     });
     </script>';
 
-    // Input field for custom heading
-    $content .= '<label for="custom_idea_heading">Custom Heading: </label>';
-    $content .= '<input type="text" name="wp_roadmap_settings[custom_idea_heading]" value="' . esc_attr( $new_submit_idea_heading ) . '" />';
+	// Input field for custom heading
+	$content .= '<label for="custom_idea_heading">Custom Heading: </label>';
+	$content .= '<input type="text" name="wp_roadmap_settings[custom_idea_heading]" value="' . esc_attr( $new_submit_idea_heading ) . '" />';
 
-    return $content;
+	return $content;
 }
 add_filter( 'wp_roadmap_hide_custom_idea_heading_setting', __NAMESPACE__ . '\\hide_custom_idea_heading_setting' );

@@ -1,7 +1,7 @@
 <?php
 /**
  * Shortcode to display a single idea.
- * 
+ *
  * This file contains the shortcode for displaying a detailed view of a single idea,
  * including its title, content, and metadata such as vote count and taxonomy terms.
  */
@@ -10,12 +10,12 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 
 /**
  * Renders a single idea using a shortcode.
- * 
+ *
  * @param array $atts Shortcode attributes.
- * @param bool $is_block Flag to indicate if called from a block.
+ * @param bool  $is_block Flag to indicate if called from a block.
  * @return string HTML content of the single idea.
  */
-function single_idea_shortcode($atts, $is_block = false) {
+function single_idea_shortcode( $atts, $is_block = false ) {
 	global $post;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );
@@ -28,7 +28,7 @@ function single_idea_shortcode($atts, $is_block = false) {
 	}
 
 	// Fetch options for styling (assumed to be saved in your options table)
-	$options            = get_option( 'wp_roadmap_settings', array() );
+	$options                = get_option( 'wp_roadmap_settings', array() );
 	$vote_button_bg_color   = $options['vote_button_bg_color'] ?? '#ff0000';
 	$vote_button_text_color = $options['vote_button_text_color'] ?? '#ffffff';
 	$filter_tags_bg_color   = $options['filter_tags_bg_color'] ?? '#ff0000';
@@ -110,4 +110,4 @@ function single_idea_shortcode($atts, $is_block = false) {
 
 	return ob_get_clean();
 }
-add_shortcode('single_idea', __NAMESPACE__ . '\single_idea_shortcode');
+add_shortcode( 'single_idea', __NAMESPACE__ . '\single_idea_shortcode' );

@@ -8,7 +8,7 @@ namespace RoadMapWP\Pro\Blocks;
 
 /**
  * Registers custom blocks for the RoadMapWP Pro plugin.
- * 
+ *
  * This function registers scripts used by the blocks and the blocks themselves, setting up render callbacks as necessary.
  */
 function register_blocks() {
@@ -30,7 +30,7 @@ function register_blocks() {
 			'editor_script'   => 'roadmapwp-pro-blocks',
 			'render_callback' => function ( $atts ) {
 				return \RoadMapWP\Pro\Shortcodes\SingleIdea\single_idea_shortcode( $atts, true );
- // Passing true for the $is_block parameter
+				// Passing true for the $is_block parameter
 			},
 		)
 	);
@@ -51,7 +51,7 @@ add_action( 'init', __NAMESPACE__ . '\register_blocks' );
 
 /**
  * Enqueues block editor assets for the RoadMapWP Pro plugin.
- * 
+ *
  * This function checks if the current screen is the block editor and enqueues scripts for the custom blocks.
  */
 function enqueue_block_editor_assets() {
@@ -66,7 +66,7 @@ function enqueue_block_editor_assets() {
 				'roadmapwp-pro-roadmap-block',
 				plugin_dir_url( __FILE__ ) . '../build/roadmap-block.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( dirname( __FILE__ ) ) . '../build/roadmap-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../build/roadmap-block.js' )
 			);
 
 			// Enqueue the Roadmap Tabs block editor script
@@ -74,14 +74,14 @@ function enqueue_block_editor_assets() {
 				'roadmapwp-pro-roadmap-tabs-block',
 				plugin_dir_url( __FILE__ ) . '../build/roadmap-tabs-block.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( dirname( __FILE__ ) ) . '../build/roadmap-tabs-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../build/roadmap-tabs-block.js' )
 			);
 
 			wp_enqueue_script(
 				'roadmapwp-pro-new-idea-form-block',
 				plugin_dir_url( __FILE__ ) . '../build/new-idea-form-block.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( dirname( __FILE__ ) ) . '../build/new-idea-form-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../build/new-idea-form-block.js' )
 			);
 		}
 	}

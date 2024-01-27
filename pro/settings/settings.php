@@ -142,7 +142,7 @@ function settings_validate( $input ) {
 }
 
 function register_settings() {
-    register_setting( 'wp_roadmap_settings', 'wp_roadmap_settings', __NAMESPACE__ . '\\settings_validate' );
+	register_setting( 'wp_roadmap_settings', 'wp_roadmap_settings', __NAMESPACE__ . '\\settings_validate' );
 }
 
 add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );

@@ -1,7 +1,7 @@
 <?php
 /**
  * Shortcode to display the roadmap.
- * 
+ *
  * This file contains a shortcode function that renders a roadmap layout
  * with different statuses. It fetches ideas from a custom post type and
  * displays them according to their assigned status.
@@ -45,7 +45,7 @@ function roadmap_shortcode( $atts ) {
 	$statuses = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
 
 	// Retrieve color settings
-	$options            = get_option( 'wp_roadmap_settings' );
+	$options                = get_option( 'wp_roadmap_settings' );
 	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
 	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#ff0000';

@@ -58,7 +58,7 @@ function filter_ideas() {
 	$display_taxonomies = array_merge( array( 'idea-tag' ), array_keys( $custom_taxonomies ) );
 
 	// Retrieve color settings
-	$options            = get_option( 'wp_roadmap_settings' );
+	$options                = get_option( 'wp_roadmap_settings' );
 	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
 	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#ff0000';
@@ -120,7 +120,7 @@ function filter_ideas() {
 						</div>
 	
 						
-						<p class="text-gray-700 mt-4">
+						<p class="text-gray-700 mt-4 break-all">
 							<?php
 								echo wp_trim_words( get_the_excerpt(), 20 ) . ' <a class="text-blue-500 hover:underline" href="' . esc_url( get_permalink() ) . '" rel="ugc">read more...</a>';
 							?>
@@ -273,7 +273,7 @@ add_action( 'wp_ajax_update_idea_status', __NAMESPACE__ . '\\update_idea_status'
  * Loads ideas for a given status via AJAX.
  */
 function load_ideas_for_status() {
-	$options            = get_option( 'wp_roadmap_settings' );
+	$options                = get_option( 'wp_roadmap_settings' );
 	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
 	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#ff0000';
@@ -383,7 +383,7 @@ function load_ideas_for_status() {
 				</div>
 
 				<div class="p-6">
-					<p class="text-gray-700 mt-4">
+					<p class="text-gray-700 mt-4 break-all">
 						<?php
 							echo wp_trim_words( get_the_excerpt(), 20 ) . ' <a class="text-blue-500 hover:underline" href="' . esc_url( get_permalink() ) . '" rel="ugc">read more...</a>';
 						?>

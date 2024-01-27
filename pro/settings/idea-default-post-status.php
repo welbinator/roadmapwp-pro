@@ -15,7 +15,7 @@ namespace RoadMapWP\Pro\Settings\IdeaDefaultPostStatus;
  */
 function default_idea_status_setting( $content ) {
 	// Fetch the current settings
-	$options            = get_option( 'wp_roadmap_settings', array() );
+	$options                = get_option( 'wp_roadmap_settings', array() );
 	$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending';
 
 	// Create the HTML for the dropdown

@@ -48,7 +48,7 @@ function roadmap_block_render( $attributes ) {
 	$include_pending = isset( $attributes['statusFilter'] ) && $attributes['statusFilter'] === 'include_pending';
 
 	// Retrieve color settings
-	$options            = get_option( 'wp_roadmap_settings' );
+	$options                = get_option( 'wp_roadmap_settings' );
 	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
 	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
 	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#ff0000';
