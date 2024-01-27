@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.5] - 2023-01-27
+
+### Changed
+* Updated Help page, added accordion style UI and added taxonomies section
+* Fixed issue on front-end where long URLs wouldn't line-break
+* Made a few more minor improvements to the code structure
+
 ## [2.0.4] - 2023-01-25
 
 ### Changed
