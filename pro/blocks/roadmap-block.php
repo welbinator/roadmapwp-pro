@@ -5,7 +5,7 @@
  */
 
 namespace RoadMapWP\Pro\Blocks\Roadmap;
-
+use RoadMapWP\Pro\Admin\Functions;
 /**
  * Registers the 'Roadmap Block' and its associated script.
  */
@@ -108,13 +108,14 @@ function roadmap_block_render( $attributes ) {
 						while ( $query->have_posts() ) :
 							$query->the_post();
 							$idea_id    = get_the_ID();
-							$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
+							$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+							$idea_class = Functions\get_idea_class_with_votes($idea_id);
 							// Check post status if including pending reviews
 							if ( ! $include_pending && get_post_status() !== 'publish' ) {
 								continue;
 							}
 							?>
-							<div class="border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 wp-roadmap-idea">
+							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr($idea_class); ?>">
 								<div class="p-6">
 									<h4 class="idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo get_the_date(); ?></p>

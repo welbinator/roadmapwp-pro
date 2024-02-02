@@ -21,7 +21,7 @@ get_header(); ?>
 			while ( have_posts() ) :
 				the_post();
 				$idea_id    = get_the_ID();
-				$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
+				$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
 				?>
 				<div id="post-<?php the_ID(); ?>" <?php post_class( 'p-6 flex flex-col space-y-2' ); ?>>
 					<header class="entry-header">

@@ -9,7 +9,7 @@
  */
 
 namespace RoadMapWP\Pro\Shortcodes\DisplayIdeas;
-
+use RoadMapWP\Pro\Admin\Functions;
 /**
  * Shortcode to display ideas.
  *
@@ -111,10 +111,11 @@ function display_ideas_shortcode() {
 				while ( $query->have_posts() ) :
 					$query->the_post();
 					$idea_id    = get_the_ID();
-					$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
+					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+					$idea_class = Functions\get_idea_class_with_votes($idea_id);
 					?>
 		
-					<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden" data-v0-t="card">
+					<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
 						<div class="p-6">
 							<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 		
