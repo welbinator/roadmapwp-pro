@@ -135,7 +135,13 @@ function settings_validate( $input ) {
 
 	// Validate 'tabs_text_color'
 	$validated_settings['tabs_text_color'] = isset( $input['tabs_text_color'] ) ? sanitize_hex_color( $input['tabs_text_color'] ) : '#000000';
-	// Add more validation for other settings as needed
+	
+	// Validate 'submit_button_bg_color'
+	$validated_settings['submit_button_bg_color'] = isset( $input['submit_button_bg_color'] ) ? sanitize_hex_color( $input['submit_button_bg_color'] ) : '#ff0000';
+	
+	// Validate 'submit_button_text_color'
+	$validated_settings['submit_button_text_color'] = isset( $input['submit_button_text_color'] ) ? sanitize_hex_color( $input['submit_button_text_color'] ) : '#ffffff';
+	
 
 	// Return the array of validated settings
 	return $validated_settings;
