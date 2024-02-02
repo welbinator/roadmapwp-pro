@@ -35,7 +35,7 @@ function single_idea_shortcode( $atts, $is_block = false ) {
 	$filter_tags_text_color = $options['filter_tags_text_color'] ?? '#ffffff';
 
 	// Get vote count
-	$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
+	$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
 
 	ob_start();
 	?>

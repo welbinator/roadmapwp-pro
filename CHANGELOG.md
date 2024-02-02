@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2023-02-01
+
+### Changed
+* Feature - Added a class "has-votes" to ideas that have atleast one vote
+* Feature - Added ability to change color of Submit Idea button
+* Bug - Fixed bug where votes disappeared when filtering ideas
+* Bug - Fixed bug that saved string "0" instead of integer 0 when an idea gained a vote and then lost it
+
 ## [2.0.5] - 2023-01-27
 
 ### Changed

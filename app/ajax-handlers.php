@@ -1,6 +1,6 @@
 <?php
 namespace RoadMapWP\Pro\Ajax;
-
+use RoadMapWP\Pro\Admin\Functions;
 /**
  * Handles voting functionality via AJAX.
  */
@@ -98,9 +98,14 @@ function filter_ideas() {
 			while ( $query->have_posts() ) :
 				$query->the_post();
 				$idea_id = get_the_ID();
+
+				// Retrieve the correct vote count for each idea
+				$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+                $idea_class = Functions\get_idea_class_with_votes($idea_id);
+				
 				?>
 	
-				<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden" data-v0-t="card">
+				<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
 					<div class="p-6">
 						<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 	
@@ -346,6 +351,8 @@ function load_ideas_for_status() {
 			$excluded_taxonomies = array( 'status' ); // Add more taxonomy names to exclude if needed
 			$included_taxonomies = array_diff( $idea_taxonomies, $excluded_taxonomies );
 
+			$idea_class = Functions\get_idea_class_with_votes($idea_id);
+
 			// Fetch terms for each included taxonomy
 			$tags = array();
 			foreach ( $included_taxonomies as $taxonomy ) {
@@ -354,11 +361,12 @@ function load_ideas_for_status() {
 					$tags[ $taxonomy ] = $terms;
 				}
 			}
-			$vote_count = get_post_meta( $idea_id, 'idea_votes', true ) ?: '0';
+			$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+		
 
 			?>
 
-			<div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+			<div class="wp-roadmap-idea rounded-lg border bg-card text-card-foreground shadow-sm <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
 					<h3 class="text-2xl font-semibold leading-none tracking-tight">
 						<a href="<?php echo get_permalink( $idea_id ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
