@@ -226,6 +226,7 @@ function add_admin_menu() {
 		'RoadMapWP\Pro\Admin\Pages\display_taxonomies_page' // function to display the page
 	);
 
+	if ( !function_exists( 'gutenberg_market_licensing' ) ) {
 	add_submenu_page(
 		'roadmapwp-pro',
 		__( 'License', 'roadmapwp-pro' ),
@@ -234,6 +235,7 @@ function add_admin_menu() {
 		'roadmapwp-license',
 		'RoadMapWP\Pro\Admin\Pages\license_page'
 	);
+	}
 
 	add_submenu_page(
 		'roadmapwp-pro',

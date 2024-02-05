@@ -33,6 +33,7 @@ function display_settings_page() {
 	$filters_bg_color         = isset( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '#f5f5f5';
 	$tabs_container_bg_color  = isset( $options['tabs_container_bg_color'] ) ? $options['tabs_container_bg_color'] : '#dddddd';
 	$tabs_button_bg_color     = isset( $options['tabs_button_bg_color'] ) ? $options['tabs_button_bg_color'] : '#ffffff';
+	$tabs_text_color          = isset( $options['tabs_text_color'] ) ? $options['tabs_text_color'] : '#ffffff';
 	$submit_button_bg_color   = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
 	$submit_button_text_color = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#000000';
 
@@ -419,7 +420,10 @@ function display_help_page() {
  *
  * @return void
  */
-function license_page() {
+if (function_exists('gutenberg_market_licensing')) {
+	return;
+} else {
+ function license_page() {
 
 	add_settings_section(
 		'roadmapwp_pro_license',
@@ -449,6 +453,7 @@ function license_page() {
 
 		</form>
 	<?php
+}
 }
 
 

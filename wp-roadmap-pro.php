@@ -106,6 +106,12 @@ require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap-tabs.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/single-idea.php';
 
+$gm_file = plugin_dir_path( __FILE__ ) . 'gutenberg-market.php';
+
+if (file_exists($gm_file)) {
+	include_once plugin_dir_path( __FILE__ ) . 'gutenberg-market.php';
+}
+
 function rmwp_pro_on_activation() {
 	// Directly call the function that registers your taxonomies here
 	\RoadMapWP\Pro\CPT\register_default_idea_taxonomies();
