@@ -1,10 +1,10 @@
-name: Gutenber Market Release
+name: Gutenberg Market Release
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'release for gutenberg market'
+        description: 'Version number'
         required: true
 
 jobs:
@@ -14,20 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up file structure and remove unwanted files
+      - name: Prepare plugin directory
         run: |
-          mkdir "roadmapwp-pro"
-          rsync -av --exclude={.git,.github,composer.json,composer.lock,package.json,package-lock.json,phpstan.neon,phpstan-baseline.neon,postcss.config.js,tailwind.config.js,EDD_Licensing.php,EDD_SL_Plugin_Updater.php,gutenberg-market.php} ./ "roadmapwp-pro/"
-          echo "Removed specified files and directories."
+          mkdir -p "release/roadmapwp-pro"
+          rsync -av --exclude={.git,.github,composer.json,composer.lock,package.json,package-lock.json,phpstan.neon,phpstan-baseline.neon,postcss.config.js,tailwind.config.js,EDD_Licensing.php,EDD_SL_Plugin_Updater.php,gutenberg-market.php} ./ "release/roadmapwp-pro/"
+          echo "Prepared plugin directory with necessary files."
 
-      - name: Package the plugin
+      - name: Zip the plugin folder
         run: |
-          zip -r "roadmapwp-pro-${{ inputs.version }}.zip" "roadmapwp-pro"
-          echo "Packaged the plugin into roadmapwp-pro-${{ inputs.version }}.zip"
+          cd release
+          zip -r "../roadmapwp-pro-${{ github.event.inputs.version }}.zip" "roadmapwp-pro"
+          echo "Created zip file with the plugin."
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload ZIP as an artifact
+        uses: actions/upload-artifact@v2
         with:
           name: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
-          path: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
-
+          path: "./roadmapwp-pro-${{ github.event.inputs.version }}.zip"
