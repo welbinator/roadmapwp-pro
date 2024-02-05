@@ -26,14 +26,12 @@ jobs:
 
       - name: Zip the plugin folder
         run: |
-          # Navigate to the directory containing the plugin directory
-          cd release
-          # Zip the PLUGIN_DIR, ensuring the path is correct
-          zip -r "../roadmapwp-pro-${{ github.event.inputs.version }}.zip" "./$PLUGIN_DIR"
-          echo "Created zip file with the plugin."
+          # Zip the PLUGIN_DIR, ensuring the path is directly in the workspace
+          zip -r "${GITHUB_WORKSPACE}/roadmapwp-pro-${{ github.event.inputs.version }}.zip" "release/roadmapwp-pro"
+          echo "Created zip file with the plugin in the workspace."
 
       - name: Upload the prepared zip file as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: roadmapwp-pro-${{ github.event.inputs.version }}
-          path: ../roadmapwp-pro-${{ github.event.inputs.version }}.zip
+          path: ${GITHUB_WORKSPACE}/roadmapwp-pro-${{ github.event.inputs.version }}.zip
