@@ -1,32 +1,33 @@
-name: Gutenberg Market Release
+name: Gutenber Market Release
 
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: 'Release Tag'
+      version:
+        description: 'release for gutenberg market'
         required: true
 
 jobs:
-  build:
+  package:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Prepare the plugin directory
+      - name: Set up file structure and remove unwanted files
         run: |
-          mkdir release
-          # Excludes specified files and directories while copying to a new directory
-          rsync -av --exclude={'.git','/.github','composer.json','composer.lock','package.json','package-lock.json','phpstan.neon','phpstan-baseline.neon','postcss.config.js','tailwind.config.js','EDD_Licensing.php','EDD_SL_Plugin_Updater.php','gutenberg-market.php'} ./ release/plugin-name/
+          mkdir "roadmapwp-pro"
+          rsync -av --exclude={.git,.github,composer.json,composer.lock,package.json,package-lock.json,phpstan.neon,phpstan-baseline.neon,postcss.config.js,tailwind.config.js,EDD_Licensing.php,EDD_SL_Plugin_Updater.php,gutenberg-market.php} ./ "roadmapwp-pro/"
+          echo "Removed specified files and directories."
 
-      - name: Zip the plugin folder
+      - name: Package the plugin
         run: |
-          cd release
-          zip -r "../plugin-name-${{ github.event.inputs.tag }}.zip" "plugin-name"
+          zip -r "roadmapwp-pro-${{ inputs.version }}.zip" "roadmapwp-pro"
+          echo "Packaged the plugin into roadmapwp-pro-${{ inputs.version }}.zip"
 
-      - name: Upload Artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: plugin-name-${{ github.event.inputs.tag }}
-          path: plugin-name-${{ github.event.inputs.tag }}.zip
+          name: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
+          path: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
+
