@@ -41,7 +41,7 @@ jobs:
       with:
         files: roadmapwp-pro-${{ github.event.inputs.tag }}.zip
         tag_name: ${{ github.event.inputs.tag }}
-        prerelease: true
+        
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
