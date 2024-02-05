@@ -1,0 +1,75 @@
+name: Create Release and Update Changelog
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create temporary directory
+      run: |
+        mkdir temp_dir
+
+    - name: Copy files to temporary directory
+      run: |
+        find . -maxdepth 1 -not -name 'temp_dir' -not -name '.' -not -name '.git' -not -name '.github' -exec cp -r {} temp_dir/ \;
+
+    - name: Rename directory
+      run: |
+        mv temp_dir roadmapwp-pro
+
+    - name: Zip the folder
+      run: |
+        zip -r roadmapwp-pro-${{ github.event.inputs.tag }}.zip roadmapwp-pro \
+        -x "*.git/*" "*.github/*" \
+        "roadmapwp-pro/composer.json" "roadmapwp-pro/composer.lock" \
+        "roadmapwp-pro/package.json" "roadmapwp-pro/package-lock.json" \
+        "roadmapwp-pro/phpstan.neon" "roadmapwp-pro/phpstan-baseline.neon" \
+        "roadmapwp-pro/postcss.config.js" "roadmapwp-pro/tailwind.config.js" \
+        "roadmapwp-pro/gutenberg-market.php"
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: roadmapwp-pro-${{ github.event.inputs.tag }}.zip
+        tag_name: ${{ github.event.inputs.tag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # New steps for updating WordPress with the changelog
+
+    - name: Install jq
+      run: sudo apt-get install jq
+
+    - name: Extract Specific Changelog Block
+      run: |
+        VERSION_HEADER="## [${{ github.event.inputs.tag }}]"
+        VERSION_HEADER_ESCAPED=$(printf '%s\n' "$VERSION_HEADER" | sed -e 's/[]\/$*.^[]/\\&/g')
+        lines_under_version_header=$(awk "/$VERSION_HEADER_ESCAPED/"' {p=1; next} p && /^## \[/ {p=0} p' CHANGELOG.md)
+        echo "$lines_under_version_header" > specific-changelog.md
+
+    - name: Convert Extracted Changelog to JSON
+      run: |
+        jq -Rs --arg version "${{ github.event.inputs.tag }}" '{title: ("RoadMapWP Pro " + $version + " is here!"), content: .}' specific-changelog.md > changelog.json
+
+    - name: Update WordPress
+      env:
+        WP_API_ENDPOINT: ${{ secrets.WP_API_ENDPOINT }}
+        WP_API_TOKEN: ${{ secrets.WP_API_TOKEN }}
+      run: |
+        echo "Updating WordPress..."
+        curl -X POST $WP_API_ENDPOINT \
+             -H "Authorization: Bearer $WP_API_TOKEN" \
+             -H "Content-Type: application/json" \
+             --data @changelog.json
+
+permissions:
+  contents: write
