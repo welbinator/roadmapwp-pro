@@ -56,7 +56,7 @@ add_action( 'admin_notices', 'rmwp_pro_admin_notices' );
 
 define( 'WP_ROADMAP_PRO', __FILE__ );
 
-require plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php';
+if ( file_exists( plugin_dir_path( __FILE__ ) )) {require plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php';}
 
 // Include pro settings
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';

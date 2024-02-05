@@ -36,13 +36,6 @@ jobs:
         "roadmapwp-pro/postcss.config.js" "roadmapwp-pro/tailwind.config.js" \
         "roadmapwp-pro/EDD_Licensing.php" "EDD_SL_Plugin_Updater.php"
 
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: roadmapwp-pro-${{ github.event.inputs.tag }}.zip
-        tag_name: ${{ github.event.inputs.tag }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   contents: write
