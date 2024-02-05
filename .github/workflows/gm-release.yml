@@ -14,23 +14,35 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Create temporary directory
+    - name: Prepare the plugin directory
       run: |
-        mkdir temp_dir
+        # Rename the working directory to match the plugin name
+        mv $GITHUB_WORKSPACE "plugin-name"
 
-    - name: Copy files to temporary directory, excluding specific files
+        # Move the renamed plugin directory into a new directory to structure the zip file correctly
+        mkdir -p release
+        mv "plugin-name" release/
+
+    - name: Exclude specific files and directories
       run: |
-        rsync -av --exclude='.git/' --exclude='.github/' \
-              --exclude='composer.json' --exclude='composer.lock' \
-              --exclude='package.json' --exclude='package-lock.json' \
-              --exclude='phpstan.neon' --exclude='phpstan-baseline.neon' \
-              --exclude='postcss.config.js' --exclude='tailwind.config.js' \
-              --exclude='gutenberg-market.php' \
-              . temp_dir/
-        mv temp_dir roadmapwp-pro
+        # Remove specific files and directories from the plugin folder
+        rm -rf release/plugin-name/.git
+        rm -rf release/plugin-name/.github
+        rm release/plugin-name/composer.json
+        rm release/plugin-name/composer.lock
+        rm release/plugin-name/package.json
+        rm release/plugin-name/package-lock.json
+        rm release/plugin-name/phpstan.neon
+        rm release/plugin-name/phpstan-baseline.neon
+        rm release/plugin-name/postcss.config.js
+        rm release/plugin-name/tailwind.config.js
+
+    - name: Zip the plugin folder
+      run: |
+        zip -r "plugin-name-${{ github.event.inputs.tag }}.zip" release/
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: roadmapwp-pro-${{ github.event.inputs.tag }}
-        path: roadmapwp-pro/
+        name: plugin-name-${{ github.event.inputs.tag }}
+        path: plugin-name-${{ github.event.inputs.tag }}.zip
