@@ -20,8 +20,14 @@ jobs:
           rsync -av --exclude={.git,.github,composer.json,composer.lock,package.json,package-lock.json,phpstan.neon,phpstan-baseline.neon,postcss.config.js,tailwind.config.js,EDD_Licensing.php,EDD_SL_Plugin_Updater.php,gutenberg-market.php} ./ "release/roadmapwp-pro/"
           echo "Prepared plugin directory with necessary files."
 
+      - name: Zip the plugin folder
+        run: |
+          cd release
+          zip -r "../roadmapwp-pro-${{ github.event.inputs.version }}.zip" "roadmapwp-pro"
+          echo "Created zip file with the plugin."
+
       - name: Upload ZIP as an artifact
         uses: actions/upload-artifact@v2
         with:
           name: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
-          path: "./roadmapwp-pro-${{ github.event.inputs.version }}.zip"
+          path: "release/roadmapwp-pro-${{ github.event.inputs.version }}.zip"
