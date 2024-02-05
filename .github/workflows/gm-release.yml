@@ -12,36 +12,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Create temporary directory
       run: |
         mkdir temp_dir
 
-    - name: Copy files to temporary directory
+    - name: Copy files to temporary directory, excluding specific files
       run: |
-        find . -maxdepth 1 -not -name 'temp_dir' -not -name '.' -not -name '.git' -not -name '.github' -exec cp -r {} temp_dir/ \;
-
-    - name: Rename directory
-      run: |
+        rsync -av --exclude='.git/' --exclude='.github/' \
+              --exclude='composer.json' --exclude='composer.lock' \
+              --exclude='package.json' --exclude='package-lock.json' \
+              --exclude='phpstan.neon' --exclude='phpstan-baseline.neon' \
+              --exclude='postcss.config.js' --exclude='tailwind.config.js' \
+              --exclude='gutenberg-market.php' \
+              . temp_dir/
         mv temp_dir roadmapwp-pro
-
-    - name: Zip the folder
-      run: |
-        zip -r roadmapwp-pro-${{ github.event.inputs.tag }}.zip roadmapwp-pro \
-        -x "*.git/*" "*.github/*" \
-        "roadmapwp-pro/composer.json" "roadmapwp-pro/composer.lock" \
-        "roadmapwp-pro/package.json" "roadmapwp-pro/package-lock.json" \
-        "roadmapwp-pro/phpstan.neon" "roadmapwp-pro/phpstan-baseline.neon" \
-        "roadmapwp-pro/postcss.config.js" "roadmapwp-pro/tailwind.config.js" \
-        "roadmapwp-pro/EDD_Licensing.php" "EDD_SL_Plugin_Updater.php"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: roadmapwp-pro-${{ github.event.inputs.tag }}.zip
-        path: roadmapwp-pro-${{ github.event.inputs.tag }}.zip
-    
-
-permissions:
-  contents: write
+        name: roadmapwp-pro-${{ github.event.inputs.tag }}
+        path: roadmapwp-pro/
