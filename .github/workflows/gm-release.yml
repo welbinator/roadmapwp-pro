@@ -16,12 +16,24 @@ jobs:
 
       - name: Prepare plugin directory
         run: |
-          mkdir -p "release/roadmapwp-pro"
-          rsync -av --exclude={.git,.github,composer.json,composer.lock,package.json,package-lock.json,phpstan.neon,phpstan-baseline.neon,postcss.config.js,tailwind.config.js,EDD_Licensing.php,EDD_SL_Plugin_Updater.php,gutenberg-market.php} ./ "release/roadmapwp-pro/"
+          # Creates a directory for the plugin with its version
+          PLUGIN_DIR="roadmapwp-pro"
+          mkdir -p "release/$PLUGIN_DIR"
+          
+          # Sync the project files to the PLUGIN_DIR, excluding unwanted files
+          rsync -av --exclude={.git,.github,composer.json,composer.lock,package.json,package-lock.json,phpstan.neon,phpstan-baseline.neon,postcss.config.js,tailwind.config.js,EDD_Licensing.php,EDD_SL_Plugin_Updater.php,gutenberg-market.php} ./ "release/$PLUGIN_DIR/"
           echo "Prepared plugin directory with necessary files."
 
-      - name: Upload ZIP as an artifact
-        uses: actions/upload-artifact@v2
+      - name: Zip the plugin folder
+        run: |
+          # Change to the release directory
+          cd release
+          # Zip the PLUGIN_DIR
+          zip -r "../${{ github.event.inputs.version }}.zip" "$PLUGIN_DIR"
+          echo "Created zip file with the plugin."
+
+      - name: Upload the prepared zip file as an artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
-          path: "release/roadmapwp-pro"
+          name: roadmapwp-pro-${{ github.event.inputs.version }}
+          path: ./${{ github.event.inputs.version }}.zip
