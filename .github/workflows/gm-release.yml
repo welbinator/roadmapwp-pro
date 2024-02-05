@@ -16,30 +16,30 @@ jobs:
 
     - name: Prepare the plugin directory
       run: |
-        # Rename the working directory to match the plugin name
-        mv $GITHUB_WORKSPACE "plugin-name"
-
-        # Move the renamed plugin directory into a new directory to structure the zip file correctly
-        mkdir -p release
-        mv "plugin-name" release/
+        # Create a new directory with the plugin name and move the content there
+        mkdir -p "release/plugin-name"
+        cp -a $GITHUB_WORKSPACE/. "release/plugin-name/"
 
     - name: Exclude specific files and directories
       run: |
         # Remove specific files and directories from the plugin folder
         rm -rf release/plugin-name/.git
         rm -rf release/plugin-name/.github
-        rm release/plugin-name/composer.json
-        rm release/plugin-name/composer.lock
-        rm release/plugin-name/package.json
-        rm release/plugin-name/package-lock.json
-        rm release/plugin-name/phpstan.neon
-        rm release/plugin-name/phpstan-baseline.neon
-        rm release/plugin-name/postcss.config.js
-        rm release/plugin-name/tailwind.config.js
+        rm -f release/plugin-name/composer.json
+        rm -f release/plugin-name/composer.lock
+        rm -f release/plugin-name/package.json
+        rm -f release/plugin-name/package-lock.json
+        rm -f release/plugin-name/phpstan.neon
+        rm -f release/plugin-name/phpstan-baseline.neon
+        rm -f release/plugin-name/postcss.config.js
+        rm -f release/plugin-name/tailwind.config.js
+        rm -f release/plugin-name/EDD_Licensing.php
+        rm -f release/plugin-name/EDD_SL_Plugin_Updater.php
 
     - name: Zip the plugin folder
       run: |
-        zip -r "plugin-name-${{ github.event.inputs.tag }}.zip" release/
+        cd release
+        zip -r "../plugin-name-${{ github.event.inputs.tag }}.zip" "plugin-name"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
