@@ -24,4 +24,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "roadmapwp-pro-${{ github.event.inputs.version }}.zip"
-          path: "release/roadmapwp-pro-${{ github.event.inputs.version }}.zip"
+          path: "release/roadmapwp-pro"
