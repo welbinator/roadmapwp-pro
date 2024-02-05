@@ -11,38 +11,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Prepare the plugin directory
-      run: |
-        # Create a new directory with the plugin name and move the content there
-        mkdir -p "release/plugin-name"
-        cp -a $GITHUB_WORKSPACE/. "release/plugin-name/"
+      - name: Prepare the plugin directory
+        run: |
+          mkdir release
+          # Excludes specified files and directories while copying to a new directory
+          rsync -av --exclude={'.git','/.github','composer.json','composer.lock','package.json','package-lock.json','phpstan.neon','phpstan-baseline.neon','postcss.config.js','tailwind.config.js','EDD_Licensing.php','EDD_SL_Plugin_Updater.php','gutenberg-market.php'} ./ release/plugin-name/
 
-    - name: Exclude specific files and directories
-      run: |
-        # Remove specific files and directories from the plugin folder
-        rm -rf release/plugin-name/.git
-        rm -rf release/plugin-name/.github
-        rm -f release/plugin-name/composer.json
-        rm -f release/plugin-name/composer.lock
-        rm -f release/plugin-name/package.json
-        rm -f release/plugin-name/package-lock.json
-        rm -f release/plugin-name/phpstan.neon
-        rm -f release/plugin-name/phpstan-baseline.neon
-        rm -f release/plugin-name/postcss.config.js
-        rm -f release/plugin-name/tailwind.config.js
-        rm -f release/plugin-name/EDD_Licensing.php
-        rm -f release/plugin-name/EDD_SL_Plugin_Updater.php
+      - name: Zip the plugin folder
+        run: |
+          cd release
+          zip -r "../plugin-name-${{ github.event.inputs.tag }}.zip" "plugin-name"
 
-    - name: Zip the plugin folder
-      run: |
-        cd release
-        zip -r "../plugin-name-${{ github.event.inputs.tag }}.zip" "plugin-name"
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: plugin-name-${{ github.event.inputs.tag }}
-        path: plugin-name-${{ github.event.inputs.tag }}.zip
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: plugin-name-${{ github.event.inputs.tag }}
+          path: plugin-name-${{ github.event.inputs.tag }}.zip
