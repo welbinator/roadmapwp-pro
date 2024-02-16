@@ -19,11 +19,6 @@ function register_blocks() {
 		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' )
 	);
 
-	// Register each block
-	$blocks = array(
-		'display-ideas' => 'RoadMapWP\Pro\Shortcodes\DisplayIdeas\display_ideas_shortcode',
-	);
-
 	register_block_type(
 		'roadmapwp-pro/single-idea',
 		array(
@@ -35,15 +30,15 @@ function register_blocks() {
 		)
 	);
 
-	foreach ( $blocks as $block_name => $callback ) {
-		register_block_type(
-			'roadmapwp-pro/' . $block_name,
-			array(
-				'editor_script'   => 'roadmapwp-pro-blocks',
-				'render_callback' => $callback,
-			)
-		);
-	}
+	// foreach ( $blocks as $block_name => $callback ) {
+	// 	register_block_type(
+	// 		'roadmapwp-pro/' . $block_name,
+	// 		array(
+	// 			'editor_script'   => 'roadmapwp-pro-blocks',
+	// 			'render_callback' => $callback,
+	// 		)
+	// 	);
+	// }
 }
 
 add_action( 'init', __NAMESPACE__ . '\register_blocks' );
@@ -64,24 +59,31 @@ function enqueue_block_editor_assets() {
 			// Enqueue the Roadmap block editor script
 			wp_enqueue_script(
 				'roadmapwp-pro-roadmap-block',
-				plugin_dir_url( __FILE__ ) . '../build/roadmap-block.js',
+				plugin_dir_url( __FILE__ ) . '../../build/roadmap-block.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( __DIR__ ) . '../build/roadmap-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/roadmap-block.js' )
 			);
 
 			// Enqueue the Roadmap Tabs block editor script
 			wp_enqueue_script(
 				'roadmapwp-pro-roadmap-tabs-block',
-				plugin_dir_url( __FILE__ ) . '../build/roadmap-tabs-block.js',
+				plugin_dir_url( __FILE__ ) . '../../build/roadmap-tabs-block.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( __DIR__ ) . '../build/roadmap-tabs-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/roadmap-tabs-block.js' )
 			);
 
 			wp_enqueue_script(
 				'roadmapwp-pro-new-idea-form-block',
-				plugin_dir_url( __FILE__ ) . '../build/new-idea-form-block.js',
+				plugin_dir_url( __FILE__ ) . '../../build/new-idea-form-block.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( __DIR__ ) . '../build/new-idea-form-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/new-idea-form-block.js' )
+			);
+
+			wp_enqueue_script(
+				'roadmapwp-pro-display-ideas-block',
+				plugin_dir_url( __FILE__ ) . '../../build/display-ideas-block.js',
+				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/display-ideas-block.js' )
 			);
 		}
 	}

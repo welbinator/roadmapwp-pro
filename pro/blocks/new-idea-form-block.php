@@ -10,7 +10,6 @@ namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
  * Initializes the 'New Idea Form' block by registering its script and block type.
  */
 function new_idea_form_block_init() {
-	// Register the block script
 	wp_register_script(
 		'roadmapwp-pro-new-idea-form-block',
 		plugin_dir_url( __FILE__ ) . '../../build/new-idea-form-block.js',
@@ -37,6 +36,10 @@ add_action( 'init', __NAMESPACE__ . '\new_idea_form_block_init' );
  */
 function new_idea_form_render( $attributes ) {
     update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
+
+    if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+        return; // Or simply return ''; to show nothing
+    }
 
     $options                    = get_option( 'wp_roadmap_settings' );
     $submit_button_bg_color     = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
@@ -141,10 +144,6 @@ function new_idea_form_render( $attributes ) {
 
     return $output;
 }
-
-
-
-
 
 /**
  * Handles the submission of the new idea form block.
