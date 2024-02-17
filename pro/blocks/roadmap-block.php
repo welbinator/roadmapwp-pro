@@ -36,6 +36,12 @@ add_action( 'init', __NAMESPACE__ . '\register_roadmap_block' );
  * @return string The rendered HTML of the block.
  */
 function roadmap_block_render( $attributes ) {
+
+	if ( !empty( $attributes['onlyLoggedInUsers'] ) && !is_user_logged_in() ) {
+        // Return an empty string or a specific message indicating the need to log in
+        return ''; 
+    }
+	
 	// Check if selectedStatuses attribute is set and is an array
 	if ( isset( $attributes['selectedStatuses'] ) && is_array( $attributes['selectedStatuses'] ) ) {
 		$selected_statuses = array_keys( array_filter( $attributes['selectedStatuses'] ) );

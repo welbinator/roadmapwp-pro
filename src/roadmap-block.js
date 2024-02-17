@@ -15,6 +15,10 @@
                 type: 'string',
                 default: 'published', // Default to show only published ideas
             },
+            onlyLoggedInUsers: { // Added missing attribute here
+                type: 'boolean',
+                default: false,
+            },
         },
         
         edit: function(props) {
@@ -51,6 +55,13 @@
                                 />
                             </PanelBody>
                         </PanelBody>
+                        <PanelBody title="Access Control">
+                        <CheckboxControl
+                            label="Allow only logged in users to see this block?"
+                            checked={attributes.onlyLoggedInUsers}
+                            onChange={(isChecked) => setAttributes({ onlyLoggedInUsers: isChecked })}
+                        />
+                    </PanelBody>
                     </InspectorControls>
                     <p>Roadmap Block</p>
                 </div>
