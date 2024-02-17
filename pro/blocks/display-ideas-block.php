@@ -4,50 +4,46 @@
  * It ensures that the block is registered correctly in WordPress and rendered using the corresponding shortcode function.
  */
 
- namespace RoadMapWP\Pro\Blocks\DisplayIdeas;
+namespace RoadMapWP\Pro\Blocks\DisplayIdeas;
 
- use RoadMapWP\Pro\Admin\Functions;
+use RoadMapWP\Pro\Admin\Functions;
 
- function block_init() {
+function block_init() {
 
-    wp_register_script(
-        'roadmapwp-pro-display-ideas-block',
-        plugin_dir_url( __FILE__ ) . '../../build/display-ideas-block.js',
-        array( 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'wp-api-fetch' )
-    );
+	wp_register_script(
+		'roadmapwp-pro-display-ideas-block',
+		plugin_dir_url( __FILE__ ) . '../../build/display-ideas-block.js',
+		array( 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'wp-api-fetch' )
+	);
 
-    register_block_type(
-        'roadmapwp-pro/display-ideas',
-        array(
-            'editor_script'   => 'roadmapwp-pro-display-ideas-block',
-            'render_callback' => __NAMESPACE__ . '\display_ideas_block_render',
-            'attributes' => array(
-                'onlyLoggedInUsers' => array(
-                    'type'    => 'boolean',
-                    'default' => false,
-                ),
-            ),
-        )
-    );
+	register_block_type(
+		'roadmapwp-pro/display-ideas',
+		array(
+			'editor_script'   => 'roadmapwp-pro-display-ideas-block',
+			'render_callback' => __NAMESPACE__ . '\display_ideas_block_render',
+			'attributes'      => array(
+				'onlyLoggedInUsers' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+			),
+		)
+	);
 }
 add_action( 'init', __NAMESPACE__ . '\\block_init' );
 
 
- function display_ideas_block_render($attributes) {
-	
+function display_ideas_block_render( $attributes ) {
+
 	update_option( 'wp_roadmap_display_ideas_shortcode_loaded', true );
-	
 
-	
+	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
 
-	 if (!empty($attributes['onlyLoggedInUsers']) && !is_user_logged_in()) {
-		
-		 return ''; // Optionally, return a message prompting the user to log in
-	 }
- 
-	 ob_start(); // Start output buffering
- 
-	  
+		return ''; // Optionally, return a message prompting the user to log in
+	}
+
+	ob_start(); // Start output buffering
+
 	$taxonomies = array( 'idea-tag' );
 
 	// Include custom taxonomies
@@ -69,7 +65,7 @@ add_action( 'init', __NAMESPACE__ . '\\block_init' );
 	// Check if the pro version is installed and settings are enabled
 	$hide_display_ideas_heading = apply_filters( 'wp_roadmap_hide_display_ideas_heading', false );
 	$new_display_ideas_heading  = apply_filters( 'wp_roadmap_custom_display_ideas_heading_text', 'Browse Ideas' );
-  
+
 	?>
 	
 	<div class="roadmap_wrapper container mx-auto">
@@ -123,25 +119,24 @@ add_action( 'init', __NAMESPACE__ . '\\block_init' );
 
 		<?php
 
- 
-	 $args = array(
-		 'post_type'      => 'idea',
-		 'posts_per_page' => -1,
-	 );
-	 $query = new \WP_Query($args);
- 
-	 if ( $query->have_posts() ) :
-		?>
+		$args  = array(
+			'post_type'      => 'idea',
+			'posts_per_page' => -1,
+		);
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) :
+			?>
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
 			<?php
 			while ( $query->have_posts() ) :
 				$query->the_post();
 				$idea_id    = get_the_ID();
 				$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
-				$idea_class = Functions\get_idea_class_with_votes($idea_id);
+				$idea_class = Functions\get_idea_class_with_votes( $idea_id );
 				?>
 	
-				<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
+				<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr( $idea_class ); ?>" data-v0-t="card">
 					<div class="p-6">
 						<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 	
@@ -219,12 +214,12 @@ add_action( 'init', __NAMESPACE__ . '\\block_init' );
 </div>
 <?php else : ?>
 	<p>No ideas found.</p>
-	<?php
+		<?php
 endif;
- 
-	 wp_reset_postdata();
- 
-	 return ob_get_clean();
- }
- 
- 
+
+	wp_reset_postdata();
+
+	return ob_get_clean();
+}
+
+

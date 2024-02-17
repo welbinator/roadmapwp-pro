@@ -27,7 +27,7 @@ function register_roadmap_tabs_block() {
 					'type'    => 'boolean',
 					'default' => false,
 				),
-			)
+			),
 		)
 	);
 }
@@ -42,10 +42,10 @@ add_action( 'init', __NAMESPACE__ . '\register_roadmap_tabs_block' );
  */
 function roadmap_tabs_block_render( $attributes ) {
 
-	if ( !empty( $attributes['onlyLoggedInUsers'] ) && !is_user_logged_in() ) {
-        // Return an empty string or a specific message indicating the need to log in
-        return ''; 
-    }
+	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+		// Return an empty string or a specific message indicating the need to log in
+		return '';
+	}
 
 	if ( ! isset( $attributes['selectedStatuses'] ) || ! is_array( $attributes['selectedStatuses'] ) ) {
 		return '<p>No statuses selected.</p>';

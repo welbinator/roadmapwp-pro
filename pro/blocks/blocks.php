@@ -31,13 +31,13 @@ function register_blocks() {
 	);
 
 	// foreach ( $blocks as $block_name => $callback ) {
-	// 	register_block_type(
-	// 		'roadmapwp-pro/' . $block_name,
-	// 		array(
-	// 			'editor_script'   => 'roadmapwp-pro-blocks',
-	// 			'render_callback' => $callback,
-	// 		)
-	// 	);
+	// register_block_type(
+	// 'roadmapwp-pro/' . $block_name,
+	// array(
+	// 'editor_script'   => 'roadmapwp-pro-blocks',
+	// 'render_callback' => $callback,
+	// )
+	// );
 	// }
 }
 
