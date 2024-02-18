@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0] - 2023-02-01
+## [2.2.0] - 2024-02-18
+
+### Changed
+* Feature - Added ability for admin to choose to only show New Idea Form block to logged-in users
+* Feature - Added ability for admin to choose to only show Display Ideas block to logged-in users
+* Feature - Added ability for admin to choose to only show Roadmap block to logged-in users
+* Feature - Added ability for admin to choose to only show Roadmap Tabs block to logged-in users
+
+## [2.1.0] - 2024-02-01
 
 ### Changed
 * Feature - Added a class "has-votes" to ideas that have atleast one vote
@@ -13,31 +21,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Bug - Fixed bug where votes disappeared when filtering ideas
 * Bug - Fixed bug that saved string "0" instead of integer 0 when an idea gained a vote and then lost it
 
-## [2.0.5] - 2023-01-27
+## [2.0.5] - 2024-01-27
 
 ### Changed
 * Updated Help page, added accordion style UI and added taxonomies section
 * Fixed issue on front-end where long URLs wouldn't line-break
 * Made a few more minor improvements to the code structure
 
-## [2.0.4] - 2023-01-25
+## [2.0.4] - 2024-01-25
 
 ### Changed
 * Updated namespacing
 * Moved licensing code to its own file
 
-## [2.0.3] - 2023-01-24
+## [2.0.3] - 2024-01-24
 
 ### Changed
 * Code improvements to align free and pro settings in database
 * Update release workflow to exclude certain development files from packaged zip
 
-## [2.0.2] - 2023-01-21
+## [2.0.2] - 2024-01-21
 
 ### Changed
 * Code improvements, added Namespacing, doc blocks etc
 
-## [2.0.1] - 2023-01-16
+## [2.0.1] - 2024-01-16
 
 ### New
 * Added ability to choose default tab in Roadmap Tabs block
@@ -45,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Updated GitHub workflows
 
-## [2.0.0] - 2023-01-15
+## [2.0.0] - 2024-01-15
 
 ### New
 * Added ability to select taxonomies in roadmap tabs block
@@ -56,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed issue where correct tags weren't being displayed
 * Fixed Roadmap Tabs block so that it only displays published ideas
 
-## [1.4.5] - 2023-01-11
+## [1.4.5] - 2024-01-11
 
 ### New
 * Added ability to choose status terms in New Idea Form block
@@ -64,7 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Improved layout of ideas (moved read more link to directily inline with excerpt text)
 
-## [1.4.4] - 2023-01-11
+## [1.4.4] - 2024-01-11
 
 ### New
 * Added single idea block
@@ -72,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Updated help page
 
-## [1.4.3] - 2023-01-11
+## [1.4.3] - 2024-01-11
 
 ### New
 * Enabled comments on/off for single idea shortcode

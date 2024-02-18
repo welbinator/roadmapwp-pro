@@ -15,7 +15,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
  * @param bool  $is_block Flag to indicate if called from a block.
  * @return string HTML content of the single idea.
  */
-function single_idea_shortcode( $atts, $is_block = false ) {
+	function single_idea_shortcode( $atts, $is_block = false ) {
 	global $post;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );

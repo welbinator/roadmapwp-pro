@@ -10,7 +10,6 @@ namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
  * Initializes the 'New Idea Form' block by registering its script and block type.
  */
 function new_idea_form_block_init() {
-	// Register the block script
 	wp_register_script(
 		'roadmapwp-pro-new-idea-form-block',
 		plugin_dir_url( __FILE__ ) . '../../build/new-idea-form-block.js',
@@ -36,115 +35,115 @@ add_action( 'init', __NAMESPACE__ . '\new_idea_form_block_init' );
  * @return string The HTML output for the new idea form.
  */
 function new_idea_form_render( $attributes ) {
-    update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
+	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
-    $options                    = get_option( 'wp_roadmap_settings' );
-    $submit_button_bg_color     = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
-    $submit_button_text_color   = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#ffffff';
+	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+		return; // Or simply return ''; to show nothing
+	}
 
-    // Extract selected statuses from block attributes
-    $selected_statuses = isset( $attributes['selectedStatuses'] ) ? $attributes['selectedStatuses'] : array();
+	$options                  = get_option( 'wp_roadmap_settings' );
+	$submit_button_bg_color   = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
+	$submit_button_text_color = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#ffffff';
 
-    // Convert selected statuses to a comma-separated string
-    $selected_statuses_str = implode(
-        ',',
-        array_keys(
-            array_filter(
-                $selected_statuses,
-                function ( $status ) {
-                    return $status;
-                }
-            )
-        )
-    );
+	// Extract selected statuses from block attributes
+	$selected_statuses = isset( $attributes['selectedStatuses'] ) ? $attributes['selectedStatuses'] : array();
 
-    ob_start(); // Start output buffering
+	// Convert selected statuses to a comma-separated string
+	$selected_statuses_str = implode(
+		',',
+		array_keys(
+			array_filter(
+				$selected_statuses,
+				function ( $status ) {
+					return $status;
+				}
+			)
+		)
+	);
 
-    if ( isset( $_GET['new_idea_submitted'] ) && $_GET['new_idea_submitted'] == '1' ) {
-        echo '<p>Thank you for your submission!</p>';
-    }
+	ob_start(); // Start output buffering
 
-    $hide_submit_idea_heading = apply_filters( 'wp_roadmap_hide_custom_idea_heading', false );
-    $new_submit_idea_heading  = apply_filters( 'wp_roadmap_custom_idea_heading_text', 'Submit new Idea' );
-    ?>
+	if ( isset( $_GET['new_idea_submitted'] ) && $_GET['new_idea_submitted'] == '1' ) {
+		echo '<p>Thank you for your submission!</p>';
+	}
 
-    <!-- Regular HTML Output -->
-    <div class="roadmap_wrapper container mx-auto">
-        <div class="new_idea_form__frontend" data-selected-statuses="<?php echo esc_attr( $selected_statuses_str ); ?>">
-            <?php if ( ! $hide_submit_idea_heading ) : ?>
-                <h2><?php echo esc_html( $new_submit_idea_heading ); ?></h2>
-            <?php endif; ?>
+	$hide_submit_idea_heading = apply_filters( 'wp_roadmap_hide_custom_idea_heading', false );
+	$new_submit_idea_heading  = apply_filters( 'wp_roadmap_custom_idea_heading_text', 'Submit new Idea' );
+	?>
 
-            <form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="post">
-                <ul class="flex-outer">
-                    <li class="new_idea_form_input">
-                        <label for="idea_title">Title:</label>
-                        <input type="text" name="idea_title" id="idea_title" required>
-                    </li>
+	<!-- Regular HTML Output -->
+	<div class="roadmap_wrapper container mx-auto">
+		<div class="new_idea_form__frontend" data-selected-statuses="<?php echo esc_attr( $selected_statuses_str ); ?>">
+			<?php if ( ! $hide_submit_idea_heading ) : ?>
+				<h2><?php echo esc_html( $new_submit_idea_heading ); ?></h2>
+			<?php endif; ?>
 
-                    <li class="new_idea_form_input">
-                        <label for="idea_description">Description:</label>
-                        <textarea name="idea_description" id="idea_description" required></textarea>
-                    </li>
+			<form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="post">
+				<ul class="flex-outer">
+					<li class="new_idea_form_input">
+						<label for="idea_title">Title:</label>
+						<input type="text" name="idea_title" id="idea_title" required>
+					</li>
 
-                    <?php
-                    // Retrieve the selected taxonomies from block attributes
-                    $selectedTaxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
-                    $ideaTaxonomies     = get_object_taxonomies( 'idea', 'objects' );
+					<li class="new_idea_form_input">
+						<label for="idea_description">Description:</label>
+						<textarea name="idea_description" id="idea_description" required></textarea>
+					</li>
 
-                    foreach ( $ideaTaxonomies as $taxonomy ) {
-                        if ( $taxonomy->name !== 'status' ) {
-                            // Display taxonomy if it's selected or if no specific taxonomies are selected
-                            if ( empty( $selectedTaxonomies ) || in_array( $taxonomy->name, $selectedTaxonomies, true ) ) {
-                                $terms = get_terms(
-                                    array(
-                                        'taxonomy'   => $taxonomy->name,
-                                        'hide_empty' => false,
-                                    )
-                                );
-                                if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
-                                    ?>
-                                    <li class="new_idea_form_input">
-                                        <label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
-                                        <div class="taxonomy-term-labels">
-                                            <?php
-                                            foreach ( $terms as $term ) :
-                                            ?>
-                                                <label class="taxonomy-term-label">
-                                                    <input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
-                                                    <?php echo esc_html( $term->name ); ?>
-                                                </label>
-                                            <?php
-                                            endforeach;
-                                            ?>
-                                        </div>
-                                    </li>
-                                    <?php
-                                endif;
-                            }
-                        }
-                    }
-                    ?>
+					<?php
+					// Retrieve the selected taxonomies from block attributes
+					$selectedTaxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
+					$ideaTaxonomies     = get_object_taxonomies( 'idea', 'objects' );
 
-                    <input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
-                    <li class="new_idea_form_input">
-                        <input style="background-color: <?php echo esc_attr( $submit_button_bg_color ); ?>;color: <?php echo esc_attr( $submit_button_text_color ); ?>;" type="submit" value="Submit Idea">
-                    </li>
-                </ul>
-            </form>
-        </div>
-    </div>
+					foreach ( $ideaTaxonomies as $taxonomy ) {
+						if ( $taxonomy->name !== 'status' ) {
+							// Display taxonomy if it's selected or if no specific taxonomies are selected
+							if ( empty( $selectedTaxonomies ) || in_array( $taxonomy->name, $selectedTaxonomies, true ) ) {
+								$terms = get_terms(
+									array(
+										'taxonomy'   => $taxonomy->name,
+										'hide_empty' => false,
+									)
+								);
+								if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+									?>
+									<li class="new_idea_form_input">
+										<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
+										<div class="taxonomy-term-labels">
+											<?php
+											foreach ( $terms as $term ) :
+												?>
+												<label class="taxonomy-term-label">
+													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
+													<?php echo esc_html( $term->name ); ?>
+												</label>
+												<?php
+											endforeach;
+											?>
+										</div>
+									</li>
+									<?php
+								endif;
+							}
+						}
+					}
+					?>
 
-    <?php
+					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
+					<li class="new_idea_form_input">
+						<input style="background-color: <?php echo esc_attr( $submit_button_bg_color ); ?>;color: <?php echo esc_attr( $submit_button_text_color ); ?>;" type="submit" value="Submit Idea">
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
 
-    $output = ob_get_clean(); // End output buffering and capture the HTML
+	<?php
 
-    return $output;
+	$output = ob_get_clean(); // End output buffering and capture the HTML
+
+	return $output;
 }
-
-
-
-
 
 /**
  * Handles the submission of the new idea form block.

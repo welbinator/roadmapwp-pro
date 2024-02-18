@@ -19,6 +19,11 @@ registerBlockType('roadmapwp-pro/roadmap-tabs-block', {
             type: 'string',
             default: '',
         },
+        onlyLoggedInUsers: { // Added missing attribute here
+            type: 'boolean',
+            default: false,
+        },
+        
     },
     edit: function(props) {
         const { attributes, setAttributes } = props;
@@ -80,6 +85,13 @@ registerBlockType('roadmapwp-pro/roadmap-tabs-block', {
                                 })),
                             ]}
                             onChange={(value) => setAttributes({ defaultStatus: value })}
+                        />
+                    </PanelBody>
+                    <PanelBody title="Access Control">
+                        <CheckboxControl
+                            label="Allow only logged in users to see this block?"
+                            checked={attributes.onlyLoggedInUsers}
+                            onChange={(isChecked) => setAttributes({ onlyLoggedInUsers: isChecked })}
                         />
                     </PanelBody>
                 </InspectorControls>

@@ -15,6 +15,10 @@ registerBlockType('roadmapwp-pro/new-idea-form', {
             type: 'object',
             default: {},
         },
+        onlyLoggedInUsers: { // New attribute for controlling visibility based on login status
+            type: 'boolean',
+            default: false,
+        },
     },
 
     edit: ({ attributes, setAttributes }) => {
@@ -63,6 +67,13 @@ registerBlockType('roadmapwp-pro/new-idea-form', {
                                 onChange={(isChecked) => updateSelectedTaxonomies(taxonomy.slug, isChecked)}
                             />
                         ))}
+                    </PanelBody>
+                    <PanelBody title="Access Control">
+                        <CheckboxControl
+                            label="Allow only logged in users to see this form?"
+                            checked={attributes.onlyLoggedInUsers}
+                            onChange={(isChecked) => setAttributes({ onlyLoggedInUsers: isChecked })}
+                        />
                     </PanelBody>
                 </InspectorControls>
                 <p>New Idea Form will be displayed here.</p>

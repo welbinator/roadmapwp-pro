@@ -6,6 +6,7 @@ module.exports = {
     entry: {
         'roadmap-block': path.resolve(__dirname, 'src/roadmap-block.js'),
         'roadmap-tabs-block': path.resolve(__dirname, 'src/roadmap-tabs-block.js'),
-        'new-idea-form-block': path.resolve(__dirname, 'src/new-idea-form-block.js') 
+        'new-idea-form-block': path.resolve(__dirname, 'src/new-idea-form-block.js'),
+        'display-ideas-block': path.resolve(__dirname, 'src/display-ideas-block.js')
     },
 };

@@ -1,9 +1,9 @@
 <?php
 /**
- * Shortcodes for Displaying Ideas in RoadMapWP Pro.
+ * Shortcode for Displaying Ideas in RoadMapWP Pro.
  *
- * This file contains functions for shortcodes used in the RoadMapWP Pro plugin.
- * These shortcodes are responsible for rendering and displaying ideas in various formats.
+ * This file contains functions for a shortcode used in the RoadMapWP Pro plugin.
+ * This shortcodes are responsible for rendering and displaying ideas in various formats.
  *
  * @package RoadMapWP\Pro\Shortcodes\DisplayIdeas
  */

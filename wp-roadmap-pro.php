@@ -3,7 +3,7 @@
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     2.1.0
+Version:     2.1.1
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
@@ -86,6 +86,9 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-tabs-block.php';
 
 // Include new idea form block
 require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/new-idea-form-block.php';
+
+// Include display ideas block
+require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/display-ideas-block.php';
 
 // Include custom submit idea heading setting
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';

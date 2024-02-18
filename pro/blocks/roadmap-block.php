@@ -5,6 +5,7 @@
  */
 
 namespace RoadMapWP\Pro\Blocks\Roadmap;
+
 use RoadMapWP\Pro\Admin\Functions;
 /**
  * Registers the 'Roadmap Block' and its associated script.
@@ -36,6 +37,12 @@ add_action( 'init', __NAMESPACE__ . '\register_roadmap_block' );
  * @return string The rendered HTML of the block.
  */
 function roadmap_block_render( $attributes ) {
+
+	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+		// Return an empty string or a specific message indicating the need to log in
+		return '';
+	}
+
 	// Check if selectedStatuses attribute is set and is an array
 	if ( isset( $attributes['selectedStatuses'] ) && is_array( $attributes['selectedStatuses'] ) ) {
 		$selected_statuses = array_keys( array_filter( $attributes['selectedStatuses'] ) );
@@ -109,13 +116,13 @@ function roadmap_block_render( $attributes ) {
 							$query->the_post();
 							$idea_id    = get_the_ID();
 							$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
-							$idea_class = Functions\get_idea_class_with_votes($idea_id);
+							$idea_class = Functions\get_idea_class_with_votes( $idea_id );
 							// Check post status if including pending reviews
 							if ( ! $include_pending && get_post_status() !== 'publish' ) {
 								continue;
 							}
 							?>
-							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr($idea_class); ?>">
+							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr( $idea_class ); ?>">
 								<div class="p-6">
 									<h4 class="idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo get_the_date(); ?></p>
