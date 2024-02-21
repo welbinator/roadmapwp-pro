@@ -290,6 +290,20 @@ function display_help_page() {
 				</div>
 			</div><!-- taxonomies content -->
 
+			<h2 class="text-xl font-bold tracking-tight mb-2 cursor-pointer">
+				Styles <span id="styles-toggle" class="cursor-pointer" style="font-size:.6em;">expand</span>
+			</h2>
+			
+			<div id="styles-content" class="hidden">
+				<div class="grid gap-6">
+					<div class="border-2 rounded-lg p-4">
+						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/styles" target="_blank">Adjust Styles of RoadMapWP Pages</a></h3>
+						<p class="text-gray-500 leading-6">Style settings can be found in the <a href="http://wproadmap.lndo.site/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Dwp-roadmap-help">WordPress Customizer</a> in the RoadMap Styles section</p>
+					</div>
+           
+				</div><!-- grid gap-6 -->
+			</div>
+
 		</div><!-- container -->
 	</div><!-- wrap -->
 	

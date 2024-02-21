@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const blocksContent = document.getElementById('blocks-content');
     const taxonomiesToggle = document.getElementById('taxonomies-toggle');
     const taxonomiesContent = document.getElementById('taxonomies-content');
+    const stylesToggle = document.getElementById('styles-toggle');
+    const stylesContent = document.getElementById('styles-content');
+    
 
     shortcodesToggle.addEventListener('click', function() {
         shortcodesContent.classList.toggle('hidden');
@@ -19,5 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     taxonomiesToggle.addEventListener('click', function() {
         taxonomiesContent.classList.toggle('hidden');
         taxonomiesToggle.textContent = taxonomiesContent.classList.contains('hidden') ? 'expand' : 'collapse';
+    });
+
+    stylesToggle.addEventListener('click', function() {
+        stylesContent.classList.toggle('hidden');
+        stylesToggle.textContent = stylesContent.classList.contains('hidden') ? 'expand' : 'collapse';
     });
 });
