@@ -26,16 +26,17 @@ function display_settings_page() {
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 	// New Styling Section
-	$vote_button_bg_color     = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#0000ff';
-	$vote_button_text_color   = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
-	$filter_tags_bg_color     = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#0000ff';
-	$filter_tags_text_color   = isset( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
-	$filters_bg_color         = isset( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '#f5f5f5';
-	$tabs_container_bg_color  = isset( $options['tabs_container_bg_color'] ) ? $options['tabs_container_bg_color'] : '#dddddd';
-	$tabs_button_bg_color     = isset( $options['tabs_button_bg_color'] ) ? $options['tabs_button_bg_color'] : '#ffffff';
-	$tabs_text_color          = isset( $options['tabs_text_color'] ) ? $options['tabs_text_color'] : '#ffffff';
-	$submit_button_bg_color   = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
-	$submit_button_text_color = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#000000';
+	$vote_button_bg_color     = isset($options['vote_button_bg_color']) ? sanitize_hex_color($options['vote_button_bg_color']) : '#0000ff';
+	$vote_button_text_color   = isset($options['vote_button_text_color']) ? sanitize_hex_color($options['vote_button_text_color']) : '#ffffff';
+	$filter_tags_bg_color     = isset($options['filter_tags_bg_color']) ? sanitize_hex_color($options['filter_tags_bg_color']) : '#0000ff';
+	$filter_tags_text_color   = isset($options['filter_tags_text_color']) ? sanitize_hex_color($options['filter_tags_text_color']) : '#ffffff';
+	$filters_bg_color         = isset($options['filters_bg_color']) ? sanitize_hex_color($options['filters_bg_color']) : '#f5f5f5';
+	$tabs_container_bg_color  = isset($options['tabs_container_bg_color']) ? sanitize_hex_color($options['tabs_container_bg_color']) : '#dddddd';
+	$tabs_button_bg_color     = isset($options['tabs_button_bg_color']) ? sanitize_hex_color($options['tabs_button_bg_color']) : '#ffffff';
+	$tabs_text_color          = isset($options['tabs_text_color']) ? sanitize_hex_color($options['tabs_text_color']) : '#000000';
+	$submit_button_bg_color   = isset($options['submit_button_bg_color']) ? sanitize_hex_color($options['submit_button_bg_color']) : '#ff0000';
+	$submit_button_text_color = isset($options['submit_button_text_color']) ? sanitize_hex_color($options['submit_button_text_color']) : '#000000';
+
 
 	?>
 	<div class="wrap">

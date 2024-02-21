@@ -35,7 +35,7 @@ function register_customizer_styles( $wp_customize ) {
 	$wp_customize->add_section(
 		'roadmap_global_styles',
 		array(
-			'title'    => __( 'Idea Styles', 'roadmapwp-pro' ),
+			'title'    => __( 'Global Styles', 'roadmapwp-pro' ),
 			'panel'    => 'roadmap_styles',
 			'priority' => 1,
 		)
@@ -280,7 +280,7 @@ function register_customizer_styles( $wp_customize ) {
 	);
 }
 
-add_action( 'wp_enqueue_scripts', 'custom_styles' );
+add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\custom_styles' );
 
 /**
  * Enqueue custom styles for LearnDash.

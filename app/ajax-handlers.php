@@ -66,11 +66,12 @@ function filter_ideas() {
 
 	// Retrieve color settings
 	$options                = get_option( 'wp_roadmap_settings' );
-	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
-	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
-	$filters_bg_color       = isset( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '#f5f5f5';
+	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? sanitize_hex_color( $options['vote_button_bg_color'] ) : '#ff0000';
+	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? sanitize_hex_color( $options['vote_button_text_color'] ) : '#ffffff';
+	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? sanitize_hex_color( $options['filter_tags_bg_color'] ) : '#ff0000';
+	$filter_tags_text_color = isset( $options['filter_tags_text_color'] ) ? sanitize_hex_color( $options['filter_tags_text_color'] ) : '#ffffff';
+	$filters_bg_color       = isset( $options['filters_bg_color'] ) ? sanitize_hex_color( $options['filters_bg_color'] ) : '#f5f5f5';
+
 
 	foreach ($filter_data as $taxonomy => $data) {
 		// Sanitize taxonomy to ensure it's a valid taxonomy name
@@ -103,10 +104,10 @@ function filter_ideas() {
 	);
 
 	// Validate color settings
-	$vote_button_bg_color   = sanitize_hex_color( $options['vote_button_bg_color'] );
-	$vote_button_text_color = sanitize_hex_color( $options['vote_button_text_color'] );
-	$filter_tags_bg_color   = sanitize_hex_color( $options['filter_tags_bg_color'] );
-	$filter_tags_text_color = sanitize_hex_color( $options['filter_tags_text_color'] );
+	// $vote_button_bg_color   = sanitize_hex_color( $options['vote_button_bg_color'] );
+	// $vote_button_text_color = sanitize_hex_color( $options['vote_button_text_color'] );
+	// $filter_tags_bg_color   = sanitize_hex_color( $options['filter_tags_bg_color'] );
+	// $filter_tags_text_color = sanitize_hex_color( $options['filter_tags_text_color'] );
 
 	$query = new \WP_Query( $args );
 	if ( $query->have_posts() ) : ?>
@@ -127,7 +128,7 @@ function filter_ideas() {
 						<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 	
 						<p class="text-gray-500 mt-2 text-sm"><?php esc_html_e( 'Submitted on:', 'roadmapwp-pro' ); ?> <?php echo esc_html( get_the_date() ); ?></p>
-						<div class="flex flex-wrap space-x-2 mt-2">
+						<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 							<?php
 							$terms = wp_get_post_terms( $idea_id, $display_taxonomies );
 							foreach ( $terms as $term ) :
@@ -390,7 +391,7 @@ function load_ideas_for_status() {
 					</h3>
 
 					<?php if ( ! empty( $tags ) ) : ?>
-						<div class="flex flex-wrap space-x-2 mt-2">
+						<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 							<?php foreach ( $tags as $tag_name => $tag_terms ) : ?>
 								<?php foreach ( $tag_terms as $tag_term ) : ?>
 									<?php $tag_link = get_term_link( $tag_term, $tag_name ); // Get the term link ?>

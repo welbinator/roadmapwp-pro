@@ -56,15 +56,16 @@ function roadmap_tabs_shortcode( $atts ) {
 		}
 	}
 
-	$options                 = get_option( 'wp_roadmap_settings' );
-	$vote_button_bg_color    = ! empty( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '';
-	$vote_button_text_color  = ! empty( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
-	$filter_tags_bg_color    = ! empty( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '';
-	$filter_tags_text_color  = ! empty( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
-	$filters_bg_color        = ! empty( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '';
-	$tabs_container_bg_color = ! empty( $options['tabs_container_bg_color'] ) ? $options['tabs_container_bg_color'] : '#dddddd';
-	$tabs_text_color         = ! empty( $options['tabs_text_color'] ) ? $options['tabs_text_color'] : '#000000';
-	$tabs_button_bg_color    = ! empty( $options['tabs_button_bg_color'] ) ? $options['tabs_button_bg_color'] : '#ffffff';
+	$options = get_option( 'wp_roadmap_settings' );
+	$vote_button_bg_color = !empty($options['vote_button_bg_color']) ? sanitize_hex_color($options['vote_button_bg_color']) : '';
+	$vote_button_text_color = !empty($options['vote_button_text_color']) ? sanitize_hex_color($options['vote_button_text_color']) : '#ffffff';
+	$filter_tags_bg_color = !empty($options['filter_tags_bg_color']) ? sanitize_hex_color($options['filter_tags_bg_color']) : '';
+	$filter_tags_text_color = !empty($options['filter_tags_text_color']) ? sanitize_hex_color($options['filter_tags_text_color']) : '#ffffff';
+	$filters_bg_color = !empty($options['filters_bg_color']) ? sanitize_hex_color($options['filters_bg_color']) : '';
+	$tabs_container_bg_color = !empty($options['tabs_container_bg_color']) ? sanitize_hex_color($options['tabs_container_bg_color']) : '#dddddd';
+	$tabs_text_color = !empty($options['tabs_text_color']) ? sanitize_hex_color($options['tabs_text_color']) : '#000000';
+	$tabs_button_bg_color = !empty($options['tabs_button_bg_color']) ? sanitize_hex_color($options['tabs_button_bg_color']) : '#ffffff';
+
 
 	ob_start(); // Start output buffering
 	?>
