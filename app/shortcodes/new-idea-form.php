@@ -38,8 +38,10 @@ function new_idea_form_shortcode() {
 		<div class="new_idea_form__frontend">
 			<?php if ( ! $hide_submit_idea_heading ) : ?>
 				<h2><?php echo esc_html( $new_submit_idea_heading ); ?></h2>
-			<?php endif; ?>
-			<form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="post">
+			<?php endif; 
+			$form_action = esc_url_raw($_SERVER['REQUEST_URI']);
+			?>
+			 <form action="<?php echo esc_url($form_action); ?>" method="post">
 				<ul class="flex-outer">
 					<li class="new_idea_form_input">
 						<label for="idea_title">Title:</label>
@@ -106,43 +108,44 @@ add_shortcode( 'new_idea_form', __NAMESPACE__ . '\\new_idea_form_shortcode' );
  * Function to handle the submission of the new idea form.
  */
 function handle_new_idea_submission() {
-	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'] ) && isset( $_POST['wp_roadmap_new_idea_nonce'] ) && wp_verify_nonce( $_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea' ) ) {
-		$title       = sanitize_text_field( $_POST['idea_title'] );
-		$description = sanitize_textarea_field( $_POST['idea_description'] );
+	$submission_nonce = ''; // Initialize outside to ensure scope availability
+    $idea_id = 0; // Initialize to ensure scope availability
 
-		$options = get_option( 'wp_roadmap_settings', array() );
-		// Retrieve the WordPress default post status setting
-		$default_wp_post_status   = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
-		$default_idea_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea'; // Replace 'new-idea' with your actual default term slug
+    if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_nonce'])) {
+        $submission_nonce = sanitize_text_field(wp_unslash($_POST['wp_roadmap_new_idea_nonce']));
+        if (wp_verify_nonce($submission_nonce, 'wp_roadmap_new_idea')) {
+            $title = sanitize_text_field($_POST['idea_title']);
+            $description = sanitize_textarea_field($_POST['idea_description']);
 
-		$idea_id = wp_insert_post(
-			array(
-				'post_title'   => $title,
-				'post_content' => $description,
-				'post_status'  => $default_wp_post_status, // Set the WordPress post status
-				'post_type'    => 'idea',
-			)
-		);
+            $options = get_option('wp_roadmap_settings', array());
+            $default_idea_status = isset($options['default_idea_status']) ? $options['default_idea_status'] : 'pending';
 
-		if ( $idea_id && ! is_wp_error( $idea_id ) ) {
-			// Set the terms for other taxonomies if any
-			if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
-				foreach ( $_POST['idea_taxonomies'] as $tax_slug => $term_ids ) {
-					if ( $tax_slug !== 'status' ) { // Skip 'status' taxonomy here
-						$term_ids = array_map( 'intval', $term_ids );
-						wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
-					}
-				}
-			}
+            $idea_id = wp_insert_post([
+                'post_title' => $title,
+                'post_content' => $description,
+                'post_status' => $default_idea_status,
+                'post_type' => 'idea',
+            ]);
+        }
+    }
 
-			// Set the term for 'status' taxonomy
-			wp_set_object_terms( $idea_id, $default_idea_status_term, 'status' );
+    // Ensure this conditional only runs if the nonce was verified successfully
+    if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($submission_nonce) && $idea_id) {
+        if (!empty($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
+            foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
+                if (!taxonomy_exists($tax_slug)) {
+                    continue; // Skip processing for non-existing taxonomies
+                }
+                $term_ids = array_map('intval', $term_ids); // Ensure term IDs are integers
+                wp_set_object_terms($idea_id, $term_ids, $tax_slug);
+            }
+        }
 
-			$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
-			wp_redirect( $redirect_url );
-			exit;
-		}
-	}
+        $redirect_nonce = wp_create_nonce('new_idea_submitted');
+        $redirect_url = add_query_arg(['new_idea_submitted' => '1', 'nonce' => $redirect_nonce], esc_url_raw( $_SERVER['REQUEST_URI'] )); // Replace with your actual URL
+        wp_redirect($redirect_url);
+        exit;
+    }
 }
 
 add_action( 'template_redirect', __NAMESPACE__ . '\\handle_new_idea_submission' );

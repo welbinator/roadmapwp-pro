@@ -98,7 +98,7 @@ function roadmap_shortcode( $atts ) {
 							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr($idea_class); ?>">
 								<div class="p-6">
 									<h4 class="idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
-									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo get_the_date(); ?></p>
+									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
 									<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 									<?php
 									$terms = wp_get_post_terms( $idea_id, $taxonomies );
