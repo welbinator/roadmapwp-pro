@@ -152,7 +152,7 @@ function filter_ideas() {
 						<div class="flex items-center justify-between mt-6">
 							
 						<div class="flex items-center idea-vote-box" data-idea-id="<?php echo esc_attr( $idea_id ); ?>">
-							<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>!important;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;">
+							<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>;">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
@@ -168,7 +168,7 @@ function filter_ideas() {
 									<path d="M7 10v12"></path>
 									<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 								</svg>
-								<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;"><?php echo esc_html( $vote_count ); ?></div>
+								<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>;"><?php echo esc_html( $vote_count ); ?></div>
 							</button>
 							</div>
 						</div>
@@ -414,7 +414,7 @@ function load_ideas_for_status() {
 				</div>
 
 				<div class="p-6 flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
-					<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>!important;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;">
+					<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>;">
 						<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -430,7 +430,7 @@ function load_ideas_for_status() {
 							<path d="M7 10v12"></path>
 							<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 						</svg>
-						<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;"><?php echo esc_html( $vote_count ); ?></div>
+						<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>;"><?php echo esc_html( $vote_count ); ?></div>
 					</button>
 				</div>
 			</div>

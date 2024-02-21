@@ -99,6 +99,9 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-he
 // Include default idea status setting
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
+// Include customizer styles
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/customizer-styles.php';
+
 // Include necessary files
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-functions.php';
@@ -110,6 +113,8 @@ require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap-tabs.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/single-idea.php';
+
+
 
 $gm_file = plugin_dir_path( __FILE__ ) . 'gutenberg-market.php';
 
