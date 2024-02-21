@@ -1,4 +1,8 @@
 <?php
+/*
+* Ajax handling for voting functionality.
+*/
+
 namespace RoadMapWP\Pro\Ajax;
 use RoadMapWP\Pro\Admin\Functions;
 /**
@@ -11,7 +15,10 @@ function handle_vote() {
 	$user_id = get_current_user_id();
 
 	// Generate a unique key for non-logged-in user
-	$user_key = $user_id ? 'user_' . $user_id : 'guest_' . md5( $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] );
+	$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
+	$http_user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+	$user_key = $user_id ? 'user_' . $user_id : 'guest_' . md5($remote_addr . $http_user_agent);
+
 
 	// Retrieve the current vote count
 	$current_votes = get_post_meta( $post_id, 'idea_votes', true ) ?: 0;
@@ -51,7 +58,7 @@ add_action( 'wp_ajax_nopriv_wp_roadmap_handle_vote', __NAMESPACE__ . '\\handle_v
 function filter_ideas() {
 	check_ajax_referer( 'wp-roadmap-idea-filter-nonce', 'nonce' );
 
-	$filter_data = $_POST['filter_data'];
+	$filter_data = isset($_POST['filter_data']) ? (array) $_POST['filter_data'] : array();
 	$tax_query   = array();
 
 	$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
@@ -65,13 +72,23 @@ function filter_ideas() {
 	$filter_tags_text_color = isset( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
 	$filters_bg_color       = isset( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '#f5f5f5';
 
-	foreach ( $filter_data as $taxonomy => $data ) {
-		if ( ! empty( $data['terms'] ) ) {
+	foreach ($filter_data as $taxonomy => $data) {
+		// Sanitize taxonomy to ensure it's a valid taxonomy name
+		$taxonomy = sanitize_key($taxonomy);
+		if (!taxonomy_exists($taxonomy)) {
+			continue; // Skip this iteration if the taxonomy is not valid
+		}
+	
+		// Validate and sanitize 'terms' if they are set and is an array
+		if (!empty($data['terms']) && is_array($data['terms'])) {
+			$sanitized_terms = array_map('sanitize_text_field', $data['terms']);
+			$operator = isset($data['matchType']) && $data['matchType'] === 'all' ? 'AND' : 'IN';
+			
 			$tax_query[] = array(
 				'taxonomy' => $taxonomy,
 				'field'    => 'slug',
-				'terms'    => $data['terms'],
-				'operator' => ( $data['matchType'] === 'all' ) ? 'AND' : 'IN',
+				'terms'    => $sanitized_terms,
+				'operator' => $operator,
 			);
 		}
 	}
@@ -109,7 +126,7 @@ function filter_ideas() {
 					<div class="p-6">
 						<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 	
-						<p class="text-gray-500 mt-2 text-sm"><?php esc_html_e( 'Submitted on:', 'roadmapwp-pro' ); ?> <?php echo get_the_date(); ?></p>
+						<p class="text-gray-500 mt-2 text-sm"><?php esc_html_e( 'Submitted on:', 'roadmapwp-pro' ); ?> <?php echo esc_html( get_the_date() ); ?></p>
 						<div class="flex flex-wrap space-x-2 mt-2">
 							<?php
 							$terms = wp_get_post_terms( $idea_id, $display_taxonomies );
@@ -134,7 +151,7 @@ function filter_ideas() {
 	
 						<div class="flex items-center justify-between mt-6">
 							
-							<div class="flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
+						<div class="flex items-center idea-vote-box" data-idea-id="<?php echo esc_attr( $idea_id ); ?>">
 							<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>!important;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +168,7 @@ function filter_ideas() {
 									<path d="M7 10v12"></path>
 									<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 								</svg>
-								<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;"><?php echo $vote_count; ?></div>
+								<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;"><?php echo esc_html( $vote_count ); ?></div>
 							</button>
 							</div>
 						</div>
@@ -413,7 +430,7 @@ function load_ideas_for_status() {
 							<path d="M7 10v12"></path>
 							<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 						</svg>
-						<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;"><?php echo $vote_count; ?></div>
+						<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>!important;"><?php echo esc_html( $vote_count ); ?></div>
 					</button>
 				</div>
 			</div>

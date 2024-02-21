@@ -26,7 +26,7 @@ get_header(); ?>
 				<div id="post-<?php the_ID(); ?>" <?php post_class( 'p-6 flex flex-col space-y-2' ); ?>>
 					<header class="entry-header">
 						<?php the_title( '<h1 class="entry-title text-4xl font-bold">', '</h1>' ); ?>
-						<p class="publish-date text-gray-600"><?php echo get_the_date(); ?></p> <!-- Published date -->
+						<p class="publish-date text-gray-600"><?php echo esc_html( get_the_date() ); ?></p> <!-- Published date -->
 					</header><!-- .entry-header -->
 
 					<?php

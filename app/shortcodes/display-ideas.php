@@ -53,7 +53,7 @@ function display_ideas_shortcode() {
 		<?php
 		$output = '<h2>' . esc_html( $new_display_ideas_heading ) . '</h2>';
 		if ( ! $hide_display_ideas_heading ) {
-			echo $output;
+			echo wp_kses_post( $output );
 		}
 		?>
 		<div class="filters-wrapper" style="background-color: <?php echo esc_attr( $filters_bg_color ); ?>;">
@@ -119,7 +119,7 @@ function display_ideas_shortcode() {
 						<div class="p-6">
 							<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h2>
 		
-							<p class="text-gray-500 mt-2 text-sm">Submitted on: <?php echo get_the_date(); ?></p>
+							<p class="text-gray-500 mt-2 text-sm">Submitted on: <?php echo esc_html( get_the_date() ); ?></p>
 							<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 								<?php
 								$terms = wp_get_post_terms( $idea_id, $taxonomies );
