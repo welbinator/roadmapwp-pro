@@ -59,6 +59,7 @@ function filter_ideas() {
 	check_ajax_referer( 'wp-roadmap-idea-filter-nonce', 'nonce' );
 
 	$filter_data = isset($_POST['filter_data']) ? (array) $_POST['filter_data'] : array();
+	$search_term = isset($_POST['search_term']) ? sanitize_text_field($_POST['search_term']) : '';
 	$tax_query   = array();
 
 	$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
@@ -98,14 +99,11 @@ function filter_ideas() {
 		$tax_query['relation'] = 'AND';
 	}
 	$args = array(
-		'post_type'      => 'idea',
-		'posts_per_page' => -1,
-		'tax_query'      => $tax_query,
-	);
-
-	if ( !empty($_POST['search_term']) ) {
-		$args['s'] = sanitize_text_field($_POST['search_term']);
-	}
+        'post_type'      => 'idea',
+        'posts_per_page' => -1,
+        'tax_query'      => $tax_query,
+        's'              => $search_term, // Include the search term in the query
+    );
 	
 
 	$query = new \WP_Query( $args );
