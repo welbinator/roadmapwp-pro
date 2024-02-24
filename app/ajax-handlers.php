@@ -103,11 +103,10 @@ function filter_ideas() {
 		'tax_query'      => $tax_query,
 	);
 
-	// Validate color settings
-	// $vote_button_bg_color   = sanitize_hex_color( $options['vote_button_bg_color'] );
-	// $vote_button_text_color = sanitize_hex_color( $options['vote_button_text_color'] );
-	// $filter_tags_bg_color   = sanitize_hex_color( $options['filter_tags_bg_color'] );
-	// $filter_tags_text_color = sanitize_hex_color( $options['filter_tags_text_color'] );
+	if ( !empty($_POST['search_term']) ) {
+		$args['s'] = sanitize_text_field($_POST['search_term']);
+	}
+	
 
 	$query = new \WP_Query( $args );
 	if ( $query->have_posts() ) : ?>
