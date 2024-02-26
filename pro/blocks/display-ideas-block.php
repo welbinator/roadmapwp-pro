@@ -10,16 +10,11 @@ use RoadMapWP\Pro\Admin\Functions;
 
 function block_init() {
 
-	wp_register_script(
-		'roadmapwp-pro-display-ideas-block',
-		plugin_dir_url( __FILE__ ) . '../../build/display-ideas-block.js',
-		array( 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'wp-api-fetch' )
-	);
 
-	register_block_type(
-		'roadmapwp-pro/display-ideas',
-		array(
-			'editor_script'   => 'roadmapwp-pro-display-ideas-block',
+	$plugin_root_url = plugin_dir_url(dirname(__DIR__));
+	$display_ideas_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/display-ideas-block';
+	
+    register_block_type_from_metadata($display_ideas_block_path, array(
 			'render_callback' => __NAMESPACE__ . '\display_ideas_block_render',
 			'attributes'      => array(
 				'onlyLoggedInUsers' => array(

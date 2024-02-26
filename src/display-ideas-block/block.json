@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "display-ideas-block/display-ideas-block",
+	"version": "0.1.0",
+	"title": "Display Ideas",
+	"category": "roadmap",
+	"icon": "lightbulb",
+	"attributes": {
+		"onlyLoggedInUsers": {
+		  "type": "boolean",
+		  "default": false
+		}
+	  },
+	"description": "Displays ideas with filters",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "display-ideas-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

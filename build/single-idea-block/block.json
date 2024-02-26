@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "roadmapwp-pro/single-idea",
   "version": "1.0.0",
   "title": "Single Idea",
@@ -9,7 +9,7 @@
   "attributes": {
     "ideaId": {
       "type": "number",
-      "default": 753
+      "default": 0
     },
     "onlyLoggedInUsers": {
       "type": "boolean",

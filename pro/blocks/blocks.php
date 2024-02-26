@@ -43,9 +43,9 @@ function enqueue_block_editor_assets() {
 
 			wp_enqueue_script(
 				'roadmapwp-pro-display-ideas-block',
-				plugin_dir_url( __FILE__ ) . '../../build/display-ideas-block.js',
+				plugin_dir_url( __FILE__ ) . '../../build/display-ideas-block/index.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( __DIR__ ) . '../../build/display-ideas-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/display-ideas-block/index.js' )
 			);
 
 			wp_enqueue_script(
