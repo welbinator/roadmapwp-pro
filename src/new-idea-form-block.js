@@ -5,7 +5,8 @@ const { useSelect } = wp.data;
 
 registerBlockType('roadmapwp-pro/new-idea-form', {
     title: 'New Idea Form',
-    category: 'common',
+    category: 'roadmap',
+    icon: 'lightbulb',
     attributes: {
         selectedStatuses: {
             type: 'object',

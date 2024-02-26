@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "roadmapwp-pro/single-idea",
+  "version": "1.0.0",
+  "title": "Single Idea",
+  "category": "widgets",
+  "icon": "lightbulb",
+  "attributes": {
+    "ideaId": {
+      "type": "number",
+      "default": 753
+    },
+    "onlyLoggedInUsers": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.scss",
+  "style": "file:./style.scss",
+  "viewScript": "file:./view.js"
+}

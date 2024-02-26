@@ -6,7 +6,8 @@ const { __ } = wp.i18n;
 
 registerBlockType('roadmapwp-pro/display-ideas', {
     title: __('Display Ideas', 'roadmapwp-pro'),
-    category: 'common',
+    category: 'roadmap',
+    icon: 'lightbulb',
     attributes: {
         onlyLoggedInUsers: {
             type: 'boolean',

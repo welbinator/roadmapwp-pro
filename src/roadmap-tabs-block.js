@@ -5,7 +5,8 @@ const { InspectorControls } = wp.blockEditor;
 
 registerBlockType('roadmapwp-pro/roadmap-tabs-block', {
     title: 'Roadmap Tabs Block',
-    category: 'common',
+    category: 'roadmap',
+    icon: 'lightbulb',
     attributes: {
         selectedStatuses: {
             type: 'object',

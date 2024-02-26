@@ -5,7 +5,8 @@
 
     registerBlockType('roadmapwp-pro/roadmap-block', {
         title: 'Roadmap Block',
-        category: 'common',
+        category: 'roadmap',
+        icon: 'lightbulb',
         attributes: {
             selectedStatuses: {
                 type: 'object',

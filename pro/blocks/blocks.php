@@ -7,35 +7,6 @@
 namespace RoadMapWP\Pro\Blocks;
 
 /**
- * Registers custom blocks for the RoadMapWP Pro plugin.
- *
- * This function registers scripts used by the blocks and the blocks themselves, setting up render callbacks as necessary.
- */
-function register_blocks() {
-	// Block Editor Script
-	wp_register_script(
-		'roadmapwp-pro-blocks',
-		plugin_dir_url( __FILE__ ) . 'blocks.js', // Path to your block's JS file
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' )
-	);
-
-	register_block_type(
-		'roadmapwp-pro/single-idea',
-		array(
-			'editor_script'   => 'roadmapwp-pro-blocks',
-			'render_callback' => function ( $atts ) {
-				return \RoadMapWP\Pro\Shortcodes\SingleIdea\single_idea_shortcode( $atts, true );
-				// Passing true for the $is_block parameter
-			},
-		)
-	);
-
-}
-
-add_action( 'init', __NAMESPACE__ . '\register_blocks' );
-
-
-/**
  * Enqueues block editor assets for the RoadMapWP Pro plugin.
  *
  * This function checks if the current screen is the block editor and enqueues scripts for the custom blocks.
@@ -76,8 +47,31 @@ function enqueue_block_editor_assets() {
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
 				filemtime( plugin_dir_path( __DIR__ ) . '../../build/display-ideas-block.js' )
 			);
+
+			wp_enqueue_script(
+				'roadmapwp-pro-single-idea-block',
+				plugin_dir_url( __FILE__ ) . '../../build/single-idea-block/index.js',
+				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/single-idea-block/index.js' )
+			);
 		}
 	}
 }
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
+
+// add blocks category
+function add_block_category( $categories, $post ) {
+    return array_merge(
+        $categories,
+        array(
+            array(
+                'slug'  => 'roadmap',
+                'title' => __( 'Roadmap', 'roadmapwp-pro' ),
+                
+            ),
+        )
+    );
+}
+add_filter( 'block_categories_all', __NAMESPACE__ . '\\add_block_category', 10, 2 );
+

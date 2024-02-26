@@ -75,8 +75,11 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-post-statu
 // Include choose idea template feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
 
-// Include blocks
+// Include blocks.php
 require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
+
+// Include single idea block
+require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/single-idea-block.php';
 
 // Include roadmap block
 require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/roadmap-block.php';
