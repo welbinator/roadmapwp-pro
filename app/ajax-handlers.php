@@ -300,7 +300,7 @@ function load_ideas_for_status() {
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
 	$status                  = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
-	$selectedTaxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
+	$selected_taxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
 
 	// Initialize the tax query with the status term
 	$tax_query = array(
@@ -316,7 +316,7 @@ function load_ideas_for_status() {
 	$empty_taxonomy_selected = false;
 
 	// Modify the tax query if selected taxonomies are provided
-	foreach ( $selectedTaxonomiesSlugs as $slug ) {
+	foreach ( $selected_taxonomiesSlugs as $slug ) {
 		if ( ! empty( $slug ) ) {
 			$terms = get_terms(
 				array(

@@ -66,7 +66,7 @@ function block_render( $attributes ) {
 	$default_status = isset( $attributes['defaultStatus'] ) ? $attributes['defaultStatus'] : '';
 
 	// Retrieve selected taxonomies from attributes
-	$selectedTaxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
+	$selected_taxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
 
 	// Convert slugs back to names for display
 	$statuses = array_map(
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var formData = new FormData();
 		formData.append('action', 'load_ideas_for_status');
 		formData.append('status', status);
-		formData.append('selectedTaxonomies', '<?php echo implode( ',', $selectedTaxonomies ); ?>');
+		formData.append('selectedTaxonomies', '<?php echo implode( ',', $selected_taxonomies ); ?>');
 		formData.append('nonce', nonce);
 
 		fetch(ajaxurl, {

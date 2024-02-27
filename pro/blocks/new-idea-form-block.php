@@ -2,6 +2,8 @@
 /**
  * This file contains functions for registering and rendering the 'New Idea Form' block in the RoadMapWP Pro plugin.
  * It includes functions to initialize the block, handle its rendering, and process form submissions.
+ *
+ * @package RoadMapWP\Pro\Blocks\NewIdeaForm
  */
 
 namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
@@ -11,7 +13,7 @@ namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
  */
 function block_init() {
 
-	// Register the block
+	// Register the block.
 	$new_idea_form_block_path = plugin_dir_path( dirname( __DIR__ ) ) . 'build/new-idea-form-block';
 	register_block_type_from_metadata(
 		$new_idea_form_block_path,
@@ -48,21 +50,20 @@ add_action( 'init', __NAMESPACE__ . '\block_init' );
  * @return string The HTML output for the new idea form.
  */
 function block_render( $attributes ) {
-	error_log( 'New Idea Form block_render called' );
 	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
-		return; // Or simply return ''; to show nothing
+		return;
 	}
 
 	$options                  = get_option( 'wp_roadmap_settings' );
 	$submit_button_bg_color   = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
 	$submit_button_text_color = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#ffffff';
 
-	// Extract selected statuses from block attributes
+	// Extract selected statuses from block attributes.
 	$selected_statuses = isset( $attributes['selectedStatuses'] ) ? $attributes['selectedStatuses'] : array();
 
-	// Convert selected statuses to a comma-separated string
+	// Convert selected statuses to a comma-separated string.
 	$selected_statuses_str = implode(
 		',',
 		array_keys(
@@ -75,9 +76,9 @@ function block_render( $attributes ) {
 		)
 	);
 
-	ob_start(); // Start output buffering
+	ob_start();
 
-	if ( isset( $_GET['new_idea_submitted'] ) && $_GET['new_idea_submitted'] == '1' ) {
+	if ( isset( $_GET['new_idea_submitted'] ) && '1' === $_GET['new_idea_submitted'] ) {
 		echo '<p>Thank you for your submission!</p>';
 	}
 
@@ -92,7 +93,13 @@ function block_render( $attributes ) {
 				<h2><?php echo esc_html( $new_submit_idea_heading ); ?></h2>
 			<?php endif; ?>
 
-			<form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="post">
+			<?php
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$form_action_url = isset( $_SERVER['REQUEST_URI'] ) ? esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+			?>
+
+			<form action="<?php echo esc_url( $form_action_url ); ?>" method="post">
 				<ul class="flex-outer">
 					<li class="new_idea_form_input">
 						<label for="idea_title">Title:</label>
@@ -105,14 +112,15 @@ function block_render( $attributes ) {
 					</li>
 
 					<?php
-					// Retrieve the selected taxonomies from block attributes
-					$selectedTaxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
-					$ideaTaxonomies     = get_object_taxonomies( 'idea', 'objects' );
+					// Retrieve the selected taxonomies from block attributes.
+					$selected_taxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
+					$idea_taxonomies     = get_object_taxonomies( 'idea', 'objects' );
 
-					foreach ( $ideaTaxonomies as $taxonomy ) {
-						if ( $taxonomy->name !== 'status' ) {
-							// Display taxonomy if it's selected or if no specific taxonomies are selected
-							if ( empty( $selectedTaxonomies ) || in_array( $taxonomy->name, $selectedTaxonomies, true ) ) {
+					foreach ( $idea_taxonomies as $taxonomy ) {
+						if ( 'status' !== $taxonomy->name ) {
+
+							// Display taxonomy if it's selected or if no specific taxonomies are selected.
+							if ( empty( $selected_taxonomies ) || in_array( $taxonomy->name, $selected_taxonomies, true ) ) {
 								$terms = get_terms(
 									array(
 										'taxonomy'   => $taxonomy->name,
@@ -154,7 +162,7 @@ function block_render( $attributes ) {
 
 	<?php
 
-	$output = ob_get_clean(); // End output buffering and capture the HTML
+	$output = ob_get_clean();
 
 	return $output;
 }
@@ -163,52 +171,62 @@ function block_render( $attributes ) {
  * Handles the submission of the new idea form block.
  */
 function handle_new_idea_block_submission() {
-	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) && wp_verify_nonce( $_POST['wp_roadmap_new_idea_nonce'], 'wp_roadmap_new_idea' ) ) {
-		$title       = sanitize_text_field( $_POST['idea_title'] );
-		$description = sanitize_textarea_field( $_POST['idea_description'] );
-		$options     = get_option( 'wp_roadmap_settings', array() );
+	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
+		if ( wp_verify_nonce( $nonce, 'wp_roadmap_new_idea' ) ) {
 
-		// default post status
-		$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
-		// Default status term from settings
-		$default_idea_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
+			if ( isset( $_POST['idea_title'] ) ) {
+				$title = sanitize_text_field( wp_unslash( $_POST['idea_title'] ) );
+			}
+			if ( isset( $_POST['idea_description'] ) ) {
+				$description = sanitize_textarea_field( wp_unslash( $_POST['idea_description'] ) );
+			}
+			$options = get_option( 'wp_roadmap_settings', array() );
 
-		$idea_id = wp_insert_post(
-			array(
-				'post_title'   => $title,
-				'post_content' => $description,
-				'post_status'  => $default_wp_post_status,
-				'post_type'    => 'idea',
-			)
-		);
+			// default post status.
+			$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
+			// Default status term from settings.
+			$default_idea_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
-		if ( $idea_id && ! is_wp_error( $idea_id ) ) {
-			// Set terms for non-status taxonomies
-			if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
-				foreach ( $_POST['idea_taxonomies'] as $tax_slug => $term_ids ) {
-					if ( $tax_slug !== 'status' ) {
-						$term_ids = array_map( 'intval', $term_ids );
-						wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
+			$idea_id = wp_insert_post(
+				array(
+					'post_title'   => $title,
+					'post_content' => $description,
+					'post_status'  => $default_wp_post_status,
+					'post_type'    => 'idea',
+				)
+			);
+
+			if ( $idea_id && ! is_wp_error( $idea_id ) ) {
+				// Sanitize and set terms for non-status taxonomies.
+				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
+					$idea_taxonomies = array_map( 'sanitize_text_field', wp_unslash( $_POST['idea_taxonomies'] ) );
+					foreach ( $idea_taxonomies as $tax_slug => $term_ids ) {
+						if ( 'status' !== $tax_slug && is_array( $term_ids ) ) {
+							$sanitized_term_ids = array_map( 'intval', $term_ids );
+							wp_set_object_terms( $idea_id, $sanitized_term_ids, $tax_slug );
+						}
 					}
 				}
+
+				// Sanitize and check if selected statuses is set, not empty, and contains valid numeric values.
+				if ( isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] ) ) {
+					$selected_statuses       = array_map( 'intval', wp_unslash( $_POST['selected_statuses'] ) );
+					$valid_selected_statuses = count( array_filter( $selected_statuses, 'is_numeric' ) ) > 0;
+
+					if ( $valid_selected_statuses ) {
+						wp_set_object_terms( $idea_id, $selected_statuses, 'status' );
+					} else {
+						wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'status' );
+					}
+				}
+
+				// Redirect to the confirmation page.
+				$request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+				$redirect_url = add_query_arg( 'new_idea_submitted', '1', $request_uri );
+				wp_safe_redirect( $redirect_url );
+				exit;
 			}
-
-			// Check if selected statuses is set, not empty, and contains valid numeric values
-			$valid_selected_statuses = isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] )
-										&& count( array_filter( $_POST['selected_statuses'], 'is_numeric' ) ) > 0;
-
-			if ( $valid_selected_statuses ) {
-				$selected_status_terms = array_map( 'intval', $_POST['selected_statuses'] );
-				wp_set_object_terms( $idea_id, $selected_status_terms, 'status' );
-			} else {
-				// Fallback to default status term if none or invalid selected
-				wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'status' );
-			}
-
-			// Redirect to the confirmation page
-			$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
-			wp_redirect( $redirect_url );
-			exit;
 		}
 	}
 }
