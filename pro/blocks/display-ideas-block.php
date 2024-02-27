@@ -10,12 +10,10 @@ use RoadMapWP\Pro\Admin\Functions;
 
 function block_init() {
 
-
-	$plugin_root_url = plugin_dir_url(dirname(__DIR__));
 	$display_ideas_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/display-ideas-block';
 	
     register_block_type_from_metadata($display_ideas_block_path, array(
-			'render_callback' => __NAMESPACE__ . '\display_ideas_block_render',
+			'render_callback' => __NAMESPACE__ . '\block_render',
 			'attributes'      => array(
 				'onlyLoggedInUsers' => array(
 					'type'    => 'boolean',
@@ -28,13 +26,13 @@ function block_init() {
 add_action( 'init', __NAMESPACE__ . '\\block_init' );
 
 
-function display_ideas_block_render( $attributes ) {
+function block_render( $attributes ) {
 
 	update_option( 'wp_roadmap_display_ideas_shortcode_loaded', true );
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
 
-		return ''; // Optionally, return a message prompting the user to log in
+		return '';
 	}
 
 	ob_start(); // Start output buffering

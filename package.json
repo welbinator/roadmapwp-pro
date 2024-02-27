@@ -6,7 +6,8 @@
   "scripts": {
     "build:css": "postcss app/assets/css/styles.css -o dist/styles.css",
     "build:js": "wp-scripts build --config webpack.config.js",
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
 },
   "keywords": [],
   "author": "",

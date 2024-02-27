@@ -36,9 +36,9 @@ function enqueue_block_editor_assets() {
 
 			wp_enqueue_script(
 				'roadmapwp-pro-new-idea-form-block',
-				plugin_dir_url( __FILE__ ) . '../../build/new-idea-form-block.js',
+				plugin_dir_url( __FILE__ ) . '../../build/new-idea-form-block/index.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( __DIR__ ) . '../../build/new-idea-form-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/new-idea-form-block/index.js' )
 			);
 
 			wp_enqueue_script(

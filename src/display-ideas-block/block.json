@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "display-ideas-block/display-ideas-block",
+	"name": "roadmapwp-pro/display-ideas",
 	"version": "0.1.0",
 	"title": "Display Ideas",
 	"category": "roadmap",
@@ -17,7 +17,7 @@
 	"supports": {
 		"html": false
 	},
-	"textdomain": "display-ideas-block",
+	"textdomain": "roadmapwp-pro",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",

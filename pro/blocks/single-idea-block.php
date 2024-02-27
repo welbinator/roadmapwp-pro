@@ -12,7 +12,7 @@ namespace RoadMapWP\Pro\Blocks\SingleIdea;
  * This function registers scripts used by the blocks and the blocks themselves, setting up render callbacks as necessary.
  */
 function register_blocks() {
-    $plugin_root_url = plugin_dir_url(dirname(__DIR__));
+    
 	$single_idea_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/single-idea-block';
 	
     register_block_type_from_metadata($single_idea_block_path, array(

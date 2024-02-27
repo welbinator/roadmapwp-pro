@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
 /*!*****************************************!*\
-  !*** ./src/display-ideas-block/view.js ***!
+  !*** ./src/new-idea-form-block/view.js ***!
   \*****************************************/
 /**
  * Use this file for JavaScript code that you want to run in the front-end 
@@ -26,7 +26,7 @@ var __webpack_exports__ = {};
  */
 
 /* eslint-disable no-console */
-console.log("Hello World! (from display-ideas-block-display-ideas-block block)");
+console.log("Hello World! (from new-idea-form-block-new-idea-form-block block)");
 /* eslint-enable no-console */
 /******/ })()
 ;

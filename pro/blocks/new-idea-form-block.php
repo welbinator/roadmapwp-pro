@@ -9,24 +9,36 @@ namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
 /**
  * Initializes the 'New Idea Form' block by registering its script and block type.
  */
-function new_idea_form_block_init() {
-	wp_register_script(
-		'roadmapwp-pro-new-idea-form-block',
-		plugin_dir_url( __FILE__ ) . '../../build/new-idea-form-block.js',
-		array( 'wp-blocks', 'wp-editor', 'wp-components', 'wp-i18n', 'wp-element', 'wp-api-fetch' )
-	);
+function block_init() {
 
+	
 	// Register the block
-	register_block_type(
-		'roadmapwp-pro/new-idea-form',
-		array(
-			'editor_script'   => 'roadmapwp-pro-new-idea-form-block',
-			'render_callback' => __NAMESPACE__ . '\new_idea_form_render',
+	$new_idea_form_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/new-idea-form-block';
+	register_block_type_from_metadata($new_idea_form_block_path, array(
+			
+			'render_callback' => __NAMESPACE__ . '\block_render',
+			'attributes'      => array(
+				'onlyLoggedInUsers' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'selectedStatuses' => array(
+					'type'    => 'object',
+					'default' => array(),
+				),
+				'selectedTaxonomies' => array(
+					'type'    => 'object',
+					'default' => array(),
+				),
+				
+			),
 		)
 	);
 }
 
-add_action( 'init', __NAMESPACE__ . '\new_idea_form_block_init' );
+add_action( 'init', __NAMESPACE__ . '\block_init' );
+
+
 
 /**
  * Renders the 'New Idea Form' block.
@@ -34,7 +46,8 @@ add_action( 'init', __NAMESPACE__ . '\new_idea_form_block_init' );
  * @param array $attributes The block attributes.
  * @return string The HTML output for the new idea form.
  */
-function new_idea_form_render( $attributes ) {
+function block_render( $attributes ) {
+	error_log('New Idea Form block_render called');
 	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
