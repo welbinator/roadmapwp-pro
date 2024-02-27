@@ -56,28 +56,23 @@ function Edit({
       selectedTaxonomies: newTaxonomies
     });
   };
-
-  // Conditional rendering after hooks
-  if (!statuses) {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Loading statuses...");
-  }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: "Select Statuses"
-  }, statuses.map(term => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.CheckboxControl, {
+  }, statuses ? statuses.map(term => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.CheckboxControl, {
     key: term.id,
     label: term.name,
     checked: !!attributes.selectedStatuses[term.slug],
     onChange: isChecked => updateSelectedStatuses(term.slug, isChecked)
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Loading statuses...")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: "Select Taxonomies"
-  }, ideaTaxonomies && ideaTaxonomies.map(taxonomy => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.CheckboxControl, {
+  }, ideaTaxonomies ? ideaTaxonomies.map(taxonomy => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.CheckboxControl, {
     key: taxonomy.slug,
     label: taxonomy.name,
     checked: !!attributes.selectedTaxonomies[taxonomy.slug],
     onChange: isChecked => updateSelectedTaxonomies(taxonomy.slug, isChecked)
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Loading taxonomies...")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: "Default Status"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: "Select a Default Status",
@@ -85,10 +80,10 @@ function Edit({
     options: [{
       label: 'Select Status',
       value: ''
-    }, ...statuses.map(status => ({
+    }, ...(statuses ? statuses.map(status => ({
       label: status.name,
       value: status.slug
-    }))],
+    })) : [])],
     onChange: value => setAttributes({
       defaultStatus: value
     })
@@ -140,16 +135,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ save)
 /* harmony export */ });
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-
-
 /**
  * The save function defines the way in which the different attributes should
  * be combined into the final markup, which is then serialized by the block
