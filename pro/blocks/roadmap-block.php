@@ -3,7 +3,7 @@
  * This file handles the registration and rendering of the 'Roadmap Block' for the RoadMapWP Pro plugin.
  * It includes functions to register the block and its script, as well as to render the block in the editor.
  *
- * @package RoadMapWP\Pro\Blocks\NewIdeaForm
+ * @package RoadMapWP\Pro\Blocks\Roadmap
  */
 
 namespace RoadMapWP\Pro\Blocks\Roadmap;

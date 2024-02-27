@@ -2,7 +2,7 @@
 /**
  * This file contains functions related to the registration and rendering of the 'Single Idea' block in the RoadMapWP Pro plugin.
  *
- * @package RoadMapWP\Pro\Blocks\NewIdeaForm
+ * @package RoadMapWP\Pro\Blocks\SingleIdea
  */
 
 namespace RoadMapWP\Pro\Blocks\SingleIdea;

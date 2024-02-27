@@ -166,7 +166,7 @@ function block_render( $attributes ) {
 					}
 					?>
 
-					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
+					<input type="hidden" name="wp_roadmap_new_idea_block_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
 					<li class="new_idea_form_input">
 						<input type="submit" value="Submit Idea">
 					</li>
@@ -186,8 +186,8 @@ function block_render( $attributes ) {
  * Handles the submission of the new idea form block.
  */
 function handle_new_idea_block_submission() {
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
-		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
+	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_block_nonce'] ) ) {
+		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_block_nonce'] ) );
 		if ( wp_verify_nonce( $nonce, 'wp_roadmap_new_idea' ) ) {
 
 			if ( isset( $_POST['idea_title'] ) ) {
