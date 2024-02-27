@@ -1,7 +1,9 @@
 jQuery(document).ready(function($) {
-    // Listen for changes on checkboxes and radio buttons in the filter
-    $('.wp-roadmap-ideas-filter-taxonomy input[type=checkbox], .wp-roadmap-ideas-filter-taxonomy input[type=radio]').change(function() {
+    function sendAjaxRequest() {
+        var searchTerm = $('#roadmap_search_input').val(); // Assuming this is your search input ID
         var filterData = {};
+
+        // Collecting filter data
         $('.wp-roadmap-ideas-filter-taxonomy').each(function() {
             var taxonomy = $(this).data('taxonomy');
             var matchType = $('input[name="match_type_' + taxonomy + '"]:checked').val();
@@ -13,23 +15,38 @@ jQuery(document).ready(function($) {
                 filterData[taxonomy]['terms'].push($(this).val());
             });
         });
-       
+
+        // AJAX request with both search term and filters
         $.ajax({
             url: RoadMapWPFilterAjax.ajax_url,
             type: 'POST',
             data: {
                 'action': 'filter_ideas',
-                'filter_data': filterData,
-                'nonce': RoadMapWPFilterAjax.nonce // Include the nonce for security
+                'search_term': searchTerm, // Pass the search term
+                'filter_data': filterData, // Pass the filter data
+                'nonce': RoadMapWPFilterAjax.nonce // Security nonce
             },
             success: function(response) {
-                console.log('AJAX request successful. Response:', response);
                 $('.wp-roadmap-ideas-list').html(response);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log('AJAX error:', textStatus, errorThrown);
             }
-            
         });
+    }
+
+    // Bind the sendAjaxRequest function to both search and filter changes
+    $('#roadmap_search_submit').click(function(e) {
+        e.preventDefault();
+        sendAjaxRequest();
     });
+
+    $('#roadmap_search_input').keypress(function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            sendAjaxRequest();
+        }
+    });
+
+    $('.wp-roadmap-ideas-filter-taxonomy input').change(sendAjaxRequest);
 });

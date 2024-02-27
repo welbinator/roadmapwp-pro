@@ -53,6 +53,7 @@ function register_idea_post_type() {
 		'menu_position'      => null,
 		'taxonomies'         => $taxonomies,
 		'supports'           => array( 'title', 'editor', 'author', 'comments' ),
+		'show_in_rest'          => true,
 	);
 
 	register_post_type( 'idea', $args );
