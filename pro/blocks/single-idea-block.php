@@ -47,10 +47,6 @@ function register_blocks() {
 					return '<p>Idea not found.</p>';
 				}
 
-					// Fetch options for styling.
-					// $options = get_option( 'wp_roadmap_settings', array() );
-					
-
 					// Get vote count.
 					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
 
