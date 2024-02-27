@@ -56,23 +56,38 @@ function block_render( $attributes ) {
 		return;
 	}
 
-	$options                  = get_option( 'wp_roadmap_settings' );
-	$submit_button_bg_color   = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
-	$submit_button_text_color = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#ffffff';
+	$options             = get_option( 'wp_roadmap_settings' );
+	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 	// Extract selected statuses from block attributes.
 	$selected_statuses = isset( $attributes['selectedStatuses'] ) ? $attributes['selectedStatuses'] : array();
 
-	// Convert selected statuses to a comma-separated string.
+	// Cleanup selected statuses - remove any entries that are empty or considered falsy.
+	$selected_statuses = array_filter(
+		$selected_statuses,
+		function ( $value ) {
+			return ! empty( $value );
+		}
+	);
+
+	// If no statuses have been selected (or if all selected statuses are removed), add the default status term.
+	if ( empty( $selected_statuses ) ) {
+		// Ensure the default status term exists and get its term ID.
+		$term = term_exists( $default_status_term, 'status' );
+
+		if ( $term !== 0 && $term !== null ) {
+
+			// Use the term's ID directly to update $selected_statuses.
+			$selected_statuses[ $term['term_id'] ] = true; // Adjust this line
+
+		}
+	}
+
+	// Convert selected statuses to a comma-separated string for display or further processing.
 	$selected_statuses_str = implode(
 		',',
 		array_keys(
-			array_filter(
-				$selected_statuses,
-				function ( $status ) {
-					return $status;
-				}
-			)
+			$selected_statuses
 		)
 	);
 
@@ -153,7 +168,7 @@ function block_render( $attributes ) {
 
 					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
 					<li class="new_idea_form_input">
-						<input style="background-color: <?php echo esc_attr( $submit_button_bg_color ); ?>;color: <?php echo esc_attr( $submit_button_text_color ); ?>;" type="submit" value="Submit Idea">
+						<input type="submit" value="Submit Idea">
 					</li>
 				</ul>
 			</form>
