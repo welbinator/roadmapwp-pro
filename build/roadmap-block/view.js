@@ -1,8 +1,8 @@
 /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
-/*!*****************************************!*\
-  !*** ./src/display-ideas-block/view.js ***!
-  \*****************************************/
+/*!***********************************!*\
+  !*** ./src/roadmap-block/view.js ***!
+  \***********************************/
 /**
  * Use this file for JavaScript code that you want to run in the front-end 
  * on posts/pages that contain this block.
@@ -26,9 +26,7 @@ var __webpack_exports__ = {};
  */
 
 /* eslint-disable no-console */
-
-// javascript code goes here.
-
+console.log("Hello World! (from roadmap-block-roadmap-block block)");
 /* eslint-enable no-console */
 /******/ })()
 ;

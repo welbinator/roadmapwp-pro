@@ -21,5 +21,7 @@
  */
  
 /* eslint-disable no-console */
-console.log("Hello World! (from display-ideas-block-display-ideas-block block)");
+
+// javascript code goes here.
+
 /* eslint-enable no-console */

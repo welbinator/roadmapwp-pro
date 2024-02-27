@@ -21,9 +21,9 @@ function enqueue_block_editor_assets() {
 			// Enqueue the Roadmap block editor script
 			wp_enqueue_script(
 				'roadmapwp-pro-roadmap-block',
-				plugin_dir_url( __FILE__ ) . '../../build/roadmap-block.js',
+				plugin_dir_url( __FILE__ ) . '../../build/roadmap-block/index.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
-				filemtime( plugin_dir_path( __DIR__ ) . '../../build/roadmap-block.js' )
+				filemtime( plugin_dir_path( __DIR__ ) . '../../build/roadmap-block/index.js' )
 			);
 
 			// Enqueue the Roadmap Tabs block editor script

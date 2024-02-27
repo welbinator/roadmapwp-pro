@@ -21,5 +21,25 @@
  */
  
 /* eslint-disable no-console */
-console.log("Hello World! (from new-idea-form-block-new-idea-form-block block)");
+document.addEventListener('DOMContentLoaded', function() {
+    var blocks = document.querySelectorAll('div[data-selected-statuses]');
+    // console.log('Blocks found:', blocks.length);
+    blocks.forEach(function(block) {
+        var selectedStatuses = block.getAttribute('data-selected-statuses').split(',');
+        // console.log('Selected Statuses:', selectedStatuses);
+        var form = block.querySelector('form');
+        // console.log('Form found:', form);
+        if (form) {
+            selectedStatuses.forEach(function(statusId) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selected_statuses[]';
+                input.value = statusId;
+                form.appendChild(input);
+                // console.log('Input added for status:', statusId);
+            });
+        }
+    });
+});
+
 /* eslint-enable no-console */

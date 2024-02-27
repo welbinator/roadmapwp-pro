@@ -1,8 +1,3 @@
-/******/ (() => { // webpackBootstrap
-var __webpack_exports__ = {};
-/*!*****************************************!*\
-  !*** ./src/display-ideas-block/view.js ***!
-  \*****************************************/
 /**
  * Use this file for JavaScript code that you want to run in the front-end 
  * on posts/pages that contain this block.
@@ -24,12 +19,7 @@ var __webpack_exports__ = {};
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
-
+ 
 /* eslint-disable no-console */
-
-// javascript code goes here.
-
+console.log("Hello World! (from roadmap-block-roadmap-block block)");
 /* eslint-enable no-console */
-/******/ })()
-;
-//# sourceMappingURL=view.js.map
