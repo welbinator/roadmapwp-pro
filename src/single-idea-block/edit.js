@@ -3,8 +3,7 @@ import { TextControl, PanelBody, CheckboxControl } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
-    const blockProps = useBlockProps();
-
+    
     // Function to get query parameter by name
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -21,8 +20,10 @@ export default function Edit({ attributes, setAttributes }) {
         }
     }, []);
 
+    // block preview
+  
     return (
-        <div {...blockProps}>
+        <div {...useBlockProps()}>
             <InspectorControls>
                 <PanelBody title="Single Idea Settings">
                     <TextControl

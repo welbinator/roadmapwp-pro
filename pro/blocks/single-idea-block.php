@@ -1,10 +1,20 @@
 <?php
 /**
  * This file contains functions related to the registration and rendering of the 'Single Idea' block in the RoadMapWP Pro plugin.
- * 
  */
 
 namespace RoadMapWP\Pro\Blocks\SingleIdea;
+
+function enqueue_editor_assets() {
+	wp_localize_script(
+		'single-idea-block-modules-script',
+		'single_idea_preview',
+		array(
+			'fixed_content' => plugin_dir_path( dirname( __DIR__ ) ) . 'app/assets/img/single-idea-preview.jpg',
+		)
+	);
+}
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_editor_assets' );
 
 /**
  * Registers custom blocks for the RoadMapWP Pro plugin.
@@ -12,38 +22,50 @@ namespace RoadMapWP\Pro\Blocks\SingleIdea;
  * This function registers scripts used by the blocks and the blocks themselves, setting up render callbacks as necessary.
  */
 function register_blocks() {
-    
-	$single_idea_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/single-idea-block';
-	
-    register_block_type_from_metadata($single_idea_block_path, array(
-        'render_callback' => function ($attributes) {
-            if (!empty($attributes['onlyLoggedInUsers']) && !is_user_logged_in()) {
-                return '<p>You must be logged in to view this idea.</p>';
-            }
 
-			
-            global $post;
-            // Attempt to get the ideaId from the URL if available.
-			$idea_id = filter_input(INPUT_GET, 'idea_id', FILTER_VALIDATE_INT);
+	$single_idea_block_path = plugin_dir_path( dirname( __DIR__ ) ) . 'build/single-idea-block';
+	register_block_type_from_metadata(
+		$single_idea_block_path,
+		array(
+			'attributes'      => array(
+				'cover' => array(
+					'type'    => 'string',
+					'default' => '',
+				),
+			),
+			'example'         => array(
+				'attributes'    => array(
+					'cover' => 'http://wproadmap.lndo.site/wp-content/plugins/roadmapwp-pro/app/assets/img/single-idea-preview.jpg',
+				),
+				'viewportWidth' => 800,
+			),
+			'render_callback' => function ( $attributes ) {
+				if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+					return '<p>You must be logged in to view this idea.</p>';
+				}
 
-            $post = get_post($idea_id);
-            if (!$post || $post->post_type !== 'idea') {
-                return '<p>Idea not found.</p>';
-            }
+				global $post;
+				// Attempt to get the ideaId from the URL if available.
+				$idea_id = filter_input( INPUT_GET, 'idea_id', FILTER_VALIDATE_INT );
 
-                // Fetch options for styling
-                $options = get_option('wp_roadmap_settings', array());
-                $vote_button_bg_color = $options['vote_button_bg_color'] ?? '#ff0000';
-                $vote_button_text_color = $options['vote_button_text_color'] ?? '#ffffff';
-                $filter_tags_bg_color = $options['filter_tags_bg_color'] ?? '#ff0000';
-                $filter_tags_text_color = $options['filter_tags_text_color'] ?? '#ffffff';
+				$post = get_post( $idea_id );
+				if ( ! $post || $post->post_type !== 'idea' ) {
+					return '<p>Idea not found.</p>';
+				}
 
-                // Get vote count
-                $vote_count = intval(get_post_meta($idea_id, 'idea_votes', true));
+					// Fetch options for styling
+					$options = get_option( 'wp_roadmap_settings', array() );
+					$vote_button_bg_color = $options['vote_button_bg_color'] ?? '#ff0000';
+					$vote_button_text_color = $options['vote_button_text_color'] ?? '#ffffff';
+					$filter_tags_bg_color = $options['filter_tags_bg_color'] ?? '#ff0000';
+					$filter_tags_text_color = $options['filter_tags_text_color'] ?? '#ffffff';
 
-                ob_start();
-                ?>
-                <main id="primary" class="site-main">
+					// Get vote count
+					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+
+					ob_start();
+				?>
+				<main id="primary" class="site-main">
 		<div class="roadmap_wrapper container mx-auto">
 		<article id="post-<?php echo esc_attr( $post->ID ); ?>" <?php post_class(); ?>>
 			<header class="entry-header">
@@ -51,28 +73,28 @@ function register_blocks() {
 				<p class="publish-date"><?php echo esc_html( get_the_date( '', $post ) ); ?></p>
 			</header>
 
-			<?php
-			// Taxonomy logic
-			$taxonomies         = array( 'idea-tag' );
-			$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
-			$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
-			$exclude_taxonomies = array( 'status' );
-			$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
-			$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
+				<?php
+				// Taxonomy logic
+				$taxonomies         = array( 'idea-tag' );
+				$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
+				$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
+				$exclude_taxonomies = array( 'status' );
+				$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
+				$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
 
-			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-				echo '<div class="idea-terms flex space-x-2 idea-tags">';
-				foreach ( $terms as $term ) {
-					$term_link = get_term_link( $term );
-					if ( ! is_wp_error( $term_link ) ) {
-						?>
+				if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+					echo '<div class="idea-terms flex space-x-2 idea-tags">';
+					foreach ( $terms as $term ) {
+						$term_link = get_term_link( $term );
+						if ( ! is_wp_error( $term_link ) ) {
+							?>
 						<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
-						<?php
+							<?php
+						}
 					}
+					echo '</div>';
 				}
-				echo '</div>';
-			}
-			?>
+				?>
 
 			<div class="entry-content">
 				<?php echo apply_filters( 'the_content', $post->post_content ); ?>
@@ -105,17 +127,17 @@ function register_blocks() {
 		</article>
 		</div>
 	</main>
-                <?php
-                if ( 'idea' === get_post_type() ) {
-                    comments_template();
-                }
+				<?php
+				if ( 'idea' === get_post_type() ) {
+					comments_template();
+				}
 
-                return ob_get_clean();
-            },
-        )
-    );
+					return ob_get_clean();
+			},
+		)
+	);
 }
-add_action('init', __NAMESPACE__ . '\\register_blocks');
+add_action( 'init', __NAMESPACE__ . '\\register_blocks' );
 
 
 

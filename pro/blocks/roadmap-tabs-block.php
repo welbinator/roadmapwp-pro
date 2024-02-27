@@ -9,13 +9,15 @@ namespace RoadMapWP\Pro\Blocks\RoadmapTabs;
  * Registers the 'Roadmap Tabs Block' and its associated script.
  */
 function register_block() {
-	
+
 	// Register the block
-	$roadmap_tabs_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/roadmap-tabs-block';
-	register_block_type_from_metadata($roadmap_tabs_block_path, array(
+	$roadmap_tabs_block_path = plugin_dir_path( dirname( __DIR__ ) ) . 'build/roadmap-tabs-block';
+	register_block_type_from_metadata(
+		$roadmap_tabs_block_path,
+		array(
 			'render_callback' => __NAMESPACE__ . '\block_render',
 			'attributes'      => array(
-				'selectedStatuses' => array(
+				'selectedStatuses'   => array(
 					'type'    => 'object',
 					'default' => array(),
 				),
@@ -23,11 +25,11 @@ function register_block() {
 					'type'    => 'object',
 					'default' => array(),
 				),
-				'defaultStatus' => array(
+				'defaultStatus'      => array(
 					'type'    => 'string',
 					'default' => '',
 				),
-				'onlyLoggedInUsers' => array(
+				'onlyLoggedInUsers'  => array(
 					'type'    => 'boolean',
 					'default' => false,
 				),

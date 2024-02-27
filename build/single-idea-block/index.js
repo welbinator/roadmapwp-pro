@@ -28,8 +28,6 @@ function Edit({
   attributes,
   setAttributes
 }) {
-  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)();
-
   // Function to get query parameter by name
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -46,8 +44,11 @@ function Edit({
       }
     }
   }, []);
+
+  // block preview
+
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    ...blockProps
+    ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: "Single Idea Settings"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
@@ -86,7 +87,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__, {
-  Edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
   save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 
@@ -185,7 +186,7 @@ module.exports = window["wp"]["element"];
   \******************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"roadmapwp-pro/single-idea","version":"1.0.0","title":"Single Idea","category":"widgets","icon":"lightbulb","attributes":{"ideaId":{"type":"number","default":0},"onlyLoggedInUsers":{"type":"boolean","default":false}},"editorScript":"file:./index.js","editorStyle":"file:./editor.scss","style":"file:./style.scss","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"roadmapwp-pro/single-idea","version":"1.0.0","title":"Single Idea","category":"widgets","icon":"lightbulb","attributes":{"ideaId":{"type":"number","default":0},"onlyLoggedInUsers":{"type":"boolean","default":false},"cover":{"type":"string","default":""}},"editorScript":"file:./index.js","example":{"attributes":{"cover":"http://wproadmap.lndo.site/wp-content/plugins/roadmapwp-pro/app/assets/img/single-idea-preview.jpg"}},"editorStyle":"file:./editor.scss","style":"file:./style.scss","viewScript":"file:./view.js"}');
 
 /***/ })
 

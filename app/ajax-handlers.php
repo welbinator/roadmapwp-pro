@@ -411,7 +411,7 @@ function load_ideas_for_status() {
 					</p>
 				</div>
 
-				<div class="p-6 flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
+				<div class="p-6 flex items-center idea-vote-box" data-idea-id="<?php echo intval( $idea_id ); ?>">
 					<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>;">
 						<svg
 						xmlns="http://www.w3.org/2000/svg"

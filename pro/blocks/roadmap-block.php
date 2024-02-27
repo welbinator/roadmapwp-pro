@@ -11,24 +11,26 @@ use RoadMapWP\Pro\Admin\Functions;
  * Registers the 'Roadmap Block' and its associated script.
  */
 function register_block() {
-	
+
 	// Register the block
-	$roadmap_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/roadmap-block';
-	register_block_type_from_metadata($roadmap_block_path, array(
+	$roadmap_block_path = plugin_dir_path( dirname( __DIR__ ) ) . 'build/roadmap-block';
+	register_block_type_from_metadata(
+		$roadmap_block_path,
+		array(
 			'render_callback' => __NAMESPACE__ . '\block_render',
 			'attributes'      => array(
 				'onlyLoggedInUsers' => array(
 					'type'    => 'boolean',
 					'default' => false,
 				),
-				'selectedStatuses' => array(
-					'type' => 'object',
+				'selectedStatuses'  => array(
+					'type'    => 'object',
 					'default' => array(),
 				),
-				'statusFilter' => array(
-					'type' => 'string',
+				'statusFilter'      => array(
+					'type'    => 'string',
 					'default' => 'published',
-				),		
+				),
 			),
 		)
 	);
@@ -149,7 +151,7 @@ function block_render( $attributes ) {
 									<div class="idea-excerpt mt-4"><?php echo get_the_excerpt(); ?> <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">read more...</a></div>
 									<div class="flex items-center justify-start mt-6 gap-6">
 									
-									<div class="flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
+									<div class="flex items-center idea-vote-box" data-idea-id="<?php echo intval( $idea_id ); ?>">
 										<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>;">
 											<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +177,7 @@ function block_render( $attributes ) {
 								<?php if ( current_user_can( 'administrator' ) ) : ?>
 									<div class="p-6 bg-gray-200">
 										<h6 class="text-center">Admin only</h6>
-										<form class="idea-status-update-form" data-idea-id="<?php echo $idea_id; ?>">
+										<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="status-select" name="idea_status[]">
 												<?php
 												$statuses         = get_terms( 'status', array( 'hide_empty' => false ) );

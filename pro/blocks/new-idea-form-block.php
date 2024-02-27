@@ -11,18 +11,19 @@ namespace RoadMapWP\Pro\Blocks\NewIdeaForm;
  */
 function block_init() {
 
-	
 	// Register the block
-	$new_idea_form_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/new-idea-form-block';
-	register_block_type_from_metadata($new_idea_form_block_path, array(
-			
+	$new_idea_form_block_path = plugin_dir_path( dirname( __DIR__ ) ) . 'build/new-idea-form-block';
+	register_block_type_from_metadata(
+		$new_idea_form_block_path,
+		array(
+
 			'render_callback' => __NAMESPACE__ . '\block_render',
 			'attributes'      => array(
-				'onlyLoggedInUsers' => array(
+				'onlyLoggedInUsers'  => array(
 					'type'    => 'boolean',
 					'default' => false,
 				),
-				'selectedStatuses' => array(
+				'selectedStatuses'   => array(
 					'type'    => 'object',
 					'default' => array(),
 				),
@@ -30,7 +31,7 @@ function block_init() {
 					'type'    => 'object',
 					'default' => array(),
 				),
-				
+
 			),
 		)
 	);
@@ -47,7 +48,7 @@ add_action( 'init', __NAMESPACE__ . '\block_init' );
  * @return string The HTML output for the new idea form.
  */
 function block_render( $attributes ) {
-	error_log('New Idea Form block_render called');
+	error_log( 'New Idea Form block_render called' );
 	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
