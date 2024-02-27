@@ -8,21 +8,25 @@ namespace RoadMapWP\Pro\Blocks\RoadmapTabs;
 /**
  * Registers the 'Roadmap Tabs Block' and its associated script.
  */
-function register_roadmap_tabs_block() {
-	// Register the block script
-	wp_register_script(
-		'roadmapwp-pro-roadmap-tabs-block',
-		plugin_dir_url( __FILE__ ) . '../../build/roadmap-tabs-block.js',
-		array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-api-fetch' )
-	);
-
+function register_block() {
+	
 	// Register the block
-	register_block_type(
-		'roadmapwp-pro/roadmap-tabs-block',
-		array(
-			'editor_script'   => 'roadmapwp-pro-roadmap-tabs-block',
-			'render_callback' => __NAMESPACE__ . '\roadmap_tabs_block_render',
+	$roadmap_tabs_block_path = plugin_dir_path(dirname(__DIR__)) . 'build/roadmap-tabs-block';
+	register_block_type_from_metadata($roadmap_tabs_block_path, array(
+			'render_callback' => __NAMESPACE__ . '\block_render',
 			'attributes'      => array(
+				'selectedStatuses' => array(
+					'type'    => 'object',
+					'default' => array(),
+				),
+				'selectedTaxonomies' => array(
+					'type'    => 'object',
+					'default' => array(),
+				),
+				'defaultStatus' => array(
+					'type'    => 'string',
+					'default' => '',
+				),
 				'onlyLoggedInUsers' => array(
 					'type'    => 'boolean',
 					'default' => false,
@@ -32,7 +36,7 @@ function register_roadmap_tabs_block() {
 	);
 }
 
-add_action( 'init', __NAMESPACE__ . '\register_roadmap_tabs_block' );
+add_action( 'init', __NAMESPACE__ . '\register_block' );
 
 /**
  * Renders the 'Roadmap Tabs Block' in the block editor.
@@ -40,7 +44,7 @@ add_action( 'init', __NAMESPACE__ . '\register_roadmap_tabs_block' );
  * @param array $attributes The attributes of the block.
  * @return string The rendered HTML of the block.
  */
-function roadmap_tabs_block_render( $attributes ) {
+function block_render( $attributes ) {
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
 		// Return an empty string or a specific message indicating the need to log in

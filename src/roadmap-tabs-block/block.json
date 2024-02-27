@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "roadmapwp-pro/roadmap-tabs-block",
+	"version": "0.1.0",
+	"title": "Roadmap Tabs",
+	"category": "widgets",
+	"icon": "lightbulb",
+	"description": "Displays roadmap in tabbed interface",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "roadmapwp-pro",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
