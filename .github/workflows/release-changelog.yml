@@ -35,7 +35,7 @@ jobs:
         "roadmapwp-pro/phpstan.neon" "roadmapwp-pro/phpstan-baseline.neon" \
         "roadmapwp-pro/postcss.config.js" "roadmapwp-pro/tailwind.config.js" \
         "roadmapwp-pro/gutenberg-market.php" "roadmapwp-pro/.gitignore" \
-        "roadmapwp-pro/webpack.config.js"
+        "roadmapwp-pro/webpack.config.js" "roadmapwp-pro/src/*"
 
     - name: Create Release
       uses: softprops/action-gh-release@v1

@@ -35,7 +35,7 @@ jobs:
         "roadmapwp-pro/phpstan.neon" "roadmapwp-pro/phpstan-baseline.neon" \
         "roadmapwp-pro/postcss.config.js" "roadmapwp-pro/tailwind.config.js" \
         "roadmapwp-pro/EDD_Licensing.php" "roadmapwp-pro/EDD_SL_Plugin_Updater.php" \
-        "roadmapwp-pro/.gitignore" "roadmapwp-pro/webpack.config.js"
+        "roadmapwp-pro/.gitignore" "roadmapwp-pro/webpack.config.js" "roadmapwp-pro/src/*"
 
     - name: Create Pre-Release
       uses: softprops/action-gh-release@v1
