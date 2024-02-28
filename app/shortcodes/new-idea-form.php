@@ -84,7 +84,7 @@ function new_idea_form_shortcode() {
 					}
 					?>
 
-					<input type="hidden" name="wp_roadmap_new_idea_shortcode_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
+					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
 					<li class="new_idea_form_input">
 						<input type="submit" value="Submit Idea">
 					</li>
@@ -108,8 +108,8 @@ function handle_new_idea_submission() {
 	$submission_nonce = ''; // Initialize outside to ensure scope availability
     $idea_id = 0; // Initialize to ensure scope availability
 
-    if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_shortcode_nonce'])) {
-        $submission_nonce = sanitize_text_field(wp_unslash($_POST['wp_roadmap_new_idea_shortcode_nonce']));
+    if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_nonce'])) {
+        $submission_nonce = sanitize_text_field(wp_unslash($_POST['wp_roadmap_new_idea_nonce']));
         if (wp_verify_nonce($submission_nonce, 'wp_roadmap_new_idea')) {
             $title = sanitize_text_field($_POST['idea_title']);
             $description = sanitize_textarea_field($_POST['idea_description']);

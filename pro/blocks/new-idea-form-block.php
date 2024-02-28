@@ -166,7 +166,7 @@ function block_render( $attributes ) {
 					}
 					?>
 
-					<input type="hidden" name="wp_roadmap_new_idea_block_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
+					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
 					<li class="new_idea_form_input">
 						<input type="submit" value="Submit Idea">
 					</li>
@@ -186,8 +186,8 @@ function block_render( $attributes ) {
  * Handles the submission of the new idea form block.
  */
 function handle_new_idea_block_submission() {
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_block_nonce'] ) ) {
-		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_block_nonce'] ) );
+	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
 		if ( wp_verify_nonce( $nonce, 'wp_roadmap_new_idea' ) ) {
 
 			if ( isset( $_POST['idea_title'] ) ) {
@@ -213,36 +213,34 @@ function handle_new_idea_block_submission() {
 			);
 
 			if ( $idea_id && ! is_wp_error( $idea_id ) ) {
-				// Sanitize and set terms for non-status taxonomies.
+				// Set terms for non-status taxonomies
 				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
-					$idea_taxonomies = array_map( 'sanitize_text_field', wp_unslash( $_POST['idea_taxonomies'] ) );
-					foreach ( $idea_taxonomies as $tax_slug => $term_ids ) {
-						if ( 'status' !== $tax_slug && is_array( $term_ids ) ) {
-							$sanitized_term_ids = array_map( 'intval', $term_ids );
-							wp_set_object_terms( $idea_id, $sanitized_term_ids, $tax_slug );
+					foreach ( $_POST['idea_taxonomies'] as $tax_slug => $term_ids ) {
+						if ( $tax_slug !== 'status' ) {
+							$term_ids = array_map( 'intval', $term_ids );
+							wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
 						}
 					}
 				}
-
-				// Sanitize and check if selected statuses is set, not empty, and contains valid numeric values.
-				if ( isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] ) ) {
-					$selected_statuses       = array_map( 'intval', wp_unslash( $_POST['selected_statuses'] ) );
-					$valid_selected_statuses = count( array_filter( $selected_statuses, 'is_numeric' ) ) > 0;
-
-					if ( $valid_selected_statuses ) {
-						wp_set_object_terms( $idea_id, $selected_statuses, 'status' );
-					} else {
-						wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'status' );
-					}
+	
+				// Check if selected statuses is set, not empty, and contains valid numeric values
+				$valid_selected_statuses = isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] )
+											&& count( array_filter( $_POST['selected_statuses'], 'is_numeric' ) ) > 0;
+	
+				if ( $valid_selected_statuses ) {
+					$selected_status_terms = array_map( 'intval', $_POST['selected_statuses'] );
+					wp_set_object_terms( $idea_id, $selected_status_terms, 'status' );
+				} else {
+					// Fallback to default status term if none or invalid selected
+					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'status' );
 				}
-
-				// Redirect to the confirmation page.
-				$request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-				$redirect_url = add_query_arg( 'new_idea_submitted', '1', $request_uri );
-				wp_safe_redirect( $redirect_url );
+	
+				// Redirect to the confirmation page
+				$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
+				wp_redirect( $redirect_url );
 				exit;
 			}
 		}
 	}
 }
-add_action( 'template_redirect', __NAMESPACE__ . '\handle_new_idea_block_submission' );
+	add_action( 'template_redirect', __NAMESPACE__ . '\handle_new_idea_block_submission' );
