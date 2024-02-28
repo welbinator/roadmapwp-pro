@@ -96,7 +96,8 @@ function filter_ideas() {
         'post_type'      => 'idea',
         'posts_per_page' => -1,
         'tax_query'      => $tax_query,
-        's'              => $search_term, // Include the search term in the query
+        's'              => $search_term,
+		'post_status'    => 'publish',
     );
 	
 
