@@ -112,37 +112,6 @@ function settings_validate( $input ) {
 		$validated_settings['custom_display_ideas_heading'] = '';
 	}
 
-	// Validate 'vote_button_bg_color'
-	$validated_settings['vote_button_bg_color'] = isset( $input['vote_button_bg_color'] ) ? sanitize_hex_color( $input['vote_button_bg_color'] ) : '#0000ff';
-
-	// Validate 'vote_button_text_color'
-	$validated_settings['vote_button_text_color'] = isset( $input['vote_button_text_color'] ) ? sanitize_hex_color( $input['vote_button_text_color'] ) : '#000000';
-
-	// Validate 'filter_tags_bg_color'
-	$validated_settings['filter_tags_bg_color'] = isset( $input['filter_tags_bg_color'] ) ? sanitize_hex_color( $input['filter_tags_bg_color'] ) : '#0000ff';
-
-	// Validate 'filter_tags_text_color'
-	$validated_settings['filter_tags_text_color'] = isset( $input['filter_tags_text_color'] ) ? sanitize_hex_color( $input['filter_tags_text_color'] ) : '#000000';
-
-	// Validate 'filters_bg_color'
-	$validated_settings['filters_bg_color'] = isset( $input['filters_bg_color'] ) ? sanitize_hex_color( $input['filters_bg_color'] ) : '#f5f5f5';
-
-	// Validate 'tabs_container_bg_color'
-	$validated_settings['tabs_container_bg_color'] = isset( $input['tabs_container_bg_color'] ) ? sanitize_hex_color( $input['tabs_container_bg_color'] ) : '#dddddd';
-
-	// Validate 'tabs_button_bg_color'
-	$validated_settings['tabs_button_bg_color'] = isset( $input['tabs_button_bg_color'] ) ? sanitize_hex_color( $input['tabs_button_bg_color'] ) : '#ffffff';
-
-	// Validate 'tabs_text_color'
-	$validated_settings['tabs_text_color'] = isset( $input['tabs_text_color'] ) ? sanitize_hex_color( $input['tabs_text_color'] ) : '#000000';
-	
-	// Validate 'submit_button_bg_color'
-	$validated_settings['submit_button_bg_color'] = isset( $input['submit_button_bg_color'] ) ? sanitize_hex_color( $input['submit_button_bg_color'] ) : '#ff0000';
-	
-	// Validate 'submit_button_text_color'
-	$validated_settings['submit_button_text_color'] = isset( $input['submit_button_text_color'] ) ? sanitize_hex_color( $input['submit_button_text_color'] ) : '#ffffff';
-	
-
 	// Return the array of validated settings
 	return $validated_settings;
 }

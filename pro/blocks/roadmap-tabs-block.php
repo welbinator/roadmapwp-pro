@@ -78,22 +78,15 @@ function block_render( $attributes ) {
 	);
 
 	$options                 = get_option( 'wp_roadmap_settings' );
-	$vote_button_bg_color    = ! empty( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '';
-	$vote_button_text_color  = ! empty( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
-	$filter_tags_bg_color    = ! empty( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '';
-	$filter_tags_text_color  = ! empty( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
-	$filters_bg_color        = ! empty( $options['filters_bg_color'] ) ? $options['filters_bg_color'] : '';
-	$tabs_container_bg_color = ! empty( $options['tabs_container_bg_color'] ) ? $options['tabs_container_bg_color'] : '#dddddd';
-	$tabs_text_color         = ! empty( $options['tabs_text_color'] ) ? $options['tabs_text_color'] : '#000000';
-	$tabs_button_bg_color    = ! empty( $options['tabs_button_bg_color'] ) ? $options['tabs_button_bg_color'] : '#ffffff';
+	
 
 	ob_start();
 	?>
 	<!-- Tabbed interface -->
 	<div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
-		<div style="background-color: <?php echo esc_attr( $tabs_container_bg_color ); ?>;" role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
+		<div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
 			<?php foreach ( $statuses as $status ) : ?>
-				<button style="color: <?php echo esc_attr( $tabs_text_color ); ?>; background-color: <?php echo esc_attr( $tabs_button_bg_color ); ?>;" type="button" role="tab" aria-selected="<?php echo ( $status == $default_status ) ? 'true' : 'false'; ?>" data-state="<?php echo ( $status == $default_status ) ? 'active' : 'inactive'; ?>" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr( strtolower( str_replace( ' ', '-', $status ) ) ); ?>">
+				<button type="button" role="tab" aria-selected="<?php echo ( $status == $default_status ) ? 'true' : 'false'; ?>" data-state="<?php echo ( $status == $default_status ) ? 'active' : 'inactive'; ?>" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr( strtolower( str_replace( ' ', '-', $status ) ) ); ?>">
 					<?php echo esc_html( $status ); ?>
 				</button>
 			<?php endforeach; ?>
