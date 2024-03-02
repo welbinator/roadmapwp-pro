@@ -53,7 +53,7 @@ function register_idea_post_type() {
 		'menu_position'      => null,
 		'taxonomies'         => $taxonomies,
 		'supports'           => array( 'title', 'editor', 'author', 'comments' ),
-		'show_in_rest'          => true,
+		'show_in_rest'       => true,
 	);
 
 	register_post_type( 'idea', $args );
@@ -135,7 +135,7 @@ function auto_assign_new_idea_status( $post_id, $post, $update ) {
 	wp_set_object_terms( $post_id, 'new-idea', 'status' );
 }
 
-// add_action('save_post_idea', 'wp_roadmap_pro_auto_assign_new_idea_status', 10, 3);.
+// add_action('save_post_idea', __NAMESPACE__ . '\\auto_assign_new_idea_status', 10, 3);
 
 /**
  * Register custom taxonomies.

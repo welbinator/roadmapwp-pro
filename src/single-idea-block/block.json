@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+    "name": "roadmapwp-pro/single-idea",
+    "version": "1.0.0",
+    "title": "Single Idea",
+    "category": "widgets",
+    "icon": "lightbulb",
+    "attributes": {
+        "ideaId": {
+            "type": "number",
+            "default": 0
+        },
+        "onlyLoggedInUsers": {
+            "type": "boolean",
+            "default": false
+        },
+        "cover": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "editorScript": "file:./index.js",
+    "example": {
+        "attributes": {
+            "cover": "http://wproadmap.lndo.site/wp-content/plugins/roadmapwp-pro/app/assets/img/single-idea-preview.jpg"
+        }
+    },
+    "editorStyle": "file:./editor.scss",
+    "style": "file:./style.scss",
+    "viewScript": "file:./view.js"
+}

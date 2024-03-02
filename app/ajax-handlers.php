@@ -67,13 +67,7 @@ function filter_ideas() {
 
 	// Retrieve color settings
 	$options                = get_option( 'wp_roadmap_settings' );
-	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? sanitize_hex_color( $options['vote_button_bg_color'] ) : '#ff0000';
-	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? sanitize_hex_color( $options['vote_button_text_color'] ) : '#ffffff';
-	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? sanitize_hex_color( $options['filter_tags_bg_color'] ) : '#ff0000';
-	$filter_tags_text_color = isset( $options['filter_tags_text_color'] ) ? sanitize_hex_color( $options['filter_tags_text_color'] ) : '#ffffff';
-	$filters_bg_color       = isset( $options['filters_bg_color'] ) ? sanitize_hex_color( $options['filters_bg_color'] ) : '#f5f5f5';
-
-
+	
 	foreach ($filter_data as $taxonomy => $data) {
 		// Sanitize taxonomy to ensure it's a valid taxonomy name
 		$taxonomy = sanitize_key($taxonomy);
@@ -132,7 +126,7 @@ function filter_ideas() {
 								$term_link = get_term_link( $term );
 								if ( ! is_wp_error( $term_link ) ) :
 									?>
-									<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>; color: <?php echo esc_attr( $filter_tags_text_color ); ?>;"><?php echo esc_html( $term->name ); ?></a>
+									<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
 									<?php
 								endif;
 							endforeach;
@@ -150,7 +144,7 @@ function filter_ideas() {
 						<div class="flex items-center justify-between mt-6">
 							
 						<div class="flex items-center idea-vote-box" data-idea-id="<?php echo esc_attr( $idea_id ); ?>">
-							<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>;">
+							<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
@@ -166,7 +160,7 @@ function filter_ideas() {
 									<path d="M7 10v12"></path>
 									<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 								</svg>
-								<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>;"><?php echo esc_html( $vote_count ); ?></div>
+								<div class="text-white ml-2 idea-vote-count"><?php echo esc_html( $vote_count ); ?></div>
 							</button>
 							</div>
 						</div>
@@ -292,15 +286,11 @@ add_action( 'wp_ajax_update_idea_status', __NAMESPACE__ . '\\update_idea_status'
  */
 function load_ideas_for_status() {
 	$options                = get_option( 'wp_roadmap_settings' );
-	$vote_button_bg_color   = isset( $options['vote_button_bg_color'] ) ? $options['vote_button_bg_color'] : '#ff0000';
-	$vote_button_text_color = isset( $options['vote_button_text_color'] ) ? $options['vote_button_text_color'] : '#ffffff';
-	$filter_tags_bg_color   = isset( $options['filter_tags_bg_color'] ) ? $options['filter_tags_bg_color'] : '#ff0000';
-	$filter_tags_text_color = isset( $options['filter_tags_text_color'] ) ? $options['filter_tags_text_color'] : '#ffffff';
 
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
 	$status                  = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
-	$selectedTaxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
+	$selected_taxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
 
 	// Initialize the tax query with the status term
 	$tax_query = array(
@@ -316,7 +306,7 @@ function load_ideas_for_status() {
 	$empty_taxonomy_selected = false;
 
 	// Modify the tax query if selected taxonomies are provided
-	foreach ( $selectedTaxonomiesSlugs as $slug ) {
+	foreach ( $selected_taxonomiesSlugs as $slug ) {
 		if ( ! empty( $slug ) ) {
 			$terms = get_terms(
 				array(
@@ -393,7 +383,7 @@ function load_ideas_for_status() {
 								<?php foreach ( $tag_terms as $tag_term ) : ?>
 									<?php $tag_link = get_term_link( $tag_term, $tag_name ); // Get the term link ?>
 									<?php if ( ! is_wp_error( $tag_link ) ) : // Check if the link is valid ?>
-										<a href="<?php echo esc_url( $tag_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline" style="background-color: <?php echo esc_attr( $filter_tags_bg_color ); ?>;color: <?php echo esc_attr( $filter_tags_text_color ); ?>;">
+										<a href="<?php echo esc_url( $tag_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline">
 											<?php echo esc_html( $tag_term->name ); ?>
 										</a>
 									<?php endif; ?>
@@ -411,8 +401,8 @@ function load_ideas_for_status() {
 					</p>
 				</div>
 
-				<div class="p-6 flex items-center idea-vote-box" data-idea-id="<?php echo $idea_id; ?>">
-					<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 px-4 py-2 rounded-lg idea-vote-button" style="background-color: <?php echo esc_attr( $vote_button_bg_color ); ?>;background-image: none!important;color: <?php echo esc_attr( $vote_button_text_color ); ?>;">
+				<div class="p-6 flex items-center idea-vote-box" data-idea-id="<?php echo intval( $idea_id ); ?>">
+					<button class="inline-flex items-center justify-center text-sm font-medium h-10 bg-blue-500 text-white px-4 py-2 rounded-lg idea-vote-button">
 						<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -428,7 +418,7 @@ function load_ideas_for_status() {
 							<path d="M7 10v12"></path>
 							<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 						</svg>
-						<div class="text-gray-600 ml-2 idea-vote-count" style="color: <?php echo esc_attr( $vote_button_text_color ); ?>;"><?php echo esc_html( $vote_count ); ?></div>
+						<div class="text-white ml-2 idea-vote-count"><?php echo esc_html( $vote_count ); ?></div>
 					</button>
 				</div>
 			</div>

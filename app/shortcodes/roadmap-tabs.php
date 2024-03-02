@@ -57,14 +57,7 @@ function roadmap_tabs_shortcode( $atts ) {
 	}
 
 	$options = get_option( 'wp_roadmap_settings' );
-	$vote_button_bg_color = !empty($options['vote_button_bg_color']) ? sanitize_hex_color($options['vote_button_bg_color']) : '';
-	$vote_button_text_color = !empty($options['vote_button_text_color']) ? sanitize_hex_color($options['vote_button_text_color']) : '#ffffff';
-	$filter_tags_bg_color = !empty($options['filter_tags_bg_color']) ? sanitize_hex_color($options['filter_tags_bg_color']) : '';
-	$filter_tags_text_color = !empty($options['filter_tags_text_color']) ? sanitize_hex_color($options['filter_tags_text_color']) : '#ffffff';
-	$filters_bg_color = !empty($options['filters_bg_color']) ? sanitize_hex_color($options['filters_bg_color']) : '';
-	$tabs_container_bg_color = !empty($options['tabs_container_bg_color']) ? sanitize_hex_color($options['tabs_container_bg_color']) : '#dddddd';
-	$tabs_text_color = !empty($options['tabs_text_color']) ? sanitize_hex_color($options['tabs_text_color']) : '#000000';
-	$tabs_button_bg_color = !empty($options['tabs_button_bg_color']) ? sanitize_hex_color($options['tabs_button_bg_color']) : '#ffffff';
+	
 
 
 	ob_start(); // Start output buffering
@@ -72,9 +65,9 @@ function roadmap_tabs_shortcode( $atts ) {
 
 	<!-- Tabbed interface -->
 	<div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
-		<div style="background-color: <?php echo esc_attr( $tabs_container_bg_color ); ?>;" role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
+		<div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
 			<?php foreach ( $statuses as $status ) : ?>
-				<button style="color: <?php echo esc_attr( $tabs_text_color ); ?>; background-color: <?php echo esc_attr( $tabs_button_bg_color ); ?>;" type="button" role="tab" aria-selected="true" aria-controls="radix-:r3a:-content-newIdea" data-state="inactive" id="radix-:r3a:-trigger-newIdea" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow roadmap-tab" data-status="<?php echo esc_attr( $status ); ?>">
+				<button type="button" role="tab" aria-selected="true" aria-controls="radix-:r3a:-content-newIdea" data-state="inactive" id="radix-:r3a:-trigger-newIdea" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow roadmap-tab" data-status="<?php echo esc_attr( $status ); ?>">
 					<?php echo esc_html__( $status, 'roadmapwp-pro' ); ?>
 				</button>
 			<?php endforeach; ?>
@@ -154,6 +147,6 @@ function roadmap_tabs_shortcode( $atts ) {
 
 	<?php
 
-	return ob_get_clean(); // Return the buffered output
+	return ob_get_clean();
 }
 add_shortcode( 'roadmap_tabs', __NAMESPACE__ . '\\roadmap_tabs_shortcode' );

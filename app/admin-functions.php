@@ -283,10 +283,10 @@ function redirect_single_idea( $template ) {
 
 add_filter( 'single_template', __NAMESPACE__ . '\\redirect_single_idea' );
 
-function enqueue_new_idea_form_script() {
-	wp_enqueue_script( 'new-idea-form-script', plugin_dir_url( __FILE__ ) . '../pro/blocks/new-idea-form-block-script.js', array(), '1.0.0', true );
-}
-add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_new_idea_form_script' );
+// function enqueue_new_idea_form_script() {
+// 	wp_enqueue_script( 'new-idea-form-script', plugin_dir_url( __FILE__ ) . '../pro/blocks/new-idea-form-block-script.js', array(), '1.0.0', true );
+// }
+// add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_new_idea_form_script' );
 
 // Check if the idea has at least one vote
 function get_idea_class_with_votes($idea_id) {

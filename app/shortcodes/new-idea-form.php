@@ -28,8 +28,7 @@ function new_idea_form_shortcode() {
 	$new_submit_idea_heading  = apply_filters( 'wp_roadmap_custom_idea_heading_text', 'Submit new Idea' );
 
 	$options                = get_option( 'wp_roadmap_settings' );
-	$submit_button_bg_color       = isset( $options['submit_button_bg_color'] ) ? $options['submit_button_bg_color'] : '#ff0000';
-	$submit_button_text_color       = isset( $options['submit_button_text_color'] ) ? $options['submit_button_text_color'] : '#ffffff';
+	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 	?>
 
@@ -87,7 +86,7 @@ function new_idea_form_shortcode() {
 
 					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
 					<li class="new_idea_form_input">
-						<input style="background-color: <?php echo esc_attr( $submit_button_bg_color ); ?>;color: <?php echo esc_attr( $submit_button_text_color ); ?>;" type="submit" value="Submit Idea">
+						<input type="submit" value="Submit Idea">
 					</li>
 				</ul>
 			</form>
@@ -100,9 +99,7 @@ function new_idea_form_shortcode() {
 	return $output;
 }
 
-
 add_shortcode( 'new_idea_form', __NAMESPACE__ . '\\new_idea_form_shortcode' );
-
 
 /**
  * Function to handle the submission of the new idea form.

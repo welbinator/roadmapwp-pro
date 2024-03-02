@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "roadmapwp-pro/new-idea-form",
+	"version": "0.1.0",
+	"title": "New Idea Form",
+	"category": "widgets",
+	"icon": "lightbulb",
+	"attributes": {
+        "selectedStatuses": {
+            "type": "object",
+            "default": {}
+        },
+        "selectedTaxonomies": {
+            "type": "object",
+            "default": {}
+        },
+        "onlyLoggedInUsers": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+	"description": "Displays form for submitting a new idea",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "roadmapwp-pro",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
