@@ -5,6 +5,12 @@
 
 namespace RoadMapWP\Pro\Ajax;
 use RoadMapWP\Pro\Admin\Functions;
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+};
+
 /**
  * Handles voting functionality via AJAX.
  */
@@ -64,9 +70,6 @@ function filter_ideas() {
 
 	$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
 	$display_taxonomies = array_merge( array( 'idea-tag' ), array_keys( $custom_taxonomies ) );
-
-	// Retrieve color settings
-	$options                = get_option( 'wp_roadmap_settings' );
 	
 	foreach ($filter_data as $taxonomy => $data) {
 		// Sanitize taxonomy to ensure it's a valid taxonomy name
@@ -286,7 +289,6 @@ add_action( 'wp_ajax_update_idea_status', __NAMESPACE__ . '\\update_idea_status'
  * Loads ideas for a given status via AJAX.
  */
 function load_ideas_for_status() {
-	$options                = get_option( 'wp_roadmap_settings' );
 
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
