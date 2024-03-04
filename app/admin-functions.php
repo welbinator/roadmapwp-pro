@@ -138,7 +138,7 @@ function enqueue_frontend_styles() {
 	}
 
 	// Enqueue styles if a shortcode or block is loaded
-	if ( $has_block || $has_shortcode || is_singular() ) {
+	if ( $has_block || $has_shortcode || ) {
 		// Enqueue Tailwind CSS
 		$tailwind_css_url = plugin_dir_url( __FILE__ ) . '../dist/styles.css';
 		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url );
