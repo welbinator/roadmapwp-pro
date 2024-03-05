@@ -103,7 +103,7 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-he
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
 // Include customizer styles
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/customizer-styles.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/customizer-styles.php';
 
 // Include necessary files
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
