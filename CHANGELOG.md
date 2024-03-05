@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Enhancement - Removed some code redundancy
 * Enhancement - Improved layout of RoadMap Tabs shortcode and block
 
+
 ## [2.2.2] - 2024-03-01
 
 ### Changed
