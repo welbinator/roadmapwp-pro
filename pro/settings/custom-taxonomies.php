@@ -85,6 +85,8 @@ function custom_taxonomy_content() {
 			$custom_taxonomies[ $taxonomy_slug ] = $taxonomy_data;
 			update_option( 'wp_roadmap_custom_taxonomies', $custom_taxonomies );
 
+			flush_rewrite_rules();
+			
 			$should_redirect = true;
 		}
 	}

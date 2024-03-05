@@ -139,6 +139,7 @@ function rmwp_pro_on_activation() {
 			}
 		}
 	}
+	flush_rewrite_rules();
 }
 
 register_activation_hook( __FILE__, 'rmwp_pro_on_activation' );
