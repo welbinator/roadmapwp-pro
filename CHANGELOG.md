@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.3] - 2024-03-04
+
+### Changed
+* Feature - Added search bar to Display Ideas block (pro only)
+* Bug fix - Fixed tailwind stylesheet enqueue so that it is only included on pages that contain a RoadMapWP block or shortcode
+* Bug fix - Display ideas block was showing pending ideas after filtering
+* Bug fix - Fixed tailwind defaults that were overriding things
+* Enhancement - Removed some code redundancy
+
 ## [2.2.2] - 2024-03-01
 
 ### Changed
