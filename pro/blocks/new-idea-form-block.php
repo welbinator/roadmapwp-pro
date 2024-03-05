@@ -73,12 +73,12 @@ function block_render( $attributes ) {
 	// If no statuses have been selected (or if all selected statuses are removed), add the default status term.
 	if ( empty( $selected_statuses ) ) {
 		// Ensure the default status term exists and get its term ID.
-		$term = term_exists( $default_status_term, 'status' );
+		$idea_term = term_exists( $default_status_term, 'status' );
 
-		if ( $term !== 0 && $term !== null ) {
+		if ( $idea_term !== 0 && $idea_term !== null ) {
 
 			// Use the term's ID directly to update $selected_statuses.
-			$selected_statuses[ $term['term_id'] ] = true; // Adjust this line
+			$selected_statuses[ $idea_term['term_id'] ] = true; // Adjust this line
 
 		}
 	}
@@ -136,23 +136,23 @@ function block_render( $attributes ) {
 
 							// Display taxonomy if it's selected or if no specific taxonomies are selected.
 							if ( empty( $selected_taxonomies ) || in_array( $taxonomy->name, $selected_taxonomies, true ) ) {
-								$terms = get_terms(
+								$idea_terms = get_terms(
 									array(
 										'taxonomy'   => $taxonomy->name,
 										'hide_empty' => false,
 									)
 								);
-								if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+								if ( ! empty( $idea_terms ) && ! is_wp_error( $idea_terms ) ) :
 									?>
 									<li class="new_idea_form_input">
 										<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
 										<div class="taxonomy-term-labels">
 											<?php
-											foreach ( $terms as $term ) :
+											foreach ( $idea_terms as $idea_term ) :
 												?>
 												<label class="taxonomy-term-label">
-													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
-													<?php echo esc_html( $term->name ); ?>
+													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $idea_term->term_id ); ?>">
+													<?php echo esc_html( $idea_term->name ); ?>
 												</label>
 												<?php
 											endforeach;
@@ -215,10 +215,10 @@ function handle_new_idea_block_submission() {
 			if ( $idea_id && ! is_wp_error( $idea_id ) ) {
 				// Set terms for non-status taxonomies
 				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
-					foreach ( $_POST['idea_taxonomies'] as $tax_slug => $term_ids ) {
+					foreach ( $_POST['idea_taxonomies'] as $tax_slug => $idea_term_ids ) {
 						if ( $tax_slug !== 'status' ) {
-							$term_ids = array_map( 'intval', $term_ids );
-							wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
+							$idea_term_ids = array_map( 'intval', $idea_term_ids );
+							wp_set_object_terms( $idea_id, $idea_term_ids, $tax_slug );
 						}
 					}
 				}

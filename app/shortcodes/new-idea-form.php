@@ -55,23 +55,23 @@ function new_idea_form_shortcode() {
 					$taxonomies = get_object_taxonomies( 'idea', 'objects' );
 					foreach ( $taxonomies as $taxonomy ) {
 						if ( $taxonomy->name !== 'status' ) {
-							$terms = get_terms(
+							$idea_terms = get_terms(
 								array(
 									'taxonomy'   => $taxonomy->name,
 									'hide_empty' => false,
 								)
 							);
-							if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+							if ( ! empty( $idea_terms ) && ! is_wp_error( $idea_terms ) ) :
 								?>
 								<li class="new_idea_form_input">
 									<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
 									<div class="taxonomy-term-labels">
 										<?php
-										foreach ( $terms as $term ) :
+										foreach ( $idea_terms as $idea_term ) :
 										?>
 											<label class="taxonomy-term-label">
-												<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
-												<?php echo esc_html( $term->name ); ?>
+												<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $idea_term->term_id ); ?>">
+												<?php echo esc_html( $idea_term->name ); ?>
 											</label>
 										<?php
 										endforeach;
@@ -129,12 +129,12 @@ function handle_new_idea_submission() {
     // Ensure this conditional only runs if the nonce was verified successfully
     if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($submission_nonce) && $idea_id) {
         if (!empty($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
-            foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
+            foreach ($_POST['idea_taxonomies'] as $tax_slug => $idea_term_ids) {
                 if (!taxonomy_exists($tax_slug)) {
                     continue; // Skip processing for non-existing taxonomies
                 }
-                $term_ids = array_map('intval', $term_ids); // Ensure term IDs are integers
-                wp_set_object_terms($idea_id, $term_ids, $tax_slug);
+                $idea_term_ids = array_map('intval', $idea_term_ids); // Ensure term IDs are integers
+                wp_set_object_terms($idea_id, $idea_term_ids, $tax_slug);
             }
         }
 

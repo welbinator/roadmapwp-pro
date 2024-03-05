@@ -37,15 +37,15 @@ get_header(); ?>
 					$exclude_taxonomies = array( 'status' );
 					$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 
-					$terms = wp_get_post_terms( get_the_ID(), $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
-					if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-						echo '<div class="idea-terms flex space-x-2">';
-						foreach ( $terms as $term ) {
-							$term_link = get_term_link( $term );
-							if ( ! is_wp_error( $term_link ) ) {
+					$idea_terms = wp_get_post_terms( get_the_ID(), $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
+					if ( ! empty( $idea_terms ) && ! is_wp_error( $idea_terms ) ) {
+						echo '<div class="flex space-x-2 idea-tags">';
+						foreach ( $idea_terms as $idea_term ) {
+							$idea_term_link = get_term_link( $idea_term );
+							if ( ! is_wp_error( $idea_term_link ) ) {
 								?>
 								
-								<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
+								<a href="<?php echo esc_url( $idea_term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $idea_term->name ); ?></a>
 								
 								<?php
 							}

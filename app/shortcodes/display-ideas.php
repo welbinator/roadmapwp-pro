@@ -9,6 +9,7 @@
  */
 
 namespace RoadMapWP\Pro\Shortcodes\DisplayIdeas;
+
 use RoadMapWP\Pro\Admin\Functions;
 /**
  * Shortcode to display ideas.
@@ -36,7 +37,7 @@ function display_ideas_shortcode() {
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 
 	// Retrieve color settings
-	$options                = get_option( 'wp_roadmap_settings' );
+	$options = get_option( 'wp_roadmap_settings' );
 
 	// Check if the pro version is installed and settings are enabled
 	$hide_display_ideas_heading = apply_filters( 'wp_roadmap_hide_display_ideas_heading', false );
@@ -63,16 +64,16 @@ function display_ideas_shortcode() {
 							<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
 							<div class="taxonomy-term-labels">
 								<?php
-								$terms = get_terms(
+								$idea_terms = get_terms(
 									array(
 										'taxonomy'   => $taxonomy->name,
 										'hide_empty' => false,
 									)
 								);
-								foreach ( $terms as $term ) {
+								foreach ( $idea_terms as $idea_term ) {
 									echo '<label class="taxonomy-term-label">';
-									echo '<input type="checkbox" name="idea_taxonomies[' . esc_attr( $taxonomy->name ) . '][]" value="' . esc_attr( $term->slug ) . '"> ';
-									echo esc_html( $term->name );
+									echo '<input type="checkbox" name="idea_taxonomies[' . esc_attr( $taxonomy->name ) . '][]" value="' . esc_attr( $idea_term->slug ) . '"> ';
+									echo esc_html( $idea_term->name );
 									echo '</label>';
 								}
 								?>
@@ -101,20 +102,32 @@ function display_ideas_shortcode() {
 
 		if ( $query->have_posts() ) :
 			?>
-			
-			<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-part.php'; ?>
+			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
+			<?php
+			while ( $query->have_posts() ) :
+				$query->the_post();
+				$idea_id    = get_the_ID();
+				$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+				$idea_class = Functions\get_idea_class_with_votes( $idea_id );
+				?>
 
+				<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr( $idea_class ); ?>" data-v0-t="card">
+				<?php include plugin_dir_path( __FILE__ ) . '../../app/includes/display-ideas-grid.php'; ?>
+				<?php include plugin_dir_path( __FILE__ ) . '../../app/includes/admin-only.php'; ?>
+				</div>
+			<?php endwhile; ?>
+				</div>
+					
+				</div>
+			</div>
+			<?php else : ?>
+				<p>No ideas found.</p>
+				<?php
+		endif;
 
-		</div>
-	</div>
-	<?php else : ?>
-		<p>No ideas found.</p>
-		<?php
-	endif;
+			wp_reset_postdata();
 
-	wp_reset_postdata();
-
-	return ob_get_clean(); // Return the buffered output
+			return ob_get_clean(); // Return the buffered output
 }
 
 add_shortcode( 'display_ideas', __NAMESPACE__ . '\\display_ideas_shortcode' );

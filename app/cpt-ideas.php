@@ -118,16 +118,16 @@ function auto_assign_new_idea_status( $post_id, $post, $update ) {
 	}
 
 	// Check if the term exists.
-	$term = term_exists( 'New Idea', 'status' );
+	$idea_term = term_exists( 'New Idea', 'status' );
 
 	// If the term doesn't exist, add it.
-	if ( $term === 0 || $term === null ) {
-		$term = wp_insert_term( 'New Idea', 'status' );
+	if ( $idea_term === 0 || $idea_term === null ) {
+		$idea_term = wp_insert_term( 'New Idea', 'status' );
 	}
 
 	// Check for errors.
-	if ( is_wp_error( $term ) ) {
-		error_log( 'Error auto-assigning "New Idea" status: ' . $term->get_error_message() );
+	if ( is_wp_error( $idea_term ) ) {
+		error_log( 'Error auto-assigning "New Idea" status: ' . $idea_term->get_error_message() );
 		return;
 	}
 

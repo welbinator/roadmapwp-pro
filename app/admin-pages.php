@@ -46,9 +46,9 @@ function display_settings_page() {
 				<th scope="row"><?php esc_html_e( 'Set Default Status Term for New Ideas', 'roadmapwp-pro' ); ?></th>
 				<td>
 					<select name="wp_roadmap_settings[default_status_term]">
-						<?php foreach ( $status_terms as $term ) : ?>
-							<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $default_status_term, $term->slug ); ?>>
-								<?php echo esc_html( $term->name ); ?>
+						<?php foreach ( $status_terms as $idea_term ) : ?>
+							<option value="<?php echo esc_attr( $idea_term->slug ); ?>" <?php selected( $default_status_term, $idea_term->slug ); ?>>
+								<?php echo esc_html( $idea_term->name ); ?>
 							</option>
 						<?php endforeach; ?>
 					</select>

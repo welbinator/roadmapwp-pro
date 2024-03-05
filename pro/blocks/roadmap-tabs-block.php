@@ -71,8 +71,8 @@ function block_render( $attributes ) {
 	// Convert slugs back to names for display
 	$statuses = array_map(
 		function ( $slug ) {
-			$term = get_term_by( 'slug', $slug, 'status' );
-			return $term ? $term->name : $slug;
+			$idea_term = get_term_by( 'slug', $slug, 'status' );
+			return $idea_term ? $idea_term->name : $slug;
 		},
 		$selected_statuses
 	);
