@@ -44,7 +44,7 @@
     min-height: 200px;
     border-radius: 5px;
 }
-/* ideas shortcode */
+/* display ideas shortcode */
 .filters-inner {
     display: flex;
     flex-wrap: wrap;
@@ -143,6 +143,9 @@ h3.idea-title a {
 }
 
 /* roadmap shortcode */
+.status-select {
+    min-height: 145px;
+}
 
 form.idea-status-update-form {
     display: flex;
