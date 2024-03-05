@@ -117,25 +117,27 @@ function enqueue_frontend_styles() {
 	$has_roadmap_shortcode       = false;
 	$has_roadmap_tabs_shortcode  = false;
 	$has_single_idea_shortcode   = false;
-	$has_block                   = false;
 
-	// Check for shortcode presence in the post content
-	if ( is_a( $post, 'WP_Post' ) ) {
+	// Initialize flags
+    $has_block = $has_shortcode = false;
 
-		// Check for block presence
-		$has_block = has_block( 'roadmapwp-pro/new-idea-form', $post ) ||
-					has_block( 'roadmapwp-pro/display-ideas', $post ) ||
-					has_block( 'roadmapwp-pro/roadmap-block', $post ) ||
-					has_block( 'roadmapwp-pro/roadmap-tabs', $post ) ||
-					has_block( 'roadmapwp-pro/roadmap-tabs-block', $post ) ||
-					has_block( 'roadmapwp-pro/single-idea', $post );
+    // Ensure $post is a valid WP_Post object and post_content is not null before checking for blocks or shortcodes
+    if ( is_a( $post, 'WP_Post' ) && !is_null( $post->post_content ) ) {
+        
+        // Check for block presence
+        $has_block = has_block( 'roadmapwp-pro/new-idea-form', $post ) ||
+                     has_block( 'roadmapwp-pro/display-ideas', $post ) ||
+                     has_block( 'roadmapwp-pro/roadmap-block', $post ) ||
+                     has_block( 'roadmapwp-pro/roadmap-tabs-block', $post ) ||
+                     has_block( 'roadmapwp-pro/single-idea', $post );
 
-		$has_shortcode = has_shortcode( $post->post_content, 'new_idea_form' ) ||
-							has_shortcode( $post->post_content, 'display_ideas' ) ||
-							has_shortcode( $post->post_content, 'roadmap' ) ||
-							has_shortcode( $post->post_content, 'single_idea' ) ||
-							has_shortcode( $post->post_content, 'roadmap_tabs' );
-	}
+        // Check for shortcode presence
+        $has_shortcode = has_shortcode( $post->post_content, 'new_idea_form' ) ||
+                         has_shortcode( $post->post_content, 'display_ideas' ) ||
+                         has_shortcode( $post->post_content, 'roadmap' ) ||
+                         has_shortcode( $post->post_content, 'single_idea' ) ||
+                         has_shortcode( $post->post_content, 'roadmap_tabs' );
+    }
 
 	// Enqueue styles if a shortcode or block is loaded
 	if ( $has_block || $has_shortcode || is_singular('idea') ) {
