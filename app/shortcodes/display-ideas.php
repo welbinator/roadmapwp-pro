@@ -102,9 +102,21 @@ function display_ideas_shortcode() {
 		if ( $query->have_posts() ) :
 			?>
 			
-			<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-part.php'; ?>
-
-
+			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
+				<?php
+				while ( $query->have_posts() ) :
+					$query->the_post();
+					$idea_id    = get_the_ID();
+					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+					$idea_class = Functions\get_idea_class_with_votes($idea_id);
+					?>
+		
+					<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr($idea_class); ?>" data-v0-t="card">	
+						<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-grid.php'; ?>
+						<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-admin.php'; ?>
+					</div>
+				<?php endwhile; ?>
+			</div>
 		</div>
 	</div>
 	<?php else : ?>
