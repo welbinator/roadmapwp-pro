@@ -53,7 +53,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 			$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
 
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-				echo '<div class="idea-terms flex space-x-2">';
+				echo '<div class="idea-tags flex space-x-2">';
 				foreach ( $terms as $term ) {
 					$term_link = get_term_link( $term );
 					if ( ! is_wp_error( $term_link ) ) {

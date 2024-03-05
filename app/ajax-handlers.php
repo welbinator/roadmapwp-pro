@@ -307,24 +307,26 @@ function load_ideas_for_status() {
 			$idea_id = get_the_ID();
 			// Retrieve all taxonomies associated with the 'idea' post type, excluding 'status'
 			$idea_taxonomies     = get_object_taxonomies( 'idea', 'names' );
-			$excluded_taxonomies = array( 'status' ); // Add more taxonomy names to exclude if needed
-			$included_taxonomies = array_diff( $idea_taxonomies, $excluded_taxonomies );
+			// $excluded_taxonomies = array( 'status' ); // Add more taxonomy names to exclude if needed
+			// $included_taxonomies = array_diff( $idea_taxonomies, $excluded_taxonomies );
+			$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
+			$taxonomies = array_merge( array( 'idea-tag' ), array_keys( $custom_taxonomies ) );
 
 			$idea_class = Functions\get_idea_class_with_votes($idea_id);
 
 			// Fetch terms for each included taxonomy
-			$tags = array();
-			foreach ( $included_taxonomies as $taxonomy ) {
-				$terms = wp_get_post_terms( $idea_id, $taxonomy, array( 'fields' => 'all' ) );
-				if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-					$tags[ $taxonomy ] = $terms;
-				}
-			}
+			// $tags = array();
+			// foreach ( $included_taxonomies as $taxonomy ) {
+			// 	$terms = wp_get_post_terms( $idea_id, $taxonomy, array( 'fields' => 'all' ) );
+			// 	if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			// 		$tags[ $taxonomy ] = $terms;
+			// 	}
+			// }
 			$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
 			?>
 			<div class="wut wp-roadmap-idea rounded-lg border bg-card text-card-foreground shadow-lg <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
-				<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-grid.php'; ?>
-				<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-admin.php'; ?>
+				<?php include plugin_dir_path(__FILE__) . 'includes/display-ideas-grid.php'; ?>
+				
 			</div>
 
 			<?php

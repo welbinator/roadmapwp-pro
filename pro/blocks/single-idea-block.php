@@ -69,7 +69,7 @@ function register_blocks() {
 							$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
 
 							if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-								echo '<div class="idea-terms flex space-x-2 idea-tags">';
+								echo '<div class="idea-tags flex space-x-2 idea-tags">';
 								foreach ( $terms as $term ) {
 									$term_link = get_term_link( $term );
 									if ( ! is_wp_error( $term_link ) ) {
