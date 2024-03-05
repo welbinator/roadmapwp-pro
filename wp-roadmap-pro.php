@@ -26,6 +26,35 @@ function rmwp_pro_activate() {
 // Register the activation hook for the Pro version
 register_activation_hook( __FILE__, 'rmwp_pro_activate' );
 
+/**
+ * Auto generates roadmap pages
+ */
+function rmwp_pro_generate_pages_on_activation() {
+    // Define the pages to create
+    $pages = array(
+        array(
+            'post_title'   => 'Submit an Idea',
+            'post_content' => '[new_idea_form]' . "\n" . '[display_ideas]',
+            'post_status'  => 'draft',
+            'post_type'    => 'page',
+        ),
+        array(
+            'post_title'   => 'Roadmap',
+            'post_content' => '[roadmap_tabs status="New Idea, Maybe, Not Now, On Roadmap, Up Next, Closed"]',
+            'post_status'  => 'draft',
+            'post_type'    => 'page',
+        ),
+    );
+
+    foreach ($pages as $page) {
+        // Check if the page already exists
+        $page_check = get_page_by_title($page['post_title']);
+        if (!isset($page_check->ID)) {
+            // Insert the page into the database
+            wp_insert_post($page);
+        }
+    }
+}
 
 /**
  * This is a means of catching errors from the activation method above and displaying it to the customer
@@ -126,6 +155,7 @@ if (file_exists($gm_file)) {
 }
 
 function rmwp_pro_on_activation() {
+	rmwp_pro_generate_pages_on_activation();
 	// Directly call the function that registers your taxonomies here
 	\RoadMapWP\Pro\CPT\register_default_idea_taxonomies();
 
