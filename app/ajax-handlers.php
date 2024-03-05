@@ -374,7 +374,7 @@ function load_ideas_for_status() {
 
 			?>
 
-			<div class="wp-roadmap-idea rounded-lg border bg-card text-card-foreground shadow-sm <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
+			<div class="wp-roadmap-idea rounded-lg border bg-card text-card-foreground shadow-lg <?php echo esc_attr($idea_class); ?>" data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
 					<h3 class="text-2xl font-semibold leading-none tracking-tight">
 						<a href="<?php echo get_permalink( $idea_id ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
