@@ -131,11 +131,11 @@ function rmwp_pro_on_activation() {
 
 	// Now add the terms
 	$status_terms = array( 'New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed' );
-	foreach ( $status_terms as $term ) {
-		if ( ! term_exists( $term, 'status' ) ) {
-			$result = wp_insert_term( $term, 'status' );
+	foreach ( $status_terms as $filter_term ) {
+		if ( ! term_exists( $filter_term, 'status' ) ) {
+			$result = wp_insert_term( $filter_term, 'status' );
 			if ( is_wp_error( $result ) ) {
-				error_log( 'Error inserting term ' . $term . ': ' . $result->get_error_message() );
+				error_log( 'Error inserting term ' . $filter_term . ': ' . $result->get_error_message() );
 			}
 		}
 	}
@@ -162,7 +162,7 @@ function rmwp_pro_custom_template( $template ) {
 add_filter( 'single_template', 'rmwp_pro_custom_template' );
 
 function rmwp_pro_log_all_status_terms() {
-	$terms = get_terms(
+	$filter_terms = get_terms(
 		array(
 			'taxonomy'   => 'status',
 			'hide_empty' => false,

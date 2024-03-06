@@ -73,12 +73,12 @@ function block_render( $attributes ) {
 	// If no statuses have been selected (or if all selected statuses are removed), add the default status term.
 	if ( empty( $selected_statuses ) ) {
 		// Ensure the default status term exists and get its term ID.
-		$term = term_exists( $default_status_term, 'status' );
+		$filter_term = term_exists( $default_status_term, 'status' );
 
-		if ( $term !== 0 && $term !== null ) {
+		if ( $filter_term !== 0 && $filter_term !== null ) {
 
 			// Use the term's ID directly to update $selected_statuses.
-			$selected_statuses[ $term['term_id'] ] = true; // Adjust this line
+			$selected_statuses[ $filter_term['term_id'] ] = true; // Adjust this line
 
 		}
 	}
@@ -136,23 +136,23 @@ function block_render( $attributes ) {
 
 							// Display taxonomy if it's selected or if no specific taxonomies are selected.
 							if ( empty( $selected_taxonomies ) || in_array( $taxonomy->name, $selected_taxonomies, true ) ) {
-								$terms = get_terms(
+								$filter_terms = get_terms(
 									array(
 										'taxonomy'   => $taxonomy->name,
 										'hide_empty' => false,
 									)
 								);
-								if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+								if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) :
 									?>
 									<li class="new_idea_form_input">
 										<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
 										<div class="taxonomy-term-labels">
 											<?php
-											foreach ( $terms as $term ) :
+											foreach ( $filter_terms as $filter_term ) :
 												?>
 												<label class="taxonomy-term-label">
-													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
-													<?php echo esc_html( $term->name ); ?>
+													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $filter_term->term_id ); ?>">
+													<?php echo esc_html( $filter_term->name ); ?>
 												</label>
 												<?php
 											endforeach;

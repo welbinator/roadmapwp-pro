@@ -123,18 +123,18 @@ function custom_taxonomy_content() {
 		if ( ! array_key_exists( $taxonomy->name, $custom_taxonomies ) ) {
 			echo '<h4>Taxonomy name: <strong>' . esc_html( $taxonomy->labels->name ) . '</strong></h4>';
 			echo '<h5 style="margin-bottom: 0;">Terms:</h5>';
-			$terms = get_terms(
+			$filter_terms = get_terms(
 				array(
 					'taxonomy'   => $taxonomy->name,
 					'hide_empty' => false,
 				)
 			);
-			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) {
 				echo '<form method="post" class="delete-terms-form" data-taxonomy="' . esc_attr( $taxonomy->name ) . '">';
 				echo '<ul class="terms-list">';
-				foreach ( $terms as $term ) {
+				foreach ( $filter_terms as $filter_term ) {
 					echo '<li>';
-					echo '<input type="checkbox" name="terms[]" value="' . esc_attr( $term->term_id ) . '"> ' . esc_html( $term->name );
+					echo '<input type="checkbox" name="terms[]" value="' . esc_attr( $filter_term->term_id ) . '"> ' . esc_html( $filter_term->name );
 					echo '</li>';
 				}
 				echo '</ul>';
@@ -160,18 +160,18 @@ function custom_taxonomy_content() {
 		echo '<a href="#" class="delete-taxonomy" data-taxonomy="' . esc_attr( $taxonomy_slug ) . '">Delete this taxonomy</a>';
 
 		// Display and delete terms for custom taxonomies
-		$terms = get_terms(
+		$filter_terms = get_terms(
 			array(
 				'taxonomy'   => $taxonomy_slug,
 				'hide_empty' => false,
 			)
 		);
-		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+		if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) {
 			echo '<form method="post" class="delete-terms-form" data-taxonomy="' . esc_attr( $taxonomy_slug ) . '">';
 			echo '<ul class="terms-list">';
-			foreach ( $terms as $term ) {
+			foreach ( $filter_terms as $filter_term ) {
 				echo '<li>';
-				echo '<input type="checkbox" name="terms[]" value="' . esc_attr( $term->term_id ) . '"> ' . esc_html( $term->name );
+				echo '<input type="checkbox" name="terms[]" value="' . esc_attr( $filter_term->term_id ) . '"> ' . esc_html( $filter_term->name );
 				echo '</li>';
 			}
 			echo '</ul>';

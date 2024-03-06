@@ -27,8 +27,8 @@ function roadmap_shortcode( $atts ) {
 		)
 	);
 	$dynamic_statuses     = array_map(
-		function ( $term ) {
-			return $term->name;
+		function ( $filter_term ) {
+			return $filter_term->name;
 		},
 		$dynamic_status_terms
 	);
@@ -98,12 +98,12 @@ function roadmap_shortcode( $atts ) {
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
 									<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 									<?php
-									$terms = wp_get_post_terms( $idea_id, $taxonomies );
-									foreach ( $terms as $term ) :
-										$term_link = get_term_link( $term );
+									$filter_terms = wp_get_post_terms( $idea_id, $taxonomies );
+									foreach ( $filter_terms as $filter_term ) :
+										$term_link = get_term_link( $filter_term );
 										if ( ! is_wp_error( $term_link ) ) :
 											?>
-											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
+											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $filter_term->name ); ?></a>
 											<?php
 										endif;
 									endforeach;

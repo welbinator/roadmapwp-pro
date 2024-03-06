@@ -55,23 +55,23 @@ function new_idea_form_shortcode() {
 					$taxonomies = get_object_taxonomies( 'idea', 'objects' );
 					foreach ( $taxonomies as $taxonomy ) {
 						if ( $taxonomy->name !== 'status' ) {
-							$terms = get_terms(
+							$filter_terms = get_terms(
 								array(
 									'taxonomy'   => $taxonomy->name,
 									'hide_empty' => false,
 								)
 							);
-							if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+							if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) :
 								?>
 								<li class="new_idea_form_input">
 									<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
 									<div class="taxonomy-term-labels">
 										<?php
-										foreach ( $terms as $term ) :
+										foreach ( $filter_terms as $filter_term ) :
 										?>
 											<label class="taxonomy-term-label">
-												<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
-												<?php echo esc_html( $term->name ); ?>
+												<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $filter_term->term_id ); ?>">
+												<?php echo esc_html( $filter_term->name ); ?>
 											</label>
 										<?php
 										endforeach;

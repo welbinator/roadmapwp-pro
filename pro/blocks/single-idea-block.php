@@ -66,15 +66,15 @@ function register_blocks() {
 							$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 							$exclude_taxonomies = array( 'status' );
 							$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
-							$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
+							$filter_terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
 
-							if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+							if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) {
 								echo '<div class="idea-tags flex space-x-2 idea-tags">';
-								foreach ( $terms as $term ) {
-									$term_link = get_term_link( $term );
+								foreach ( $filter_terms as $filter_term ) {
+									$term_link = get_term_link( $filter_term );
 									if ( ! is_wp_error( $term_link ) ) {
 										?>
-									<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
+									<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $filter_term->name ); ?></a>
 										<?php
 									}
 								}

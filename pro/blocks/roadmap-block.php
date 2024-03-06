@@ -88,8 +88,8 @@ function block_render( $attributes ) {
 	<div class="roadmap-columns grid gap-4 <?php echo esc_attr( $md_cols_class ); ?> <?php echo esc_attr( $lg_cols_class ); ?> <?php echo esc_attr( $xl_cols_class ); ?>">
 			<?php
 			foreach ( $selected_statuses as $status_slug ) :
-				$term = get_term_by( 'slug', $status_slug, 'status' );
-				if ( ! $term ) {
+				$filter_term = get_term_by( 'slug', $status_slug, 'status' );
+				if ( ! $filter_term ) {
 					continue;
 				}
 
@@ -115,7 +115,7 @@ function block_render( $attributes ) {
 				?>
 
 				<div class="roadmap-column">
-					<h3 style="text-align:center;"><?php echo esc_html( $term->name ); ?></h3>
+					<h3 style="text-align:center;"><?php echo esc_html( $filter_term->name ); ?></h3>
 					<?php
 					if ( $query->have_posts() ) :
 						while ( $query->have_posts() ) :
@@ -134,12 +134,12 @@ function block_render( $attributes ) {
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
 									<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 									<?php
-									$terms = wp_get_post_terms( $idea_id, $taxonomies );
-									foreach ( $terms as $term ) :
-										$term_link = get_term_link( $term );
+									$filter_terms = wp_get_post_terms( $idea_id, $taxonomies );
+									foreach ( $filter_terms as $filter_term ) :
+										$term_link = get_term_link( $filter_term );
 										if ( ! is_wp_error( $term_link ) ) :
 											?>
-											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
+											<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $filter_term->name ); ?></a>
 											<?php
 										endif;
 									endforeach;
@@ -201,7 +201,7 @@ function block_render( $attributes ) {
 						endwhile;
 						else :
 							?>
-						<p>No ideas found for <?php echo esc_html( $term->name ); ?>.</p>
+						<p>No ideas found for <?php echo esc_html( $filter_term->name ); ?>.</p>
 							<?php
 					endif;
 						wp_reset_postdata();

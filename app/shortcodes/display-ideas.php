@@ -63,16 +63,16 @@ function display_ideas_shortcode() {
 							<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
 							<div class="taxonomy-term-labels">
 								<?php
-								$terms = get_terms(
+								$filter_terms = get_terms(
 									array(
 										'taxonomy'   => $taxonomy->name,
 										'hide_empty' => false,
 									)
 								);
-								foreach ( $terms as $term ) {
+								foreach ( $filter_terms as $filter_term ) {
 									echo '<label class="taxonomy-term-label">';
-									echo '<input type="checkbox" name="idea_taxonomies[' . esc_attr( $taxonomy->name ) . '][]" value="' . esc_attr( $term->slug ) . '"> ';
-									echo esc_html( $term->name );
+									echo '<input type="checkbox" name="idea_taxonomies[' . esc_attr( $taxonomy->name ) . '][]" value="' . esc_attr( $filter_term->slug ) . '"> ';
+									echo esc_html( $filter_term->name );
 									echo '</label>';
 								}
 								?>

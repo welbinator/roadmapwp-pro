@@ -179,10 +179,10 @@ function handle_delete_selected_terms() {
 	check_ajax_referer( 'wp_roadmap_delete_terms_nonce', 'nonce' );
 
 	$taxonomy            = sanitize_text_field( $_POST['taxonomy'] );
-	$terms               = array_map( 'intval', (array) $_POST['terms'] );
+	$filter_terms               = array_map( 'intval', (array) $_POST['terms'] );
 	$deletion_successful = true;
 
-	foreach ( $terms as $term_id ) {
+	foreach ( $filter_terms as $term_id ) {
 		$deleted_term = wp_delete_term( $term_id, $taxonomy );
 		if ( is_wp_error( $deleted_term ) ) {
 			$deletion_successful = false;
@@ -219,9 +219,9 @@ function update_idea_status() {
 
 		// Add each new status term
 		foreach ( $status_terms as $status_slug ) {
-			$term = get_term_by( 'slug', $status_slug, 'status' );
-			if ( $term && ! is_wp_error( $term ) ) {
-				wp_add_object_terms( $idea_id, $term->term_id, 'status' );
+			$filter_term = get_term_by( 'slug', $status_slug, 'status' );
+			if ( $filter_term && ! is_wp_error( $filter_term ) ) {
+				wp_add_object_terms( $idea_id, $filter_term->term_id, 'status' );
 			}
 		}
 
@@ -262,17 +262,17 @@ function load_ideas_for_status() {
 	// Modify the tax query if selected taxonomies are provided
 	foreach ( $selected_taxonomiesSlugs as $slug ) {
 		if ( ! empty( $slug ) ) {
-			$terms = get_terms(
+			$filter_terms = get_terms(
 				array(
 					'taxonomy' => $slug,
 					'fields'   => 'slugs',
 				)
 			);
-			if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			if ( ! is_wp_error( $filter_terms ) && ! empty( $filter_terms ) ) {
 				$taxonomy_queries[] = array(
 					'taxonomy' => $slug,
 					'field'    => 'slug',
-					'terms'    => $terms,
+					'terms'    => $filter_terms,
 					'operator' => 'IN',
 				);
 			} else {
@@ -317,9 +317,9 @@ function load_ideas_for_status() {
 			// Fetch terms for each included taxonomy
 			// $tags = array();
 			// foreach ( $included_taxonomies as $taxonomy ) {
-			// 	$terms = wp_get_post_terms( $idea_id, $taxonomy, array( 'fields' => 'all' ) );
-			// 	if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-			// 		$tags[ $taxonomy ] = $terms;
+			// 	$filter_terms = wp_get_post_terms( $idea_id, $taxonomy, array( 'fields' => 'all' ) );
+			// 	if ( ! is_wp_error( $filter_terms ) && ! empty( $filter_terms ) ) {
+			// 		$tags[ $taxonomy ] = $filter_terms;
 			// 	}
 			// }
 			$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
