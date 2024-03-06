@@ -186,9 +186,9 @@ function block_render( $attributes ) {
 												);
 												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-												foreach ( $status_terms as $status ) {
-													$selected = in_array( $status->slug, $current_statuses, true ) ? 'selected' : '';
-													echo '<option value="' . esc_attr( $status->slug ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $status->name ) . '</option>';
+												foreach ( $status_terms as $status_term) {
+													$selected = in_array( $status_term->slug, $current_statuses, true ) ? 'selected' : '';
+													echo '<option value="' . esc_attr( $status_term->slug ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $status_term->name ) . '</option>';
 												}
 												?>
 											</select>

@@ -68,7 +68,7 @@ function roadmap_shortcode( $atts ) {
 	<div class="roadmap_wrapper container mx-auto">
 	<div class="roadmap-columns grid gap-4 <?php echo $md_cols_class; ?> <?php echo $lg_cols_class; ?> <?php echo $xl_cols_class; ?>">
 			<?php
-			foreach ( $status_terms as $status ) {
+			foreach ( $status_terms as $status_term) {
 				$args  = array(
 					'post_type'      => 'idea',
 					'posts_per_page' => -1,
@@ -76,14 +76,14 @@ function roadmap_shortcode( $atts ) {
 						array(
 							'taxonomy' => 'status',
 							'field'    => 'name',
-							'terms'    => $status,
+							'terms'    => $status_term,
 						),
 					),
 				);
 				$query = new \WP_Query( $args );
 				?>
 				<div class="roadmap-column">
-					<h3 style="text-align:center;"><?php echo esc_html__( $status, 'roadmapwp-pro' ); ?></h3>
+					<h3 style="text-align:center;"><?php echo esc_html__( $status_term, 'roadmapwp-pro' ); ?></h3>
 					<?php
 					if ( $query->have_posts() ) {
 						while ( $query->have_posts() ) :
@@ -143,9 +143,9 @@ function roadmap_shortcode( $atts ) {
 												$status_terms         = get_terms( 'status', array( 'hide_empty' => false ) );
 												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-												foreach ( $status_terms as $status ) {
-													$selected = in_array( $status->slug, $current_statuses ) ? 'selected' : '';
-													echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected . '>' . esc_html( $status->name ) . '</option>';
+												foreach ( $status_terms as $status_term) {
+													$selected = in_array( $status_term->slug, $current_statuses ) ? 'selected' : '';
+													echo '<option value="' . esc_attr( $status_term->slug ) . '" ' . $selected . '>' . esc_html( $status_term->name ) . '</option>';
 												}
 												?>
 											</select>
@@ -157,7 +157,7 @@ function roadmap_shortcode( $atts ) {
 							<?php
 						endwhile;
 					} else {
-						echo '<p>No ideas found for ' . esc_html( $status ) . '.</p>';
+						echo '<p>No ideas found for ' . esc_html( $status_term) . '.</p>';
 					}
 					wp_reset_postdata();
 					?>

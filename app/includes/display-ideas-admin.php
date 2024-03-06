@@ -4,7 +4,7 @@
 		<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 			<select multiple class="status-select" name="idea_status[]">
 				<?php
-				$statuse_terms = get_terms(
+				$status_terms = get_terms(
 					array(
 						'taxonomy'   => 'status',
 						'hide_empty' => false,
@@ -13,9 +13,9 @@
 
 				$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-				foreach ( $statuse_terms as $status ) {
-					$selected = in_array( $status->slug, $current_statuses ) ? 'selected' : '';
-					echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected . '>' . esc_html( $status->name ) . '</option>';
+				foreach ( $status_terms as $status_term) {
+					$selected = in_array( $status_term->slug, $current_statuses ) ? 'selected' : '';
+					echo '<option value="' . esc_attr( $status_term->slug ) . '" ' . $selected . '>' . esc_html( $status_term->name ) . '</option>';
 				}
 				?>
 			</select>
