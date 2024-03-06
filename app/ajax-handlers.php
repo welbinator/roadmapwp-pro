@@ -208,9 +208,9 @@ function update_idea_status() {
 	check_ajax_referer( 'wp-roadmap-admin-frontend-nonce', 'nonce' );
 
 	$idea_id  = isset( $_POST['idea_id'] ) ? intval( $_POST['idea_id'] ) : 0;
-	$statuses = isset( $_POST['statuses'] ) ? json_decode( stripslashes( $_POST['statuses'] ), true ) : array();
+	$status_terms = isset( $_POST['statuses'] ) ? json_decode( stripslashes( $_POST['statuses'] ), true ) : array();
 
-	if ( $idea_id && ! empty( $statuses ) ) {
+	if ( $idea_id && ! empty( $status_terms ) ) {
 		// Remove all existing status terms from the post
 		$current_terms = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'ids' ) );
 		foreach ( $current_terms as $term_id ) {
@@ -218,7 +218,7 @@ function update_idea_status() {
 		}
 
 		// Add each new status term
-		foreach ( $statuses as $status_slug ) {
+		foreach ( $status_terms as $status_slug ) {
 			$term = get_term_by( 'slug', $status_slug, 'status' );
 			if ( $term && ! is_wp_error( $term ) ) {
 				wp_add_object_terms( $idea_id, $term->term_id, 'status' );

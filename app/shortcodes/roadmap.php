@@ -42,13 +42,13 @@ function roadmap_shortcode( $atts ) {
 		'roadmap'
 	);
 
-	$statuses = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
+	$status_terms = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
 
 	// Retrieve color settings
 	$options                = get_option( 'wp_roadmap_settings' );
 	 
 
-	$num_statuses  = count( $statuses );
+	$num_statuses  = count( $status_terms );
 	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 4
 	$lg_cols_class = 'lg:grid-cols-' . ( $num_statuses > 4 ? 4 : $num_statuses );
 	$xl_cols_class = 'xl:grid-cols-' . $num_statuses;
@@ -68,7 +68,7 @@ function roadmap_shortcode( $atts ) {
 	<div class="roadmap_wrapper container mx-auto">
 	<div class="roadmap-columns grid gap-4 <?php echo $md_cols_class; ?> <?php echo $lg_cols_class; ?> <?php echo $xl_cols_class; ?>">
 			<?php
-			foreach ( $statuses as $status ) {
+			foreach ( $status_terms as $status ) {
 				$args  = array(
 					'post_type'      => 'idea',
 					'posts_per_page' => -1,
@@ -140,10 +140,10 @@ function roadmap_shortcode( $atts ) {
 										<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="status-select" name="idea_status[]">
 												<?php
-												$statuses         = get_terms( 'status', array( 'hide_empty' => false ) );
+												$status_terms         = get_terms( 'status', array( 'hide_empty' => false ) );
 												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-												foreach ( $statuses as $status ) {
+												foreach ( $status_terms as $status ) {
 													$selected = in_array( $status->slug, $current_statuses ) ? 'selected' : '';
 													echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected . '>' . esc_html( $status->name ) . '</option>';
 												}

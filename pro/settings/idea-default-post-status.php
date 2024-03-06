@@ -20,12 +20,12 @@ function default_idea_status_setting( $content ) {
 
 	// Create the HTML for the dropdown
 	$html     = '<select name="wp_roadmap_settings[default_wp_post_status]">';
-	$statuses = array(
+	$status_terms = array(
 		'publish' => 'Publish',
 		'pending' => 'Pending Review',
 		'draft'   => 'Draft',
 	);
-	foreach ( $statuses as $value => $label ) {
+	foreach ( $status_terms as $value => $label ) {
 		$selected = selected( $default_wp_post_status, $value, false );
 		$html    .= "<option value='{$value}' {$selected}>{$label}</option>";
 	}

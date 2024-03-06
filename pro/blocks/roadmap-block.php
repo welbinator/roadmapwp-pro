@@ -178,7 +178,7 @@ function block_render( $attributes ) {
 										<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="status-select" name="idea_status[]">
 												<?php
-												$statuses         = get_terms(
+												$status_terms         = get_terms(
 													array(
 														'taxonomy' => 'status',
 														'hide_empty' => false,
@@ -186,7 +186,7 @@ function block_render( $attributes ) {
 												);
 												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-												foreach ( $statuses as $status ) {
+												foreach ( $status_terms as $status ) {
 													$selected = in_array( $status->slug, $current_statuses, true ) ? 'selected' : '';
 													echo '<option value="' . esc_attr( $status->slug ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $status->name ) . '</option>';
 												}

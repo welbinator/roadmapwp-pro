@@ -69,7 +69,7 @@ function block_render( $attributes ) {
 	$selected_taxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
 
 	// Convert slugs back to names for display
-	$statuses = array_map(
+	$status_terms = array_map(
 		function ( $slug ) {
 			$term = get_term_by( 'slug', $slug, 'status' );
 			return $term ? $term->name : $slug;
@@ -85,7 +85,7 @@ function block_render( $attributes ) {
 	<!-- Tabbed interface -->
 	<div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
 		<div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
-			<?php foreach ( $statuses as $status ) : ?>
+			<?php foreach ( $status_terms as $status ) : ?>
 				<button type="button" role="tab" aria-selected="<?php echo ( $status == $default_status ) ? 'true' : 'false'; ?>" data-state="<?php echo ( $status == $default_status ) ? 'active' : 'inactive'; ?>" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr( strtolower( str_replace( ' ', '-', $status ) ) ); ?>">
 					<?php echo esc_html( $status ); ?>
 				</button>

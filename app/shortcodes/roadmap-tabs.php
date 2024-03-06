@@ -30,29 +30,29 @@ function roadmap_tabs_shortcode( $atts ) {
 	);
 
 	// Assume true if the attribute is not passed
-	$statuses = array();
+	$status_terms = array();
 	if ( ! empty( $atts['status'] ) ) {
 		// Use the 'status' attribute if it's provided (for the shortcode)
-		$statuses = array_map( 'trim', explode( ',', $atts['status'] ) );
+		$status_terms = array_map( 'trim', explode( ',', $atts['status'] ) );
 	} else {
 		// Otherwise, use the boolean attributes (for the block)
 		if ( $atts['showNewIdea'] ) {
-			$statuses[] = 'New Idea';
+			$status_terms[] = 'New Idea';
 		}
 		if ( $atts['showUpNext'] ) {
-			$statuses[] = 'Up Next';
+			$status_terms[] = 'Up Next';
 		}
 		if ( $atts['showMaybe'] ) {
-			$statuses[] = 'Maybe';
+			$status_terms[] = 'Maybe';
 		}
 		if ( $atts['showOnRoadmap'] ) {
-			$statuses[] = 'On Roadmap';
+			$status_terms[] = 'On Roadmap';
 		}
 		if ( $atts['showClosed'] ) {
-			$statuses[] = 'Closed';
+			$status_terms[] = 'Closed';
 		}
 		if ( $atts['showNotNow'] ) {
-			$statuses[] = 'Not Now';
+			$status_terms[] = 'Not Now';
 		}
 	}
 
@@ -66,7 +66,7 @@ function roadmap_tabs_shortcode( $atts ) {
 	<!-- Tabbed interface -->
 	<div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
 		<div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
-			<?php foreach ( $statuses as $status ) : ?>
+			<?php foreach ( $status_terms as $status ) : ?>
 				<button type="button" role="tab" aria-selected="true" aria-controls="radix-:r3a:-content-newIdea" data-state="inactive" id="radix-:r3a:-trigger-newIdea" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow roadmap-tab" data-status="<?php echo esc_attr( $status ); ?>">
 					<?php echo esc_html__( $status, 'roadmapwp-pro' ); ?>
 				</button>
