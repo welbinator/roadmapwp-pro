@@ -64,7 +64,7 @@ function block_render( $attributes ) {
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 
 	// Retrieve color settings.
-	$options                = get_option( 'wp_roadmap_settings' );
+	$options = get_option( 'wp_roadmap_settings' );
 
 	// Check if the pro version is installed and settings are enabled.
 	$hide_display_ideas_heading = apply_filters( 'wp_roadmap_hide_display_ideas_heading', false );
@@ -156,8 +156,8 @@ function block_render( $attributes ) {
 				?>
 	
 				<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr( $idea_class ); ?>" data-v0-t="card">
-					<?php include plugin_dir_path(__FILE__) . '../../app/includes/display-ideas-grid.php'; ?>
-					<?php include plugin_dir_path(__FILE__) . '../../app/includes/display-ideas-admin.php'; ?>
+					<?php include plugin_dir_path( __FILE__ ) . '../../app/includes/display-ideas-grid.php'; ?>
+					<?php include plugin_dir_path( __FILE__ ) . '../../app/includes/display-ideas-admin.php'; ?>
 				</div>
 			<?php endwhile; ?>
 		</div>

@@ -19,7 +19,7 @@ function default_idea_status_setting( $content ) {
 	$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending';
 
 	// Create the HTML for the dropdown
-	$html     = '<select name="wp_roadmap_settings[default_wp_post_status]">';
+	$html         = '<select name="wp_roadmap_settings[default_wp_post_status]">';
 	$status_terms = array(
 		'publish' => 'Publish',
 		'pending' => 'Pending Review',

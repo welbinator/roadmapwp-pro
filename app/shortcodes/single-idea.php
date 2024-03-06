@@ -15,7 +15,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
  * @param bool  $is_block Flag to indicate if called from a block.
  * @return string HTML content of the single idea.
  */
-	function single_idea_shortcode( $atts, $is_block = false ) {
+function single_idea_shortcode( $atts, $is_block = false ) {
 	global $post;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );
@@ -28,7 +28,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 	}
 
 	// Fetch options for styling (assumed to be saved in your options table)
-	$options                = get_option( 'wp_roadmap_settings', array() );
+	$options = get_option( 'wp_roadmap_settings', array() );
 
 	// Get vote count
 	$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
@@ -43,31 +43,31 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 				<p class="publish-date"><?php echo esc_html( get_the_date( '', $post ) ); ?></p>
 			</header>
 
-			<?php
-			// Taxonomy logic
-			$taxonomies         = array( 'idea-tag' );
-			$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
-			$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
-			$exclude_taxonomies = array( 'status' );
-			$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
-			$filter_terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
+		<?php
+		// Taxonomy logic
+		$taxonomies         = array( 'idea-tag' );
+		$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
+		$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
+		$exclude_taxonomies = array( 'status' );
+		$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
+		$filter_terms       = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
 
-			if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) {
-				echo '<div class="idea-tags flex space-x-2">';
-				foreach ( $filter_terms as $filter_term ) {
-					$term_link = get_term_link( $filter_term );
-					if ( ! is_wp_error( $term_link ) ) {
-						?>
+		if ( ! empty( $filter_terms ) && ! is_wp_error( $filter_terms ) ) {
+			echo '<div class="idea-tags flex space-x-2">';
+			foreach ( $filter_terms as $filter_term ) {
+				$term_link = get_term_link( $filter_term );
+				if ( ! is_wp_error( $term_link ) ) {
+					?>
 						<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $filter_term->name ); ?></a>
 						<?php
-					}
 				}
-				echo '</div>';
 			}
-			?>
+			echo '</div>';
+		}
+		?>
 
 			<div class="entry-content">
-				<?php echo apply_filters( 'the_content', $post->post_content ); ?>
+			<?php echo apply_filters( 'the_content', $post->post_content ); ?>
 			</div>
 
 			<div class="flex items-center gap-4 mt-4 idea-vote-box" data-idea-id="<?php echo get_the_ID(); ?>">
@@ -92,7 +92,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 			</div>
 
 			<footer class="entry-footer">
-				<?php edit_post_link( __( 'Edit', 'roadmapwp-pro' ), '<span class="edit-link">', '</span>', $post->ID ); ?>
+			<?php edit_post_link( __( 'Edit', 'roadmapwp-pro' ), '<span class="edit-link">', '</span>', $post->ID ); ?>
 			</footer>
 		</article>
 		</div>

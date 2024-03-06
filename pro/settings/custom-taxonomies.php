@@ -86,7 +86,7 @@ function custom_taxonomy_content() {
 			update_option( 'wp_roadmap_custom_taxonomies', $custom_taxonomies );
 
 			flush_rewrite_rules();
-			
+
 			$should_redirect = true;
 		}
 	}

@@ -13,8 +13,8 @@
 
 				$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-				foreach ( $status_terms as $status_term) {
-					$selected = in_array( $status_term->slug, $current_statuses ) ? 'selected' : '';
+				foreach ( $status_terms as $status_term ) {
+					$selected = in_array( $status_term->slug, $current_statuses, true ) ? 'selected' : '';
 					echo '<option value="' . esc_attr( $status_term->slug ) . '" ' . $selected . '>' . esc_html( $status_term->name ) . '</option>';
 				}
 				?>

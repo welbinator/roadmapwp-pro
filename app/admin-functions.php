@@ -94,11 +94,10 @@ function enqueue_admin_styles( $hook ) {
 		);
 	}
 	// Enqueue JS for the help page
-    if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
-        $js_url = plugin_dir_url( __FILE__ ) . 'assets/js/admin.js';
-        wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), null, true );
-    }
-
+	if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
+		$js_url = plugin_dir_url( __FILE__ ) . 'assets/js/admin.js';
+		wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), null, true );
+	}
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_styles' );
 
@@ -119,28 +118,28 @@ function enqueue_frontend_styles() {
 	$has_single_idea_shortcode   = false;
 
 	// Initialize flags
-    $has_block = $has_shortcode = false;
+	$has_block = $has_shortcode = false;
 
-    // Ensure $post is a valid WP_Post object and post_content is not null before checking for blocks or shortcodes
-    if ( is_a( $post, 'WP_Post' ) && !is_null( $post->post_content ) ) {
-        
-        // Check for block presence
-        $has_block = has_block( 'roadmapwp-pro/new-idea-form', $post ) ||
-                     has_block( 'roadmapwp-pro/display-ideas', $post ) ||
-                     has_block( 'roadmapwp-pro/roadmap-block', $post ) ||
-                     has_block( 'roadmapwp-pro/roadmap-tabs-block', $post ) ||
-                     has_block( 'roadmapwp-pro/single-idea', $post );
+	// Ensure $post is a valid WP_Post object and post_content is not null before checking for blocks or shortcodes
+	if ( is_a( $post, 'WP_Post' ) && ! is_null( $post->post_content ) ) {
 
-        // Check for shortcode presence
-        $has_shortcode = has_shortcode( $post->post_content, 'new_idea_form' ) ||
-                         has_shortcode( $post->post_content, 'display_ideas' ) ||
-                         has_shortcode( $post->post_content, 'roadmap' ) ||
-                         has_shortcode( $post->post_content, 'single_idea' ) ||
-                         has_shortcode( $post->post_content, 'roadmap_tabs' );
-    }
+		// Check for block presence
+		$has_block = has_block( 'roadmapwp-pro/new-idea-form', $post ) ||
+					has_block( 'roadmapwp-pro/display-ideas', $post ) ||
+					has_block( 'roadmapwp-pro/roadmap-block', $post ) ||
+					has_block( 'roadmapwp-pro/roadmap-tabs-block', $post ) ||
+					has_block( 'roadmapwp-pro/single-idea', $post );
+
+		// Check for shortcode presence
+		$has_shortcode = has_shortcode( $post->post_content, 'new_idea_form' ) ||
+						has_shortcode( $post->post_content, 'display_ideas' ) ||
+						has_shortcode( $post->post_content, 'roadmap' ) ||
+						has_shortcode( $post->post_content, 'single_idea' ) ||
+						has_shortcode( $post->post_content, 'roadmap_tabs' );
+	}
 
 	// Enqueue styles if a shortcode or block is loaded
-	if ( $has_block || $has_shortcode || is_singular('idea') ) {
+	if ( $has_block || $has_shortcode || is_singular( 'idea' ) ) {
 		// Enqueue Tailwind CSS
 		$tailwind_css_url = plugin_dir_url( __FILE__ ) . '../dist/styles.css';
 		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url );
@@ -228,15 +227,15 @@ function add_admin_menu() {
 		'RoadMapWP\Pro\Admin\Pages\display_taxonomies_page' // function to display the page
 	);
 
-	if ( !function_exists( 'gutenberg_market_licensing' ) ) {
-	add_submenu_page(
-		'roadmapwp-pro',
-		__( 'License', 'roadmapwp-pro' ),
-		__( 'License', 'roadmapwp-pro' ),
-		'manage_options',
-		'roadmapwp-license',
-		'RoadMapWP\Pro\Admin\Pages\license_page'
-	);
+	if ( ! function_exists( 'gutenberg_market_licensing' ) ) {
+		add_submenu_page(
+			'roadmapwp-pro',
+			__( 'License', 'roadmapwp-pro' ),
+			__( 'License', 'roadmapwp-pro' ),
+			'manage_options',
+			'roadmapwp-license',
+			'RoadMapWP\Pro\Admin\Pages\license_page'
+		);
 	}
 
 	add_submenu_page(
@@ -286,19 +285,18 @@ function redirect_single_idea( $template ) {
 add_filter( 'single_template', __NAMESPACE__ . '\\redirect_single_idea' );
 
 // function enqueue_new_idea_form_script() {
-// 	wp_enqueue_script( 'new-idea-form-script', plugin_dir_url( __FILE__ ) . '../pro/blocks/new-idea-form-block-script.js', array(), '1.0.0', true );
+// wp_enqueue_script( 'new-idea-form-script', plugin_dir_url( __FILE__ ) . '../pro/blocks/new-idea-form-block-script.js', array(), '1.0.0', true );
 // }
 // add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_new_idea_form_script' );
 
 // Check if the idea has at least one vote
-function get_idea_class_with_votes($idea_id) {
-    
-    $current_votes = get_post_meta($idea_id, 'idea_votes', true) ?: 0;
-    $has_votes = $current_votes > 0;
+function get_idea_class_with_votes( $idea_id ) {
 
-    // Define the class based on whether the idea has votes
-    $idea_class = $has_votes ? 'has-votes' : '';
+	$current_votes = get_post_meta( $idea_id, 'idea_votes', true ) ?: 0;
+	$has_votes     = $current_votes > 0;
 
-    return $idea_class;
+	// Define the class based on whether the idea has votes
+	$idea_class = $has_votes ? 'has-votes' : '';
+
+	return $idea_class;
 }
-

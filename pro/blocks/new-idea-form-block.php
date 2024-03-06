@@ -222,11 +222,11 @@ function handle_new_idea_block_submission() {
 						}
 					}
 				}
-	
+
 				// Check if selected statuses is set, not empty, and contains valid numeric values
 				$valid_selected_statuses = isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] )
 											&& count( array_filter( $_POST['selected_statuses'], 'is_numeric' ) ) > 0;
-	
+
 				if ( $valid_selected_statuses ) {
 					$selected_status_terms = array_map( 'intval', $_POST['selected_statuses'] );
 					wp_set_object_terms( $idea_id, $selected_status_terms, 'status' );
@@ -234,7 +234,7 @@ function handle_new_idea_block_submission() {
 					// Fallback to default status term if none or invalid selected
 					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'status' );
 				}
-	
+
 				// Redirect to the confirmation page
 				$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
 				wp_redirect( $redirect_url );

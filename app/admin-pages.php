@@ -287,7 +287,7 @@ function display_help_page() {
 						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/styles" target="_blank">Adjust Styles of RoadMapWP Pages</a></h3>
 						<p class="text-gray-500 leading-6">Style settings can be found in the <a href="http://wproadmap.lndo.site/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Dwp-roadmap-help">WordPress Customizer</a> in the RoadMap Styles section</p>
 					</div>
-           
+		   
 				</div><!-- grid gap-6 -->
 			</div>
 
@@ -302,27 +302,27 @@ function display_help_page() {
  *
  * @return void
  */
-if (function_exists('gutenberg_market_licensing')) {
+if ( function_exists( 'gutenberg_market_licensing' ) ) {
 	return;
 } else {
- function license_page() {
+	function license_page() {
 
-	add_settings_section(
-		'roadmapwp_pro_license',
-		__( 'License' ),
-		'RoadMapWP\Pro\EDDLicensing\license_key_settings_section',
-		ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE
-	);
+		add_settings_section(
+			'roadmapwp_pro_license',
+			__( 'License' ),
+			'RoadMapWP\Pro\EDDLicensing\license_key_settings_section',
+			ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE
+		);
 
-	add_settings_field(
-		'roadmapwp_pro_license_key',
-		'<label for="roadmapwp_pro_license_key">' . __( 'License Key' ) . '</label>',
-		'RoadMapWP\Pro\EDDLicensing\license_key_settings_field',
-		ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE,
-		'roadmapwp_pro_license',
-	);
+		add_settings_field(
+			'roadmapwp_pro_license_key',
+			'<label for="roadmapwp_pro_license_key">' . __( 'License Key' ) . '</label>',
+			'RoadMapWP\Pro\EDDLicensing\license_key_settings_field',
+			ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE,
+			'roadmapwp_pro_license',
+		);
 
-	?>
+		?>
 	<div class="wrap">
 		<h2><?php esc_html_e( 'License Options' ); ?></h2>
 		<form method="post" action="options.php">
@@ -334,8 +334,8 @@ if (function_exists('gutenberg_market_licensing')) {
 			?>
 
 		</form>
-	<?php
-}
+		<?php
+	}
 }
 
 

@@ -77,17 +77,16 @@ function block_render( $attributes ) {
 		$selected_statuses
 	);
 
-	$options                 = get_option( 'wp_roadmap_settings' );
-	
+	$options = get_option( 'wp_roadmap_settings' );
 
 	ob_start();
 	?>
 	<!-- Tabbed interface -->
 	<div dir="ltr" data-orientation="horizontal" class="w-full border-b roadmap-tabs-wrapper">
 		<div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
-			<?php foreach ( $status_terms as $status_term) : ?>
-				<button type="button" role="tab" aria-selected="<?php echo ( $status_term== $default_status ) ? 'true' : 'false'; ?>" data-state="<?php echo ( $status_term== $default_status ) ? 'active' : 'inactive'; ?>" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr( strtolower( str_replace( ' ', '-', $status_term) ) ); ?>">
-					<?php echo esc_html( $status_term); ?>
+			<?php foreach ( $status_terms as $status_term ) : ?>
+				<button type="button" role="tab" aria-selected="<?php echo ( $status_term == $default_status ) ? 'true' : 'false'; ?>" data-state="<?php echo ( $status_term == $default_status ) ? 'active' : 'inactive'; ?>" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium roadmap-tab" data-status="<?php echo esc_attr( strtolower( str_replace( ' ', '-', $status_term ) ) ); ?>">
+					<?php echo esc_html( $status_term ); ?>
 				</button>
 			<?php endforeach; ?>
 		</div>

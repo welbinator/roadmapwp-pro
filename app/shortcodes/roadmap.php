@@ -8,6 +8,7 @@
  */
 
 namespace RoadMapWP\Shortcodes\Roadmap;
+
 use RoadMapWP\Pro\Admin\Functions;
 /**
  * Renders the roadmap layout with ideas sorted by status.
@@ -45,8 +46,7 @@ function roadmap_shortcode( $atts ) {
 	$status_terms = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
 
 	// Retrieve color settings
-	$options                = get_option( 'wp_roadmap_settings' );
-	 
+	$options = get_option( 'wp_roadmap_settings' );
 
 	$num_statuses  = count( $status_terms );
 	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 4
@@ -68,7 +68,7 @@ function roadmap_shortcode( $atts ) {
 	<div class="roadmap_wrapper container mx-auto">
 	<div class="roadmap-columns grid gap-4 <?php echo $md_cols_class; ?> <?php echo $lg_cols_class; ?> <?php echo $xl_cols_class; ?>">
 			<?php
-			foreach ( $status_terms as $status_term) {
+			foreach ( $status_terms as $status_term ) {
 				$args  = array(
 					'post_type'      => 'idea',
 					'posts_per_page' => -1,
@@ -90,9 +90,9 @@ function roadmap_shortcode( $atts ) {
 							$query->the_post();
 							$idea_id    = get_the_ID();
 							$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
-							$idea_class = Functions\get_idea_class_with_votes($idea_id);
+							$idea_class = Functions\get_idea_class_with_votes( $idea_id );
 							?>
-							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr($idea_class); ?>">
+							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr( $idea_class ); ?>">
 								<div class="p-6">
 									<h4 class="idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
@@ -140,10 +140,10 @@ function roadmap_shortcode( $atts ) {
 										<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="status-select" name="idea_status[]">
 												<?php
-												$status_terms         = get_terms( 'status', array( 'hide_empty' => false ) );
+												$status_terms     = get_terms( 'status', array( 'hide_empty' => false ) );
 												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
 
-												foreach ( $status_terms as $status_term) {
+												foreach ( $status_terms as $status_term ) {
 													$selected = in_array( $status_term->slug, $current_statuses ) ? 'selected' : '';
 													echo '<option value="' . esc_attr( $status_term->slug ) . '" ' . $selected . '>' . esc_html( $status_term->name ) . '</option>';
 												}
@@ -157,7 +157,7 @@ function roadmap_shortcode( $atts ) {
 							<?php
 						endwhile;
 					} else {
-						echo '<p>No ideas found for ' . esc_html( $status_term) . '.</p>';
+						echo '<p>No ideas found for ' . esc_html( $status_term ) . '.</p>';
 					}
 					wp_reset_postdata();
 					?>

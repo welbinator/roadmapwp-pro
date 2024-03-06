@@ -41,8 +41,8 @@ function register_blocks() {
 				$idea_id = filter_input( INPUT_GET, 'idea_id', FILTER_VALIDATE_INT );
 
 				$post = get_post( $idea_id );
-				$post_data = print_r($idea_post, true);
-				error_log($post_data);
+				$post_data = print_r( $idea_post, true );
+				error_log( $post_data );
 				if ( ! $post || 'idea' !== $post->post_type ) {
 					return '<p>Idea not found.</p>';
 				}
