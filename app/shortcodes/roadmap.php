@@ -86,6 +86,7 @@ function roadmap_shortcode( $atts ) {
 					<h3 style="text-align:center;">
 					<?php 
 						printf(
+							/* translators: %s: Status of idea */
 							esc_html__( '%s', 'roadmapwp-pro' ),
 							esc_html( $status )
 						); 
