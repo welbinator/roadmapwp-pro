@@ -9,6 +9,7 @@
  */
 
 namespace RoadMapWP\Pro\Shortcodes\DisplayIdeas;
+
 use RoadMapWP\Pro\Admin\Functions;
 /**
  * Shortcode to display ideas.
@@ -19,26 +20,23 @@ use RoadMapWP\Pro\Admin\Functions;
  * @return string The HTML output for displaying ideas.
  */
 function display_ideas_shortcode() {
-	// Flag to indicate the display ideas shortcode is loaded
+	// Flag to indicate the display ideas shortcode is loaded.
 	update_option( 'wp_roadmap_ideas_shortcode_loaded', true );
 
-	ob_start(); // Start output buffering
+	ob_start();
 
-	// Always include 'idea-tag' taxonomy
+	// Always include 'idea-tag' taxonomy.
 	$taxonomies = array( 'idea-tag' );
 
-	// Include custom taxonomies
+	// Include custom taxonomies.
 	$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
 	$taxonomies        = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 
-	// Exclude 'status' taxonomy
+	// Exclude 'status' taxonomy.
 	$exclude_taxonomies = array( 'status' );
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 
-	// Retrieve color settings
-	$options                = get_option( 'wp_roadmap_settings' );
-
-	// Check if the pro version is installed and settings are enabled
+	// Check if the pro version is installed and settings are enabled.
 	$hide_display_ideas_heading = apply_filters( 'wp_roadmap_hide_display_ideas_heading', false );
 	$new_display_ideas_heading  = apply_filters( 'wp_roadmap_custom_display_ideas_heading_text', 'Browse Ideas' );
 	?>
@@ -57,7 +55,7 @@ function display_ideas_shortcode() {
 				<?php
 				foreach ( $taxonomies as $taxonomy_slug ) :
 					$taxonomy = get_taxonomy( $taxonomy_slug );
-					if ( $taxonomy && $taxonomy_slug != 'status' ) :
+					if ( 'status' !== $taxonomy && $taxonomy_slug ) :
 						?>
 						<div class="wp-roadmap-ideas-filter-taxonomy" data-taxonomy="<?php echo esc_attr( $taxonomy_slug ); ?>">
 							<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
@@ -95,7 +93,7 @@ function display_ideas_shortcode() {
 		<?php
 		$args  = array(
 			'post_type'      => 'idea',
-			'posts_per_page' => -1, // Adjust as needed
+			'posts_per_page' => -1,
 		);
 		$query = new \WP_Query( $args );
 
@@ -108,12 +106,12 @@ function display_ideas_shortcode() {
 					$query->the_post();
 					$idea_id    = get_the_ID();
 					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
-					$idea_class = Functions\get_idea_class_with_votes($idea_id);
+					$idea_class = Functions\get_idea_class_with_votes( $idea_id );
 					?>
 		
-					<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr($idea_class); ?>" data-v0-t="card">	
-						<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-grid.php'; ?>
-						<?php include plugin_dir_path(__FILE__) . '../includes/display-ideas-admin.php'; ?>
+					<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden <?php echo esc_attr( $idea_class ); ?>" data-v0-t="card">	
+						<?php include plugin_dir_path( __FILE__ ) . '../includes/display-ideas-grid.php'; ?>
+						<?php include plugin_dir_path( __FILE__ ) . '../includes/display-ideas-admin.php'; ?>
 					</div>
 				<?php endwhile; ?>
 			</div>
@@ -126,7 +124,7 @@ function display_ideas_shortcode() {
 
 	wp_reset_postdata();
 
-	return ob_get_clean(); // Return the buffered output
+	return ob_get_clean();
 }
 
 add_shortcode( 'display_ideas', __NAMESPACE__ . '\\display_ideas_shortcode' );
