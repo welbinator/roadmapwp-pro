@@ -6,6 +6,8 @@
  * It includes shortcodes for displaying a new idea submission form
  * and handling the submission of these ideas. The shortcodes enable
  * users to interact with the 'idea' custom post type within the plugin.
+ *
+ * @package RoadMapWP\Pro
  */
 
 namespace RoadMapWP\Pro\Shortcodes\NewIdeaForm;
@@ -18,16 +20,16 @@ namespace RoadMapWP\Pro\Shortcodes\NewIdeaForm;
 function new_idea_form_shortcode() {
 	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
-	ob_start(); // Start output buffering
+	ob_start();
 
-    if ( isset( $_GET['new_idea_submitted'] ) && $_GET['new_idea_submitted'] == '1' ) {
-        echo '<p>Thank you for your submission!</p>';
-    }
+	if ( isset( $_GET['new_idea_submitted'] ) && '1' === $_GET['new_idea_submitted'] ) {
+		echo '<p>Thank you for your submission!</p>';
+	}
 
 	$hide_submit_idea_heading = apply_filters( 'wp_roadmap_hide_custom_idea_heading', false );
 	$new_submit_idea_heading  = apply_filters( 'wp_roadmap_custom_idea_heading_text', 'Submit new Idea' );
 
-	$options                = get_option( 'wp_roadmap_settings' );
+	$options             = get_option( 'wp_roadmap_settings' );
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 	?>
@@ -37,10 +39,11 @@ function new_idea_form_shortcode() {
 		<div class="new_idea_form__frontend">
 			<?php if ( ! $hide_submit_idea_heading ) : ?>
 				<h2><?php echo esc_html( $new_submit_idea_heading ); ?></h2>
-			<?php endif; 
-			$form_action = esc_url_raw($_SERVER['REQUEST_URI']);
+				<?php
+			endif;
+			$form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			?>
-			 <form action="<?php echo esc_url($form_action); ?>" method="post">
+			<form action="<?php echo esc_url( $form_action ); ?>" method="post">
 				<ul class="flex-outer">
 					<li class="new_idea_form_input">
 						<label for="idea_title">Title:</label>
@@ -54,7 +57,7 @@ function new_idea_form_shortcode() {
 					<?php
 					$taxonomies = get_object_taxonomies( 'idea', 'objects' );
 					foreach ( $taxonomies as $taxonomy ) {
-						if ( $taxonomy->name !== 'status' ) {
+						if ( 'status' !== $taxonomy->name ) {
 							$terms = get_terms(
 								array(
 									'taxonomy'   => $taxonomy->name,
@@ -68,12 +71,12 @@ function new_idea_form_shortcode() {
 									<div class="taxonomy-term-labels">
 										<?php
 										foreach ( $terms as $term ) :
-										?>
+											?>
 											<label class="taxonomy-term-label">
 												<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
 												<?php echo esc_html( $term->name ); ?>
 											</label>
-										<?php
+											<?php
 										endforeach;
 										?>
 									</div>
@@ -95,7 +98,7 @@ function new_idea_form_shortcode() {
 
 	<?php
 
-	$output = ob_get_clean(); // End output buffering and capture the HTML
+	$output = ob_get_clean();
 	return $output;
 }
 
@@ -105,44 +108,53 @@ add_shortcode( 'new_idea_form', __NAMESPACE__ . '\\new_idea_form_shortcode' );
  * Function to handle the submission of the new idea form.
  */
 function handle_new_idea_submission() {
-	$submission_nonce = ''; // Initialize outside to ensure scope availability
-    $idea_id = 0; // Initialize to ensure scope availability
+	$submission_nonce = '';
+	$idea_id          = 0;
 
-    if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_nonce'])) {
-        $submission_nonce = sanitize_text_field(wp_unslash($_POST['wp_roadmap_new_idea_nonce']));
-        if (wp_verify_nonce($submission_nonce, 'wp_roadmap_new_idea')) {
-            $title = sanitize_text_field($_POST['idea_title']);
-            $description = sanitize_textarea_field($_POST['idea_description']);
+	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+		$submission_nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
 
-            $options = get_option('wp_roadmap_settings', array());
-            $default_idea_status = isset($options['default_idea_status']) ? $options['default_idea_status'] : 'pending';
+		if ( wp_verify_nonce( $submission_nonce, 'wp_roadmap_new_idea' ) ) {
+			$title       = isset( $_POST['idea_title'] ) ? sanitize_text_field( wp_unslash( $_POST['idea_title'] ) ) : '';
+			$description = isset( $_POST['idea_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['idea_description'] ) ) : '';
 
-            $idea_id = wp_insert_post([
-                'post_title' => $title,
-                'post_content' => $description,
-                'post_status' => $default_idea_status,
-                'post_type' => 'idea',
-            ]);
-        }
-    }
+			$options             = get_option( 'wp_roadmap_settings', array() );
+			$default_idea_status = isset( $options['default_idea_status'] ) ? $options['default_idea_status'] : 'pending';
 
-    // Ensure this conditional only runs if the nonce was verified successfully
-    if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($submission_nonce) && $idea_id) {
-        if (!empty($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
-            foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
-                if (!taxonomy_exists($tax_slug)) {
-                    continue; // Skip processing for non-existing taxonomies
-                }
-                $term_ids = array_map('intval', $term_ids); // Ensure term IDs are integers
-                wp_set_object_terms($idea_id, $term_ids, $tax_slug);
-            }
-        }
+			$idea_id = wp_insert_post(
+				array(
+					'post_title'   => $title,
+					'post_content' => $description,
+					'post_status'  => $default_idea_status,
+					'post_type'    => 'idea',
+				)
+			);
+		}
+	}
 
-        $redirect_nonce = wp_create_nonce('new_idea_submitted');
-        $redirect_url = add_query_arg(['new_idea_submitted' => '1', 'nonce' => $redirect_nonce], esc_url_raw( $_SERVER['REQUEST_URI'] )); // Replace with your actual URL
-        wp_redirect($redirect_url);
-        exit;
-    }
+	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && ! empty( $submission_nonce ) && $idea_id ) {
+		if ( ! empty( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
+			$idea_taxonomies = wp_unslash( $_POST['idea_taxonomies'] );
+			foreach ( $idea_taxonomies as $tax_slug => $term_ids ) {
+				if ( ! taxonomy_exists( $tax_slug ) ) {
+					continue;
+				}
+				$term_ids = array_map( 'intval', $term_ids );
+				wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
+			}
+		}
+
+		$redirect_nonce = wp_create_nonce( 'new_idea_submitted' );
+		$redirect_url   = add_query_arg(
+			array(
+				'new_idea_submitted' => '1',
+				'nonce'              => $redirect_nonce,
+			),
+			esc_url_raw( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '' )
+		);
+		wp_safe_redirect( $redirect_url );
+		exit;
+	}
 }
 
 add_action( 'template_redirect', __NAMESPACE__ . '\\handle_new_idea_submission' );
