@@ -22,8 +22,9 @@ function display_settings_page() {
 			'hide_empty' => false,
 		)
 	);
-	$selected_page       = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
+	$selected_page       = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
+	
 
 	?>
 	<div class="wrap">
@@ -166,26 +167,26 @@ function display_help_page() {
 			
 			<div id="shortcodes-content" class="hidden">
 				<div class="grid gap-6">
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/new-idea-form-shortcode/" target="_blank">[new_idea_form]</a></h3>
-						<p class="text-gray-500 leading-6">Displays form for submitting ideas</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/new-idea-form-shortcode/" target="_blank">[new_idea_form]</a></h3>
+						<p class="text-gray-500 leading-6 m-0">Displays form for submitting ideas</p>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-shortcode/" target="_blank">[display_ideas]</a> </h3>
-						<p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/display-ideas-shortcode/" target="_blank">[display_ideas]</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays grid filled with published ideas</p>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="" target="_blank">[single_idea]</a> </h3>
-						<p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="" target="_blank">[single_idea]</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays a single idea when you've chosen a page for displaying single ideas</p>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">[roadmap status=""]</a> </h3>
-						<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses entered in the status parameter</p>
-						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: <strong>[roadmap status="Up Next, On Roadmap"]</strong></p>
-						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the <a class="text-blue-600" href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies page</a>):</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/roadmap-shortcode/" target=_blank">[roadmap status=""]</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays columns filled with ideas based on statuses entered in the status parameter</p>
+						<p class="text-gray-500 leading-6 m-0">Use "status" parameter to choose which status or statuses to display Example: <strong>[roadmap status="Up Next, On Roadmap"]</strong></p>
+						<p class="text-gray-500 leading-6 m-0">Values included in free status parameter (Pro users can change these on the <a class="text-blue-600" href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies page</a>):</p>
 						<ul class="list-disc list-inside mt-2 ml-4">
 						<li>New Idea</li>
 							<li>Not Now</li>
@@ -196,11 +197,11 @@ function display_help_page() {
 						</ul>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">[roadmap_tabs status=""]</a> </h3>
-						<p class="text-gray-500 leading-6">Displays tabs based on statuses entered in the status parameter. Clicking a tab displays corresponding ideas</p>
-						<p class="text-gray-500 leading-6">Use "status" parameter to choose which status or statuses to display Example: <strong>[roadmap_tabs status="Up Next, On Roadmap"]</strong></p>
-						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the <a class="text-blue-600" href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies page</a>):</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/roadmap-with-tabs-shortcode/" target="_blank">[roadmap_tabs status=""]</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays tabs based on statuses entered in the status parameter. Clicking a tab displays corresponding ideas</p>
+						<p class="text-gray-500 leading-6 m-0">Use "status" parameter to choose which status or statuses to display Example: <strong>[roadmap_tabs status="Up Next, On Roadmap"]</strong></p>
+						<p class="text-gray-500 leading-6 m-0">Values included in free status parameter (Pro users can change these on the <a class="text-blue-600" href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies page</a>):</p>
 						<ul class="list-disc list-inside mt-2 ml-4">
 						<li>New Idea</li>
 							<li>Not Now</li>
@@ -217,26 +218,26 @@ function display_help_page() {
 			</h2>
 			<div id="blocks-content" class="hidden">
 				<div class="grid gap-6">
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/new-idea-form-block/" target="_target">New Idea Form</a> </h3>
-						<p class="text-gray-500 leading-6">Displays form for submitting ideas</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/new-idea-form-block/" target="_target">New Idea Form</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays form for submitting ideas</p>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/display-ideas-block/" target="_blank">Display Ideas</a> </h3>
-						<p class="text-gray-500 leading-6">Displays grid filled with published ideas</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/display-ideas-block/" target="_blank">Display Ideas</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays grid filled with published ideas</p>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="" target="_blank">Single Idea</a> </h3>
-						<p class="text-gray-500 leading-6">Displays a single idea when you've chosen a page for displaying single ideas</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="" target="_blank">Single Idea</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays a single idea when you've chosen a page for displaying single ideas</p>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-block/" target="_blank">Roadmap</a> </h3>
-						<p class="text-gray-500 leading-6">Displays columns filled with ideas based on statuses selected.</p>
-						<p class="text-gray-500 leading-6">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
-						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/roadmap-block/" target="_blank">Roadmap</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays columns filled with ideas based on statuses selected.</p>
+						<p class="text-gray-500 leading-6 m-0">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
+						<p class="text-gray-500 leading-6 m-0">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
 						<ul class="list-disc list-inside mt-2 ml-4">
 							<li>New Idea</li>
 							<li>Not Now</li>
@@ -247,11 +248,11 @@ function display_help_page() {
 						</ul>
 					</div>
 
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/roadmap-tabs-block/" target="_blank">Roadmap Tabs</a> </h3>
-						<p class="text-gray-500 leading-6">Displays tabs based on statuses selected. Clicking a tab displays corresponding ideas</p>
-						<p class="text-gray-500 leading-6">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
-						<p class="text-gray-500 leading-6">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/roadmap-tabs-block/" target="_blank">Roadmap Tabs</a> </h3>
+						<p class="text-gray-500 leading-6 m-0">Displays tabs based on statuses selected. Clicking a tab displays corresponding ideas</p>
+						<p class="text-gray-500 leading-6 m-0">After adding the block to the page, in the block editor choose which statuses you want to display.</p>
+						<p class="text-gray-500 leading-6 m-0">Values included in free status parameter (Pro users can change these on the Taxonomies page):</p>
 						<ul class="list-disc list-inside mt-2 ml-4">
 							<li>New Idea</li>
 							<li>Not Now</li>
@@ -269,10 +270,10 @@ function display_help_page() {
 			
 			<div id="taxonomies-content" class="hidden">
 				<div class="grid gap-6">
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/taxonomies" target="_blank">Taxonomies</a></h3>
-						<p class="text-gray-500 leading-6">RoadMapWP comes with a Tags taxonomy by default. Free users can navigate to <strong>RoadMap</strong> > <strong><a href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies</a></strong> to add and delete terms from the Tags taxonomy.</p>
-						<p class="text-gray-500 leading-6">Pro users can create their own custom taxonomies on the same page. Once a new taxonomy is created, simply add the desired terms and they will become available to users on the front end who are submitting new ideas.</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/taxonomies" target="_blank">Taxonomies</a></h3>
+						<p class="text-gray-500 leading-6 m-0">RoadMapWP comes with a Tags taxonomy by default. Free users can navigate to <strong>RoadMap</strong> > <strong><a href="/wp-admin/admin.php?page=wp-roadmap-taxonomies">Taxonomies</a></strong> to add and delete terms from the Tags taxonomy.</p>
+						<p class="text-gray-500 leading-6 m-0">Pro users can create their own custom taxonomies on the same page. Once a new taxonomy is created, simply add the desired terms and they will become available to users on the front end who are submitting new ideas.</p>
 					</div>
 				</div>
 			</div><!-- taxonomies content -->
@@ -283,9 +284,9 @@ function display_help_page() {
 			
 			<div id="styles-content" class="hidden">
 				<div class="grid gap-6">
-					<div class="border-2 rounded-lg p-4">
-						<h3 class="font-semibold text-lg"><a href="https://roadmapwp.com/kb_article/styles" target="_blank">Adjust Styles of RoadMapWP Pages</a></h3>
-						<p class="text-gray-500 leading-6">Style settings can be found in the <a href="http://wproadmap.lndo.site/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Dwp-roadmap-help">WordPress Customizer</a> in the RoadMap Styles section</p>
+					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
+						<h3 class="font-semibold text-lg m-0"><a href="https://roadmapwp.com/kb_article/styles" target="_blank">Adjust Styles of RoadMapWP Pages</a></h3>
+						<p class="text-gray-500 leading-6 m-0">Style settings can be found in the <a href="http://wproadmap.lndo.site/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Dwp-roadmap-help">WordPress Customizer</a> in the RoadMap Styles section</p>
 					</div>
            
 				</div><!-- grid gap-6 -->

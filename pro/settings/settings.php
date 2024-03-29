@@ -49,18 +49,6 @@ function settings_validate( $input ) {
 		);
 	}
 
-	// Validate 'default_wp_post_status'
-	$allowed_statuses = array( 'publish', 'pending', 'draft' );
-	if ( in_array( $input['default_wp_post_status'], $allowed_statuses ) ) {
-		$validated_settings['default_wp_post_status'] = $input['default_wp_post_status'];
-	} else {
-		add_settings_error(
-			'default_wp_post_status',
-			'invalid_wp_post_status',
-			'Invalid WordPress post status selected.',
-			'error'
-		);
-	}
 	// Validate 'single_idea_template'
 	$allowed_templates = array( 'plugin', 'page' );
 	if ( in_array( $input['single_idea_template'], $allowed_templates ) ) {

@@ -2,6 +2,11 @@
 
 namespace RoadMapWP\Pro\CPT;
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+};
+
 /**
  * Register the custom post type.
  */
@@ -61,7 +66,6 @@ function register_idea_post_type() {
 
 add_action( 'init', __NAMESPACE__ . '\\register_idea_post_type' );
 
-
 /**
  * Register default taxonomies.
  */
@@ -104,38 +108,6 @@ function register_default_idea_taxonomies() {
 }
 add_action( 'init', __NAMESPACE__ . '\\register_default_idea_taxonomies' );
 
-/**
- * Automatically assign "New Idea" status to new idea posts.
- *
- * @param int      $post_id The post ID.
- * @param \WP_Post $post The post object.
- * @param bool     $update Whether this is an existing post being updated.
- */
-function auto_assign_new_idea_status( $post_id, $post, $update ) {
-	// If this is an update, not a new post, or if it's an autosave, don't do anything.
-	if ( $update || wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
-		return;
-	}
-
-	// Check if the term exists.
-	$term = term_exists( 'New Idea', 'status' );
-
-	// If the term doesn't exist, add it.
-	if ( $term === 0 || $term === null ) {
-		$term = wp_insert_term( 'New Idea', 'status' );
-	}
-
-	// Check for errors.
-	if ( is_wp_error( $term ) ) {
-		error_log( 'Error auto-assigning "New Idea" status: ' . $term->get_error_message() );
-		return;
-	}
-
-	// Assign "New Idea" status to this idea post using the term slug.
-	wp_set_object_terms( $post_id, 'new-idea', 'status' );
-}
-
-// add_action('save_post_idea', __NAMESPACE__ . '\\auto_assign_new_idea_status', 10, 3);
 
 /**
  * Register custom taxonomies.

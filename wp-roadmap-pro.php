@@ -16,9 +16,9 @@ Text Domain: roadmapwp-pro
 function rmwp_pro_activate() {
 	// Check if the free version is active
 	include_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( is_plugin_active( 'roadmapwp-free/wp-roadmap.php' ) ) {
+	if ( is_plugin_active( 'wproadmap/wp-roadmap.php' ) ) {
 		// Deactivate the free version
-		deactivate_plugins( 'roadmapwp-free/wp-roadmap.php' );
+		deactivate_plugins( 'wproadmap/wp-roadmap.php' );
 	}
 	// Additional activation code for Pro version goes here...
 }
@@ -75,6 +75,15 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-post-statu
 // Include choose idea template feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
 
+// Include custom submit idea heading setting
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';
+
+// Include custom submit idea heading setting
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading.php';
+
+// Include default idea status setting
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
+
 // Include blocks.php
 require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/blocks.php';
 
@@ -92,15 +101,6 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/new-idea-form-block.php';
 
 // Include display ideas block
 require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/display-ideas-block.php';
-
-// Include custom submit idea heading setting
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';
-
-// Include custom submit idea heading setting
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading.php';
-
-// Include default idea status setting
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
 // Include customizer styles
 require_once plugin_dir_path( __FILE__ ) . 'app/customizer-styles.php';

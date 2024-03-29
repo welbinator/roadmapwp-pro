@@ -29,9 +29,6 @@ function new_idea_form_shortcode() {
 	$hide_submit_idea_heading = apply_filters( 'wp_roadmap_hide_custom_idea_heading', false );
 	$new_submit_idea_heading  = apply_filters( 'wp_roadmap_custom_idea_heading_text', 'Submit new Idea' );
 
-	$options             = get_option( 'wp_roadmap_settings' );
-	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
-
 	?>
 
 	<!-- Regular HTML Output -->
@@ -87,7 +84,8 @@ function new_idea_form_shortcode() {
 					}
 					?>
 
-					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
+				<?php $form_submission_nonce = wp_create_nonce('wp_roadmap_new_idea'); ?>
+                <input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr($form_submission_nonce); ?>">
 					<li class="new_idea_form_input">
 						<input type="submit" value="Submit Idea">
 					</li>

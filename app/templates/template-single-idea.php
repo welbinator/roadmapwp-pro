@@ -3,7 +3,11 @@
  * The Template for displaying all single posts of the 'idea' CPT.
  */
 
-// Retrieve color settings
+  // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+};
+
 $options                = get_option( 'wp_roadmap_settings' );
 $allow_comments         = isset( $options['allow_comments'] ) ? $options['allow_comments'] : false;
 
@@ -45,7 +49,7 @@ get_header(); ?>
 							if ( ! is_wp_error( $term_link ) ) {
 								?>
 								
-								<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 text-white px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
+								<a href="<?php echo esc_url( $term_link ); ?>" class="inline-flex items-center border font-semibold bg-blue-500 px-3 py-1 rounded-full text-sm !no-underline"><?php echo esc_html( $term->name ); ?></a>
 								
 								<?php
 							}
