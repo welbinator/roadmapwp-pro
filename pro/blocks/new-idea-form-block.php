@@ -73,7 +73,7 @@ function block_render( $attributes ) {
 	// If no statuses have been selected (or if all selected statuses are removed), add the default status term.
 	if ( empty( $selected_statuses ) ) {
 		// Ensure the default status term exists and get its term ID.
-		$term = term_exists( $default_status_term, 'status' );
+		$term = term_exists( $default_status_term, 'idea-status' );
 
 		if ( $term !== 0 && $term !== null ) {
 
@@ -132,7 +132,7 @@ function block_render( $attributes ) {
 					$idea_taxonomies     = get_object_taxonomies( 'idea', 'objects' );
 
 					foreach ( $idea_taxonomies as $taxonomy ) {
-						if ( 'status' !== $taxonomy->name ) {
+						if ( 'idea-status' !== $taxonomy->name ) {
 
 							// Display taxonomy if it's selected or if no specific taxonomies are selected.
 							if ( empty( $selected_taxonomies ) || in_array( $taxonomy->name, $selected_taxonomies, true ) ) {
@@ -216,7 +216,7 @@ function handle_new_idea_block_submission() {
 				// Set terms for non-status taxonomies
 				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
 					foreach ( $_POST['idea_taxonomies'] as $tax_slug => $term_ids ) {
-						if ( $tax_slug !== 'status' ) {
+						if ( $tax_slug !== 'idea-status' ) {
 							$term_ids = array_map( 'intval', $term_ids );
 							wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
 						}
@@ -229,10 +229,10 @@ function handle_new_idea_block_submission() {
 	
 				if ( $valid_selected_statuses ) {
 					$selected_status_terms = array_map( 'intval', $_POST['selected_statuses'] );
-					wp_set_object_terms( $idea_id, $selected_status_terms, 'status' );
+					wp_set_object_terms( $idea_id, $selected_status_terms, 'idea-status' );
 				} else {
 					// Fallback to default status term if none or invalid selected
-					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'status' );
+					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'idea-status' );
 				}
 	
 				// Redirect to the confirmation page

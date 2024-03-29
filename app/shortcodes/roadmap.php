@@ -25,7 +25,7 @@ function roadmap_shortcode( $atts ) {
 	// Retrieve dynamic status terms.
 	$dynamic_status_terms = get_terms(
 		array(
-			'taxonomy'   => 'status',
+			'taxonomy'   => 'idea-status',
 			'hide_empty' => false,
 		)
 	);
@@ -36,13 +36,9 @@ function roadmap_shortcode( $atts ) {
 		$dynamic_status_terms
 	);
 
-	$atts = shortcode_atts(
-		array(
-			'status' => implode( ',', $dynamic_statuses ),
-		),
-		$atts,
-		'roadmap'
-	);
+	$atts = shortcode_atts(array(
+        'status' => '',
+    ), $atts, 'roadmap');
 
 	$statuses = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
 
@@ -59,8 +55,8 @@ function roadmap_shortcode( $atts ) {
 	$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
 	$taxonomies        = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 
-	// Exclude 'status' taxonomy.
-	$exclude_taxonomies = array( 'status' );
+	// Exclude 'idea-status' taxonomy.
+	$exclude_taxonomies = array( 'idea-status' );
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 	?>
 	<div class="roadmap_wrapper container mx-auto">
@@ -72,7 +68,7 @@ function roadmap_shortcode( $atts ) {
 					'posts_per_page' => -1,
 					'tax_query'      => array(
 						array(
-							'taxonomy' => 'status',
+							'taxonomy' => 'idea-status',
 							'field'    => 'name',
 							'terms'    => $status,
 						),
@@ -148,11 +144,11 @@ function roadmap_shortcode( $atts ) {
 												<?php
 												$statuses         = get_terms(
 													array(
-														'taxonomy'   => 'status',
+														'taxonomy'   => 'idea-status',
 														'hide_empty' => false,
 													)
 												);
-												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
+												$current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
 												foreach ( $statuses as $status ) {
 													$selected = in_array( $status->slug, $current_statuses, true ) ? 'selected' : '';

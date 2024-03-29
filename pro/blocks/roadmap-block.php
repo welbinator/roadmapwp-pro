@@ -79,8 +79,8 @@ function block_render( $attributes ) {
 	$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
 	$taxonomies        = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 
-	// Exclude 'status' taxonomy.
-	$exclude_taxonomies = array( 'status' );
+	// Exclude 'idea-status' taxonomy.
+	$exclude_taxonomies = array( 'idea-status' );
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 	?>
 
@@ -88,7 +88,7 @@ function block_render( $attributes ) {
 	<div class="roadmap-columns grid gap-4 <?php echo esc_attr( $md_cols_class ); ?> <?php echo esc_attr( $lg_cols_class ); ?> <?php echo esc_attr( $xl_cols_class ); ?>">
 			<?php
 			foreach ( $selected_statuses as $status_slug ) :
-				$term = get_term_by( 'slug', $status_slug, 'status' );
+				$term = get_term_by( 'slug', $status_slug, 'idea-status' );
 				if ( ! $term ) {
 					continue;
 				}
@@ -99,7 +99,7 @@ function block_render( $attributes ) {
 					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 					'tax_query'      => array(
 						array(
-							'taxonomy' => 'status',
+							'taxonomy' => 'idea-status',
 							'field'    => 'slug',
 							'terms'    => $status_slug,
 						),
@@ -180,11 +180,11 @@ function block_render( $attributes ) {
 												<?php
 												$statuses         = get_terms(
 													array(
-														'taxonomy' => 'status',
+														'taxonomy' => 'idea-status',
 														'hide_empty' => false,
 													)
 												);
-												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
+												$current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
 												foreach ( $statuses as $status ) {
 													$selected = in_array( $status->slug, $current_statuses, true ) ? 'selected' : '';

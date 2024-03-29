@@ -31,9 +31,10 @@ function roadmap_tabs_shortcode( $atts ) {
 		'roadmap-tabs'
 	);
 
+	// Assume true if the attribute is not passed.
 	$statuses = array();
 	if ( ! empty( $atts['status'] ) ) {
-		// Use the 'status' attribute if it's provided (for the shortcode).
+		// Use the 'idea-status' attribute if it's provided (for the shortcode).
 		$statuses = array_map( 'trim', explode( ',', $atts['status'] ) );
 	} else {
 		// Otherwise, use the boolean attributes (for the block).

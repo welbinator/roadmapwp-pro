@@ -18,7 +18,7 @@ function display_settings_page() {
 	$options             = get_option( 'wp_roadmap_settings', array( 'default_status_term' => 'new-idea' ) );
 	$status_terms        = get_terms(
 		array(
-			'taxonomy'   => 'status',
+			'taxonomy'   => 'idea-status',
 			'hide_empty' => false,
 		)
 	);

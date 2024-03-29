@@ -37,8 +37,8 @@ get_header(); ?>
 					$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
 					$taxonomies        = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 
-					// Exclude 'status' taxonomy
-					$exclude_taxonomies = array( 'status' );
+					// Exclude 'idea-status' taxonomy
+					$exclude_taxonomies = array( 'idea-status' );
 					$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 
 					$terms = wp_get_post_terms( get_the_ID(), $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
