@@ -33,7 +33,7 @@ function Edit({
 }) {
   // Fetch statuses
   const statuses = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
-    return select('core').getEntityRecords('taxonomy', 'status', {
+    return select('core').getEntityRecords('taxonomy', 'idea-status', {
       per_page: -1
     });
   }, []);
@@ -50,10 +50,10 @@ function Edit({
     });
   };
 
-  // Fetch other taxonomies associated with 'idea' post type, excluding 'status'
+  // Fetch other taxonomies associated with 'idea' post type, excluding 'idea-status'
   const taxonomies = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
     const allTaxonomies = select('core').getTaxonomies();
-    return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'status') : [];
+    return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'idea-status') : [];
   }, []);
   console.log('taxonomies are:', taxonomies);
 

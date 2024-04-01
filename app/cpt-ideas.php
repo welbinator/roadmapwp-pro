@@ -32,11 +32,11 @@ function register_idea_post_type() {
 	$taxonomies        = array_keys( $custom_taxonomies );
 
 	// Add default taxonomies if they aren't already included.
-	if ( ! in_array( 'status', $taxonomies ) ) {
-		$taxonomies[] = 'status';  // Default taxonomy 'status'.
+	if ( ! in_array( 'idea-status', $taxonomies ) ) {
+		$taxonomies[] = 'idea-status';
 	}
-	if ( ! in_array( 'tag', $taxonomies ) ) {
-		$taxonomies[] = 'tag';  // Default taxonomy 'tag'.
+	if ( ! in_array( 'idea-tag', $taxonomies ) ) {
+		$taxonomies[] = 'idea-tag';
 	}
 
 	$args = array(
@@ -68,7 +68,7 @@ add_action( 'init', __NAMESPACE__ . '\\register_idea_post_type' );
 function register_default_idea_taxonomies() {
 	// Define default taxonomies with their properties.
 	$default_taxonomies = array(
-		'status'   => array(
+		'idea-status'   => array(
 			'singular' => __( 'Status', 'roadmapwp-pro' ), // Translatable.
 			'plural'   => __( 'Status', 'roadmapwp-pro' ),   // Translatable.
 			'public'   => true,  // Make status taxonomy private.
@@ -93,7 +93,7 @@ function register_default_idea_taxonomies() {
 						// ... other labels ...
 					),
 					'public'            => $properties['public'],
-					'hierarchical'      => ( $slug == 'status' ),
+					'hierarchical'      => ( $slug == 'idea-status' ),
 					'show_ui'           => true,
 					'show_in_rest'      => true,
 					'show_admin_column' => true,
@@ -118,11 +118,11 @@ function auto_assign_new_idea_status( $post_id, $post, $update ) {
 	}
 
 	// Check if the term exists.
-	$term = term_exists( 'New Idea', 'status' );
+	$term = term_exists( 'New Idea', 'idea-status' );
 
 	// If the term doesn't exist, add it.
 	if ( $term === 0 || $term === null ) {
-		$term = wp_insert_term( 'New Idea', 'status' );
+		$term = wp_insert_term( 'New Idea', 'idea-status' );
 	}
 
 	// Check for errors.
@@ -132,7 +132,7 @@ function auto_assign_new_idea_status( $post_id, $post, $update ) {
 	}
 
 	// Assign "New Idea" status to this idea post using the term slug.
-	wp_set_object_terms( $post_id, 'new-idea', 'status' );
+	wp_set_object_terms( $post_id, 'new-idea', 'idea-status' );
 }
 
 // add_action('save_post_idea', __NAMESPACE__ . '\\auto_assign_new_idea_status', 10, 3);
