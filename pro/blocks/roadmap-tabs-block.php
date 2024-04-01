@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function loadIdeas(status) {
 		var formData = new FormData();
 		formData.append('action', 'load_ideas_for_status');
-		formData.append('status', status);
+		formData.append('idea-status', status);
 		formData.append('selectedTaxonomies', '<?php echo implode( ',', $selected_taxonomies ); ?>');
 		formData.append('nonce', nonce);
 

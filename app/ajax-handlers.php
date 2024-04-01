@@ -243,7 +243,7 @@ function load_ideas_for_status() {
 
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
-	$status                  = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
+	$status                  = isset( $_POST['idea-status'] ) ? sanitize_text_field( $_POST['idea-status'] ) : '';
 	$selected_taxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
 
 	// Initialize the tax query with the status term

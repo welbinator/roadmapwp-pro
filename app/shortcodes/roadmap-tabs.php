@@ -115,7 +115,7 @@ function roadmap_tabs_shortcode( $atts ) {
 		function loadIdeas(status) {
 			var formData = new FormData();
 			formData.append('action', 'load_ideas_for_status');
-			formData.append('status', status);
+			formData.append('idea-status', status);
 			formData.append('nonce', nonce);
 
 			fetch(ajaxurl, {
