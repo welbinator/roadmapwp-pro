@@ -132,8 +132,8 @@ function rmwp_pro_on_activation() {
 	// Now add the terms
 	$status_terms = array( 'New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed' );
 	foreach ( $status_terms as $term ) {
-		if ( ! term_exists( $term, 'status' ) ) {
-			$result = wp_insert_term( $term, 'status' );
+		if ( ! term_exists( $term, 'idea-status' ) ) {
+			$result = wp_insert_term( $term, 'idea-status' );
 			if ( is_wp_error( $result ) ) {
 				error_log( 'Error inserting term ' . $term . ': ' . $result->get_error_message() );
 			}
@@ -164,9 +164,58 @@ add_filter( 'single_template', 'rmwp_pro_custom_template' );
 function rmwp_pro_log_all_status_terms() {
 	$terms = get_terms(
 		array(
-			'taxonomy'   => 'status',
+			'taxonomy'   => 'idea-status',
 			'hide_empty' => false,
 		)
 	);
 }
 add_action( 'init', 'rmwp_pro_log_all_status_terms' );
+
+function create_pages() {
+    // Define the pages and their corresponding details
+    $pages = array(
+        array(
+            'title' => 'Submit an Idea',
+            'content' => '[new_idea_form]' . "\n\n" . '[display_ideas]',
+            'status' => 'publish'
+        ),
+        array(
+            'title' => 'Roadmap',
+            'content' => '[roadmap status="Closed, Up Next, On Roadmap"]',
+            'status' => 'publish'
+        ),
+        array(
+            'title' => 'Roadmap Tabs',
+            'content' => '[roadmap_tabs status="Closed, Up Next, On Roadmap"]',
+            'status' => 'draft'
+        )
+    );
+
+    foreach ($pages as $page) {
+        // Check if the page already exists
+        $page_exists = get_page_by_title($page['title']);
+
+        // If the page does not exist, create it
+        if (!$page_exists) {
+            $new_page = array(
+                'post_title'    => $page['title'],
+                'post_content'  => $page['content'],
+                'post_status'   => $page['status'], // Set the status (publish or draft)
+                'post_author'   => 1, // Make sure to set the correct author ID
+                'post_type'     => 'page',
+                'post_name'     => sanitize_title($page['title'])
+            );
+
+            // Insert the page into the database
+            $new_page_id = wp_insert_post($new_page);
+
+            // Optional: Set a meta flag to indicate that your plugin created this page
+            if ($new_page_id && !is_wp_error($new_page_id)) {
+                update_post_meta($new_page_id, '_created_by_my_plugin', true);
+            }
+        }
+    }
+}
+
+
+register_activation_hook(__FILE__, __NAMESPACE__ . '\\create_pages');

@@ -39,7 +39,7 @@ function Edit({
 }) {
   // const { attributes, setAttributes } = props;
   const statuses = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
-    return select('core').getEntityRecords('taxonomy', 'status', {
+    return select('core').getEntityRecords('taxonomy', 'idea-status', {
       per_page: -1
     });
   }, []);

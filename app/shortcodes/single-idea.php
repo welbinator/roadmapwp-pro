@@ -48,7 +48,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 			$taxonomies         = array( 'idea-tag' );
 			$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
 			$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
-			$exclude_taxonomies = array( 'status' );
+			$exclude_taxonomies = array( 'idea-status' );
 			$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 			$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
 

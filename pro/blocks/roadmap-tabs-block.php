@@ -71,7 +71,7 @@ function block_render( $attributes ) {
 	// Convert slugs back to names for display
 	$statuses = array_map(
 		function ( $slug ) {
-			$term = get_term_by( 'slug', $slug, 'status' );
+			$term = get_term_by( 'slug', $slug, 'idea-status' );
 			return $term ? $term->name : $slug;
 		},
 		$selected_statuses
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function loadIdeas(status) {
 		var formData = new FormData();
 		formData.append('action', 'load_ideas_for_status');
-		formData.append('status', status);
+		formData.append('idea-status', status);
 		formData.append('selectedTaxonomies', '<?php echo implode( ',', $selected_taxonomies ); ?>');
 		formData.append('nonce', nonce);
 

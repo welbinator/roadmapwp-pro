@@ -212,21 +212,21 @@ function update_idea_status() {
 
 	if ( $idea_id && ! empty( $statuses ) ) {
 		// Remove all existing status terms from the post
-		$current_terms = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'ids' ) );
+		$current_terms = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'ids' ) );
 		foreach ( $current_terms as $term_id ) {
-			wp_remove_object_terms( $idea_id, $term_id, 'status' );
+			wp_remove_object_terms( $idea_id, $term_id, 'idea-status' );
 		}
 
 		// Add each new status term
 		foreach ( $statuses as $status_slug ) {
-			$term = get_term_by( 'slug', $status_slug, 'status' );
+			$term = get_term_by( 'slug', $status_slug, 'idea-status' );
 			if ( $term && ! is_wp_error( $term ) ) {
-				wp_add_object_terms( $idea_id, $term->term_id, 'status' );
+				wp_add_object_terms( $idea_id, $term->term_id, 'idea-status' );
 			}
 		}
 
 		// Check current terms after setting
-		$current_terms = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
+		$current_terms = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
 		wp_send_json_success();
 	} else {
@@ -243,14 +243,14 @@ function load_ideas_for_status() {
 
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
-	$status                  = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
+	$status                  = isset( $_POST['idea-status'] ) ? sanitize_text_field( $_POST['idea-status'] ) : '';
 	$selected_taxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
 
 	// Initialize the tax query with the status term
 	$tax_query = array(
 		'relation' => 'AND',
 		array(
-			'taxonomy' => 'status',
+			'taxonomy' => 'idea-status',
 			'field'    => 'slug',
 			'terms'    => $status,
 		),
@@ -305,10 +305,9 @@ function load_ideas_for_status() {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$idea_id = get_the_ID();
-			// Retrieve all taxonomies associated with the 'idea' post type, excluding 'status'
+			// Retrieve all taxonomies associated with the 'idea' post type, excluding 'idea-status'
 			$idea_taxonomies     = get_object_taxonomies( 'idea', 'names' );
-			// $excluded_taxonomies = array( 'status' ); // Add more taxonomy names to exclude if needed
-			// $included_taxonomies = array_diff( $idea_taxonomies, $excluded_taxonomies );
+			
 			$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
 			$taxonomies = array_merge( array( 'idea-tag' ), array_keys( $custom_taxonomies ) );
 

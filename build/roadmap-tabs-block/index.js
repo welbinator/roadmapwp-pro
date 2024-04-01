@@ -29,12 +29,12 @@ function Edit({
   setAttributes
 }) {
   // Fetch statuses and taxonomies using hooks at the top level
-  const statuses = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core').getEntityRecords('taxonomy', 'status', {
+  const statuses = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select('core').getEntityRecords('taxonomy', 'idea-status', {
     per_page: -1
   }), []);
   const ideaTaxonomies = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
     const allTaxonomies = select('core').getTaxonomies();
-    return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'status') : [];
+    return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'idea-status') : [];
   }, []);
 
   // Update functions for selected statuses and taxonomies
