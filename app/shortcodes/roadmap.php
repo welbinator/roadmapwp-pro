@@ -22,7 +22,7 @@ function roadmap_shortcode( $atts ) {
 	// Retrieve dynamic status terms
 	$dynamic_status_terms = get_terms(
 		array(
-			'taxonomy'   => 'status',
+			'taxonomy'   => 'idea-status',
 			'hide_empty' => false,
 		)
 	);
@@ -36,13 +36,13 @@ function roadmap_shortcode( $atts ) {
 	// Parse the shortcode attributes
 	$atts = shortcode_atts(
 		array(
-			'status' => implode( ',', $dynamic_statuses ), // Default to all dynamic statuses
+			'idea-status' => implode( ',', $dynamic_statuses ),
 		),
 		$atts,
 		'roadmap'
 	);
 
-	$statuses = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
+	$statuses = ! empty( $atts['idea-status'] ) ? array_map( 'trim', explode( ',', $atts['idea-status'] ) ) : $dynamic_statuses;
 
 	// Retrieve color settings
 	$options                = get_option( 'wp_roadmap_settings' );
@@ -61,8 +61,8 @@ function roadmap_shortcode( $atts ) {
 	$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
 	$taxonomies        = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 
-	// Exclude 'status' taxonomy
-	$exclude_taxonomies = array( 'status' );
+	// Exclude 'idea-status' taxonomy
+	$exclude_taxonomies = array( 'idea-status' );
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 	?>
 	<div class="roadmap_wrapper container mx-auto">
@@ -74,7 +74,7 @@ function roadmap_shortcode( $atts ) {
 					'posts_per_page' => -1,
 					'tax_query'      => array(
 						array(
-							'taxonomy' => 'status',
+							'taxonomy' => 'idea-status',
 							'field'    => 'name',
 							'terms'    => $status,
 						),
@@ -140,8 +140,8 @@ function roadmap_shortcode( $atts ) {
 										<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="status-select" name="idea_status[]">
 												<?php
-												$statuses         = get_terms( 'status', array( 'hide_empty' => false ) );
-												$current_statuses = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
+												$statuses         = get_terms( 'idea-status', array( 'hide_empty' => false ) );
+												$current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
 												foreach ( $statuses as $status ) {
 													$selected = in_array( $status->slug, $current_statuses ) ? 'selected' : '';

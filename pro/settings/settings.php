@@ -20,7 +20,7 @@ function settings_validate( $input ) {
 	// Validate 'default_status_term'
 	$status_terms = get_terms(
 		array(
-			'taxonomy'   => 'status',
+			'taxonomy'   => 'idea-status',
 			'hide_empty' => false,
 		)
 	);

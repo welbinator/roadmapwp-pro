@@ -226,7 +226,7 @@ function update_idea_status() {
 		}
 
 		// Check current terms after setting
-		$current_terms = wp_get_post_terms( $idea_id, 'status', array( 'fields' => 'slugs' ) );
+		$current_terms = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
 		wp_send_json_success();
 	} else {

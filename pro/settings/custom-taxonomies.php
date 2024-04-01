@@ -116,7 +116,7 @@ function custom_taxonomy_content() {
 	echo '<hr style="margin:20px; border:2px solid #8080802e;" />';
 
 	echo '<h2>Manage Taxonomies</h2>';
-	// Display existing taxonomies and their terms, including 'status' and 'idea-tag'
+	// Display existing taxonomies and their terms, including 'idea-status' and 'idea-tag'
 	$taxonomies = get_taxonomies( array( 'object_type' => array( 'idea' ) ), 'objects' );
 	foreach ( $taxonomies as $taxonomy ) {
 		// Exclude custom taxonomies from this loop

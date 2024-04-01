@@ -54,7 +54,7 @@ function new_idea_form_shortcode() {
 					<?php
 					$taxonomies = get_object_taxonomies( 'idea', 'objects' );
 					foreach ( $taxonomies as $taxonomy ) {
-						if ( $taxonomy->name !== 'status' ) {
+						if ( $taxonomy->name !== 'idea-status' ) {
 							$terms = get_terms(
 								array(
 									'taxonomy'   => $taxonomy->name,
