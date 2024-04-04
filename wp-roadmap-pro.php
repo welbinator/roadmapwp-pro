@@ -63,9 +63,6 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php' ) ) {
 // Include pro settings
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
 
-// Include enable comments feature
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/comments.php';
-
 // Include custom taxonomies feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
 
