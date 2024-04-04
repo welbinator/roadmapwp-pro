@@ -66,7 +66,7 @@ function roadmap_shortcode( $atts ) {
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 	?>
 	<div class="roadmap_wrapper container mx-auto">
-	<div class="roadmap-columns grid gap-4 <?php echo $md_cols_class; ?> <?php echo $lg_cols_class; ?> <?php echo $xl_cols_class; ?>">
+	<div class="roadmap-columns grid gap-4 <?php echo esc_attr( $md_cols_class ); ?> <?php echo esc_attr( $lg_cols_class ); ?> <?php echo esc_attr( $xl_cols_class ); ?>">
 			<?php
 			foreach ( $statuses as $status ) {
 				$args  = array(
@@ -94,7 +94,7 @@ function roadmap_shortcode( $atts ) {
 							?>
 							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr($idea_class); ?>">
 								<div class="p-6">
-									<h4 class="rmwp__idea-title"><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></h4>
+									<h4 class="rmwp__idea-title"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php the_title(); ?></a></h4>
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
 									<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 									<?php
@@ -109,7 +109,7 @@ function roadmap_shortcode( $atts ) {
 									endforeach;
 									?>
 									</div>
-									<div class="idea-excerpt mt-4"><?php echo get_the_excerpt(); ?> <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">read more...</a></div>
+									<div class="idea-excerpt mt-4"><?php echo wp_kses_post( get_the_excerpt() ); ?> <a class="text-blue-500 hover:underline" href="<?php the_permalink(); ?>" rel="ugc">read more...</a></div>
 									<div class="flex items-center justify-start mt-6 gap-6">
 										
 										<div class="flex items-center idea-vote-box" data-idea-id="<?php echo intval( $idea_id ); ?>">
@@ -129,7 +129,7 @@ function roadmap_shortcode( $atts ) {
 													<path d="M7 10v12"></path>
 													<path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
 												</svg>
-												<div class="text-white ml-2 idea-vote-count"><?php echo $vote_count; ?></div>
+												<div class="text-white ml-2 idea-vote-count"><?php echo absint( $vote_count ); ?></div>
 											</button>
 										</div>
 									</div>

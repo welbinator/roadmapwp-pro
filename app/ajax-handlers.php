@@ -105,6 +105,7 @@ function filter_ideas() {
 	
 
 	$query = new \WP_Query( $args );
+	
 	if ( $query->have_posts() ) : ?>
 		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-6 py-8">
 			<?php
