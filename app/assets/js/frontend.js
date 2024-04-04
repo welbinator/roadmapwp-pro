@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.idea-status-update-form').forEach(function(form) {
+    document.querySelectorAll('.rmwp__idea-status-update-form').forEach(function(form) {
         form.addEventListener('submit', function(event) {
             event.preventDefault();
             var ideaId = this.getAttribute('data-idea-id');
-            var selectedStatuses = Array.from(this.querySelector('.status-select').selectedOptions).map(option => option.value);
+            var selectedStatuses = Array.from(this.querySelector('.rmwp__status-select').selectedOptions).map(option => option.value);
 
             var formData = new FormData();
             formData.append('action', 'update_idea_status');

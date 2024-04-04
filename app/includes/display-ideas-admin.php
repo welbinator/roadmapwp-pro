@@ -1,8 +1,8 @@
 <?php if ( current_user_can( 'administrator' ) ) : ?>
     <div class="p-6 bg-gray-200">
         <h6 class="text-center">Admin only</h6>
-        <form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
-            <select multiple class="status-select" name="idea_status[]">
+        <form class="rmwp__idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
+            <select multiple class="rmwp__status-select" name="idea_status[]">
                 <?php
                 $statuses         = get_terms( 'idea-status', array( 'hide_empty' => false ) );
                 $current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );

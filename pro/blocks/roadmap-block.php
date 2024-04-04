@@ -130,7 +130,7 @@ function block_render( $attributes ) {
 							?>
 							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr( $idea_class ); ?>">
 								<div class="p-6">
-								<h4 class="idea-title"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h4>
+								<h4 class="rmwp__idea-title"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php echo esc_html( get_the_title() ); ?></a></h4>
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
 									<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 									<?php
@@ -175,8 +175,8 @@ function block_render( $attributes ) {
 								<?php if ( current_user_can( 'manage_options' ) ) : ?>
 									<div class="p-6 bg-gray-200">
 										<h6 class="text-center">Admin only</h6>
-										<form class="idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
-											<select multiple class="status-select" name="idea_status[]">
+										<form class="rmwp__idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
+											<select multiple class="rmwp__status-select" name="idea_status[]">
 												<?php
 												$statuses         = get_terms(
 													array(
