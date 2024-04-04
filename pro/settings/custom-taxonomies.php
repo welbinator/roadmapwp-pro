@@ -95,20 +95,20 @@ function custom_taxonomy_content() {
 	echo '<h2>Add Custom Taxonomy</h2>';
 	echo '<form action="" method="post">';
 	wp_nonce_field( 'wp_roadmap_pro_add_taxonomy', 'wp_roadmap_pro_nonce' );
-	echo '<ul class="flex-outer">';
-	echo '<li class="new_taxonomy_form_input">';
+	echo '<ul class="rmwp__flex-outer">';
+	echo '<li class="rmwp__new_taxonomy_form_input">';
 	echo '<label for="taxonomy_slug">Slug:</label>';
 	echo '<input type="text" id="taxonomy_slug" name="taxonomy_slug" required>';
 	echo '</li>';
-	echo '<li class="new_taxonomy_form_input">';
+	echo '<li class="rmwp__new_taxonomy_form_input">';
 	echo '<label for="taxonomy_singular">Singular Name:</label>';
 	echo '<input type="text" id="taxonomy_singular" name="taxonomy_singular" required>';
 	echo '</li>';
-	echo '<li class="new_taxonomy_form_input">';
+	echo '<li class="rmwp__new_taxonomy_form_input">';
 	echo '<label for="taxonomy_plural">Plural Name:</label>';
 	echo '<input type="text" id="taxonomy_plural" name="taxonomy_plural" required>';
 	echo '</li>';
-	echo '<li class="new_taxonomy_form_input">';
+	echo '<li class="rmwp__new_taxonomy_form_input">';
 	echo '<input type="submit" value="Add Taxonomy">';
 	echo '</li>';
 	echo '</ul>';
@@ -138,7 +138,7 @@ function custom_taxonomy_content() {
 					echo '</li>';
 				}
 				echo '</ul>';
-				echo '<input type="submit" value="Delete Selected Terms" class="button delete-terms-button">';
+				echo '<input type="submit" value="Delete Selected Terms" class="button rmwp__delete-terms-button">';
 				echo '</form>';
 			} else {
 				echo '<p>No terms found for ' . esc_html( $taxonomy->labels->name ) . '.</p>';
@@ -175,7 +175,7 @@ function custom_taxonomy_content() {
 				echo '</li>';
 			}
 			echo '</ul>';
-			echo '<input type="submit" value="Delete Selected Terms" class="button delete-terms-button">';
+			echo '<input type="submit" value="Delete Selected Terms" class="button rmwp__delete-terms-button">';
 			echo '</form>';
 		} else {
 			echo '<p>No terms found for ' . esc_html( $taxonomy_data['labels']['name'] ) . '.</p>';

@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
         var filterData = {};
 
         // Collecting filter data
-        $('.wp-roadmap-ideas-filter-taxonomy').each(function() {
+        $('.rmwp__ideas-filter-taxonomy').each(function() {
             var taxonomy = $(this).data('taxonomy');
             var matchType = $('input[name="match_type_' + taxonomy + '"]:checked').val();
             filterData[taxonomy] = {
@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
                 'nonce': RoadMapWPFilterAjax.nonce // Security nonce
             },
             success: function(response) {
-                $('.wp-roadmap-ideas-list').html(response);
+                $('.rmwp__ideas-list').html(response);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log('AJAX error:', textStatus, errorThrown);
@@ -48,5 +48,5 @@ jQuery(document).ready(function($) {
         }
     });
 
-    $('.wp-roadmap-ideas-filter-taxonomy input').change(sendAjaxRequest);
+    $('.rmwp__ideas-filter-taxonomy input').change(sendAjaxRequest);
 });
