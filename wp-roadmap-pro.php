@@ -66,9 +66,6 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
 // Include custom taxonomies feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
 
-// Include default idea status feature
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/idea-default-post-status.php';
-
 // Include choose idea template feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
 

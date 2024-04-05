@@ -60,8 +60,22 @@ function display_settings_page() {
 					<th scope="row"><?php esc_html_e( 'Set Published/Pending/Draft', 'roadmapwp-pro' ); ?></th>
 					<td>
 						<?php
-						// Filter hook to allow the Pro version to override this setting
-						echo wp_kses_post( apply_filters( 'wp_roadmap_default_idea_status_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
+						$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending';
+
+						// Create the HTML for the dropdown
+						$html     = '<select name="wp_roadmap_settings[default_wp_post_status]">';
+						$statuses = array(
+							'publish' => 'Publish',
+							'pending' => 'Pending Review',
+							'draft'   => 'Draft',
+						);
+						foreach ( $statuses as $value => $label ) {
+							$selected = selected( $default_wp_post_status, $value, false );
+							$html    .= "<option value='{$value}' {$selected}>{$label}</option>";
+						}
+						$html .= '</select>';
+					
+						echo $html;
 						?>
 					</td>
 				</tr>
