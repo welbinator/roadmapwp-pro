@@ -72,9 +72,9 @@ function display_ideas_shortcode() {
 			// Conditionally render the filters-wrapper div
 			if ( $show_filters ) :
 				?>
-				<div class="filters-wrapper">
+				<div class="rmwp__filters-wrapper">
 					<h4>Filters:</h4>
-					<div class="filters-inner">
+					<div class="rmwp__filters-inner">
 						<?php
 						// Reiterate through taxonomies to build the filters UI
 						foreach ( $taxonomies as $taxonomy_slug ) :
