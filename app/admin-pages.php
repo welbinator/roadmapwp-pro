@@ -140,6 +140,7 @@ function display_settings_page() {
 					</td>
 				</tr>
 
+				<?php if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) { ?>
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e('Restrict Voting to Students Enrolled in Selected LearnDash Courses', 'roadmapwp-free'); ?></th>
 					<td>
@@ -171,6 +172,7 @@ function display_settings_page() {
 						</script>
 					</td>
 				</tr>
+				<?php } ?>
 			</table>
 
 			<?php submit_button(); ?>
