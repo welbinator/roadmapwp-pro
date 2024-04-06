@@ -11,11 +11,12 @@ class VotingHandler {
  * @return bool True if the user can vote, false otherwise.
  */
 public static function can_user_vote($user_id) {
-    error_log("can user vote?");
+    
     $options = get_option('wp_roadmap_settings');
+    error_log('Voting check: Current settings: ' . print_r($options, true));
     // Check if the restrict voting setting is enabled
     if (isset($options['restrict_voting']) && $options['restrict_voting']) {
-        error_log("user logged in!");
+        
         return is_user_logged_in();
     }
 

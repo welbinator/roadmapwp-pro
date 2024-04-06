@@ -312,15 +312,30 @@ function get_idea_class_with_votes($idea_id) {
 
 // restricts voting to students enrolled in specific learndash course
 add_filter('roadmapwp_can_user_vote', function($can_vote, $user_id) {
-    $options = get_option('wp_roadmap_settings');
-    if (!empty($options['restricted_courses']) && function_exists('sfwd_lms_has_access')) {
-        foreach ($options['restricted_courses'] as $course_id) {
-            if (sfwd_lms_has_access($course_id, $user_id)) {
-                return true; // User is enrolled in at least one selected course, allow voting
+    $options = get_option('wp_roadmap_settings', []);
+    $restrict_voting = isset($options['restrict_voting']) ? $options['restrict_voting'] : '';
+    $restricted_courses = isset($options['restricted_courses']) ? $options['restricted_courses'] : [];
+    
+    // First, check if voting is restricted to logged-in users and whether the current user is logged in.
+    if ($restrict_voting && !is_user_logged_in()) {
+        return false; // Block voting if user is not logged in when required.
+    }
+    
+    // Next, handle course-specific restrictions if applicable.
+    if (!empty($restricted_courses)) {
+        foreach ($restricted_courses as $course_id) {
+            if (function_exists('sfwd_lms_has_access') && sfwd_lms_has_access($course_id, $user_id)) {
+                return true; // User is enrolled in at least one of the restricted courses, allow voting.
             }
         }
-        return false; // User is not enrolled in any selected courses, disallow voting
+        return false; // User is not enrolled in any of the restricted courses, disallow voting.
     }
-    return $can_vote; // No courses selected, or sfwd_lms_has_access not available, don't change the voting capability
+
+    // If no specific restrictions apply, return the original $can_vote value.
+    return $can_vote;
 }, 10, 2);
+
+
+
+
 

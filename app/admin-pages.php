@@ -143,12 +143,12 @@ function display_settings_page() {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e('Restrict Voting to Students Enrolled in Selected LearnDash Courses', 'roadmapwp-free'); ?></th>
 					<td>
-					<select class="wp-roadmap-select2" name="wp_roadmap_settings[restricted_courses][]" multiple="multiple" style="width: 100%;">
+					<select class="wp-roadmap-select2" name="wp_roadmap_settings[restricted_courses][]" multiple="multiple" style="min-width:200px;">
 						<?php
 						$args = array(
 							'post_type'      => 'sfwd-courses',
-							'posts_per_page' => -1,  // Fetch all courses
-							'post_status'    => 'publish', // Only fetch published courses
+							'posts_per_page' => -1,
+							'post_status'    => 'publish',
 						);
 						
 						$courses = get_posts($args);

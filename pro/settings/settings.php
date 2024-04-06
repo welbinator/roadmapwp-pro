@@ -14,6 +14,7 @@ namespace RoadMapWP\Pro\Settings;
  * @return array The validated and sanitized settings.
  */
 function settings_validate( $input ) {
+	// error_log('Received input: ' . print_r($input, true));
 	// Initialize an array to hold the validated settings
 	$validated_settings = array();
 
@@ -89,7 +90,33 @@ function settings_validate( $input ) {
 		);
 	}
 
-	// Validate 'allow_comments'
+
+// Validate 'restricted_courses'
+$validated_settings['restricted_courses'] = array(); // Default to empty array
+
+if ( isset( $input['restricted_courses'] ) && is_array( $input['restricted_courses'] ) ) {
+    $validated_courses = array();
+    foreach ( $input['restricted_courses'] as $course_id ) {
+        // Ensure the course ID is numeric to prevent invalid data types
+        $course_id = intval($course_id); // Convert to integer for safety
+        if ( get_post_type( $course_id ) == 'sfwd-courses' ) {
+            $validated_courses[] = $course_id;
+        } else {
+            add_settings_error(
+                'restricted_courses',
+                'invalid_course_id',
+                "Invalid Course ID: $course_id. Please select a valid course.",
+                'error'
+            );
+        }
+    }
+    $validated_settings['restricted_courses'] = $validated_courses;
+}
+// No else part needed, as we default to an empty array if 'restricted_courses' isn't set
+
+
+
+	// Validate 'restrict_voting'
 	$validated_settings['restrict_voting'] = ! empty( $input['restrict_voting'] ) && $input['restrict_voting'] == '1' ? 1 : 0;
 
 	// Validate 'allow_comments'
@@ -114,6 +141,7 @@ function settings_validate( $input ) {
 	} else {
 		$validated_settings['custom_display_ideas_heading'] = '';
 	}
+	// error_log('Validated settings: ' . print_r($validated_settings, true));
 
 	// Return the array of validated settings
 	return $validated_settings;
