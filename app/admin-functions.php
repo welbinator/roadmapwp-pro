@@ -99,6 +99,14 @@ function enqueue_admin_styles( $hook ) {
         wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), null, true );
     }
 
+	if ($hook == 'roadmap_page_wp-roadmap-settings') {
+        wp_enqueue_style('wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', array(), '4.0.13');
+        wp_enqueue_script('wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', array('jquery'), '4.0.13');
+
+        // This script initializes Select2 for your specific select field.
+        wp_add_inline_script('wp-roadmap-select2-js', "jQuery(document).ready(function($) { $('.wp-roadmap-select2').select2(); });");
+    }
+
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_styles' );
 
@@ -301,4 +309,18 @@ function get_idea_class_with_votes($idea_id) {
 
     return $idea_class;
 }
+
+// restricts voting to students enrolled in specific learndash course
+add_filter('roadmapwp_can_user_vote', function($can_vote, $user_id) {
+    $options = get_option('wp_roadmap_settings');
+    if (!empty($options['restricted_courses']) && function_exists('sfwd_lms_has_access')) {
+        foreach ($options['restricted_courses'] as $course_id) {
+            if (sfwd_lms_has_access($course_id, $user_id)) {
+                return true; // User is enrolled in at least one selected course, allow voting
+            }
+        }
+        return false; // User is not enrolled in any selected courses, disallow voting
+    }
+    return $can_vote; // No courses selected, or sfwd_lms_has_access not available, don't change the voting capability
+}, 10, 2);
 

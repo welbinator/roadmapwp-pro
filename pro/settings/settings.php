@@ -90,6 +90,9 @@ function settings_validate( $input ) {
 	}
 
 	// Validate 'allow_comments'
+	$validated_settings['restrict_voting'] = ! empty( $input['restrict_voting'] ) && $input['restrict_voting'] == '1' ? 1 : 0;
+
+	// Validate 'allow_comments'
 	$validated_settings['allow_comments'] = ! empty( $input['allow_comments'] ) && $input['allow_comments'] == '1' ? 1 : 0;
 
 	// Validate 'hide_custom_idea_heading'
