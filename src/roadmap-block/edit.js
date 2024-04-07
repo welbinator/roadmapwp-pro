@@ -14,7 +14,7 @@ import { useSelect } from '@wordpress/data';
 export default function Edit({ attributes, setAttributes }) {
 	// const { attributes, setAttributes } = props;
             const statuses = useSelect(select => {
-                return select('core').getEntityRecords('taxonomy', 'status', { per_page: -1 });
+                return select('core').getEntityRecords('taxonomy', 'idea-status', { per_page: -1 });
             }, []);
         
             const updateSelectedStatuses = (termSlug, isChecked) => {

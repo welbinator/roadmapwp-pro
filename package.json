@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "build:css": "postcss app/assets/css/styles.css -o dist/styles.css",
-    "build:js": "wp-scripts build --config webpack.config.js",
+    "build:js": "wp-scripts build",
     "build": "wp-scripts build",
     "start": "wp-scripts start"
   },
@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "postcss": "^8.4.32"
+    "postcss": "^8.4.32",
+    "wp-scripts": "^0.0.1-security"
   },
   "devDependencies": {
     "@wordpress/scripts": "^27.3.0",

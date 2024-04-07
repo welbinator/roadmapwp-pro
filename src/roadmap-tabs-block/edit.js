@@ -5,10 +5,10 @@ import { useSelect } from '@wordpress/data';
 
 export default function Edit({ attributes, setAttributes }) {
     // Fetch statuses and taxonomies using hooks at the top level
-    const statuses = useSelect(select => select('core').getEntityRecords('taxonomy', 'status', { per_page: -1 }), []);
+    const statuses = useSelect(select => select('core').getEntityRecords('taxonomy', 'idea-status', { per_page: -1 }), []);
     const ideaTaxonomies = useSelect(select => {
         const allTaxonomies = select('core').getTaxonomies();
-        return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'status') : [];
+        return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'idea-status') : [];
     }, []);
 
     // Update functions for selected statuses and taxonomies

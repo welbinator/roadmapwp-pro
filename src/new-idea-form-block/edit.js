@@ -7,7 +7,7 @@ export default function Edit({ attributes, setAttributes }) {
     // Fetch statuses
 	const statuses = useSelect(select => {
 		
-		return select('core').getEntityRecords('taxonomy', 'status', { per_page: -1 });
+		return select('core').getEntityRecords('taxonomy', 'idea-status', { per_page: -1 });
 	}, []);
 	console.log('statuses are:', statuses);
 
@@ -21,7 +21,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const taxonomies = useSelect(select => {
 		
 		const allTaxonomies = select('core').getTaxonomies();
-		return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'status') : [];
+		return allTaxonomies ? allTaxonomies.filter(tax => tax.types.includes('idea') && tax.slug !== 'idea-status') : [];
 	}, []);
 	console.log('taxonomies are:', taxonomies);
 
