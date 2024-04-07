@@ -99,6 +99,14 @@ function enqueue_admin_styles( $hook ) {
         wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), null, true );
     }
 
+	if ($hook == 'roadmap_page_wp-roadmap-settings') {
+        wp_enqueue_style('wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', array(), '4.0.13');
+        wp_enqueue_script('wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', array('jquery'), '4.0.13');
+
+        // This script initializes Select2 for your specific select field.
+        wp_add_inline_script('wp-roadmap-select2-js', "jQuery(document).ready(function($) { $('.wp-roadmap-select2').select2(); });");
+    }
+
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_styles' );
 
@@ -301,4 +309,41 @@ function get_idea_class_with_votes($idea_id) {
 
     return $idea_class;
 }
+
+// restricts voting to students enrolled in specific learndash course
+add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
+    $options = get_option('wp_roadmap_settings', []);
+    $restrict_voting_to_logged_in_users = isset($options['restrict_voting']) ? $options['restrict_voting'] : '';
+    $restricted_courses = isset($options['restricted_courses']) ? $options['restricted_courses'] : [];
+
+    // Check if restriction to logged-in users is enabled
+    if ($restrict_voting_to_logged_in_users && !is_user_logged_in()) {
+        return false; // User must be logged in to vote, immediately return false if not logged in
+    }
+
+    // If LearnDash is active and course restriction is set
+    if (function_exists('sfwd_lms_has_access') && !empty($restricted_courses)) {
+        $user_enrolled_in_courses = false;
+        foreach ($restricted_courses as $course_id) {
+            if (sfwd_lms_has_access($course_id, $user_id)) {
+                $user_enrolled_in_courses = true;
+                break; // User is enrolled in at least one of the specified courses
+            }
+        }
+        if (!$user_enrolled_in_courses) {
+            return false; // User is not enrolled in any of the restricted courses, disallow voting
+        }
+    }
+
+    // If none of the restrictions apply, or user meets all criteria, allow voting
+    return $can_vote;
+}, 10, 2);
+
+
+
+
+
+
+
+
 

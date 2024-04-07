@@ -110,6 +110,7 @@ require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap-tabs.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/single-idea.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/class-voting.php';
 
 
 

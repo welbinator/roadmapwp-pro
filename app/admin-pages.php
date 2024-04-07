@@ -125,6 +125,54 @@ function display_settings_page() {
 						?>
 					</td>
 				</tr>
+
+				<tr valign="top">
+					<th scope="row"><h2><?php esc_html_e( 'Voting', 'roadmapwp-free' ); ?></h2></th>
+				</tr>
+
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e( 'Restrict Voting to Logged-in Users', 'roadmapwp-free' ); ?></th>
+					<td>
+						<?php
+						$restrict_voting = isset($options['restrict_voting']) ? $options['restrict_voting'] : '';
+						?>
+						<input type="checkbox" name="wp_roadmap_settings[restrict_voting]" value="1" <?php checked(1, $restrict_voting, true); ?>/>
+					</td>
+				</tr>
+
+				<?php if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) { ?>
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('Restrict Voting to Students Enrolled in Selected LearnDash Courses', 'roadmapwp-free'); ?></th>
+					<td>
+					<select class="wp-roadmap-select2" name="wp_roadmap_settings[restricted_courses][]" multiple="multiple" style="min-width:200px;">
+						<?php
+						$args = array(
+							'post_type'      => 'sfwd-courses',
+							'posts_per_page' => -1,
+							'post_status'    => 'publish',
+						);
+						
+						$courses = get_posts($args);
+						// Assuming $options['restricted_courses'] contains an array of course IDs that should be selected.
+						$selected_courses = isset($options['restricted_courses']) ? $options['restricted_courses'] : array();
+
+						if (!empty($courses)) {
+							foreach ($courses as $course) {
+								$selected = in_array($course->ID, $selected_courses) ? 'selected' : '';
+								echo '<option value="' . esc_attr($course->ID) . '" ' . $selected . '>' . esc_html($course->post_title) . '</option>';
+							}
+						}   
+						?>
+					</select>
+
+						<script>
+							jQuery(document).ready(function($) {
+								$('.wp-roadmap-select2').select2();
+							});
+						</script>
+					</td>
+				</tr>
+				<?php } ?>
 			</table>
 
 			<?php submit_button(); ?>
