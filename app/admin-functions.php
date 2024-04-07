@@ -310,7 +310,7 @@ function get_idea_class_with_votes($idea_id) {
     return $idea_class;
 }
 
-// restricts voting to students enrolled in specific learndash course
+// restricts voting 
 add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
     $options = get_option('wp_roadmap_settings', []);
     $restrict_voting_to_logged_in_users = isset($options['restrict_voting']) ? $options['restrict_voting'] : '';
@@ -338,12 +338,3 @@ add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
     // If none of the restrictions apply, or user meets all criteria, allow voting
     return $can_vote;
 }, 10, 2);
-
-
-
-
-
-
-
-
-
