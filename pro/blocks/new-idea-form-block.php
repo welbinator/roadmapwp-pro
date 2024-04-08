@@ -50,11 +50,22 @@ add_action( 'init', __NAMESPACE__ . '\block_init' );
  * @return string The HTML output for the new idea form.
  */
 function block_render( $attributes ) {
-	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
+	// Before doing any rendering or logic, you can apply the filter
+    // Let's assume you pass the $attributes and also include the current user ID for more control
+    $current_user_id = get_current_user_id();
+    $should_display_block = apply_filters('roadmapwp_pro_new_idea_form_block', true, $attributes, $current_user_id);
 
-	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
-		return;
-	}
+    // If the filter returns false, return an empty string to not render the block
+    if (!$should_display_block) {
+        return '';
+    }
+
+    // Existing block rendering logic here
+    update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
+
+    if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+        return;
+    }
 
 	$options             = get_option( 'wp_roadmap_settings' );
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';

@@ -338,3 +338,17 @@ add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
     // If none of the restrictions apply, or user meets all criteria, allow voting
     return $can_vote;
 }, 10, 2);
+
+add_filter('roadmapwp_pro_new_idea_form_block', function ($display_block, $attributes, $user_id) {
+    // Get the current user's data
+    $user_info = get_userdata($user_id);
+
+    // Check if the current user's username is 'adam'
+    if ($user_info && $user_info->user_login === 'david') {
+        // User's username is 'adam', allow displaying the block
+        return true;
+    } else {
+        // User's username is not 'adam', do not display the block
+        return false;
+    }
+}, 10, 3);	
