@@ -50,13 +50,11 @@ add_action( 'init', __NAMESPACE__ . '\block_init' );
  * @return string The HTML output for the new idea form.
  */
 function block_render( $attributes ) {
-	// Before doing any rendering or logic, you can apply the filter
-    // Let's assume you pass the $attributes and also include the current user ID for more control
-    $current_user_id = get_current_user_id();
-    $should_display_block = apply_filters('roadmapwp_pro_new_idea_form_block', true, $attributes, $current_user_id);
+	
+    $user_id = get_current_user_id();
+    $display_block = apply_filters('roadmapwp_pro_new_idea_form_block', true, $attributes, $user_id);
 
-    // If the filter returns false, return an empty string to not render the block
-    if (!$should_display_block) {
+    if (!$display_block) {
         return '';
     }
 

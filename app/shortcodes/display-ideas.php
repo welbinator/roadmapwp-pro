@@ -19,6 +19,15 @@ use RoadMapWP\Pro\Admin\Functions;
  * @return string The HTML output for displaying ideas.
  */
 function display_ideas_shortcode() {
+
+	$user_id = get_current_user_id();
+	$display_shortcode = true;
+    $display_shortcode = apply_filters('roadmapwp_pro_display_ideas_shortcode', $display_shortcode, $user_id);
+
+    if (!$display_shortcode) {
+        return '';
+    }
+
 	// Flag to indicate the display ideas shortcode is loaded
 	update_option( 'wp_roadmap_ideas_shortcode_loaded', true );
 

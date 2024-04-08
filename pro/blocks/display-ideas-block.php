@@ -43,17 +43,11 @@ add_action( 'init', __NAMESPACE__ . '\\block_init' );
  * @return string The HTML content to display.
  */
 function block_render( $attributes ) {
-    // Retrieve the current user ID
+    
     $user_id = get_current_user_id();
-
-    // Default to displaying the block
-    $display_block = true;
-
-    // Apply the filter, allowing users to define custom conditions for displaying the block
-    $display_block = apply_filters('roadmapwp_pro_display_ideas_block', $display_block, $attributes, $user_id);
+    $display_block = apply_filters('roadmapwp_pro_display_ideas_block', true, $display_block, $attributes, $user_id);
 
     if (!$display_block) {
-        // If the filter returns false, do not display the block
         return '';
     }
 

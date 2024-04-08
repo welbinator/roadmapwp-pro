@@ -31,6 +31,14 @@ function register_blocks() {
 				'viewportWidth' => 800,
 			),
 			'render_callback' => function ( $attributes ) {
+
+				$user_id = get_current_user_id();
+				$display_block = apply_filters('roadmapwp_pro_single_idea_block', true, $attributes, $user_id);
+			
+				if (!$display_block) {
+					return '';
+				}
+
 				if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
 					return '<p>You must be logged in to view this idea.</p>';
 				}
@@ -41,8 +49,6 @@ function register_blocks() {
 				$idea_id = filter_input( INPUT_GET, 'idea_id', FILTER_VALIDATE_INT );
 
 				$post = get_post( $idea_id );
-				$post_data = print_r($idea_post, true);
-				error_log($post_data);
 				if ( ! $post || 'idea' !== $post->post_type ) {
 					return '<p>Idea not found.</p>';
 				}

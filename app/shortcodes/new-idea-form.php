@@ -16,6 +16,15 @@ namespace RoadMapWP\Pro\Shortcodes\NewIdeaForm;
  * @return string The HTML output for the new idea form.
  */
 function new_idea_form_shortcode() {
+
+	$user_id = get_current_user_id();
+	$display_shortcode = true;
+    $display_shortcode = apply_filters('roadmapwp_pro_new_idea_form_shortcode', $display_shortcode, $user_id);
+
+    if (!$display_shortcode) {
+        return '';
+    }
+
 	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	ob_start(); // Start output buffering
