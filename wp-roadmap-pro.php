@@ -55,6 +55,7 @@ function rmwp_pro_admin_notices() {
 add_action( 'admin_notices', 'rmwp_pro_admin_notices' );
 
 define( 'WP_ROADMAP_PRO', __FILE__ );
+define('RMWP_PLUGIN_VERSION', '2.2.6');
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php' ) ) {
     require plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php';
