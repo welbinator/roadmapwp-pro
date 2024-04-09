@@ -56,7 +56,7 @@ add_action( 'init', __NAMESPACE__ . '\register_block' );
 function block_render( $attributes ) {
 
 	$user_id = get_current_user_id();
-    $display_block = apply_filters('roadmapwp_pro_roadmap_block', true, $attributes, $user_id);
+    $display_block = apply_filters('roadmapwp_roadmap_block', true, $attributes, $user_id);
 
 	 // Dev Note: probably a better way to do this
 	 $learndash_active = function_exists('sfwd_lms_has_access');

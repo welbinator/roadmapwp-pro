@@ -40,7 +40,7 @@ function register_blocks() {
 			'render_callback' => function ( $attributes ) {
 
 				$user_id = get_current_user_id();
-				$display_block = apply_filters('roadmapwp_pro_single_idea_block', true, $attributes, $user_id);
+				$display_block = apply_filters('roadmapwp_single_idea_block', true, $attributes, $user_id);
 			
 				 // Dev Note: probably a better way to do this
 				 $learndash_active = function_exists('sfwd_lms_has_access');
