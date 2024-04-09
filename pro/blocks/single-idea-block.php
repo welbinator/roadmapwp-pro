@@ -23,6 +23,13 @@ function register_blocks() {
 					'type'    => 'string',
 					'default' => '',
 				),
+				'selectedCourses' => array(
+                    'type'    => 'array',
+                    'default' => array(),
+                    'items'   => array(
+                        'type' => 'integer',
+                    ),
+                ),
 			),
 			'example'         => array(
 				'attributes'    => array(
@@ -31,6 +38,21 @@ function register_blocks() {
 				'viewportWidth' => 800,
 			),
 			'render_callback' => function ( $attributes ) {
+
+				$user_id = get_current_user_id();
+				$display_block = apply_filters('roadmapwp_pro_single_idea_block', true, $attributes, $user_id);
+			
+				 // Dev Note: probably a better way to do this
+				 $learndash_active = function_exists('sfwd_lms_has_access');
+
+				 // Check if any courses are selected
+				 $selectedCourses = $attributes['selectedCourses'] ?? [];
+				 $userHasAccess = false;
+
+				if (!$display_block) {
+					return '';
+				}
+
 				if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
 					return '<p>You must be logged in to view this idea.</p>';
 				}
@@ -41,14 +63,31 @@ function register_blocks() {
 				$idea_id = filter_input( INPUT_GET, 'idea_id', FILTER_VALIDATE_INT );
 
 				$post = get_post( $idea_id );
-				$post_data = print_r($idea_post, true);
-				error_log($post_data);
 				if ( ! $post || 'idea' !== $post->post_type ) {
 					return '<p>Idea not found.</p>';
 				}
 
 					// Get vote count.
 					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+
+					// If LearnDash is active and courses are selected, check the user's enrollment
+					if ($learndash_active && !empty($selectedCourses)) {
+						foreach ($selectedCourses as $courseId) {
+							if (sfwd_lms_has_access($courseId, $user_id)) {
+								$userHasAccess = true;
+								break; // Exit loop if user has access to at least one course
+							}
+						}
+						
+						// If the user is not enrolled in any selected courses, return without rendering the block
+						if (!$userHasAccess) {
+							return '';
+						}
+					} elseif (!empty($selectedCourses) && !$learndash_active) {
+						// If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
+						// This ensures the block content is accessible when LearnDash is deactivated
+						$userHasAccess = true; // Bypass enrollment checks
+					}
 
 					ob_start();
 				?>

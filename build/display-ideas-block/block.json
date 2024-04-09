@@ -6,12 +6,6 @@
   "title": "Display Ideas",
   "category": "roadmap",
   "icon": "lightbulb",
-  "attributes": {
-    "onlyLoggedInUsers": {
-      "type": "boolean",
-      "default": false
-    }
-  },
   "description": "Displays ideas with filters",
   "example": {},
   "supports": {

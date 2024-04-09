@@ -16,23 +16,31 @@ use RoadMapWP\Pro\Admin\Functions;
  * Registers the block using metadata loaded from the `block.json` file.
  * Sets the render callback to the `block_render` function.
  */
-function block_init() {
+function register_block() {
 
 	$display_ideas_block_path = plugin_dir_path( dirname( __DIR__ ) ) . 'build/display-ideas-block';
 	register_block_type_from_metadata(
 		$display_ideas_block_path,
 		array(
-			'render_callback' => __NAMESPACE__ . '\block_render',
-			'attributes'      => array(
-				'onlyLoggedInUsers' => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-			),
-		)
+            'render_callback' => __NAMESPACE__ . '\block_render',
+            'attributes'      => array(
+                'onlyLoggedInUsers' => array(
+                    'type'    => 'boolean',
+                    'default' => false,
+                ),
+                'selectedCourses' => array(
+                    'type'    => 'array',
+                    'default' => array(),
+                    'items'   => array(
+                        'type' => 'integer',
+                    ),
+                ),
+            ),
+        )
+        
 	);
 }
-add_action( 'init', __NAMESPACE__ . '\\block_init' );
+add_action( 'init', __NAMESPACE__ . '\\register_block' );
 
 /**
  * Renders the 'Display Ideas' block.
@@ -43,24 +51,44 @@ add_action( 'init', __NAMESPACE__ . '\\block_init' );
  * @return string The HTML content to display.
  */
 function block_render( $attributes ) {
-    // Retrieve the current user ID
     $user_id = get_current_user_id();
+    $display_block = apply_filters('roadmapwp_pro_display_ideas_block', true, $attributes, $user_id);
 
-    // Default to displaying the block
-    $display_block = true;
+    // Dev Note: probably a better way to do this
+    $learndash_active = function_exists('sfwd_lms_has_access');
 
-    // Apply the filter, allowing users to define custom conditions for displaying the block
-    $display_block = apply_filters('roadmapwp_pro_display_ideas_block', $display_block, $attributes, $user_id);
+    // Check if any courses are selected
+    $selectedCourses = $attributes['selectedCourses'] ?? [];
+    $userHasAccess = false;
 
     if (!$display_block) {
-        // If the filter returns false, do not display the block
         return '';
     }
 
     update_option( 'wp_roadmap_display_ideas_shortcode_loaded', true );
 
+    // Block access if only logged in users can view and the user is not logged in
     if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
         return '';
+    }
+
+    // If LearnDash is active and courses are selected, check the user's enrollment
+    if ($learndash_active && !empty($selectedCourses)) {
+        foreach ($selectedCourses as $courseId) {
+            if (sfwd_lms_has_access($courseId, $user_id)) {
+                $userHasAccess = true;
+                break; // Exit loop if user has access to at least one course
+            }
+        }
+        
+        // If the user is not enrolled in any selected courses, return without rendering the block
+        if (!$userHasAccess) {
+            return '';
+        }
+    } elseif (!empty($selectedCourses) && !$learndash_active) {
+        // If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
+        // This ensures the block content is accessible when LearnDash is deactivated
+        $userHasAccess = true; // Bypass enrollment checks
     }
 
     ob_start();

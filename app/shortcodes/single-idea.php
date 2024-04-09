@@ -16,6 +16,15 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
  * @return string HTML content of the single idea.
  */
 	function single_idea_shortcode( $atts, $is_block = false ) {
+
+	$user_id = get_current_user_id();
+	$display_shortcode = true;
+    $display_shortcode = apply_filters('roadmapwp_pro_single_idea_shortcode', $display_shortcode, $user_id);
+
+    if (!$display_shortcode) {
+        return '';
+    }
+
 	global $post;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );

@@ -293,11 +293,6 @@ function redirect_single_idea( $template ) {
 
 add_filter( 'single_template', __NAMESPACE__ . '\\redirect_single_idea' );
 
-// function enqueue_new_idea_form_script() {
-// 	wp_enqueue_script( 'new-idea-form-script', plugin_dir_url( __FILE__ ) . '../pro/blocks/new-idea-form-block-script.js', array(), '1.0.0', true );
-// }
-// add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_new_idea_form_script' );
-
 // Check if the idea has at least one vote
 function get_idea_class_with_votes($idea_id) {
     
@@ -309,6 +304,27 @@ function get_idea_class_with_votes($idea_id) {
 
     return $idea_class;
 }
+
+// Checks if LearnDash is active for use in edit.js
+function check_if_learndash_is_active() {
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+    if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) {
+        wp_localize_script( 'roadmapwp-pro-display-ideas-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-new-idea-form-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-tabs-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-single-idea-block', 'learndashIsActive', array('active' => true) );
+    } else {
+        wp_localize_script( 'roadmapwp-pro-display-ideas-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-new-idea-form-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-tabs-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-single-idea-block', 'learndashIsActive', array('active' => false) );
+    }
+}
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\check_if_learndash_is_active' );
+
 
 // restricts voting 
 add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
@@ -338,17 +354,3 @@ add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
     // If none of the restrictions apply, or user meets all criteria, allow voting
     return $can_vote;
 }, 10, 2);
-
-add_filter('roadmapwp_pro_new_idea_form_block', function ($display_block, $attributes, $user_id) {
-    // Get the current user's data
-    $user_info = get_userdata($user_id);
-
-    // Check if the current user's username is 'adam'
-    if ($user_info && $user_info->user_login === 'david') {
-        // User's username is 'adam', allow displaying the block
-        return true;
-    } else {
-        // User's username is not 'adam', do not display the block
-        return false;
-    }
-}, 10, 3);	
