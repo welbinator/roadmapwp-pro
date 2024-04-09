@@ -305,6 +305,27 @@ function get_idea_class_with_votes($idea_id) {
     return $idea_class;
 }
 
+// Checks if LearnDash is active for use in edit.js
+function check_if_learndash_is_active() {
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+    if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) {
+        wp_localize_script( 'roadmapwp-pro-display-ideas-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-new-idea-form-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-tabs-block', 'learndashIsActive', array('active' => true) );
+		wp_localize_script( 'roadmapwp-pro-single-idea-block', 'learndashIsActive', array('active' => true) );
+    } else {
+        wp_localize_script( 'roadmapwp-pro-display-ideas-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-new-idea-form-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-roadmap-tabs-block', 'learndashIsActive', array('active' => false) );
+		wp_localize_script( 'roadmapwp-pro-single-idea-block', 'learndashIsActive', array('active' => false) );
+    }
+}
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\check_if_learndash_is_active' );
+
+
 // restricts voting 
 add_filter('roadmapwp_can_user_vote', function ($can_vote, $user_id) {
     $options = get_option('wp_roadmap_settings', []);

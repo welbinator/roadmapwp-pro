@@ -283,7 +283,7 @@ function register_customizer_styles( $wp_customize ) {
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\custom_styles' );
 
 /**
- * Enqueue custom styles for LearnDash.
+ * Enqueue custom styles
  */
 function custom_styles() {
 	// wp_enqueue_style(
