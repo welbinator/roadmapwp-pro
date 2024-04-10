@@ -102,7 +102,7 @@ function register_default_idea_taxonomies() {
 		}
 	}
 }
-add_action( 'init', __NAMESPACE__ . '\\register_default_idea_taxonomies' );
+add_action( 'init', __NAMESPACE__ . '\\register_default_idea_taxonomies', 5 );
 
 /**
  * Automatically assign "New Idea" status to new idea posts.
