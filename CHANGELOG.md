@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2024-06-07
+* Bug Fix - Fixed style customizer that was broken if theme had set a background-image
+* Bug Fix - Prevent users from creating taxonomy with slug of "type" as this is a reserved term and breaks things
+* Feature - Added ability to hide ideas from the Rest API
+
 ## [2.3.0] - 2024-04-09
 * Bug Fix - Fixed filemtime error
 * Feature - Added filter to allow users to add conditional restrictions to shortcodes/blocks
