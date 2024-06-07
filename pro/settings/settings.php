@@ -141,7 +141,9 @@ if ( isset( $input['restricted_courses'] ) && is_array( $input['restricted_cours
 	} else {
 		$validated_settings['custom_display_ideas_heading'] = '';
 	}
-	// error_log('Validated settings: ' . print_r($validated_settings, true));
+	
+	// Validate 'hide_from_rest'
+    $validated_settings['hide_from_rest'] = ! empty( $input['hide_from_rest'] ) && $input['hide_from_rest'] == '1' ? 1 : 0;
 
 	// Return the array of validated settings
 	return $validated_settings;
