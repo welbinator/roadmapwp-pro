@@ -17,6 +17,7 @@ function custom_taxonomy_content() {
 
 	// Flag to trigger JavaScript redirection
 	$should_redirect = false;
+	$error_message   = '';
 
 	// Fetch custom taxonomies
 	$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
@@ -57,38 +58,46 @@ function custom_taxonomy_content() {
 	}
 
 	// Check if the form has been submitted for adding a new taxonomy
-	if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['wp_roadmap_pro_nonce'], $_POST['taxonomy_slug'] ) ) {
+	if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['wp_roadmap_pro_nonce'], $_POST['taxonomy_slug'] ) && empty( $_POST['new_term'] ) ) {
 		if ( wp_verify_nonce( $_POST['wp_roadmap_pro_nonce'], 'wp_roadmap_pro_add_taxonomy' ) ) {
 			$taxonomy_slug     = sanitize_key( $_POST['taxonomy_slug'] );
 			$taxonomy_singular = sanitize_text_field( $_POST['taxonomy_singular'] );
 			$taxonomy_plural   = sanitize_text_field( $_POST['taxonomy_plural'] );
 
-			$labels = array(
-				'name'          => $taxonomy_plural,
-				'singular_name' => $taxonomy_singular,
-			);
+			// Check if the slug is "type"
+			if ( $taxonomy_slug === 'type' ) {
+				$error_message = esc_html__( '\'type\' is a reserved term and cannot be used as the slug for a custom taxonomy', 'roadmapwp-pro' );
+			} else {
+				$labels = array(
+					'name'          => $taxonomy_plural,
+					'singular_name' => $taxonomy_singular,
+				);
 
-			$taxonomy_data = array(
-				'labels'            => $labels,
-				'public'            => true,
-				'hierarchical'      => false,
-				'show_ui'           => true,
-				'show_in_rest'      => true,
-				'show_admin_column' => true,
-				'query_var'         => true,
-				'rewrite'           => array( 'slug' => $taxonomy_slug ),
-			);
+				$taxonomy_data = array(
+					'labels'            => $labels,
+					'public'            => true,
+					'hierarchical'      => false,
+					'show_ui'           => true,
+					'show_in_rest'      => true,
+					'show_admin_column' => true,
+					'query_var'         => true,
+					'rewrite'           => array( 'slug' => $taxonomy_slug ),
+				);
 
-			register_taxonomy( $taxonomy_slug, 'idea', $taxonomy_data );
+				register_taxonomy( $taxonomy_slug, 'idea', $taxonomy_data );
 
-			$custom_taxonomies                   = get_option( 'wp_roadmap_custom_taxonomies', array() );
-			$custom_taxonomies[ $taxonomy_slug ] = $taxonomy_data;
-			update_option( 'wp_roadmap_custom_taxonomies', $custom_taxonomies );
+				$custom_taxonomies[ $taxonomy_slug ] = $taxonomy_data;
+				update_option( 'wp_roadmap_custom_taxonomies', $custom_taxonomies );
 
-			flush_rewrite_rules();
-			
-			$should_redirect = true;
+				flush_rewrite_rules();
+
+				$should_redirect = true;
+			}
 		}
+	}
+
+	if ( ! empty( $error_message ) ) {
+		echo '<div class="error"><p>' . $error_message . '</p></div>';
 	}
 
 	echo '<div class="wrap custom">';
