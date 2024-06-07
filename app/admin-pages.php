@@ -23,23 +23,19 @@ function display_settings_page() {
 		)
 	);
 	$selected_page       = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
-	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
+    $default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
+    $hide_from_rest = isset( $options['hide_from_rest'] ) ? $options['hide_from_rest'] : 0;
 
 	?>
 	<div class="wrap">
-		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-		<form action="options.php" method="post">
-		<?php
-		settings_fields( 'wp_roadmap_settings' );
-		do_settings_sections( 'wp_roadmap_settings' );
-		wp_nonce_field( 'wp_roadmap_settings_action', 'wp_roadmap_settings_nonce' );
-		?>
-			<?php
-			settings_fields( 'wp_roadmap_settings' );
-			do_settings_sections( 'wp_roadmap_settings' );
-			?>
-
-			<table class="form-table">
+        <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+        <form action="options.php" method="post">
+        <?php
+        settings_fields( 'wp_roadmap_settings' );
+        do_settings_sections( 'wp_roadmap_settings' );
+        wp_nonce_field( 'wp_roadmap_settings_action', 'wp_roadmap_settings_nonce' );
+        ?>
+            <table class="form-table">
 								
 
 			<tr valign="top">
@@ -139,6 +135,12 @@ function display_settings_page() {
 						<input type="checkbox" name="wp_roadmap_settings[restrict_voting]" value="1" <?php checked(1, $restrict_voting, true); ?>/>
 					</td>
 				</tr>
+				<tr valign="top">
+                    <th scope="row"><?php esc_html_e( 'Hide Ideas from REST API', 'roadmapwp-pro' ); ?></th>
+                    <td>
+                        <input type="checkbox" name="wp_roadmap_settings[hide_from_rest]" value="1" <?php checked( 1, $hide_from_rest ); ?> />
+                    </td>
+                </tr>
 
 				<?php if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) { ?>
 				<tr valign="top">
@@ -172,6 +174,7 @@ function display_settings_page() {
 						</script>
 					</td>
 				</tr>
+				
 				<?php } ?>
 			</table>
 

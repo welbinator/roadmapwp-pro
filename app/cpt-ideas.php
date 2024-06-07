@@ -39,6 +39,8 @@ function register_idea_post_type() {
 		$taxonomies[] = 'idea-tag';
 	}
 
+	$show_in_rest = isset( $options['hide_from_rest'] ) && $options['hide_from_rest'] ? false : true;
+
 	$args = array(
 		'labels'             => $labels,
 		'public'             => true,
@@ -53,7 +55,7 @@ function register_idea_post_type() {
 		'menu_position'      => null,
 		'taxonomies'         => $taxonomies,
 		'supports'           => array( 'title', 'editor', 'author', 'comments' ),
-		'show_in_rest'       => true,
+		'show_in_rest'       => $show_in_rest,
 	);
 
 	register_post_type( 'idea', $args );
