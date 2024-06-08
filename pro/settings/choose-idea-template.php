@@ -59,43 +59,28 @@ add_filter( 'wp_roadmap_single_idea_template_setting', __NAMESPACE__ . '\single_
  * @param string $template The path to the template file.
  * @return string The modified path to the template file.
  */
-function template_include( $template ) {
-	if ( is_singular( 'idea' ) ) {
-		$options = get_option( 'wp_roadmap_settings', array() );
-		if ( isset( $options['single_idea_template'] ) ) {
-			if ( $options['single_idea_template'] === 'plugin' ) {
-				$plugin_template = plugin_dir_path( __FILE__ ) . 'pro/templates/template-single-idea.php';
-				if ( file_exists( $plugin_template ) ) {
-					return $plugin_template;
-				}
-			} elseif ( $options['single_idea_template'] === 'page' && isset( $options['single_idea_page'] ) ) {
-				$page_id   = $options['single_idea_page'];
-				$page_link = get_permalink( $page_id );
-				if ( $page_link ) {
-					wp_redirect( $page_link );
-					exit;
-				}
-			}
-		}
-	}
-	return $template;
-}
-add_filter( 'template_include', __NAMESPACE__ . '\template_include' );
-
 /**
- * Handles redirection for single idea pages when a specific template is selected.
+ * Handles the template inclusion and redirection for single idea pages.
  */
-function handle_single_idea_redirection() {
-	if ( is_singular( 'idea' ) ) {
-		$options = get_option( 'wp_roadmap_settings', array() );
-		if ( isset( $options['single_idea_template'] ) && $options['single_idea_template'] === 'page' && isset( $options['single_idea_page'] ) ) {
-			$page_id   = $options['single_idea_page'];
-			$page_link = add_query_arg( 'idea_id', get_queried_object_id(), get_permalink( $page_id ) );
-			if ( $page_link ) {
-				wp_redirect( $page_link );
-				exit;
-			}
-		}
-	}
+function handle_single_idea_template() {
+    if (is_singular('idea')) {
+        $options = get_option('wp_roadmap_settings', array());
+        if (isset($options['single_idea_template'])) {
+            if ($options['single_idea_template'] === 'plugin') {
+                $plugin_template = plugin_dir_path(__FILE__) . 'pro/templates/template-single-idea.php';
+                if (file_exists($plugin_template)) {
+                    include $plugin_template;
+                    exit;
+                }
+            } elseif ($options['single_idea_template'] === 'page' && isset($options['single_idea_page'])) {
+                $page_id = $options['single_idea_page'];
+                $page_link = add_query_arg('idea_id', get_queried_object_id(), get_permalink($page_id));
+                if ($page_link) {
+                    wp_redirect($page_link);
+                    exit;
+                }
+            }
+        }
+    }
 }
-add_action( 'template_redirect', __NAMESPACE__ . '\handle_single_idea_redirection' );
+add_action('template_redirect', __NAMESPACE__ . '\handle_single_idea_template');
