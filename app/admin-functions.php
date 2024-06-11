@@ -75,6 +75,13 @@ function enqueue_admin_styles( $hook ) {
 	}
 
 	// Enqueue CSS for help page
+    if ($hook === 'roadmap_page_wp-roadmap-help') {
+        $tailwind_css_url = plugin_dir_url(__FILE__) . '../dist/styles.css';
+        wp_enqueue_style('wp-roadmap-tailwind-styles', $tailwind_css_url, array(), RMWP_PLUGIN_VERSION);
+        wp_enqueue_script('my_custom_script', plugin_dir_url(__FILE__) . 'assets/js/help.js', array('jquery'), RMWP_PLUGIN_VERSION, true);
+    }
+	
+	// Enqueue CSS for help page
 	if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
 		$tailwind_css_url = plugin_dir_url( __FILE__ ) . '../dist/styles.css';
 		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url );
