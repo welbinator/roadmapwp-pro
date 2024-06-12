@@ -130,7 +130,7 @@ function block_render( $attributes ) {
 				</button>
 			<?php endforeach; ?>
 		</div>
-		<div class="roadmap-columns roadmap-ideas-container grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+		<div class="roadmap-columns roadmap-ideas-container grid gap-4 md:grid-cols-3 lg:grid-cols-4">
 			<!-- Ideas will be loaded here via JavaScript -->
 		</div>
 	</div>
