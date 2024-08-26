@@ -8,7 +8,7 @@ namespace RoadMapWP\Pro\CPT;
 function register_idea_post_type() {
 	$options = get_option( 'wp_roadmap_settings' );
 
-	$supports = array( 'title', 'editor', 'author' ); // include 'comments' support.
+	$supports = array( 'title', 'editor', 'author', 'comments', 'excerpt' ); // include 'comments' support.
 
 	$labels = array(
 		'name'               => _x( 'Ideas', 'post type general name', 'roadmapwp-pro' ),
@@ -54,7 +54,7 @@ function register_idea_post_type() {
 		'hierarchical'       => false,
 		'menu_position'      => null,
 		'taxonomies'         => $taxonomies,
-		'supports'           => array( 'title', 'editor', 'author', 'comments' ),
+		'supports'           => $supports,
 		'show_in_rest'       => $show_in_rest,
 	);
 
