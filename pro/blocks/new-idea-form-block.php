@@ -152,6 +152,7 @@ function block_render( $attributes ) {
 			<?php endif; ?>
 
 			<?php
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$form_action_url = isset( $_SERVER['REQUEST_URI'] ) ? esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
 			?>
@@ -168,15 +169,49 @@ function block_render( $attributes ) {
 						<textarea name="idea_description" id="idea_description" required></textarea>
 					</li>
 
-					<!-- New Summary Field -->
 					<li class="rmwp__new_idea_form_input">
 						<label for="idea_summary">Summary (optional):</label>
-						<textarea name="idea_summary" id="idea_summary" style="height:40px!important;"></textarea>
+						<textarea name="idea_summary" id="idea_summary"></textarea>
 					</li>
 
 					<?php
-					// Existing taxonomy code...
+					// Retrieve the selected taxonomies from block attributes.
+					$selected_taxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
+					$idea_taxonomies     = get_object_taxonomies( 'idea', 'objects' );
 
+					foreach ( $idea_taxonomies as $taxonomy ) {
+						if ( 'idea-status' !== $taxonomy->name ) {
+
+							// Display taxonomy if it's selected or if no specific taxonomies are selected.
+							if ( empty( $selected_taxonomies ) || in_array( $taxonomy->name, $selected_taxonomies, true ) ) {
+								$terms = get_terms(
+									array(
+										'taxonomy'   => $taxonomy->name,
+										'hide_empty' => false,
+									)
+								);
+								if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+									?>
+									<li class="rmwp__new_idea_form_input">
+										<label><?php echo esc_html( $taxonomy->labels->singular_name ); ?>:</label>
+										<div class="rmwp__taxonomy-term-labels">
+											<?php
+											foreach ( $terms as $term ) :
+												?>
+												<label class="rmwp__taxonomy-term-label">
+													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
+													<?php echo esc_html( $term->name ); ?>
+												</label>
+												<?php
+											endforeach;
+											?>
+										</div>
+									</li>
+									<?php
+								endif;
+							}
+						}
+					}
 					?>
 
 					<input type="hidden" name="wp_roadmap_new_idea_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_roadmap_new_idea' ) ); ?>">
@@ -212,10 +247,11 @@ function handle_new_idea_block_submission() {
 			if ( isset( $_POST['idea_summary'] ) ) {
 				$summary = sanitize_textarea_field( wp_unslash( $_POST['idea_summary'] ) );
 			}
-
 			$options = get_option( 'wp_roadmap_settings', array() );
 
+			// default post status.
 			$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending'; // Default to 'pending' if not set
+			// Default status term from settings.
 			$default_idea_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 
 			$idea_id = wp_insert_post(
@@ -253,8 +289,8 @@ function handle_new_idea_block_submission() {
 	
 				// Redirect to the confirmation page
 				$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
-			wp_redirect( $redirect_url );
-			exit;
+				wp_redirect( $redirect_url );
+				exit;
 			}
 		}
 	}
