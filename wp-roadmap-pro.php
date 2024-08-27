@@ -3,7 +3,7 @@
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     2.3.2
+Version:     2.3.3
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
@@ -55,7 +55,7 @@ function rmwp_pro_admin_notices() {
 add_action( 'admin_notices', 'rmwp_pro_admin_notices' );
 
 define( 'WP_ROADMAP_PRO', __FILE__ );
-define('RMWP_PLUGIN_VERSION', '2.3.2');
+define('RMWP_PLUGIN_VERSION', '2.3.3');
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php' ) ) {
     require plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php';

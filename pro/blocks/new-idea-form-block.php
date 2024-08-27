@@ -169,6 +169,11 @@ function block_render( $attributes ) {
 						<textarea name="idea_description" id="idea_description" required></textarea>
 					</li>
 
+					<li class="rmwp__new_idea_form_input">
+						<label for="idea_summary">Summary (optional):</label>
+						<textarea name="idea_summary" id="idea_summary"></textarea>
+					</li>
+
 					<?php
 					// Retrieve the selected taxonomies from block attributes.
 					$selected_taxonomies = isset( $attributes['selectedTaxonomies'] ) ? array_keys( array_filter( $attributes['selectedTaxonomies'] ) ) : array();
@@ -239,6 +244,9 @@ function handle_new_idea_block_submission() {
 			if ( isset( $_POST['idea_description'] ) ) {
 				$description = sanitize_textarea_field( wp_unslash( $_POST['idea_description'] ) );
 			}
+			if ( isset( $_POST['idea_summary'] ) ) {
+				$summary = sanitize_textarea_field( wp_unslash( $_POST['idea_summary'] ) );
+			}
 			$options = get_option( 'wp_roadmap_settings', array() );
 
 			// default post status.
@@ -250,6 +258,7 @@ function handle_new_idea_block_submission() {
 				array(
 					'post_title'   => $title,
 					'post_content' => $description,
+					'post_excerpt' => $summary, // Save summary in the post excerpt field
 					'post_status'  => $default_wp_post_status,
 					'post_type'    => 'idea',
 				)
