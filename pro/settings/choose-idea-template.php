@@ -3,56 +3,51 @@
  * This file handles the functionality of choosing between a custom template or the default theme template for single idea content in the Pro version of the plugin.
  */
 
-namespace RoadMapWP\Pro\Settings\ChooseTemplate;
+ namespace RoadMapWP\Pro\Settings\ChooseTemplate;
 
-/**
- * Adds a filter to modify the single idea template setting.
- */
-function single_idea_template_setting( $content ) {
-	$options         = get_option( 'wp_roadmap_settings', array() );
-	$chosen_template = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
-	$selected_page   = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
+ function single_idea_template_setting( $content ) {
+    $options         = get_option( 'wp_roadmap_settings', array() );
+    $chosen_template = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
+    $selected_page   = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
 
-	$html      = '<select name="wp_roadmap_settings[single_idea_template]" id="wp_roadmap_single_idea_template">';
-	$templates = array(
-		'plugin' => 'Plugin Template',
-		'page'   => 'Choose Page',
-	);
-	foreach ( $templates as $value => $label ) {
-		$selected = selected( $chosen_template, $value, false );
-		$html    .= "<option value='{$value}' {$selected}>{$label}</option>";
-	}
-	$html .= '</select>';
+    // Start buffering
+    ob_start();
+    ?>
+    <select name="wp_roadmap_settings[single_idea_template]" id="wp_roadmap_single_idea_template">
+        <option value="plugin" <?php selected( $chosen_template, 'plugin' ); ?>>Plugin Template</option>
+        <option value="page" <?php selected( $chosen_template, 'page' ); ?>>Choose Page</option>
+    </select>
 
-	// Add dropdown for choosing a page if 'Choose Page' is selected
-	$html .= '<div id="single_idea_page_setting" style="' . ( $chosen_template === 'page' ? '' : 'display: none;' ) . '">';
-	$html .= '<select name="wp_roadmap_settings[single_idea_page]">';
-	$pages = get_pages();
-	foreach ( $pages as $page ) {
-		$selected_attr = selected( $selected_page, $page->ID, false );
-		$html         .= "<option value='{$page->ID}' {$selected_attr}>{$page->post_title}</option>";
-	}
-	$html .= '</select></div>';
+    <div id="single_idea_page_setting" style="<?php echo $chosen_template === 'page' ? '' : 'display: none;'; ?>">
+        <select name="wp_roadmap_settings[single_idea_page]">
+            <?php foreach ( get_pages() as $page ) : ?>
+                <option value="<?php echo esc_attr( $page->ID ); ?>" <?php selected( $selected_page, $page->ID ); ?>>
+                    <?php echo esc_html( $page->post_title ); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <?php
 
-	// JavaScript for toggling the page selection dropdown
-	$html .= '<script type="text/javascript">
-        jQuery(document).ready(function($) {
-            function togglePageSetting() {
-                var selectedTemplate = $("#wp_roadmap_single_idea_template").val();
-                if (selectedTemplate === "page") {
-                    $("#single_idea_page_setting").show();
-                } else {
-                    $("#single_idea_page_setting").hide();
-                }
-            }
-            togglePageSetting();
-            $("#wp_roadmap_single_idea_template").change(togglePageSetting);
-        });
-    </script>';
+    // Capture and clear the buffer content
+    $html = ob_get_contents();
+    ob_end_clean();
 
-	return $html;
+    // Log for debugging
+    error_log("single_idea_template_setting: HTML generated - " . $html);
+
+    return $html;
 }
-add_filter( 'wp_roadmap_single_idea_template_setting', __NAMESPACE__ . '\single_idea_template_setting' );
+
+
+
+
+ add_action('plugins_loaded', function () {
+    add_filter( 'wp_roadmap_single_idea_template_setting', __NAMESPACE__ . '\single_idea_template_setting', 999 );
+});
+
+ 
+
 /**
  * Determines the template to include based on the selected option.
  *
@@ -99,3 +94,4 @@ function handle_single_idea_redirection() {
 	}
 }
 add_action( 'template_redirect', __NAMESPACE__ . '\handle_single_idea_redirection' );
+?>

@@ -43,15 +43,26 @@ function enqueue_pro_admin_styles($hook)
                 'delete_terms_nonce' => wp_create_nonce('wp_roadmap_delete_terms_nonce')
             )
         );
-
-
-        $css_url = plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css';
-         wp_enqueue_style('wp-roadmap-general-admin-styles', $css_url, array(), RMWP_PRO_PLUGIN_VERSION);
        
     }
 
     $css_url = plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css';
     wp_enqueue_style('wp-roadmap-general-admin-styles', $css_url, array(), RMWP_PRO_PLUGIN_VERSION);
+
+    function enqueue_single_idea_template_script( $hook ) {
+        // Check if we are on the settings page where this script is needed
+        if ( $hook === 'roadmap_page_wp-roadmap-settings' ) { // Adjust this condition to target the correct page
+            wp_enqueue_script(
+                'single-idea-template-script',
+                plugin_dir_url( __FILE__ ) . 'assets/js/single-idea-template.js',
+                array( 'jquery' ),
+                RMWP_PRO_PLUGIN_VERSION,
+                true
+            );
+        }
+    }
+    add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_single_idea_template_script' );
+    
 }
 add_action('admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_pro_admin_styles', 5);
 
