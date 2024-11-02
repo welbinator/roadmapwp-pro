@@ -196,25 +196,6 @@ function display_settings_page() {
 	<?php
 }
 
-/**
- * Displays the Taxonomies management page.
- *
- * Allows adding terms to the "Tags" taxonomy.
- *
- * @return void
- */
-function display_taxonomies_page() {
-	// Check if the current user has the 'manage_options' capability
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'roadmapwp-pro' ) );
-	}
-
-	$pro_feature = apply_filters( 'wp_roadmap_pro_add_taxonomy_feature', '' );
-
-	echo '<h2>Taxonomies</h2>';
-
-	echo $pro_feature;
-}
 
 /**
  * Displays the help page for RoadMapWP Pro.
@@ -363,7 +344,7 @@ function display_help_page() {
 				<div class="grid gap-6">
 					<div class="border-2 border-gray-200 border-solid rounded-lg p-4">
 						<h3 class="font-semibold text-lg">Styles</h3>
-						<p class="text-gray-500 leading-6">Style settings can be found in the <a href="http://wproadmap.lndo.site/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Dwp-roadmap-help">WordPress Customizer</a> in the RoadMap Styles section</p>
+						<p class="text-gray-500 leading-6">Style settings can be found in the <a href="/wp-admin/customize.php?return=%2Fwp-admin%2Fadmin.php%3Fpage%3Dwp-roadmap-help">WordPress Customizer</a> in the RoadMap Styles section</p>
 					</div>
 		
 				</div><!-- grid gap-6 -->

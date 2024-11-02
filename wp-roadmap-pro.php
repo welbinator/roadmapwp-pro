@@ -11,51 +11,30 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: roadmapwp-pro
 */
 
-
 // This function will be called when the Pro version is activated.
 function rmwp_pro_activate() {
-	// Check if the free version is active
-	include_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( is_plugin_active( 'roadmapwp/wp-roadmap.php' ) ) {
-		// Deactivate the free version
-		deactivate_plugins( 'roadmapwp/wp-roadmap.php' );
-	}
-	// Additional activation code for Pro version goes here...
+    // Check if the free version is active
+    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+    if (!defined('RMWP_FREE_PLUGIN_VERSION')) {
+        // If the free version is not active, show an error message and prevent Pro from activating
+        deactivate_plugins(plugin_basename(__FILE__));
+        wp_die(
+            __('RoadMapWP Pro requires the free version of RoadMapWP to be installed and active. Please install and activate the free version first.', 'roadmapwp-pro'),
+            __('Activation Error', 'roadmapwp-pro'),
+            array('back_link' => true)
+        );
+    }
+
+    // Additional activation code for Pro version goes here...
 }
 
 // Register the activation hook for the Pro version
-register_activation_hook( __FILE__, 'rmwp_pro_activate' );
+register_activation_hook(__FILE__, 'rmwp_pro_activate');
 
-
-/**
- * This is a means of catching errors from the activation method above and displaying it to the customer
- */
-function rmwp_pro_admin_notices() {
-	if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['message'] ) ) {
-
-		switch ( $_GET['sl_activation'] ) {
-
-			case 'false':
-				$message = urldecode( $_GET['message'] );
-				?>
-				<div class="error">
-					<p><?php echo wp_kses_post( $message ); ?></p>
-				</div>
-				<?php
-				break;
-
-			case 'true':
-			default:
-				// Developers can put a custom success message here for when activation is successful if they way.
-				break;
-
-		}
-	}
-}
-add_action( 'admin_notices', 'rmwp_pro_admin_notices' );
 
 define( 'WP_ROADMAP_PRO', __FILE__ );
-define('RMWP_PLUGIN_VERSION', '2.3.3');
+define('RMWP_PRO_PLUGIN_VERSION', '2.3.3');
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php' ) ) {
     require plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php';
@@ -63,9 +42,6 @@ if ( file_exists( plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php' ) ) {
 
 // Include pro settings
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/settings.php';
-
-// Include custom taxonomies feature
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
 
 // Include choose idea template feature
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/choose-idea-template.php';
@@ -88,12 +64,6 @@ require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/new-idea-form-block.php';
 // Include display ideas block
 require_once plugin_dir_path( __FILE__ ) . 'pro/blocks/display-ideas-block.php';
 
-// Include custom submit idea heading setting
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/submit-idea-custom-heading.php';
-
-// Include custom submit idea heading setting
-require_once plugin_dir_path( __FILE__ ) . 'pro/settings/display-ideas-custom-heading.php';
-
 // Include default idea status setting
 require_once plugin_dir_path( __FILE__ ) . 'pro/settings/default-status-term.php';
 
@@ -102,17 +72,27 @@ require_once plugin_dir_path( __FILE__ ) . 'app/customizer-styles.php';
 
 // Include necessary files
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
-require_once plugin_dir_path( __FILE__ ) . 'app/admin-functions.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/pro-admin-functions.php';
+
+
 require_once plugin_dir_path( __FILE__ ) . 'app/cpt-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/ajax-handlers.php';
 
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/new-idea-form.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/display-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap.php';
-require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/roadmap-tabs.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/shortcodes/single-idea.php';
-require_once plugin_dir_path( __FILE__ ) . 'app/class-voting.php';
 
+
+// In the main file of your Pro plugin
+
+add_action( 'plugins_loaded', 'roadmapwp_pro_load_custom_taxonomies' );
+
+function roadmapwp_pro_load_custom_taxonomies() {
+  // Include custom taxonomies feature
+require_once plugin_dir_path( __FILE__ ) . 'pro/settings/custom-taxonomies.php';
+   
+}
 
 
 $gm_file = plugin_dir_path( __FILE__ ) . 'gutenberg-market.php';
@@ -122,8 +102,7 @@ if (file_exists($gm_file)) {
 }
 
 function rmwp_pro_on_activation() {
-	// Directly call the function that registers your taxonomies here
-	\RoadMapWP\Pro\CPT\register_default_idea_taxonomies();
+	
 
 	// Now add the terms
 	$status_terms = array( 'New Idea', 'Maybe', 'Up Next', 'On Roadmap', 'Not Now', 'Closed' );

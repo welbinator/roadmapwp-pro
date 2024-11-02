@@ -33,7 +33,7 @@ function register_blocks() {
 			),
 			'example'         => array(
 				'attributes'    => array(
-					'cover' => 'http://wproadmap.lndo.site/wp-content/plugins/roadmapwp-pro/app/assets/img/single-idea-preview.jpg',
+					'cover' => '/wp-content/plugins/roadmapwp-pro/app/assets/img/single-idea-preview.jpg',
 				),
 				'viewportWidth' => 800,
 			),

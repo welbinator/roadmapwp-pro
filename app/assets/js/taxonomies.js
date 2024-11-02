@@ -15,7 +15,7 @@ jQuery(document).ready(function($) {
             type: 'post',
             data: {
                 action: 'delete_custom_taxonomy',
-                taxonomy: taxonomy, // Ensure this parameter is correctly included
+                taxonomy: taxonomy,
                 nonce: roadmapwpAjax.delete_taxonomy_nonce
             },
             success: function(response) {
@@ -26,6 +26,7 @@ jQuery(document).ready(function($) {
                 }
             }
         });
+        
     });
     
 

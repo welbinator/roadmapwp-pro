@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "build:css": "postcss app/assets/css/styles.css -o dist/styles.css",
+    "build:css": "postcss app/assets/css/pro-styles.css -o dist/pro-styles.css",
     "build:js": "wp-scripts build",
     "build": "wp-scripts build",
     "start": "wp-scripts start"

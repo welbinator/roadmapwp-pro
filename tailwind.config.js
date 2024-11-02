@@ -7,7 +7,7 @@ module.exports = {
     './app/shortcodes/*',
     './app/templates/*',
     './pro/blocks/*',
-    './app/includes/*',
+    './pro/includes/*',
     './app/ajax-handlers.php',
     './app/admin-pages.php',
    

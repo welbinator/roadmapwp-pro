@@ -23,7 +23,7 @@ $edd_updater = new \EDD_SL_Plugin_Updater(
 	ROADMAPWP_PRO_STORE_URL,
 	WP_ROADMAP_PRO,
 	array(
-		'version' => RMWP_PLUGIN_VERSION,     // current version number
+		'version' => RMWP_PRO_PLUGIN_VERSION,     // current version number
 		'license' => $license_key,    // license key (used get_option above to retrieve from DB)
 		'item_id' => ROADMAPWP_PRO_ITEM_ID,   // id of this plugin
 		'author'  => 'James Welbes',  // author of this plugin

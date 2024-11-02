@@ -13,7 +13,7 @@
                 }
                 ?>
             </select>
-            <button type="submit" class="block text-sm font-medium h-10 bg-gray-500 text-white px-4 py-2 rounded-lg update-status-button">Update</button>
+            <button type="submit" class="wut block text-sm font-medium h-10 bg-gray-500 text-white px-4 py-2 rounded-lg update-status-button">Update</button>
         </form>
     </div>
 <?php endif; ?>

@@ -38,57 +38,48 @@ function settings_validate( $input ) {
 	}
 
 	// Validate 'default_wp_post_status'
-	$allowed_statuses = array( 'publish', 'pending', 'draft' );
-	if ( in_array( $input['default_wp_post_status'], $allowed_statuses ) ) {
-		$validated_settings['default_wp_post_status'] = $input['default_wp_post_status'];
-	} else {
-		add_settings_error(
-			'default_wp_post_status',
-			'invalid_wp_post_status',
-			'Invalid WordPress post status selected.',
-			'error'
-		);
-	}
+$allowed_statuses = array( 'publish', 'pending', 'draft' );
+if ( isset( $input['default_wp_post_status'] ) && in_array( $input['default_wp_post_status'], $allowed_statuses ) ) {
+    $validated_settings['default_wp_post_status'] = $input['default_wp_post_status'];
+} else {
+    add_settings_error(
+        'default_wp_post_status',
+        'invalid_wp_post_status',
+        'Invalid WordPress post status selected.',
+        'error'
+    );
+}
 
-	// Validate 'default_wp_post_status'
-	$allowed_statuses = array( 'publish', 'pending', 'draft' );
-	if ( in_array( $input['default_wp_post_status'], $allowed_statuses ) ) {
-		$validated_settings['default_wp_post_status'] = $input['default_wp_post_status'];
-	} else {
-		add_settings_error(
-			'default_wp_post_status',
-			'invalid_wp_post_status',
-			'Invalid WordPress post status selected.',
-			'error'
-		);
-	}
+
+	
 	// Validate 'single_idea_template'
-	$allowed_templates = array( 'plugin', 'page' );
-	if ( in_array( $input['single_idea_template'], $allowed_templates ) ) {
-		$validated_settings['single_idea_template'] = $input['single_idea_template'];
+$allowed_templates = array( 'plugin', 'page' );
+if ( isset( $input['single_idea_template'] ) && in_array( $input['single_idea_template'], $allowed_templates ) ) {
+    $validated_settings['single_idea_template'] = $input['single_idea_template'];
 
-		// Validate 'single_idea_page' if 'single_idea_template' is 'page'
-		if ( $input['single_idea_template'] === 'page' ) {
-			$page_id = $input['single_idea_page'];
-			if ( ! empty( $page_id ) && get_post( $page_id ) ) {
-				$validated_settings['single_idea_page'] = $page_id;
-			} else {
-				add_settings_error(
-					'single_idea_page',
-					'invalid_single_idea_page',
-					'Invalid page selected for Single Idea.',
-					'error'
-				);
-			}
-		}
-	} else {
-		add_settings_error(
-			'single_idea_template',
-			'invalid_single_idea_template',
-			'Invalid template selected for Single Idea.',
-			'error'
-		);
-	}
+    // Validate 'single_idea_page' if 'single_idea_template' is 'page'
+    if ( $input['single_idea_template'] === 'page' ) {
+        $page_id = isset( $input['single_idea_page'] ) ? $input['single_idea_page'] : '';
+        if ( ! empty( $page_id ) && get_post( $page_id ) ) {
+            $validated_settings['single_idea_page'] = $page_id;
+        } else {
+            add_settings_error(
+                'single_idea_page',
+                'invalid_single_idea_page',
+                'Invalid page selected for Single Idea.',
+                'error'
+            );
+        }
+    }
+} else {
+    add_settings_error(
+        'single_idea_template',
+        'invalid_single_idea_template',
+        'Invalid template selected for Single Idea.',
+        'error'
+    );
+}
+
 
 
 // Validate 'restricted_courses'
