@@ -8,6 +8,189 @@
 
 namespace RoadMapWP\Pro\Admin\Pages;
 
+function settings_page_pro() {
+	error_log("settings page pro");
+	// Fetch current settings
+	$options             = get_option( 'wp_roadmap_settings', array( 'default_status_term' => 'new-idea' ) );
+	$status_terms        = get_terms(
+		array(
+			'taxonomy'   => 'idea-status',
+			'hide_empty' => false,
+		)
+	);
+	$selected_page       = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
+    $default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
+    $hide_from_rest = isset( $options['hide_from_rest'] ) ? $options['hide_from_rest'] : 0;
+
+	?>
+	<div class="wrap">
+        <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+        <form action="options.php" method="post">
+        <?php
+        settings_fields( 'wp_roadmap_settings' );
+        do_settings_sections( 'wp_roadmap_settings' );
+        wp_nonce_field( 'wp_roadmap_settings_action', 'wp_roadmap_settings_nonce' );
+        ?>
+            <table class="form-table">
+								
+
+			<tr valign="top">
+				<th scope="row"><?php esc_html_e( 'Set Default Status Term for New Ideas', 'roadmapwp-pro' ); ?></th>
+				<td>
+					<select name="wp_roadmap_settings[default_status_term]">
+						<?php foreach ( $status_terms as $term ) : ?>
+							<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $default_status_term, $term->slug ); ?>>
+								<?php echo esc_html( $term->name ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+				
+
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e( 'Set Published/Pending/Draft', 'roadmapwp-pro' ); ?></th>
+					<td>
+						<?php
+						$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending';
+
+						// Create the HTML for the dropdown
+						$html     = '<select name="wp_roadmap_settings[default_wp_post_status]">';
+						$statuses = array(
+							'publish' => 'Publish',
+							'pending' => 'Pending Review',
+							'draft'   => 'Draft',
+						);
+						foreach ( $statuses as $value => $label ) {
+							$selected = selected( $default_wp_post_status, $value, false );
+							$html    .= "<option value='{$value}' {$selected}>{$label}</option>";
+						}
+						$html .= '</select>';
+					
+						echo $html;
+						?>
+					</td>
+				</tr>
+
+
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e( 'Single Idea Template', 'roadmapwp-pro' ); ?></th>
+					<td>
+					<?php
+					// This filter will be handled in choose-idea-template.php
+					echo apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+					?>
+					</td>
+				</tr>
+
+				<tr id="allow-comments-setting" valign="top">
+					<th scope="row"><?php esc_html_e( 'Allow Comments on Ideas', 'roadmapwp-pro' ); ?></th>
+					<td>
+						<?php
+						$allow_comments = isset( $options['allow_comments'] ) ? $options['allow_comments'] : '';
+
+						$html = '<input type="checkbox" name="wp_roadmap_settings[allow_comments]" value="1"' . checked( 1, $allow_comments, false ) . '/>';
+						echo $html;
+						?>
+					</td>
+				</tr>
+				
+
+				<!-- Hide New Idea Heading Setting -->
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e( 'Custom "Submit Idea" Heading', 'roadmapwp-pro' ); ?></th>
+					<td>
+						<?php
+						// Filter hook to allow the Pro version to override this setting
+						echo apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						?>
+					</td>
+				</tr>
+
+
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e( 'Custom "Browse Ideas" Heading', 'roadmapwp-pro' ); ?></th>
+					<td>
+						<?php
+						// Filter hook to allow the Pro version to override this setting
+						echo apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						?>
+					</td>
+				</tr>
+
+				<tr valign="top">
+					<th scope="row"><h2><?php esc_html_e( 'Voting', 'roadmapwp-free' ); ?></h2></th>
+				</tr>
+
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e( 'Restrict Voting to Logged-in Users', 'roadmapwp-free' ); ?></th>
+					<td>
+						<?php
+						$restrict_voting = isset($options['restrict_voting']) ? $options['restrict_voting'] : '';
+						?>
+						<input type="checkbox" name="wp_roadmap_settings[restrict_voting]" value="1" <?php checked(1, $restrict_voting, true); ?>/>
+					</td>
+				</tr>
+				<tr valign="top">
+                    <th scope="row"><?php esc_html_e( 'Hide Ideas from REST API', 'roadmapwp-pro' ); ?></th>
+                    <td>
+                        <input type="checkbox" name="wp_roadmap_settings[hide_from_rest]" value="1" <?php checked( 1, $hide_from_rest ); ?> />
+                    </td>
+                </tr>
+
+				<?php if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) { ?>
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('Restrict Voting to Students Enrolled in Selected LearnDash Courses', 'roadmapwp-free'); ?></th>
+					<td>
+					<select class="wp-roadmap-select2" name="wp_roadmap_settings[restricted_courses][]" multiple="multiple" style="min-width:200px;">
+						<?php
+						$args = array(
+							'post_type'      => 'sfwd-courses',
+							'posts_per_page' => -1,
+							'post_status'    => 'publish',
+						);
+						
+						$courses = get_posts($args);
+						// Assuming $options['restricted_courses'] contains an array of course IDs that should be selected.
+						$selected_courses = isset($options['restricted_courses']) ? $options['restricted_courses'] : array();
+
+						if (!empty($courses)) {
+							foreach ($courses as $course) {
+								$selected = in_array($course->ID, $selected_courses) ? 'selected' : '';
+								echo '<option value="' . esc_attr($course->ID) . '" ' . $selected . '>' . esc_html($course->post_title) . '</option>';
+							}
+						}   
+						?>
+					</select>
+
+						<script>
+							jQuery(document).ready(function($) {
+								$('.wp-roadmap-select2').select2();
+							});
+						</script>
+					</td>
+				</tr>
+				
+				<?php } ?>
+			</table>
+
+			<?php submit_button(); ?>
+		</form>
+	</div>
+	<?php
+	// Enqueue the color picker JavaScript and styles
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_style( 'wp-color-picker' );
+
+	?>
+	<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		// Initialize color picker
+		$('.wp-roadmap-color-picker').wpColorPicker();
+	});
+	</script>
+	<?php
+}
 
 /**
  * Displays the help page for RoadMapWP Pro.
@@ -217,10 +400,11 @@ function display_help_page() {
  *
  * @return void
  */
-if (function_exists('gutenberg_market_licensing')) {
-	return;
-} else {
+// if (function_exists('gutenberg_market_licensing')) {
+// 	return;
+// } else {
  function license_page() {
+	error_log("license page");
 
 	add_settings_section(
 		'roadmapwp_pro_license',
@@ -251,7 +435,7 @@ if (function_exists('gutenberg_market_licensing')) {
 		</form>
 	<?php
 }
-}
+// }
 
 
 

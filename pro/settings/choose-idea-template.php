@@ -34,8 +34,7 @@
     ob_end_clean();
 
     // Log for debugging
-    error_log("single_idea_template_setting: HTML generated - " . $html);
-
+    
     return $html;
 }
 

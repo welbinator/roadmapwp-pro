@@ -95,18 +95,37 @@ add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_pro_frontend_styles'
 /**
  * Adds Pro-specific admin menu items.
  */
-function add_pro_admin_menu()
-{
+// Add Pro-specific submenus under 'roadmapwp-menu'
+add_action('admin_menu', function() {
+
+    // Add License page under RoadMap menu
     add_submenu_page(
-        'roadmapwp-pro',
+        'roadmapwp-menu', // Ensure parent menu is the same
         __('License', 'roadmapwp-pro'),
         __('License', 'roadmapwp-pro'),
         'manage_options',
-        'roadmapwp-license',
-        'RoadMapWP\\Pro\\Admin\\Pages\\license_page'
+        'wp-roadmap-license',
+        'RoadMapWP\Pro\Admin\Pages\license_page' // Directly call the license page function
     );
-}
-add_action('add_pro_admin_menu', __NAMESPACE__ . '\\add_pro_admin_menu');
+
+    // Add Pro Settings and remove Free Settings when Pro is active
+    add_submenu_page(
+        'roadmapwp-menu',
+        __( 'Settings', 'roadmapwp-pro' ),
+        __( 'Settings', 'roadmapwp-pro' ),
+        'manage_options',
+        'wp-roadmap-settings-pro',
+        'RoadMapWP\\Pro\\Admin\\Pages\\settings_page_pro'
+    );
+
+    // Remove Free Settings page to ensure Pro version takes precedence
+    remove_submenu_page( 'roadmapwp-menu', 'wp-roadmap-settings' );
+    // Remove Free Settings page to ensure Pro version takes precedence
+    remove_submenu_page( 'roadmapwp-menu', 'roadmapwp-menu' );
+
+}, 20);
+
+
 
 // Hook into the free filter to modify the vote class logic
 add_filter('get_idea_class_with_votes', function ($idea_class, $idea_id) {
