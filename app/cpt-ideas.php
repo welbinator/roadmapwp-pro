@@ -5,26 +5,28 @@ namespace RoadMapWP\Pro\CPT;
 /**
  * Extend the custom post type in Pro version.
  */
-function register_pro_idea_post_type()
-{
-    // First, call the free version's post type registration.
-    \RoadMapWP\Free\CPT\rmwp_register_post_type();
+function register_pro_idea_post_type() {
+    // Check if the free version's function is available before calling it.
+    if ( function_exists( '\RoadMapWP\Free\CPT\rmwp_register_post_type' ) ) {
+        // Call the free version's post type registration if it exists.
+        \RoadMapWP\Free\CPT\rmwp_register_post_type();
+    }
 
     // Now, add additional features for the Pro version.
-    $post_type_object = get_post_type_object('idea');
+    $post_type_object = get_post_type_object( 'idea' );
 
-    if ($post_type_object) {
+    if ( $post_type_object ) {
         // Add support for excerpts in the Pro version.
         $post_type_object->supports[] = 'excerpt';
 
         // Modify REST API visibility based on settings.
-        $options      = get_option('wp_roadmap_settings');
-        $show_in_rest = isset($options['hide_from_rest']) && $options['hide_from_rest'] ? false : true;
+        $options      = get_option( 'wp_roadmap_settings' );
+        $show_in_rest = isset( $options['hide_from_rest'] ) && $options['hide_from_rest'] ? false : true;
         $post_type_object->show_in_rest = $show_in_rest;
     }
 }
 
-add_action('init', __NAMESPACE__ . '\\register_pro_idea_post_type');
+add_action( 'init', __NAMESPACE__ . '\\register_pro_idea_post_type' );
 
 /**
  * Auto-assign "New Idea" status to newly created ideas (Pro-specific).
