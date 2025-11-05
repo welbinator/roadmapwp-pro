@@ -33,13 +33,13 @@ function register_block() {
 					'type'    => 'boolean',
 					'default' => false,
 				),
-				'selectedCourses' => array(
-                    'type'    => 'array',
-                    'default' => array(),
-                    'items'   => array(
-                        'type' => 'integer',
-                    ),
-                ),
+				'selectedCourses'    => array(
+					'type'    => 'array',
+					'default' => array(),
+					'items'   => array(
+						'type' => 'integer',
+					),
+				),
 			),
 		)
 	);
@@ -55,19 +55,19 @@ add_action( 'init', __NAMESPACE__ . '\register_block' );
  */
 function block_render( $attributes ) {
 
-	$user_id = get_current_user_id();
-    $display_block = apply_filters('roadmapwp_roadmap_tabs_block', true, $attributes, $user_id);
+	$user_id       = get_current_user_id();
+	$display_block = apply_filters( 'roadmapwp_roadmap_tabs_block', true, $attributes, $user_id );
 
-	 // Dev Note: probably a better way to do this
-	 $learndash_active = function_exists('sfwd_lms_has_access');
+	// Dev Note: probably a better way to do this
+	$learndash_active = function_exists( 'sfwd_lms_has_access' );
 
-	 // Check if any courses are selected
-	 $selectedCourses = $attributes['selectedCourses'] ?? [];
-	 $userHasAccess = false;
+	// Check if any courses are selected
+	$selectedCourses = $attributes['selectedCourses'] ?? array();
+	$userHasAccess   = false;
 
-    if (!$display_block) {
-        return '';
-    }
+	if ( ! $display_block ) {
+		return '';
+	}
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
 		// Return an empty string or a specific message indicating the need to log in
@@ -98,26 +98,26 @@ function block_render( $attributes ) {
 		$selected_statuses
 	);
 
-	$options                 = get_option( 'wp_roadmap_settings' );
-	
+	$options = get_option( 'wp_roadmap_settings' );
+
 	// If LearnDash is active and courses are selected, check the user's enrollment
-    if ($learndash_active && !empty($selectedCourses)) {
-        foreach ($selectedCourses as $courseId) {
-            if (sfwd_lms_has_access($courseId, $user_id)) {
-                $userHasAccess = true;
-                break; // Exit loop if user has access to at least one course
-            }
-        }
-        
-        // If the user is not enrolled in any selected courses, return without rendering the block
-        if (!$userHasAccess) {
-            return '';
-        }
-    } elseif (!empty($selectedCourses) && !$learndash_active) {
-        // If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
-        // This ensures the block content is accessible when LearnDash is deactivated
-        $userHasAccess = true; // Bypass enrollment checks
-    }
+	if ( $learndash_active && ! empty( $selectedCourses ) ) {
+		foreach ( $selectedCourses as $courseId ) {
+			if ( sfwd_lms_has_access( $courseId, $user_id ) ) {
+				$userHasAccess = true;
+				break; // Exit loop if user has access to at least one course
+			}
+		}
+
+		// If the user is not enrolled in any selected courses, return without rendering the block
+		if ( ! $userHasAccess ) {
+			return '';
+		}
+	} elseif ( ! empty( $selectedCourses ) && ! $learndash_active ) {
+		// If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
+		// This ensures the block content is accessible when LearnDash is deactivated
+		$userHasAccess = true; // Bypass enrollment checks
+	}
 
 	ob_start();
 	?>

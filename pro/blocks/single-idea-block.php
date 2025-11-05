@@ -19,17 +19,17 @@ function register_blocks() {
 		$single_idea_block_path,
 		array(
 			'attributes'      => array(
-				'cover' => array(
+				'cover'           => array(
 					'type'    => 'string',
 					'default' => '',
 				),
 				'selectedCourses' => array(
-                    'type'    => 'array',
-                    'default' => array(),
-                    'items'   => array(
-                        'type' => 'integer',
-                    ),
-                ),
+					'type'    => 'array',
+					'default' => array(),
+					'items'   => array(
+						'type' => 'integer',
+					),
+				),
 			),
 			'example'         => array(
 				'attributes'    => array(
@@ -40,16 +40,16 @@ function register_blocks() {
 			'render_callback' => function ( $attributes ) {
 
 				$user_id = get_current_user_id();
-				$display_block = apply_filters('roadmapwp_single_idea_block', true, $attributes, $user_id);
-			
-				 // Dev Note: probably a better way to do this
-				 $learndash_active = function_exists('sfwd_lms_has_access');
+				$display_block = apply_filters( 'roadmapwp_single_idea_block', true, $attributes, $user_id );
 
-				 // Check if any courses are selected
-				 $selectedCourses = $attributes['selectedCourses'] ?? [];
-				 $userHasAccess = false;
+				// Dev Note: probably a better way to do this
+				$learndash_active = function_exists( 'sfwd_lms_has_access' );
 
-				if (!$display_block) {
+				// Check if any courses are selected
+				$selectedCourses = $attributes['selectedCourses'] ?? array();
+				$userHasAccess = false;
+
+				if ( ! $display_block ) {
 					return '';
 				}
 
@@ -71,23 +71,23 @@ function register_blocks() {
 					$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
 
 					// If LearnDash is active and courses are selected, check the user's enrollment
-					if ($learndash_active && !empty($selectedCourses)) {
-						foreach ($selectedCourses as $courseId) {
-							if (sfwd_lms_has_access($courseId, $user_id)) {
-								$userHasAccess = true;
-								break; // Exit loop if user has access to at least one course
-							}
+				if ( $learndash_active && ! empty( $selectedCourses ) ) {
+					foreach ( $selectedCourses as $courseId ) {
+						if ( sfwd_lms_has_access( $courseId, $user_id ) ) {
+							$userHasAccess = true;
+							break; // Exit loop if user has access to at least one course
 						}
-						
-						// If the user is not enrolled in any selected courses, return without rendering the block
-						if (!$userHasAccess) {
-							return '';
-						}
-					} elseif (!empty($selectedCourses) && !$learndash_active) {
-						// If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
-						// This ensures the block content is accessible when LearnDash is deactivated
-						$userHasAccess = true; // Bypass enrollment checks
 					}
+
+					// If the user is not enrolled in any selected courses, return without rendering the block
+					if ( ! $userHasAccess ) {
+						return '';
+					}
+				} elseif ( ! empty( $selectedCourses ) && ! $learndash_active ) {
+					// If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
+					// This ensures the block content is accessible when LearnDash is deactivated
+					$userHasAccess = true; // Bypass enrollment checks
+				}
 
 					ob_start();
 				?>
@@ -126,7 +126,7 @@ function register_blocks() {
 							</div>
 
 							<?php
-								\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button($idea_id, $vote_count);
+								\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button( $idea_id, $vote_count );
 							?>
 
 							<footer class="entry-footer">

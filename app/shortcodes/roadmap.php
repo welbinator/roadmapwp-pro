@@ -5,9 +5,12 @@
  * This file contains a shortcode function that renders a roadmap layout
  * with different statuses. It fetches ideas from a custom post type and
  * displays them according to their assigned status.
+ *
+ * @package RoadMapWP\Pro
  */
 
 namespace RoadMapWP\Shortcodes\Roadmap;
+
 use RoadMapWP\Pro\Admin\Functions;
 /**
  * Renders the roadmap layout with ideas sorted by status.
@@ -17,22 +20,21 @@ use RoadMapWP\Pro\Admin\Functions;
  */
 function roadmap_shortcode( $atts ) {
 
-	$user_id = get_current_user_id();
+	$user_id           = get_current_user_id();
 	$display_shortcode = true;
-    $display_shortcode = apply_filters('roadmapwp_roadmap_shortcode', $display_shortcode, $user_id);
+	$display_shortcode = apply_filters( 'roadmapwp_roadmap_shortcode', $display_shortcode, $user_id );
 
-    if (!$display_shortcode) {
-        return '';
-    }
+	if ( ! $display_shortcode ) {
+		return '';
+	}
 
-	// Flag to indicate the roadmap shortcode is loaded
+	// Flag to indicate the roadmap shortcode is loaded.
 	update_option( 'wp_roadmap_roadmap_shortcode_loaded', true );
 
-	// Retrieve dynamic status terms
+	// Retrieve dynamic status terms.
 	$dynamic_status_terms = get_terms(
 		array(
-			'taxonomy'   => 'idea-status',
-			'hide_empty' => false,
+			'taxonomy' => 'idea-status',
 		)
 	);
 	$dynamic_statuses     = array_map(
@@ -42,35 +44,39 @@ function roadmap_shortcode( $atts ) {
 		$dynamic_status_terms
 	);
 
-	// Parse the shortcode attributes
+	// Parse the shortcode attributes.
 	$atts = shortcode_atts(
 		array(
-			'status' => implode( ',', $dynamic_statuses ),
+			'status' => is_array( $dynamic_statuses ) ? implode( ',', $dynamic_statuses ) : '',
 		),
-		$atts,
+		is_array( $atts ) ? $atts : array(),
 		'roadmap'
 	);
 
-	$statuses = ! empty( $atts['status'] ) ? array_map( 'trim', explode( ',', $atts['status'] ) ) : $dynamic_statuses;
+	// Process status values from attributes or use defaults.
+	$statuses = ! empty( $atts['status'] )
+		? array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $atts['status'] ) ) )
+		: ( is_array( $dynamic_statuses ) ? $dynamic_statuses : array() );
 
-	// Retrieve color settings
-	$options                = get_option( 'wp_roadmap_settings' );
-	 
+	// Retrieve color settings from plugin options.
+	$options = get_option( 'wp_roadmap_settings' );
 
 	$num_statuses  = count( $statuses );
-	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 4
-	$lg_cols_class = 'lg:grid-cols-' . ( $num_statuses > 4 ? 4 : $num_statuses );
+	$md_cols_class = 'md:grid-cols-' . ( $num_statuses > 3 ? 3 : $num_statuses ); // Set to number of statuses, but max out at 4.
+	$lg_cols_class = 'lg:grid-cols-' . ( $num_statuses > 4 ? 4 : $num_statuses ); // Set to number of statuses, but max out at 4.
 	$xl_cols_class = 'xl:grid-cols-' . $num_statuses;
-	ob_start(); // Start output buffering
+	ob_start(); // Start output buffering.
 
-	// Always include 'idea-tag' taxonomy
+	// Always include 'idea-tag' taxonomy.
 	$taxonomies = array( 'idea-tag' );
 
-	// Include custom taxonomies
+	// Include custom taxonomies.
 	$custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
-	$taxonomies        = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
+	if ( is_array( $custom_taxonomies ) ) {
+		$taxonomies = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
+	}
 
-	// Exclude 'idea-status' taxonomy
+	// Exclude 'idea-status' taxonomy.
 	$exclude_taxonomies = array( 'idea-status' );
 	$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 	?>
@@ -80,14 +86,17 @@ function roadmap_shortcode( $atts ) {
 			foreach ( $statuses as $status ) {
 				$args  = array(
 					'post_type'      => 'idea',
-					'posts_per_page' => -1,
+					'posts_per_page' => 50, // Limit to improve performance, consider pagination.
 					'tax_query'      => array(
 						array(
 							'taxonomy' => 'idea-status',
 							'field'    => 'name',
-							'terms'    => $status,
+							'terms'    => sanitize_text_field( $status ),
+							'operator' => 'IN',
 						),
 					),
+					'orderby'        => 'date',
+					'order'          => 'DESC',
 				);
 				$query = new \WP_Query( $args );
 				?>
@@ -99,9 +108,9 @@ function roadmap_shortcode( $atts ) {
 							$query->the_post();
 							$idea_id    = get_the_ID();
 							$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
-							$idea_class = Functions\get_idea_class_with_votes($idea_id);
+							$idea_class = Functions\get_idea_class_with_votes( $idea_id );
 							?>
-							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr($idea_class); ?>">
+							<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden m-2 <?php echo esc_attr( $idea_class ); ?>">
 								<div class="p-6">
 									<h4 class="rmwp__idea-title"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php the_title(); ?></a></h4>
 									<p class="text-gray-500 mt-2 mb-0 text-sm"><?php echo esc_html( get_the_date() ); ?></p>
@@ -122,22 +131,24 @@ function roadmap_shortcode( $atts ) {
 									<div class="flex items-center justify-start mt-6 gap-6">
 										
 									<?php
-										\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button($idea_id, $vote_count);
+										\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button( $idea_id, $vote_count );
 									?>
 									</div>
 								</div>
-								<?php if ( current_user_can( 'administrator' ) ) : ?>
+								<?php if ( current_user_can( 'edit_others_posts' ) ) : ?>
 									<div class="p-6 bg-gray-200">
 										<h6 class="text-center">Admin only</h6>
 										<form class="rmwp__idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="rmwp__status-select" name="idea_status[]">
 												<?php
-												$statuses         = get_terms( 'idea-status', array( 'hide_empty' => false ) );
+												$statuses         = get_terms( array( 'taxonomy' => 'idea-status' ) );
 												$current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
-												foreach ( $statuses as $status ) {
-													$selected = in_array( $status->slug, $current_statuses ) ? 'selected' : '';
-													echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected . '>' . esc_html( $status->name ) . '</option>';
+												if ( ! is_wp_error( $statuses ) && ! is_wp_error( $current_statuses ) ) {
+													foreach ( $statuses as $status ) {
+														$selected = in_array( $status->slug, $current_statuses, true ) ? ' selected="selected"' : '';
+														echo '<option value="' . esc_attr( $status->slug ) . '"' . esc_attr( $selected ) . '>' . esc_html( $status->name ) . '</option>';
+													}
 												}
 												?>
 											</select>
@@ -153,13 +164,13 @@ function roadmap_shortcode( $atts ) {
 					}
 					wp_reset_postdata();
 					?>
-				</div> <!-- Close column -->
+				</div> <!-- Close column. -->
 				<?php
 			}
 			?>
-		</div> <!-- Close grid -->
+		</div> <!-- Close grid. -->
 	</div>
 	<?php
-	return ob_get_clean(); // Return the buffered output
+	return ob_get_clean(); // Return the buffered output.
 }
 add_shortcode( 'roadmap', __NAMESPACE__ . '\\roadmap_shortcode' );

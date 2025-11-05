@@ -33,13 +33,13 @@ function register_block() {
 					'type'    => 'object',
 					'default' => array(),
 				),
-				'selectedCourses' => array(
-                    'type'    => 'array',
-                    'default' => array(),
-                    'items'   => array(
-                        'type' => 'integer',
-                    ),
-                ),
+				'selectedCourses'    => array(
+					'type'    => 'array',
+					'default' => array(),
+					'items'   => array(
+						'type' => 'integer',
+					),
+				),
 
 			),
 		)
@@ -57,28 +57,27 @@ add_action( 'init', __NAMESPACE__ . '\register_block' );
  * @return string The HTML output for the new idea form.
  */
 function block_render( $attributes ) {
-	
-    $user_id = get_current_user_id();
-    $display_block = apply_filters('roadmapwp_new_idea_form_block', true, $attributes, $user_id);
+
+	$user_id       = get_current_user_id();
+	$display_block = apply_filters( 'roadmapwp_new_idea_form_block', true, $attributes, $user_id );
 
 	// Dev Note: probably a better way to do this
-    $learndash_active = function_exists('sfwd_lms_has_access');
+	$learndash_active = function_exists( 'sfwd_lms_has_access' );
 
 	// Check if any courses are selected
-	$selectedCourses = $attributes['selectedCourses'] ?? [];
-	$userHasAccess = false;
- 
+	$selectedCourses = $attributes['selectedCourses'] ?? array();
+	$userHasAccess   = false;
 
-    if (!$display_block) {
-        return '';
-    }
+	if ( ! $display_block ) {
+		return '';
+	}
 
-    // Existing block rendering logic here
-    update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
+	// Existing block rendering logic here
+	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
-    if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
-        return;
-    }
+	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+		return;
+	}
 
 	$options             = get_option( 'wp_roadmap_settings' );
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
@@ -116,23 +115,23 @@ function block_render( $attributes ) {
 	);
 
 	// If LearnDash is active and courses are selected, check the user's enrollment
-    if ($learndash_active && !empty($selectedCourses)) {
-        foreach ($selectedCourses as $courseId) {
-            if (sfwd_lms_has_access($courseId, $user_id)) {
-                $userHasAccess = true;
-                break; // Exit loop if user has access to at least one course
-            }
-        }
-        
-        // If the user is not enrolled in any selected courses, return without rendering the block
-        if (!$userHasAccess) {
-            return '';
-        }
-    } elseif (!empty($selectedCourses) && !$learndash_active) {
-        // If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
-        // This ensures the block content is accessible when LearnDash is deactivated
-        $userHasAccess = true; // Bypass enrollment checks
-    }
+	if ( $learndash_active && ! empty( $selectedCourses ) ) {
+		foreach ( $selectedCourses as $courseId ) {
+			if ( sfwd_lms_has_access( $courseId, $user_id ) ) {
+				$userHasAccess = true;
+				break; // Exit loop if user has access to at least one course
+			}
+		}
+
+		// If the user is not enrolled in any selected courses, return without rendering the block
+		if ( ! $userHasAccess ) {
+			return '';
+		}
+	} elseif ( ! empty( $selectedCourses ) && ! $learndash_active ) {
+		// If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
+		// This ensures the block content is accessible when LearnDash is deactivated
+		$userHasAccess = true; // Bypass enrollment checks
+	}
 
 	ob_start();
 
@@ -275,7 +274,7 @@ function handle_new_idea_block_submission() {
 						}
 					}
 				}
-	
+
 				// Check if selected statuses is set, not empty, and contains valid numeric values
 					$valid_selected_statuses = isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] )
 											&& count( array_filter( wp_unslash( $_POST['selected_statuses'] ), 'is_numeric' ) ) > 0;
@@ -287,7 +286,7 @@ function handle_new_idea_block_submission() {
 					// Fallback to default status term if none or invalid selected
 					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'idea-status' );
 				}
-	
+
 				// Redirect to the confirmation page
 				$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
 				wp_redirect( $redirect_url );

@@ -4,8 +4,8 @@
  */
 
 // Retrieve color settings
-$options                = get_option( 'wp_roadmap_settings' );
-$allow_comments         = isset( $options['allow_comments'] ) ? $options['allow_comments'] : false;
+$options        = get_option( 'wp_roadmap_settings' );
+$allow_comments = isset( $options['allow_comments'] ) ? $options['allow_comments'] : false;
 
 
 get_header(); ?>
@@ -67,7 +67,7 @@ get_header(); ?>
 						</div>
 						
 						<?php
-							\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button($idea_id, $vote_count);
+							\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button( $idea_id, $vote_count );
 						?>
 					</div>
 					

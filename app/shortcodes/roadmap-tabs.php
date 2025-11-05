@@ -4,6 +4,8 @@
  *
  * This file contains the shortcode [roadmap_tabs] which is used to display
  * a tabbed interface for roadmap statuses in the RoadMapWP Pro plugin.
+ *
+ * @package RoadMapWP\Pro
  */
 
 namespace RoadMapWP\Pro\Shortcodes\RoadmapTabs;
@@ -16,35 +18,40 @@ namespace RoadMapWP\Pro\Shortcodes\RoadmapTabs;
  */
 function roadmap_tabs_shortcode( $atts ) {
 
-	$user_id = get_current_user_id();
+	$user_id           = get_current_user_id();
 	$display_shortcode = true;
-    $display_shortcode = apply_filters('roadmapwp_roadmap_tabs_shortcode', $display_shortcode, $user_id);
+	$display_shortcode = apply_filters( 'roadmapwp_roadmap_tabs_shortcode', $display_shortcode, $user_id );
 
-    if (!$display_shortcode) {
-        return '';
-    }
+	if ( ! $display_shortcode ) {
+		return '';
+	}
 
-	$atts = shortcode_atts(
-		array(
-			'status'        => '',
-			'showNewIdea'   => true,
-			'showUpNext'    => true,
-			'showMaybe'     => true,
-			'showOnRoadmap' => true,
-			'showClosed'    => true,
-			'showNotNow'    => true,
-		),
-		$atts,
-		'roadmap-tabs'
-	);
+		$atts = shortcode_atts(
+			array(
+				'status'        => '',
+				'showNewIdea'   => true,
+				'showUpNext'    => true,
+				'showMaybe'     => true,
+				'showOnRoadmap' => true,
+				'showClosed'    => true,
+				'showNotNow'    => true,
+			),
+			is_array( $atts ) ? $atts : array(),
+			'roadmap-tabs'
+		);
 
-	// Assume true if the attribute is not passed
+	// Convert string boolean values to actual booleans.
+	foreach ( array( 'showNewIdea', 'showUpNext', 'showMaybe', 'showOnRoadmap', 'showClosed', 'showNotNow' ) as $key ) {
+		if ( is_string( $atts[ $key ] ) ) {
+			$atts[ $key ] = 'false' !== strtolower( $atts[ $key ] );
+		}
+	}   // Assume true if the attribute is not passed.
 	$statuses = array();
 	if ( ! empty( $atts['status'] ) ) {
-		// Use the 'idea-status' attribute if it's provided (for the shortcode)
-		$statuses = array_map( 'trim', explode( ',', $atts['status'] ) );
+		// Use the 'idea-status' attribute if it's provided (for the shortcode).
+		$statuses = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $atts['status'] ) ) );
 	} else {
-		// Otherwise, use the boolean attributes (for the block)
+		// Otherwise, use the boolean attributes (for the block).
 		if ( $atts['showNewIdea'] ) {
 			$statuses[] = 'New Idea';
 		}
@@ -66,8 +73,6 @@ function roadmap_tabs_shortcode( $atts ) {
 	}
 
 	$options = get_option( 'wp_roadmap_settings' );
-	
-
 
 	ob_start(); // Start output buffering
 	?>
@@ -93,7 +98,7 @@ function roadmap_tabs_shortcode( $atts ) {
 		>
 		
 		<div class="roadmap-columns roadmap-ideas-container grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-			<!-- Ideas will be loaded here via JavaScript -->
+			<!-- Ideas will be loaded here via JavaScript. -->
 		</div>
 	</div>
 
@@ -104,7 +109,7 @@ function roadmap_tabs_shortcode( $atts ) {
 	var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
 	var nonce = '<?php echo esc_js( wp_create_nonce( 'roadmap_nonce' ) ); ?>';
 
-		// Function to reset all tabs to inactive
+		// Function to reset all tabs to inactive.
 		function resetTabs() {
 			tabs.forEach(function(tab) {
 				tab.setAttribute('data-state', 'inactive');
@@ -113,8 +118,8 @@ function roadmap_tabs_shortcode( $atts ) {
 
 		tabs.forEach(function(tab) {
 			tab.addEventListener('click', function() {
-				resetTabs(); // Reset all tabs to inactive
-				this.setAttribute('data-state', 'active'); // Set clicked tab to active
+				resetTabs(); // Reset all tabs to inactive.
+				this.setAttribute('data-state', 'active'); // Set clicked tab to active.
 
 				var status = this.getAttribute('data-status');
 				loadIdeas(status);
