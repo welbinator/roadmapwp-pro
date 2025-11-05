@@ -43,7 +43,7 @@ function custom_taxonomy_content() {
 	}
 
 	// Check if a new term is being added.
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['new_term'], $_POST['taxonomy_slug'] ) && ! empty( $_POST['new_term'] ) && ! empty( $_POST['taxonomy_slug'] ) ) {
+	if ( filter_input( INPUT_SERVER, 'REQUEST_METHOD' ) === 'POST' && ! empty( $_POST['new_term'] ) && ! empty( $_POST['taxonomy_slug'] ) ) {
 				// Verify the nonce for security.
 		$nonce             = isset( $_POST['wp_roadmap_add_term_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp_roadmap_add_term_nonce'] ) ) : '';
 		$taxonomy_slug_raw = sanitize_text_field( wp_unslash( $_POST['taxonomy_slug'] ) );
@@ -72,7 +72,7 @@ function custom_taxonomy_content() {
 	}
 
 	// Check if the form has been submitted for adding a new taxonomy.
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['wp_roadmap_pro_nonce'], $_POST['taxonomy_slug'] ) && empty( $_POST['new_term'] ) ) {
+	if ( filter_input( INPUT_SERVER, 'REQUEST_METHOD' ) === 'POST' && isset( $_POST['wp_roadmap_pro_nonce'], $_POST['taxonomy_slug'] ) && empty( $_POST['new_term'] ) ) {
 		$nonce = isset( $_POST['wp_roadmap_pro_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['wp_roadmap_pro_nonce'] ) ) : '';
 		if ( wp_verify_nonce( $nonce, 'wp_roadmap_pro_add_taxonomy' ) && current_user_can( 'manage_options' ) ) {
 			$taxonomy_slug     = sanitize_key( wp_unslash( $_POST['taxonomy_slug'] ) );
@@ -159,7 +159,7 @@ function custom_taxonomy_content() {
 					echo '<ul class="terms-list">';
 					foreach ( $terms as $term ) {
 						echo '<li>';
-						echo '<input type="checkbox" name="terms[]" value="' . esc_attr( $term->term_id ) . '"> ' . esc_html( $term->name );
+						echo '<input type="checkbox" name="terms[]" value="' . esc_attr( (string) $term->term_id ) . '"> ' . esc_html( $term->name );
 						echo '</li>';
 					}
 					echo '</ul>';
@@ -198,11 +198,11 @@ function custom_taxonomy_content() {
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				echo '<form method="post" class="delete-terms-form" data-taxonomy="' . esc_attr( $taxonomy_slug ) . '">';
 				echo '<ul class="terms-list">';
-				foreach ( $terms as $term ) {
-					echo '<li>';
-					echo '<input type="checkbox" name="terms[]" value="' . esc_attr( $term->term_id ) . '"> ' . esc_html( $term->name );
-					echo '</li>';
-				}
+							foreach ( $terms as $term ) {
+								echo '<li>';
+								echo '<input type="checkbox" name="terms[]" value="' . esc_attr( (string) $term->term_id ) . '"> ' . esc_html( $term->name );
+								echo '</li>';
+							}
 				echo '</ul>';
 				echo '<input type="submit" value="' . esc_attr__( 'Delete Selected Terms', 'roadmapwp-pro' ) . '" class="button rmwp__delete-terms-button">';
 				echo '</form>';

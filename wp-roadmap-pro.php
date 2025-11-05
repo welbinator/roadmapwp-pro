@@ -103,6 +103,7 @@ require_once plugin_dir_path( __FILE__ ) . 'app/customizer-styles.php';
 // Include necessary files
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-functions.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/admin-enqueue.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/cpt-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/ajax-handlers.php';
 

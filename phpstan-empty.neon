@@ -1,0 +1,3 @@
+# Empty PHPStan config to override project config for isolated runs
+parameters:
+  level: 5

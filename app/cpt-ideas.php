@@ -52,7 +52,7 @@ function register_idea_post_type() {
 		'capability_type'    => 'post',
 		'has_archive'        => true,
 		'hierarchical'       => false,
-		'menu_position'      => null,
+		'menu_position'      => 6,
 		'taxonomies'         => $taxonomies,
 		'supports'           => $supports,
 		'show_in_rest'       => $show_in_rest,

@@ -93,7 +93,7 @@ function register_blocks() {
 				?>
 				<main id="primary" class="site-main">
 					<div class="roadmap_wrapper container mx-auto">
-						<article id="post-<?php echo esc_attr( $post->ID ); ?>" <?php post_class(); ?>>
+						<article id="post-<?php echo esc_attr( (string) $post->ID ); ?>" <?php post_class(); ?>>
 							<header class="entry-header">
 								<h1 class="entry-title"><?php echo esc_html( $post->post_title ); ?></h1>
 								<p class="publish-date"><?php echo esc_html( get_the_date( '', $post ) ); ?></p>
@@ -105,7 +105,8 @@ function register_blocks() {
 							$taxonomies         = array_merge( $taxonomies, array_keys( $custom_taxonomies ) );
 							$exclude_taxonomies = array( 'idea-status' );
 							$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
-							$terms              = wp_get_post_terms( $post->ID, $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
+							// We already filtered $taxonomies to exclude the status taxonomy above, so fetch terms directly.
+							$terms              = wp_get_post_terms( $post->ID, $taxonomies );
 
 							if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 								echo '<div class="idea-tags flex space-x-2 idea-tags">';

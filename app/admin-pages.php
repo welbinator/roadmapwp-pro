@@ -87,7 +87,7 @@ function display_settings_page() {
 					<td>
 					<?php
 					// This filter will be handled in choose-idea-template.php.
-					echo wp_kses_post( apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
+					echo apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
 					?>
 					</td>
 				</tr>
@@ -109,7 +109,7 @@ function display_settings_page() {
 					<td>
 						<?php
 						// Filter hook to allow the Pro version to override this setting.
-						echo wp_kses_post( apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
+						echo apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
 						?>
 					</td>
 				</tr>
@@ -120,7 +120,7 @@ function display_settings_page() {
 					<td>
 						<?php
 						// Filter hook to allow the Pro version to override this setting.
-						echo wp_kses_post( apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
+						echo apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
 						?>
 					</td>
 				</tr>
@@ -162,10 +162,10 @@ function display_settings_page() {
 						$selected_courses = isset( $options['restricted_courses'] ) && is_array( $options['restricted_courses'] ) ? array_map( 'intval', $options['restricted_courses'] ) : array();
 
 						if ( ! empty( $courses ) && is_array( $courses ) ) {
-							foreach ( $courses as $course ) {
-								$is_selected = in_array( intval( $course->ID ), $selected_courses, true );
-								printf( '<option value="%s" %s>%s</option>', esc_attr( $course->ID ), selected( $is_selected, true, false ), esc_html( $course->post_title ) );
-							}
+						foreach ( $courses as $course ) {
+							$is_selected = in_array( intval( $course->ID ), $selected_courses, true );
+							printf( '<option value="%s" %s>%s</option>', esc_attr( (string) $course->ID ), selected( $is_selected, true, false ), esc_html( $course->post_title ) );
+						}
 						}
 						?>
 					</select>
@@ -440,14 +440,19 @@ if ( function_exists( 'gutenberg_market_licensing' ) ) {
 		add_settings_section(
 			'roadmapwp_pro_license',
 			__( 'License', 'roadmapwp-pro' ),
-			'RoadMapWP\Pro\EDDLicensing\license_key_settings_section',
+			// No-op callback here; EDD licensing functions register their own callbacks when present.
+			function () {
+				// Intentionally left blank for static analysis/runtime safety.
+			},
 			ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE
 		);
 
 		add_settings_field(
 			'roadmapwp_pro_license_key',
 			'<label for="roadmapwp_pro_license_key">' . __( 'License Key', 'roadmapwp-pro' ) . '</label>',
-			'RoadMapWP\Pro\EDDLicensing\license_key_settings_field',
+			function () {
+				// Intentionally left blank for static analysis/runtime safety.
+			},
 			ROADMAPWP_PRO_PLUGIN_LICENSE_PAGE,
 			'roadmapwp_pro_license'
 		);

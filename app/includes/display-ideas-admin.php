@@ -5,6 +5,9 @@
  * @package RoadMapWP\Pro\Includes
  */
 
+// Ensure $idea_id is defined when included
+$idea_id = isset( $idea_id ) ? intval( $idea_id ) : 0;
+
 if ( current_user_can( 'manage_options' ) ) : ?>
 	<div class="p-6 bg-gray-200">
 		<h6 class="text-center"><?php echo esc_html__( 'Admin only', 'roadmapwp-pro' ); ?></h6>

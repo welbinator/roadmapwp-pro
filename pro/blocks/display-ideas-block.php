@@ -7,7 +7,7 @@
 
 namespace RoadMapWP\Pro\Blocks\DisplayIdeas;
 
-use RoadMapWP\Pro\Admin\Functions;
+use function RoadMapWP\Pro\Admin\Functions\get_idea_class_with_votes;
 
 /**
  * Register the block and its attributes.
@@ -175,7 +175,7 @@ function block_render( $attributes ) {
 			$query->the_post();
 			$idea_id    = get_the_ID();
 			$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
-			$idea_class = Functions::get_idea_class_with_votes( $idea_id );
+			$idea_class = get_idea_class_with_votes( $idea_id );
 			echo '<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden ' . esc_attr( $idea_class ) . '" data-v0-t="card">';
 			include plugin_dir_path( __FILE__ ) . '../../app/includes/display-ideas-grid.php';
 			include plugin_dir_path( __FILE__ ) . '../../app/includes/display-ideas-admin.php';

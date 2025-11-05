@@ -17,7 +17,7 @@ add_action( 'customize_register', __NAMESPACE__ . '\\register_customizer_styles'
 /**
  * Register customizer settings for Roadmap styles.
  *
- * @param WP_Customize_Manager $wp_customize Customizer manager object.
+ * @param \WP_Customize_Manager $wp_customize Customizer manager object.
  */
 function register_customizer_styles( $wp_customize ) {
 	// Add Roadmap Styles panel to customizer.
@@ -69,7 +69,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Vote Button Background Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'vote_button_background_color',
+				'settings' => array( 'vote_button_background_color' ),
 			)
 		)
 	);
@@ -89,7 +89,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Vote Button Text Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'vote_button_text_color',
+				'settings' => array( 'vote_button_text_color' ),
 			)
 		)
 	);
@@ -109,7 +109,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Tags Background Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'tags_background_color',
+				'settings' => array( 'tags_background_color' ),
 			)
 		)
 	);
@@ -129,7 +129,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Tags Text Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'tags_text_color',
+				'settings' => array( 'tags_text_color' ),
 			)
 		)
 	);
@@ -149,7 +149,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Submit Idea Button Background Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'submit_idea_button_background_color',
+				'settings' => array( 'submit_idea_button_background_color' ),
 			)
 		)
 	);
@@ -169,7 +169,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Submit Idea Button Text Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'submit_idea_button_text_color',
+				'settings' => array( 'submit_idea_button_text_color' ),
 			)
 		)
 	);
@@ -189,7 +189,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Filter Box Background Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'filter_box_background_color',
+				'settings' => array( 'filter_box_background_color' ),
 			)
 		)
 	);
@@ -209,7 +209,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Filter Box Text Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_global_styles',
-				'settings' => 'filter_box_text_color',
+				'settings' => array( 'filter_box_text_color' ),
 			)
 		)
 	);
@@ -233,7 +233,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Container Background Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_tabs_styles',
-				'settings' => 'tabs_container_background_color',
+				'settings' => array( 'tabs_container_background_color' ),
 			)
 		)
 	);
@@ -253,7 +253,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Tab Background Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_tabs_styles',
-				'settings' => 'tabs_tab_background_color',
+				'settings' => array( 'tabs_tab_background_color' ),
 			)
 		)
 	);
@@ -273,7 +273,7 @@ function register_customizer_styles( $wp_customize ) {
 			array(
 				'label'    => __( 'Tab Text Color', 'roadmapwp-pro' ),
 				'section'  => 'roadmap_tabs_styles',
-				'settings' => 'tabs_tab_text_color',
+				'settings' => array( 'tabs_tab_text_color' ),
 			)
 		)
 	);

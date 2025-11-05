@@ -34,21 +34,7 @@ function single_idea_template_setting( $content ) {
 	}
 	$html .= '</select></div>';
 
-	// JavaScript for toggling the page selection dropdown
-	$html .= '<script type="text/javascript">
-        jQuery(document).ready(function($) {
-            function togglePageSetting() {
-                var selectedTemplate = $("#wp_roadmap_single_idea_template").val();
-                if (selectedTemplate === "page") {
-                    $("#single_idea_page_setting").show();
-                } else {
-                    $("#single_idea_page_setting").hide();
-                }
-            }
-            togglePageSetting();
-            $("#wp_roadmap_single_idea_template").change(togglePageSetting);
-        });
-    </script>';
+	// Behavior for the page selection dropdown is handled by the admin JS (admin-settings.js)
 
 	return $html;
 }

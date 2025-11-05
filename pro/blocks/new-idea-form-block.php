@@ -58,7 +58,11 @@ add_action( 'init', __NAMESPACE__ . '\register_block' );
  */
 function block_render( $attributes ) {
 
+	// Ensure these variables are defined to satisfy static analysis and avoid undefined variable warnings.
 	$user_id       = get_current_user_id();
+	$title         = '';
+	$description   = '';
+	$summary       = '';
 	$display_block = apply_filters( 'roadmapwp_new_idea_form_block', true, $attributes, $user_id );
 
 	// Dev Note: probably a better way to do this
@@ -76,7 +80,7 @@ function block_render( $attributes ) {
 	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
 	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
-		return;
+		return '';
 	}
 
 	$options             = get_option( 'wp_roadmap_settings' );
@@ -198,7 +202,7 @@ function block_render( $attributes ) {
 											foreach ( $terms as $term ) :
 												?>
 												<label class="rmwp__taxonomy-term-label">
-													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
+													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( (string) $term->term_id ); ?>">
 													<?php echo esc_html( $term->name ); ?>
 												</label>
 												<?php
@@ -234,6 +238,11 @@ function block_render( $attributes ) {
  */
 function handle_new_idea_block_submission() {
 	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+		// Initialize variables to satisfy static analysis and avoid "might not be defined" warnings in later logic.
+		$title       = '';
+		$description = '';
+		$summary     = '';
+
 		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
 		if ( wp_verify_nonce( $nonce, 'wp_roadmap_new_idea' ) ) {
 
@@ -262,8 +271,10 @@ function handle_new_idea_block_submission() {
 					'post_type'    => 'idea',
 				)
 			);
-
-			if ( $idea_id && ! is_wp_error( $idea_id ) ) {
+			// Normalize error handling: check for WP_Error first using instanceof, then proceed when we have a valid post ID.
+			if ( $idea_id instanceof \WP_Error ) {
+				// Log or handle the error as needed; keep behavior unchanged for now.
+			} elseif ( $idea_id ) {
 				// Set terms for non-status taxonomies
 				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
 					foreach ( wp_unslash( $_POST['idea_taxonomies'] ) as $tax_slug => $term_ids ) {

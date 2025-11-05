@@ -77,8 +77,8 @@ function enqueue_admin_styles( $hook ) {
 	// Enqueue CSS for help page
 	if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
 		$tailwind_css_url = plugin_dir_url( __FILE__ ) . '../dist/styles.css';
-		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url, array(), RMWP_PLUGIN_VERSION );
-		wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/help.js', array( 'jquery' ), RMWP_PLUGIN_VERSION, true );
+		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url, array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ) );
+		wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/help.js', array( 'jquery' ), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 	}
 
 	// Enqueue CSS for help page
@@ -115,6 +115,16 @@ function enqueue_admin_styles( $hook ) {
 	}
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_styles' );
+
+/**
+ * Redirect handler for the top-level RoadMap menu.
+ *
+ * Redirects to the ideas post listing. Defined at top-level to satisfy PHPStan.
+ */
+function display_ideas_menu_page() {
+	wp_redirect( admin_url( 'edit.php?post_type=idea' ) );
+	exit;
+}
 
 /**
  * Enqueues front end styles and scripts for the plugin.
@@ -211,7 +221,7 @@ function add_admin_menu() {
 		__( 'RoadMap', 'roadmapwp-pro' ),
 		'manage_options',
 		'roadmapwp-pro',
-		'edit.php?post_type=idea',
+		__NAMESPACE__ . '\\display_ideas_menu_page',
 		'dashicons-chart-line',
 		6
 	);

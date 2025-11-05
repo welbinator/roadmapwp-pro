@@ -147,7 +147,16 @@ function settings_validate( $input ) {
 }
 
 function register_settings() {
-	register_setting( 'wp_roadmap_settings', 'wp_roadmap_settings', __NAMESPACE__ . '\\settings_validate' );
+	// Use an args array for register_setting so PHPStan can validate the shape (sanitize_callback key expected).
+	register_setting(
+		'wp_roadmap_settings',
+		'wp_roadmap_settings',
+		array(
+			'sanitize_callback' => function ( $input ) {
+				return \RoadMapWP\Pro\Settings\settings_validate( $input );
+			},
+		)
+	);
 }
 
 add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );

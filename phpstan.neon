@@ -1,0 +1,10 @@
+parameters:
+  level: 5
+  paths:
+    - pro
+    - app
+  treatPhpDocTypesAsCertain: false
+
+# Keep services empty; phpstan-wordpress extension is installed via composer and
+# will be discovered by the extension-installer.
+services: []

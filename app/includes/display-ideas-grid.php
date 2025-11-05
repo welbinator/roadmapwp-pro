@@ -10,12 +10,19 @@ use RoadMapWP\Pro\Admin\Functions;
 ?>
 
 <div class="p-6">
+	<?php
+	// Ensure expected variables are defined when this template is included.
+	$idea_id    = isset( $idea_id ) ? intval( $idea_id ) : 0;
+	$taxonomies = isset( $taxonomies ) && is_array( $taxonomies ) ? $taxonomies : array();
+	$vote_count = isset( $vote_count ) ? intval( $vote_count ) : 0;
+	?>
+
 	<h2 class="text-2xl font-bold"><a href="<?php echo esc_url( get_permalink( $idea_id ) ); ?>"><?php echo esc_html( get_the_title( $idea_id ) ); ?></a></h2>
 
 	<p class="text-gray-500 mt-2 text-sm"><?php echo esc_html__( 'Submitted on:', 'roadmapwp-pro' ) . ' ' . esc_html( get_the_date( '', $idea_id ) ); ?></p>
 	<div class="flex flex-wrap space-x-2 mt-2 idea-tags">
 		<?php
-		$tax_list = (array) $taxonomies;
+	$tax_list = (array) $taxonomies;
 		$terms    = wp_get_post_terms( $idea_id, $tax_list );
 		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
 			foreach ( $terms as $term_item ) :
@@ -40,7 +47,12 @@ use RoadMapWP\Pro\Admin\Functions;
 
 	<div class="flex items-center justify-start mt-6 gap-6">
 	<?php
-		$vote_count = isset( $vote_count ) ? intval( $vote_count ) : intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+		// If a vote count was provided, normalize it; otherwise fetch from post meta.
+		if ( empty( $vote_count ) ) {
+			$vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
+		} else {
+			$vote_count = intval( $vote_count );
+		}
 	if ( class_exists( '\RoadMapWP\Pro\ClassVoting\VotingHandler' ) ) {
 		\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button( $idea_id, $vote_count );
 	}
