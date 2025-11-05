@@ -139,7 +139,10 @@ function block_render( $attributes ) {
 
 	ob_start();
 
-	if ( isset( $_GET['new_idea_submitted'] ) && '1' === wp_unslash( $_GET['new_idea_submitted'] ) ) {
+	// Show a thank-you message only if we have the submitted flag and a valid nonce
+	$submitted_flag  = filter_input( INPUT_GET, 'new_idea_submitted', FILTER_SANITIZE_STRING );
+	$submitted_nonce = filter_input( INPUT_GET, 'wp_roadmap_new_idea_submitted_nonce', FILTER_SANITIZE_STRING );
+	if ( '1' === (string) $submitted_flag && $submitted_nonce && wp_verify_nonce( $submitted_nonce, 'wp_roadmap_new_idea_submitted' ) ) {
 		echo '<p>' . esc_html__( 'Thank you for your submission!', 'roadmapwp-pro' ) . '</p>';
 	}
 
@@ -155,8 +158,9 @@ function block_render( $attributes ) {
 			<?php endif; ?>
 
 			<?php
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$form_action_url = isset( $_SERVER['REQUEST_URI'] ) ? esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			// Use filter_input for server variables and sanitize the URL for the form action
+			$form_action_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+			$form_action_url = $form_action_url ? esc_url( $form_action_url ) : '';
 
 			?>
 
@@ -237,7 +241,8 @@ function block_render( $attributes ) {
  * Handles the submission of the new idea form block.
  */
 function handle_new_idea_block_submission() {
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+	$request_method = filter_input( INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING );
+	if ( $request_method && 'POST' === strtoupper( $request_method ) && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
 		// Initialize variables to satisfy static analysis and avoid "might not be defined" warnings in later logic.
 		$title       = '';
 		$description = '';
@@ -276,8 +281,11 @@ function handle_new_idea_block_submission() {
 				// Log or handle the error as needed; keep behavior unchanged for now.
 			} elseif ( $idea_id ) {
 				// Set terms for non-status taxonomies
-				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
-					foreach ( wp_unslash( $_POST['idea_taxonomies'] ) as $tax_slug => $term_ids ) {
+				// Sanitize incoming taxonomy selections using filter_input to avoid direct unslashed superglobal usage
+				$raw_idea_taxonomies = filter_input( INPUT_POST, 'idea_taxonomies', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+				$raw_idea_taxonomies = is_array( $raw_idea_taxonomies ) ? $raw_idea_taxonomies : array();
+				if ( is_array( $raw_idea_taxonomies ) ) {
+					foreach ( $raw_idea_taxonomies as $tax_slug => $term_ids ) {
 						$tax_slug = sanitize_key( $tax_slug );
 						if ( $tax_slug !== 'idea-status' ) {
 							$term_ids = array_map( 'intval', (array) $term_ids );
@@ -287,19 +295,28 @@ function handle_new_idea_block_submission() {
 				}
 
 				// Check if selected statuses is set, not empty, and contains valid numeric values
-					$valid_selected_statuses = isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] )
-											&& count( array_filter( wp_unslash( $_POST['selected_statuses'] ), 'is_numeric' ) ) > 0;
+				$raw_selected_statuses = filter_input( INPUT_POST, 'selected_statuses', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+				$raw_selected_statuses = is_array( $raw_selected_statuses ) ? $raw_selected_statuses : array();
+				$valid_selected_statuses = is_array( $raw_selected_statuses ) && count( array_filter( $raw_selected_statuses, 'is_numeric' ) ) > 0;
 
 				if ( $valid_selected_statuses ) {
-					$selected_status_terms = array_map( 'intval', wp_unslash( $_POST['selected_statuses'] ) );
+					$selected_status_terms = array_map( 'intval', $raw_selected_statuses );
 					wp_set_object_terms( $idea_id, $selected_status_terms, 'idea-status' );
 				} else {
 					// Fallback to default status term if none or invalid selected
 					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'idea-status' );
 				}
 
-				// Redirect to the confirmation page
-				$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
+				// Redirect to the confirmation page with a nonce so the thank-you message can be validated safely
+				$current_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+				$current_url = $current_url ? esc_url_raw( $current_url ) : home_url();
+				$redirect_url = add_query_arg(
+					array(
+						'new_idea_submitted' => '1',
+						'wp_roadmap_new_idea_submitted_nonce' => wp_create_nonce( 'wp_roadmap_new_idea_submitted' ),
+					),
+					$current_url
+				);
 				wp_redirect( $redirect_url );
 				exit;
 			}

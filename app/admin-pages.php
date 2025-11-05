@@ -32,6 +32,52 @@ function display_settings_page() {
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
 	$hide_from_rest      = isset( $options['hide_from_rest'] ) ? $options['hide_from_rest'] : 0;
 
+	// Allowed HTML tags for admin filter outputs (we permit form elements here).
+	$rmwp_allowed_admin_html = array(
+		'a' => array(
+			'href'  => true,
+			'class' => true,
+			'target'=> true,
+			'style' => true,
+		),
+		'input'  => array(
+			'type'    => true,
+			'name'    => true,
+			'id'      => true,
+			'value'   => true,
+			'checked' => true,
+			'class'   => true,
+		),
+		'select' => array(
+			'name'  => true,
+			'id'    => true,
+			'class' => true,
+			'style' => true,
+		),
+		'option' => array(
+			'value'    => true,
+			'selected' => true,
+		),
+		'label' => array(
+			'for' => true,
+		),
+		'br'    => array(),
+		'div'   => array(
+			'id'    => true,
+			'class' => true,
+			'style' => true,
+		),
+		'span'  => array(
+			'class' => true,
+			'data-text' => true,
+		),
+		'strong' => array(),
+		'h4'     => array(),
+		'h5'     => array(),
+		'p'      => array(),
+		'h3'     => array(),
+	);
+
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -87,7 +133,8 @@ function display_settings_page() {
 					<td>
 					<?php
 					// This filter will be handled in choose-idea-template.php.
-					echo apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+					$single_template_output = apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+					echo wp_kses( $single_template_output, $rmwp_allowed_admin_html );
 					?>
 					</td>
 				</tr>
@@ -109,7 +156,8 @@ function display_settings_page() {
 					<td>
 						<?php
 						// Filter hook to allow the Pro version to override this setting.
-						echo apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						$submit_heading_output = apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						echo wp_kses( $submit_heading_output, $rmwp_allowed_admin_html );
 						?>
 					</td>
 				</tr>
@@ -120,7 +168,8 @@ function display_settings_page() {
 					<td>
 						<?php
 						// Filter hook to allow the Pro version to override this setting.
-						echo apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						$display_heading_output = apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						echo wp_kses( $display_heading_output, $rmwp_allowed_admin_html );
 						?>
 					</td>
 				</tr>

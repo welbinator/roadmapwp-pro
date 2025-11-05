@@ -65,13 +65,13 @@ function enqueue_admin_styles( $hook ) {
 	// Enqueue CSS for 'idea' post type editor
 	if ( 'post.php' == $hook && isset( $post ) && 'idea' == $post->post_type ) {
 		$css_url = plugin_dir_url( __FILE__ ) . 'assets/css/idea-editor-styles.css';
-		wp_enqueue_style( 'wp-roadmap-idea-admin-styles', $css_url );
+		wp_enqueue_style( 'wp-roadmap-idea-admin-styles', $css_url, array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ) );
 	}
 
 	// Enqueue CSS for taxonomies admin page
 	if ( $hook === 'roadmap_page_wp-roadmap-taxonomies' ) {
 		$css_url = plugin_dir_url( __FILE__ ) . 'assets/css/admin-styles.css';
-		wp_enqueue_style( 'wp-roadmap-general-admin-styles', $css_url );
+		wp_enqueue_style( 'wp-roadmap-general-admin-styles', $css_url, array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ) );
 	}
 
 	// Enqueue CSS for help page
@@ -81,15 +81,9 @@ function enqueue_admin_styles( $hook ) {
 		wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/help.js', array( 'jquery' ), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 	}
 
-	// Enqueue CSS for help page
-	if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
-		$tailwind_css_url = plugin_dir_url( __FILE__ ) . '../dist/styles.css';
-		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url );
-	}
-
 	// Enqueue JS for the 'Taxonomies' admin page
 	if ( 'roadmap_page_wp-roadmap-taxonomies' == $hook ) {
-		wp_enqueue_script( 'wp-roadmap-taxonomies-js', plugin_dir_url( __FILE__ ) . 'assets/js/taxonomies.js', array( 'jquery' ), null, true );
+		wp_enqueue_script( 'wp-roadmap-taxonomies-js', plugin_dir_url( __FILE__ ) . 'assets/js/taxonomies.js', array( 'jquery' ), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 		wp_localize_script(
 			'wp-roadmap-taxonomies-js',
 			'roadmapwpAjax',
@@ -103,12 +97,12 @@ function enqueue_admin_styles( $hook ) {
 	// Enqueue JS for the help page
 	if ( $hook === 'roadmap_page_wp-roadmap-help' ) {
 		$js_url = plugin_dir_url( __FILE__ ) . 'assets/js/admin.js';
-		wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), null, true );
+		wp_enqueue_script( 'wp-roadmap-admin-js', $js_url, array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 	}
 
 	if ( $hook == 'roadmap_page_wp-roadmap-settings' ) {
 		wp_enqueue_style( 'wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', array(), '4.0.13' );
-		wp_enqueue_script( 'wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', array( 'jquery' ), '4.0.13' );
+	wp_enqueue_script( 'wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', array( 'jquery' ), '4.0.13', true );
 
 		// This script initializes Select2 for your specific select field.
 		wp_add_inline_script( 'wp-roadmap-select2-js', "jQuery(document).ready(function($) { $('.wp-roadmap-select2').select2(); });" );
@@ -167,14 +161,14 @@ function enqueue_frontend_styles() {
 	if ( $has_block || $has_shortcode || is_singular( 'idea' ) ) {
 		// Enqueue Tailwind CSS
 		$tailwind_css_url = plugin_dir_url( __FILE__ ) . '../dist/styles.css';
-		wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url );
+	wp_enqueue_style( 'wp-roadmap-tailwind-styles', $tailwind_css_url, array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ) );
 
 		// Enqueue your custom frontend styles
 		$custom_css_url = plugin_dir_url( __FILE__ ) . 'assets/css/wp-roadmap-frontend.css';
-		wp_enqueue_style( 'wp-roadmap-frontend-styles', $custom_css_url );
+	wp_enqueue_style( 'wp-roadmap-frontend-styles', $custom_css_url, array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ) );
 
 		// Enqueue scripts and localize them as before
-		wp_enqueue_script( 'wp-roadmap-voting', plugin_dir_url( __FILE__ ) . 'assets/js/voting.js', array( 'jquery' ), null, true );
+	wp_enqueue_script( 'wp-roadmap-voting', plugin_dir_url( __FILE__ ) . 'assets/js/voting.js', array( 'jquery' ), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 		wp_localize_script(
 			'wp-roadmap-voting',
 			'RoadMapWPVotingAjax',
@@ -184,7 +178,7 @@ function enqueue_frontend_styles() {
 			)
 		);
 
-		wp_enqueue_script( 'wp-roadmap-idea-filter', plugin_dir_url( __FILE__ ) . 'assets/js/idea-filter.js', array( 'jquery' ), '', true );
+	wp_enqueue_script( 'wp-roadmap-idea-filter', plugin_dir_url( __FILE__ ) . 'assets/js/idea-filter.js', array( 'jquery' ), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 		wp_localize_script(
 			'wp-roadmap-idea-filter',
 			'RoadMapWPFilterAjax',
@@ -194,13 +188,14 @@ function enqueue_frontend_styles() {
 			)
 		);
 
-		wp_enqueue_script( 'wp-roadmap-admin-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/frontend.js', array( 'jquery' ), '', true );
+	wp_enqueue_script( 'wp-roadmap-admin-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/frontend.js', array(), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 		wp_localize_script(
 			'wp-roadmap-admin-frontend',
 			'RoadMapWPAdminFrontendAjax',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'nonce'    => wp_create_nonce( 'wp-roadmap-admin-frontend-nonce' ),
+				'debug'    => defined( 'WP_DEBUG' ) && WP_DEBUG
 			)
 		);
 	}
