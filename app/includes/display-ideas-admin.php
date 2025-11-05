@@ -8,8 +8,8 @@
                 $current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
 
                 foreach ( $statuses as $status ) {
-                    $selected = in_array( $status->slug, $current_statuses ) ? 'selected' : '';
-                    echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected . '>' . esc_html( $status->name ) . '</option>';
+                    $is_selected = in_array( $status->slug, $current_statuses );
+                    printf( '<option value="%s" %s>%s</option>', esc_attr( $status->slug ), selected( $is_selected, true, false ), esc_html( $status->name ) );
                 }
                 ?>
             </select>

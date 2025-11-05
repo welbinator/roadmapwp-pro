@@ -58,20 +58,18 @@ function display_settings_page() {
 						<?php
 						$default_wp_post_status = isset( $options['default_wp_post_status'] ) ? $options['default_wp_post_status'] : 'pending';
 
-						// Create the HTML for the dropdown
-						$html     = '<select name="wp_roadmap_settings[default_wp_post_status]">';
+						// Create the dropdown safely
 						$statuses = array(
 							'publish' => 'Publish',
 							'pending' => 'Pending Review',
 							'draft'   => 'Draft',
 						);
+						echo '<select name="wp_roadmap_settings[default_wp_post_status]">';
 						foreach ( $statuses as $value => $label ) {
 							$selected = selected( $default_wp_post_status, $value, false );
-							$html    .= "<option value='{$value}' {$selected}>{$label}</option>";
+							printf( '<option value="%s" %s>%s</option>', esc_attr( $value ), $selected, esc_html( $label ) );
 						}
-						$html .= '</select>';
-					
-						echo $html;
+						echo '</select>';
 						?>
 					</td>
 				</tr>
@@ -82,7 +80,7 @@ function display_settings_page() {
 					<td>
 					<?php
 					// This filter will be handled in choose-idea-template.php
-					echo apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+					echo wp_kses_post( apply_filters( 'wp_roadmap_single_idea_template_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
 					?>
 					</td>
 				</tr>
@@ -92,9 +90,7 @@ function display_settings_page() {
 					<td>
 						<?php
 						$allow_comments = isset( $options['allow_comments'] ) ? $options['allow_comments'] : '';
-
-						$html = '<input type="checkbox" name="wp_roadmap_settings[allow_comments]" value="1"' . checked( 1, $allow_comments, false ) . '/>';
-						echo $html;
+						printf( '<input type="checkbox" name="wp_roadmap_settings[allow_comments]" value="1" %s/>', checked( 1, $allow_comments, false ) );
 						?>
 					</td>
 				</tr>
@@ -106,7 +102,7 @@ function display_settings_page() {
 					<td>
 						<?php
 						// Filter hook to allow the Pro version to override this setting
-						echo apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						echo wp_kses_post( apply_filters( 'wp_roadmap_hide_custom_idea_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
 						?>
 					</td>
 				</tr>
@@ -117,17 +113,17 @@ function display_settings_page() {
 					<td>
 						<?php
 						// Filter hook to allow the Pro version to override this setting
-						echo apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' );
+						echo wp_kses_post( apply_filters( 'wp_roadmap_hide_display_ideas_heading_setting', '<a target="_blank" href="https://roadmapwp.com/pro" class="button button-primary" style="text-decoration: none;">' . esc_html__( 'Available in Pro', 'roadmapwp-pro' ) . '</a>' ) );
 						?>
 					</td>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><h2><?php esc_html_e( 'Voting', 'roadmapwp-free' ); ?></h2></th>
+					<th scope="row"><h2><?php esc_html_e( 'Voting', 'roadmapwp-pro' ); ?></h2></th>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Restrict Voting to Logged-in Users', 'roadmapwp-free' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Restrict Voting to Logged-in Users', 'roadmapwp-pro' ); ?></th>
 					<td>
 						<?php
 						$restrict_voting = isset($options['restrict_voting']) ? $options['restrict_voting'] : '';
@@ -144,7 +140,7 @@ function display_settings_page() {
 
 				<?php if ( is_plugin_active( 'sfwd-lms/sfwd_lms.php' ) ) { ?>
 				<tr valign="top">
-					<th scope="row"><?php esc_html_e('Restrict Voting to Students Enrolled in Selected LearnDash Courses', 'roadmapwp-free'); ?></th>
+					<th scope="row"><?php esc_html_e('Restrict Voting to Students Enrolled in Selected LearnDash Courses', 'roadmapwp-pro'); ?></th>
 					<td>
 					<select class="wp-roadmap-select2" name="wp_roadmap_settings[restricted_courses][]" multiple="multiple" style="min-width:200px;">
 						<?php

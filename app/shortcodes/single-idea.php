@@ -29,7 +29,7 @@ namespace RoadMapWP\Pro\Shortcodes\SingleIdea;
 	// Flag to indicate the roadmap shortcode is loaded
 	update_option( 'wp_roadmap_single_idea_shortcode_loaded', true );
 
-	$idea_id = isset( $_GET['idea_id'] ) ? intval( $_GET['idea_id'] ) : 0;
+	$idea_id = isset( $_GET['idea_id'] ) ? intval( wp_unslash( $_GET['idea_id'] ) ) : 0;
 	$post    = get_post( $idea_id );
 
 	if ( ! $post || $post->post_type !== 'idea' ) {

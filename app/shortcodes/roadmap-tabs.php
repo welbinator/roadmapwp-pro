@@ -77,7 +77,7 @@ function roadmap_tabs_shortcode( $atts ) {
 		<div role="tablist" aria-orientation="horizontal" class="h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground flex gap-5 px-2 py-6 scrollbar-none roadmap-tabs">
 			<?php foreach ( $statuses as $status ) : ?>
 				<button type="button" role="tab" aria-selected="true" aria-controls="radix-:r3a:-content-newIdea" data-state="inactive" id="radix-:r3a:-trigger-newIdea" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow roadmap-tab" data-status="<?php echo esc_attr( $status ); ?>">
-					<?php echo esc_html__( $status, 'roadmapwp-pro' ); ?>
+					<?php echo esc_html( $status ); ?>
 				</button>
 			<?php endforeach; ?>
 		</div>
@@ -101,8 +101,8 @@ function roadmap_tabs_shortcode( $atts ) {
 	document.addEventListener('DOMContentLoaded', function() {
 		var tabs = document.querySelectorAll('.roadmap-tab');
 		var ideasContainer = document.querySelector('.roadmap-ideas-container');
-		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
-		var nonce = '<?php echo wp_create_nonce( 'roadmap_nonce' ); ?>';
+	var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
+	var nonce = '<?php echo esc_js( wp_create_nonce( 'roadmap_nonce' ) ); ?>';
 
 		// Function to reset all tabs to inactive
 		function resetTabs() {

@@ -139,8 +139,8 @@ function block_render( $attributes ) {
 document.addEventListener('DOMContentLoaded', function() {
 	var tabs = document.querySelectorAll('.roadmap-tab');
 	var ideasContainer = document.querySelector('.roadmap-ideas-container');
-	var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
-	var nonce = '<?php echo wp_create_nonce( 'roadmap_nonce' ); ?>';
+	var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
+	var nonce = '<?php echo esc_js( wp_create_nonce( 'roadmap_nonce' ) ); ?>';
 
 	// Function to reset all tabs to inactive
 	function resetTabs() {
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var formData = new FormData();
 		formData.append('action', 'load_ideas_for_status');
 		formData.append('idea-status', status);
-		formData.append('selectedTaxonomies', '<?php echo implode( ',', $selected_taxonomies ); ?>');
+			formData.append('selectedTaxonomies', '<?php echo esc_js( implode( ',', $selected_taxonomies ) ); ?>');
 		formData.append('nonce', nonce);
 
 		fetch(ajaxurl, {

@@ -29,9 +29,9 @@ function new_idea_form_shortcode() {
 
 	ob_start(); // Start output buffering
 
-    if ( isset( $_GET['new_idea_submitted'] ) && $_GET['new_idea_submitted'] == '1' ) {
-        echo '<p>Thank you for your submission!</p>';
-    }
+	if ( isset( $_GET['new_idea_submitted'] ) && '1' === wp_unslash( $_GET['new_idea_submitted'] ) ) {
+		echo '<p>' . esc_html__( 'Thank you for your submission!', 'roadmapwp-pro' ) . '</p>';
+	}
 
 	$hide_submit_idea_heading = apply_filters( 'wp_roadmap_hide_custom_idea_heading', false );
 	$new_submit_idea_heading  = apply_filters( 'wp_roadmap_custom_idea_heading_text', 'Submit new Idea' );
@@ -47,7 +47,7 @@ function new_idea_form_shortcode() {
 			<?php if ( ! $hide_submit_idea_heading ) : ?>
 				<h2><?php echo esc_html( $new_submit_idea_heading ); ?></h2>
 			<?php endif; 
-			$form_action = esc_url_raw($_SERVER['REQUEST_URI']);
+			$form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			?>
 			 <form action="<?php echo esc_url($form_action); ?>" method="post">
 				<ul class="rmwp__flex-outer">
@@ -117,11 +117,11 @@ function handle_new_idea_submission() {
 	$submission_nonce = ''; // Initialize outside to ensure scope availability
     $idea_id = 0; // Initialize to ensure scope availability
 
-    if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['idea_title']) && isset($_POST['wp_roadmap_new_idea_nonce'])) {
-        $submission_nonce = sanitize_text_field(wp_unslash($_POST['wp_roadmap_new_idea_nonce']));
-        if (wp_verify_nonce($submission_nonce, 'wp_roadmap_new_idea')) {
-            $title = sanitize_text_field($_POST['idea_title']);
-            $description = sanitize_textarea_field($_POST['idea_description']);
+	if ( 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+		$submission_nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
+		if ( wp_verify_nonce( $submission_nonce, 'wp_roadmap_new_idea' ) ) {
+			$title = sanitize_text_field( wp_unslash( $_POST['idea_title'] ) );
+			$description = sanitize_textarea_field( wp_unslash( $_POST['idea_description'] ?? '' ) );
 
             $options = get_option('wp_roadmap_settings', array());
             $default_idea_status = isset($options['default_idea_status']) ? $options['default_idea_status'] : 'pending';
@@ -136,19 +136,20 @@ function handle_new_idea_submission() {
     }
 
     // Ensure this conditional only runs if the nonce was verified successfully
-    if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($submission_nonce) && $idea_id) {
-        if (!empty($_POST['idea_taxonomies']) && is_array($_POST['idea_taxonomies'])) {
-            foreach ($_POST['idea_taxonomies'] as $tax_slug => $term_ids) {
-                if (!taxonomy_exists($tax_slug)) {
-                    continue; // Skip processing for non-existing taxonomies
-                }
-                $term_ids = array_map('intval', $term_ids); // Ensure term IDs are integers
-                wp_set_object_terms($idea_id, $term_ids, $tax_slug);
-            }
-        }
+		if ( 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) && ! empty( $submission_nonce ) && $idea_id ) {
+		if ( ! empty( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
+			foreach ( wp_unslash( $_POST['idea_taxonomies'] ) as $tax_slug => $term_ids ) {
+				$tax_slug = sanitize_key( $tax_slug );
+				if ( ! taxonomy_exists( $tax_slug ) ) {
+					continue; // Skip processing for non-existing taxonomies
+				}
+				$term_ids = array_map( 'intval', (array) $term_ids ); // Ensure term IDs are integers
+				wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
+			}
+		}
 
         $redirect_nonce = wp_create_nonce('new_idea_submitted');
-        $redirect_url = add_query_arg(['new_idea_submitted' => '1', 'nonce' => $redirect_nonce], esc_url_raw( $_SERVER['REQUEST_URI'] )); // Replace with your actual URL
+		$redirect_url = add_query_arg( array( 'new_idea_submitted' => '1', 'nonce' => $redirect_nonce ), isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
         wp_redirect($redirect_url);
         exit;
     }

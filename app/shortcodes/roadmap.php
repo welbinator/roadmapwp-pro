@@ -92,7 +92,7 @@ function roadmap_shortcode( $atts ) {
 				$query = new \WP_Query( $args );
 				?>
 				<div class="roadmap-column">
-					<h3 style="text-align:center;"><?php echo esc_html__( $status, 'roadmapwp-pro' ); ?></h3>
+					<h3 style="text-align:center;"><?php echo esc_html( $status ); ?></h3>
 					<?php
 					if ( $query->have_posts() ) {
 						while ( $query->have_posts() ) :

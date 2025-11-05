@@ -1,0 +1,285 @@
+Line,Column,Code,Message
+434,9,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to __().
+Learn more (opens in a new tab)"
+441,53,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to __().
+Learn more (opens in a new tab)"
+449,19,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to esc_html_e().
+Learn more (opens in a new tab)"
+,,,
+FILE: app/shortcodes/roadmap-tabs.php,,,
+Line,Column,Code,Message
+80,44,WordPress.WP.I18n.NonSingularStringLiteralText,"The $text parameter must be a single text string literal. Found: $status
+Learn more (opens in a new tab)"
+,,,
+FILE: app/shortcodes/roadmap.php,,,
+Line,Column,Code,Message
+95,75,WordPress.WP.I18n.NonSingularStringLiteralText,"The $text parameter must be a single text string literal. Found: $status
+Learn more (opens in a new tab)"
+,,,
+FILE: EDD_Licensing.php,,,
+Line,Column,Code,Message
+40,5,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to esc_html_e().
+Learn more (opens in a new tab)"
+53,34,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to esc_html_e().
+Learn more (opens in a new tab)"
+61,20,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to __().
+Learn more (opens in a new tab)"
+66,24,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to __().
+Learn more (opens in a new tab)"
+152,24,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to __().
+Learn more (opens in a new tab)"
+270,28,WordPress.WP.I18n.MissingArgDomain,"Missing $domain parameter in function call to __().
+Learn more (opens in a new tab)"
+,,,
+FILE: EDD_SL_Plugin_Updater.php,,,
+Line,Column,Code,Message
+257,70,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+263,86,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+268,59,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+276,17,WordPress.WP.I18n.MissingTranslatorsComment,"A function call to __() with texts containing placeholders was found, but was not accompanied by a ""translators:"" comment on the line above to clarify the meaning of the placeholders.
+Learn more (opens in a new tab)"
+276,81,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+287,44,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+519,89,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+519,138,WordPress.WP.I18n.TextDomainMismatch,"Mismatched text domain. Expected 'roadmapwp-pro' but got 'easy-digital-downloads'.
+Learn more (opens in a new tab)"
+,,,
+FILE: .gitignore,,,
+Line,Column,Code,Message
+0,0,hidden_files,Hidden files are not permitted.
+,,,
+FILE: pro/settings/custom-taxonomies.php,,,
+Line,Column,Code,Message
+100,41,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$error_message'.
+Learn more (opens in a new tab)"
+160,18,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'wp_nonce_field'.
+Learn more (opens in a new tab)"
+198,14,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'wp_nonce_field'.
+Learn more (opens in a new tab)"
+,,,
+FILE: pro/blocks/roadmap-tabs-block.php,,,
+Line,Column,Code,Message
+142,31,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'admin_url'.
+Learn more (opens in a new tab)"
+143,29,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'wp_create_nonce'.
+Learn more (opens in a new tab)"
+166,73,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$selected_taxonomies'.
+Learn more (opens in a new tab)"
+,,,
+FILE: app/admin-pages.php,,,
+Line,Column,Code,Message
+74,30,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$html'.
+Learn more (opens in a new tab)"
+85,26,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'apply_filters'.
+Learn more (opens in a new tab)"
+97,30,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$html'.
+Learn more (opens in a new tab)"
+109,30,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'apply_filters'.
+Learn more (opens in a new tab)"
+120,30,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'apply_filters'.
+Learn more (opens in a new tab)"
+164,89,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$selected'.
+Learn more (opens in a new tab)"
+216,10,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$pro_feature'.
+Learn more (opens in a new tab)"
+,,,
+FILE: app/shortcodes/single-idea.php,,,
+Line,Column,Code,Message
+79,28,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'apply_filters'.
+Learn more (opens in a new tab)"
+,,,
+FILE: app/shortcodes/roadmap-tabs.php,,,
+Line,Column,Code,Message
+104,35,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'admin_url'.
+Learn more (opens in a new tab)"
+105,33,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found 'wp_create_nonce'.
+Learn more (opens in a new tab)"
+,,,
+FILE: app/shortcodes/roadmap.php,,,
+Line,Column,Code,Message
+140,113,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$selected'.
+Learn more (opens in a new tab)"
+,,,
+FILE: app/includes/display-ideas-admin.php,,,
+Line,Column,Code,Message
+12,81,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$selected'.
+Learn more (opens in a new tab)"
+,,,
+FILE: app/class-voting.php,,,
+Line,Column,Code,Message
+74,1,WordPress.Security.EscapeOutput.HeredocOutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found interpolation in unescaped heredoc.
+Learn more (opens in a new tab)"
+80,1,WordPress.Security.EscapeOutput.HeredocOutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found interpolation in unescaped heredoc.
+Learn more (opens in a new tab)"
+,,,
+FILE: EDD_SL_Plugin_Updater.php,,,
+Line,Column,Code,Message
+225,13,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$this'.
+Learn more (opens in a new tab)"
+226,13,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '$file'.
+Learn more (opens in a new tab)"
+268,17,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '__'.
+Learn more (opens in a new tab)"
+276,17,WordPress.Security.EscapeOutput.OutputNotEscaped,"All output should be run through an escaping function (see the Security sections in the WordPress Developer Handbooks), found '__'.
+Learn more (opens in a new tab)"
+,,,
+FILE: EDD_SL_Plugin_Updater.php,,,
+Line,Column,Code,Message
+0,0,plugin_updater_detected,"Plugin Updater detected.
+These are not permitted in WordPress.org hosted plugins. Detected: class EDD_SL_Plugin_Updater"
+0,0,plugin_updater_detected,"Plugin Updater detected.
+These are not permitted in WordPress.org hosted plugins. Detected: site_transient_update_plugins"
+0,0,update_modification_detected,"Plugin Updater detected.
+Detected code which may be altering WordPress update routines. Detected: pre_set_site_transient_update_plugins
+Learn more (opens in a new tab)"
+0,0,update_modification_detected,"Plugin Updater detected.
+Detected code which may be altering WordPress update routines. Detected: _site_transient_update_plugins
+Learn more (opens in a new tab)"
+,,,
+FILE: app/shortcodes/roadmap.php,,,
+Line,Column,Code,Message
+135,33,WordPress.WP.DeprecatedParameters.Get_termsParam2Found,"The parameter ""array( 'hide_empty' => false )"" at position #2 of get_terms() has been deprecated since WordPress version 4.5.0. Instead do not pass the parameter."
+,,,
+FILE: app/includes/display-ideas-admin.php,,,
+Line,Column,Code,Message
+7,37,WordPress.WP.DeprecatedParameters.Get_termsParam2Found,"The parameter ""array( 'hide_empty' => false )"" at position #2 of get_terms() has been deprecated since WordPress version 4.5.0. Instead do not pass the parameter."
+,,,
+FILE: app/class-voting.php,,,
+Line,Column,Code,Message
+73,14,Squiz.PHP.Heredoc.NotAllowed,"Use of heredoc and nowdoc syntax (""<<<"") is not allowed; use standard strings or inline HTML instead"
+36,77,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['REMOTE_ADDR'] not unslashed before sanitization. Use wp_unslash() or similar
+37,85,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['HTTP_USER_AGENT'] not unslashed before sanitization. Use wp_unslash() or similar
+,,,
+FILE: pro/settings/custom-taxonomies.php,,,
+Line,Column,Code,Message
+27,25,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_GET['_wpnonce'] not unslashed before sanitization. Use wp_unslash() or similar
+27,25,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_GET['_wpnonce']
+27,65,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_GET['taxonomy'] not unslashed before sanitization. Use wp_unslash() or similar
+27,65,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_GET['taxonomy']
+27,106,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_GET['taxonomy'] not unslashed before sanitization. Use wp_unslash() or similar
+27,106,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_GET['taxonomy']
+35,18,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_METHOD']. Use isset() or empty() to check the index exists before using it
+37,77,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['wp_roadmap_add_term_nonce'] not unslashed before sanitization. Use wp_unslash() or similar
+37,77,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['wp_roadmap_add_term_nonce']
+37,131,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['taxonomy_slug'] not unslashed before sanitization. Use wp_unslash() or similar
+37,131,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['taxonomy_slug']
+41,41,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['new_term'] not unslashed before sanitization. Use wp_unslash() or similar
+42,41,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['taxonomy_slug'] not unslashed before sanitization. Use wp_unslash() or similar
+61,7,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_METHOD']. Use isset() or empty() to check the index exists before using it
+62,25,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['wp_roadmap_pro_nonce'] not unslashed before sanitization. Use wp_unslash() or similar
+62,25,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['wp_roadmap_pro_nonce']
+64,46,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_POST['taxonomy_singular']. Use isset() or empty() to check the index exists before using it
+64,46,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['taxonomy_singular'] not unslashed before sanitization. Use wp_unslash() or similar
+65,46,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_POST['taxonomy_plural']. Use isset() or empty() to check the index exists before using it
+65,46,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['taxonomy_plural'] not unslashed before sanitization. Use wp_unslash() or similar
+,,,
+FILE: pro/blocks/new-idea-form-block.php,,,
+Line,Column,Code,Message
+139,14,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+139,55,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+270,16,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['idea_taxonomies'] not unslashed before sanitization. Use wp_unslash() or similar
+270,16,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['idea_taxonomies']
+280,36,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['selected_statuses'] not unslashed before sanitization. Use wp_unslash() or similar
+280,36,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['selected_statuses']
+291,76,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_URI']. Use isset() or empty() to check the index exists before using it
+291,76,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['REQUEST_URI'] not unslashed before sanitization. Use wp_unslash() or similar
+,,,
+FILE: app/shortcodes/new-idea-form.php,,,
+Line,Column,Code,Message
+32,17,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+32,50,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+50,31,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_URI']. Use isset() or empty() to check the index exists before using it
+50,31,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['REQUEST_URI'] not unslashed before sanitization. Use wp_unslash() or similar
+120,20,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_METHOD']. Use isset() or empty() to check the index exists before using it
+123,42,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['idea_title'] not unslashed before sanitization. Use wp_unslash() or similar
+124,52,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_POST['idea_description']. Use isset() or empty() to check the index exists before using it
+124,52,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['idea_description'] not unslashed before sanitization. Use wp_unslash() or similar
+139,20,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_METHOD']. Use isset() or empty() to check the index exists before using it
+141,22,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['idea_taxonomies'] not unslashed before sanitization. Use wp_unslash() or similar
+141,22,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['idea_taxonomies']
+151,111,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_SERVER['REQUEST_URI']. Use isset() or empty() to check the index exists before using it
+151,111,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['REQUEST_URI'] not unslashed before sanitization. Use wp_unslash() or similar
+,,,
+FILE: app/shortcodes/single-idea.php,,,
+Line,Column,Code,Message
+32,20,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+32,49,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+,,,
+FILE: app/ajax-handlers.php,,,
+Line,Column,Code,Message
+20,21,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_POST['post_id']. Use isset() or empty() to check the index exists before using it
+30,70,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['REMOTE_ADDR'] not unslashed before sanitization. Use wp_unslash() or similar
+31,78,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_SERVER['HTTP_USER_AGENT'] not unslashed before sanitization. Use wp_unslash() or similar
+73,56,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['filter_data'] not unslashed before sanitization. Use wp_unslash() or similar
+73,56,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['filter_data']
+74,68,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['search_term'] not unslashed before sanitization. Use wp_unslash() or similar
+159,35,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['taxonomy'] not unslashed before sanitization. Use wp_unslash() or similar
+162,26,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['nonce'] not unslashed before sanitization. Use wp_unslash() or similar
+162,26,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['nonce']
+188,46,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_POST['taxonomy']. Use isset() or empty() to check the index exists before using it
+188,46,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['taxonomy'] not unslashed before sanitization. Use wp_unslash() or similar
+189,54,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,Detected usage of a possibly undefined superglobal array index: $_POST['terms']. Use isset() or empty() to check the index exists before using it
+218,71,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['statuses'] not unslashed before sanitization. Use wp_unslash() or similar
+218,71,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_POST['statuses']
+253,83,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['idea-status'] not unslashed before sanitization. Use wp_unslash() or similar
+254,105,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['selectedTaxonomies'] not unslashed before sanitization. Use wp_unslash() or similar
+,,,
+FILE: app/cpt-ideas.php,,,
+Line,Column,Code,Message
+132,3,WordPress.PHP.DevelopmentFunctions.error_log_error_log,error_log() found. Debug code should not normally be used in production.
+,,,
+FILE: EDD_Licensing.php,,,
+Line,Column,Code,Message
+120,84,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_POST['roadmapwp_pro_license_key'] not unslashed before sanitization. Use wp_unslash() or similar
+,,,
+FILE: wp-roadmap-pro.php,,,
+Line,Column,Code,Message
+34,14,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+34,51,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+36,12,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+39,27,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+39,27,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,$_GET['message'] not unslashed before sanitization. Use wp_unslash() or similar
+39,27,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,Detected usage of a non-sanitized input variable: $_GET['message']
+134,5,WordPress.PHP.DevelopmentFunctions.error_log_error_log,error_log() found. Debug code should not normally be used in production.
+192,24,WordPress.WP.DeprecatedFunctions.get_page_by_titleFound,get_page_by_title() has been deprecated since WordPress version 6.2.0. Use WP_Query instead.
+,,,
+FILE: EDD_SL_Plugin_Updater.php,,,
+Line,Column,Code,Message
+506,15,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+506,75,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+510,15,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+514,15,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+514,54,WordPress.Security.NonceVerification.Recommended,Processing form data without nonce verification.
+,,,
+FILE: README.md,,,
+Line,Column,Code,Message
+0,0,missing_readme_header_tested,"The ""Tested up to"" header is missing in the readme file.
+Learn more (opens in a new tab)"
+0,0,no_license,"Missing ""License"".
+Please update your readme with a valid GPLv2 (or later) compatible license.
+Learn more (opens in a new tab)"
+0,0,no_stable_tag,"Invalid or missing Stable Tag.
+Your Stable Tag is meant to be the stable version of your plugin and it needs to be exactly the same with the Version in your main plugin file's header. Any mismatch can prevent users from downloading the correct plugin files from WordPress.org.
+Learn more (opens in a new tab)"
+0,0,mismatched_plugin_name,"Plugin name ""roadmapwp-pro"" is different from the name declared in plugin header ""RoadMapWP Pro"".
+Learn more (opens in a new tab)"
+,,,
+FILE: README.md,,,
+Line,Column,Code,Message
+0,0,trademarked_term,"The plugin name includes a restricted term. Your plugin name - ""roadmapwp-pro"" - contains the restricted term ""wp"" which can be used , as long as you don't change it to the full name. For example: You can use WP but not WordPress."
+,,,
+FILE: wp-roadmap-pro.php,,,
+Line,Column,Code,Message
+0,0,trademarked_term,"The plugin name includes a restricted term. Your plugin name - ""RoadMapWP Pro"" - contains the restricted term ""wp"" which can be used , as long as you don't change it to the full name. For example: You can use WP but not WordPress."
+0,0,trademarked_term,"The plugin slug includes a restricted term. Your plugin slug - ""roadmapwp-pro"" - contains the restricted term ""wp"" which can be used within the plugin slug, as long as you don't use the full name in the plugin name. For example: You can use WP but not WordPress."
+,,,
+FILE: app/admin-functions.php,,,
+Line,Column,Code,Message
+110,51,PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent,Found call to wp_enqueue_style() with external resource. Offloading styles to your servers or any remote service is disallowed.
+111,52,PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent,Found call to wp_enqueue_script() with external resource. Offloading scripts to your servers or any remote service is disallowed.

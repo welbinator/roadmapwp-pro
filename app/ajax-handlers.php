@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function handle_vote() {
 	check_ajax_referer( 'wp-roadmap-vote-nonce', 'nonce' );
 
-	$post_id = intval( $_POST['post_id'] );
+	$post_id = isset( $_POST['post_id'] ) ? intval( wp_unslash( $_POST['post_id'] ) ) : 0;
 	$user_id = get_current_user_id();
 
 	// Check if the user is allowed to vote
@@ -27,8 +27,8 @@ function handle_vote() {
     }
 
 	// Generate a unique key for non-logged-in user
-	$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
-	$http_user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+	$remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$http_user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 	$user_key = $user_id ? 'user_' . $user_id : 'guest_' . md5($remote_addr . $http_user_agent);
 
 
@@ -70,8 +70,8 @@ add_action( 'wp_ajax_nopriv_wp_roadmap_handle_vote', __NAMESPACE__ . '\\handle_v
 function filter_ideas() {
 	check_ajax_referer( 'wp-roadmap-idea-filter-nonce', 'nonce' );
 
-	$filter_data = isset($_POST['filter_data']) ? (array) $_POST['filter_data'] : array();
-	$search_term = isset($_POST['search_term']) ? sanitize_text_field($_POST['search_term']) : '';
+	$filter_data = isset( $_POST['filter_data'] ) ? (array) wp_unslash( $_POST['filter_data'] ) : array();
+	$search_term = isset( $_POST['search_term'] ) ? sanitize_text_field( wp_unslash( $_POST['search_term'] ) ) : '';
 	$tax_query   = array();
 
 	$custom_taxonomies  = get_option( 'wp_roadmap_custom_taxonomies', array() );
@@ -156,10 +156,11 @@ function handle_delete_custom_taxonomy() {
 	}
 
 	// Sanitize and assign the taxonomy
-	$taxonomy = sanitize_text_field( $_POST['taxonomy'] );
+	$taxonomy = sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) );
 
 	// Verify the nonce
-	if ( ! wp_verify_nonce( $_POST['nonce'], 'wp_roadmap_delete_taxonomy_nonce' ) ) {
+	$nonce_val = wp_unslash( $_POST['nonce'] );
+	if ( ! wp_verify_nonce( $nonce_val, 'wp_roadmap_delete_taxonomy_nonce' ) ) {
 		wp_send_json_error( array( 'message' => __( 'Nonce verification failed.', 'roadmapwp-pro' ) ) );
 		return;
 	}
@@ -185,8 +186,8 @@ add_action( 'wp_ajax_delete_custom_taxonomy', __NAMESPACE__ . '\\handle_delete_c
 function handle_delete_selected_terms() {
 	check_ajax_referer( 'wp_roadmap_delete_terms_nonce', 'nonce' );
 
-	$taxonomy            = sanitize_text_field( $_POST['taxonomy'] );
-	$terms               = array_map( 'intval', (array) $_POST['terms'] );
+	$taxonomy            = sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) );
+	$terms               = array_map( 'intval', (array) wp_unslash( $_POST['terms'] ) );
 	$deletion_successful = true;
 
 	foreach ( $terms as $term_id ) {
@@ -214,8 +215,8 @@ add_action( 'wp_ajax_delete_selected_terms', __NAMESPACE__ . '\\handle_delete_se
 function update_idea_status() {
 	check_ajax_referer( 'wp-roadmap-admin-frontend-nonce', 'nonce' );
 
-	$idea_id  = isset( $_POST['idea_id'] ) ? intval( $_POST['idea_id'] ) : 0;
-	$statuses = isset( $_POST['statuses'] ) ? json_decode( stripslashes( $_POST['statuses'] ), true ) : array();
+	$idea_id  = isset( $_POST['idea_id'] ) ? intval( wp_unslash( $_POST['idea_id'] ) ) : 0;
+	$statuses = isset( $_POST['statuses'] ) ? json_decode( wp_unslash( $_POST['statuses'] ), true ) : array();
 
 	if ( $idea_id && ! empty( $statuses ) ) {
 		// Remove all existing status terms from the post
@@ -250,8 +251,8 @@ function load_ideas_for_status() {
 
 	check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
-	$status                  = isset( $_POST['idea-status'] ) ? sanitize_text_field( $_POST['idea-status'] ) : '';
-	$selected_taxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( $_POST['selectedTaxonomies'] ) ) : array();
+	$status                  = isset( $_POST['idea-status'] ) ? sanitize_text_field( wp_unslash( $_POST['idea-status'] ) ) : '';
+	$selected_taxonomiesSlugs = isset( $_POST['selectedTaxonomies'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST['selectedTaxonomies'] ) ) ) : array();
 
 	// Initialize the tax query with the status term
 	$tax_query = array(
@@ -330,7 +331,7 @@ function load_ideas_for_status() {
 			<?php
 		}
 	} else {
-		echo '<p>No ideas found for this status.</p>';
+		echo '<p>' . esc_html__( 'No ideas found for this status.', 'roadmapwp-pro' ) . '</p>';
 	}
 
 	wp_reset_postdata();
