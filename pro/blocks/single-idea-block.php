@@ -57,26 +57,42 @@ function register_blocks() {
 					return '<p>You must be logged in to view this idea.</p>';
 				}
 
-				global $post;
+				global $post, $wp_query;
 				$original_post = $post;
-				// Debug: log the incoming context (only when WP_DEBUG enabled)
+				
+				// Debug log
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( 'RoadMapWP Debug: single-idea block render_callback entered. global_post_id=' . ( isset( $post->ID ) ? $post->ID : 'none' ) . ' REQUEST_URI=' . ( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '' ) );
+					error_log( 'RoadMapWP Debug: single-idea block render_callback entered.' .
+						' global_post_id=' . ( isset( $post->ID ) ? $post->ID : 'none' ) .
+						' post_type=' . ( isset( $post->post_type ) ? $post->post_type : 'none' ) .
+						' is_page=' . (int)is_page() .
+						' REQUEST_URI=' . ( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '' )
+					);
 				}
 
-				// Attempt to get the ideaId from the URL if available. If not present,
-				// fall back to the current global post when rendering a single 'idea'.
+				// First try to get idea_id from query string
 				$idea_id = filter_input( INPUT_GET, 'idea_id', FILTER_VALIDATE_INT );
-
+				
+				// If no idea_id in query string and we're viewing an idea post type, use that
+				if ( ! $idea_id && isset( $post ) && is_object( $post ) && 'idea' === get_post_type( $post ) ) {
+					$idea_id = $post->ID;
+				}
+				
+				// Get the idea post
 				if ( $idea_id ) {
-					$post = get_post( $idea_id );
-				} else {
-					// If the global post is already an 'idea' (e.g. when using the "Choose Page" template), use it.
-					if ( isset( $post ) && is_object( $post ) && 'idea' === get_post_type( $post ) ) {
-						$idea_id = $post->ID;
+					// Store current post
+					$temp_post = $post;
+					// Get and verify the idea post
+					$idea_post = get_post( $idea_id );
+					if ( $idea_post && 'idea' === get_post_type( $idea_post ) ) {
+						$post = $idea_post;
 					} else {
+						// Restore original post if idea not found
+						$post = $temp_post;
 						return '<p>Idea not found.</p>';
 					}
+				} else {
+					return '<p>No idea specified.</p>';
 				}
 
 				if ( ! $post || 'idea' !== get_post_type( $post ) ) {
@@ -160,11 +176,21 @@ function register_blocks() {
 					</div>
 				</main>
 				<?php
-				if ( 'idea' === get_post_type() ) {
+				if ( isset( $options['allow_comments'] ) && $options['allow_comments'] ) {
 					comments_template();
 				}
-					$post = $original_post;
-					return ob_get_clean();
+				
+				// Restore the original post
+				$post = $original_post;
+				
+				// Return the rendered content
+				$content = ob_get_clean();
+				
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'RoadMapWP Debug: single-idea block finished rendering idea_id=' . $idea_id );
+				}
+				
+				return $content;
 			},
 		)
 	);
