@@ -292,17 +292,164 @@ add_filter( 'comments_open', __NAMESPACE__ . '\\filter_comments_open', 10, 2 );
 function redirect_single_idea( $template ) {
 	global $post;
 
-	if ( 'idea' === $post->post_type ) {
-		$options             = get_option( 'wp_roadmap_settings' );
-		$single_idea_page_id = isset( $options['single_idea_page'] ) ? $options['single_idea_page'] : '';
-		$chosen_template     = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
+	if ( ! isset( $post ) || 'idea' !== get_post_type( $post ) ) {
+		return $template;
+	}
 
+	$options             = get_option( 'wp_roadmap_settings', array() );
+	$single_idea_page_id = isset( $options['single_idea_page'] ) ? intval( $options['single_idea_page'] ) : 0;
+	$chosen_template     = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
+
+	// If the admin chose to use a specific Page as the single idea template
+	if ( 'page' === $chosen_template && $single_idea_page_id ) {
+		// Try to locate the page's assigned template first
+		$page_template_slug = get_page_template_slug( $single_idea_page_id );
+		if ( $page_template_slug ) {
+			$located = locate_template( $page_template_slug );
+			if ( $located ) {
+				return $located;
+			}
+		}
+
+		// Fall back to the theme's page.php if present
+		$page_tpl = locate_template( 'page.php' );
+		if ( $page_tpl ) {
+			return $page_tpl;
+		}
+	}
+
+	// If the admin chose the plugin's built-in template, load it from the plugin
+	if ( 'plugin' === $chosen_template ) {
+		$plugin_template = plugin_dir_path( __FILE__ ) . 'templates/template-single-idea.php';
+		if ( file_exists( $plugin_template ) ) {
+			return $plugin_template;
+		}
 	}
 
 	return $template;
 }
 
 add_filter( 'single_template', __NAMESPACE__ . '\\redirect_single_idea' );
+
+/**
+ * If admin selected a Page to act as the single idea template, redirect
+ * idea permalinks to that Page and pass the idea_id via query string so
+ * the block placed on the Page can render the single idea.
+ */
+function redirect_single_idea_to_chosen_page(): void {
+	if ( is_admin() ) {
+		return;
+	}
+
+	if ( ! is_singular( 'idea' ) ) {
+		return;
+	}
+
+	global $post;
+	if ( ! $post || 'idea' !== get_post_type( $post ) ) {
+		return;
+	}
+
+	$options             = get_option( 'wp_roadmap_settings', array() );
+	$single_idea_page_id = isset( $options['single_idea_page'] ) ? intval( $options['single_idea_page'] ) : 0;
+	$chosen_template     = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
+
+	if ( 'page' !== $chosen_template || ! $single_idea_page_id ) {
+		return;
+	}
+
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		error_log( 'RoadMapWP Debug: redirect_single_idea_to_chosen_page firing. chosen_template=' . $chosen_template . ' single_idea_page_id=' . $single_idea_page_id . ' current_post_id=' . ( isset( $post->ID ) ? $post->ID : 'none' ) . ' request_uri=' . esc_url_raw( ( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '' ) ) );
+	}
+
+	// Avoid redirect loop: if we're already on the chosen page, do nothing.
+	if ( is_page( $single_idea_page_id ) ) {
+		return;
+	}
+
+	// Build target URL and include idea_id so the block can pick it up.
+	$target = get_permalink( $single_idea_page_id );
+	if ( ! $target ) {
+		return;
+	}
+
+	$idea_id = $post->ID;
+	// Append query arg safely
+	$target = add_query_arg( 'idea_id', $idea_id, $target );
+
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		error_log( 'RoadMapWP Debug: redirecting idea ' . $idea_id . ' to ' . $target );
+	}
+
+	wp_safe_redirect( $target );
+	exit;
+}
+add_action( 'template_redirect', __NAMESPACE__ . '\\redirect_single_idea_to_chosen_page', 5 );
+
+/**
+ * When the chosen Page is used as the single idea display and an idea_id query var
+ * is present, modify the main WP_Query so the theme treats the request as a
+ * singular 'idea' rather than a page or archive. This prevents themes from
+ * rendering an archive listing when the page slug collides with the CPT archive.
+ *
+ * Runs early on pre_get_posts and only affects the main query on the front-end.
+ */
+function adjust_chosen_page_main_query( \WP_Query $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	// Only act when a chosen page is configured
+	$options             = get_option( 'wp_roadmap_settings', array() );
+	$single_idea_page_id = isset( $options['single_idea_page'] ) ? intval( $options['single_idea_page'] ) : 0;
+	$chosen_template     = isset( $options['single_idea_template'] ) ? $options['single_idea_template'] : 'plugin';
+
+	if ( 'page' !== $chosen_template || ! $single_idea_page_id ) {
+		return;
+	}
+
+	// If we're on the chosen page and an idea_id is provided, rewrite the query
+	if ( isset( $_GET['idea_id'] ) && is_page( $single_idea_page_id ) ) {
+		$idea_id = intval( wp_unslash( $_GET['idea_id'] ) );
+		if ( ! $idea_id ) {
+			return;
+		}
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'RoadMapWP Debug: adjust_chosen_page_main_query detected idea_id=' . $idea_id . ' on page=' . $single_idea_page_id );
+			error_log( 'RoadMapWP Debug: main query before adjust: is_page=' . (int) $query->is_page . ' is_singular=' . (int) $query->is_singular . ' is_archive=' . (int) $query->is_archive );
+		}
+
+		$idea_post = get_post( $idea_id );
+		if ( ! $idea_post || 'idea' !== get_post_type( $idea_post ) ) {
+			return;
+		}
+
+		// Replace query properties so the theme renders a single idea
+		$query->is_page = false;
+		$query->is_singular = true;
+		$query->is_single = true;
+		$query->is_post_type_archive = false;
+		$query->is_archive = false;
+		$query->queried_object = $idea_post;
+		$query->queried_object_id = $idea_post->ID;
+		$query->post_count = 1;
+		$query->found_posts = 1;
+		$query->max_num_pages = 1;
+		$query->posts = array( $idea_post );
+
+		// Ensure global post is set for template functions
+		global $post, $wp_query;
+		$post = $idea_post;
+		$wp_query = $query;
+		setup_postdata( $post );
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'RoadMapWP Debug: main query adjusted to idea_id=' . $idea_post->ID . ' posts_count=' . count( $query->posts ) );
+		}
+	}
+}
+add_action( 'pre_get_posts', __NAMESPACE__ . '\\adjust_chosen_page_main_query', 1 );
 
 // Check if the idea has at least one vote
 function get_idea_class_with_votes( $idea_id ) {

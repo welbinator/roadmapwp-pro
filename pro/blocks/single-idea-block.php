@@ -59,12 +59,35 @@ function register_blocks() {
 
 				global $post;
 				$original_post = $post;
-				// Attempt to get the ideaId from the URL if available.
+				// Debug: log the incoming context (only when WP_DEBUG enabled)
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'RoadMapWP Debug: single-idea block render_callback entered. global_post_id=' . ( isset( $post->ID ) ? $post->ID : 'none' ) . ' REQUEST_URI=' . ( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '' ) );
+				}
+
+				// Attempt to get the ideaId from the URL if available. If not present,
+				// fall back to the current global post when rendering a single 'idea'.
 				$idea_id = filter_input( INPUT_GET, 'idea_id', FILTER_VALIDATE_INT );
 
-				$post = get_post( $idea_id );
-				if ( ! $post || 'idea' !== $post->post_type ) {
+				if ( $idea_id ) {
+					$post = get_post( $idea_id );
+				} else {
+					// If the global post is already an 'idea' (e.g. when using the "Choose Page" template), use it.
+					if ( isset( $post ) && is_object( $post ) && 'idea' === get_post_type( $post ) ) {
+						$idea_id = $post->ID;
+					} else {
+						return '<p>Idea not found.</p>';
+					}
+				}
+
+				if ( ! $post || 'idea' !== get_post_type( $post ) ) {
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( 'RoadMapWP Debug: single-idea block: idea not found. idea_id=' . var_export( $idea_id, true ) . ' resolved_post_type=' . ( is_object( $post ) ? get_post_type( $post ) : 'none' ) );
+					}
 					return '<p>Idea not found.</p>';
+				}
+
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'RoadMapWP Debug: single-idea block rendering idea_id=' . $post->ID );
 				}
 
 					// Get vote count.
