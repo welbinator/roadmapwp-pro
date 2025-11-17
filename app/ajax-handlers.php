@@ -541,12 +541,17 @@ function load_ideas_for_status(): void {
 
     $query = new \WP_Query( $args );
 
+    // Set up taxonomies to display (exclude idea-status)
+    $custom_taxonomies = get_option( 'wp_roadmap_custom_taxonomies', array() );
+    $taxonomies        = array_merge( array( 'idea-tag' ), array_keys( $custom_taxonomies ) );
+
     ob_start();
 
     if ( $query->have_posts() ) {
         while ( $query->have_posts() ) {
             $query->the_post();
             $idea_id = (int) get_the_ID();
+            $vote_count = intval( get_post_meta( $idea_id, 'idea_votes', true ) );
             // @phpstan-ignore-next-line -- helper defined in admin functions within this project
             $idea_class = Functions\get_idea_class_with_votes( $idea_id );
             include plugin_dir_path( __FILE__ ) . 'includes/display-ideas-grid.php';
