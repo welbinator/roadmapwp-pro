@@ -176,7 +176,8 @@ function register_blocks() {
 					</div>
 				</main>
 				<?php
-				if ( isset( $options['allow_comments'] ) && $options['allow_comments'] ) {
+				$options = get_option( 'wp_roadmap_settings', array() );
+				if ( isset( $options['allow_comments'] ) && $options['allow_comments'] && comments_open( $post->ID ) ) {
 					comments_template();
 				}
 				
