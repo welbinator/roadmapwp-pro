@@ -33,7 +33,11 @@ jQuery( document ).ready(
 						'nonce': RoadMapWPFilterAjax.nonce // Security nonce
 					},
 					success: function (response) {
-						$( '.rmwp__ideas-list' ).html( response );
+						if ( response.success && response.data && response.data.html ) {
+							$( '.rmwp__ideas-list' ).html( response.data.html );
+						} else {
+							console.log( 'Invalid response format:', response );
+						}
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
 						console.log( 'AJAX error:', textStatus, errorThrown );

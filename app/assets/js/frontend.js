@@ -4,18 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    document.querySelectorAll('.rmwp__idea-status-update-form').forEach(function(form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            if (!RoadMapWPAdminFrontendAjax.nonce) {
-                console.error('RoadMapWP Error: Security nonce missing');
-                alert('Error: Security validation failed. Please refresh the page and try again.');
-                return;
-            }
+    // Use event delegation to handle dynamically loaded forms
+    document.addEventListener('submit', function(event) {
+        // Check if the submitted form is a status update form
+        if (!event.target.classList.contains('rmwp__idea-status-update-form')) {
+            return;
+        }
+        
+        event.preventDefault();
+        
+        var form = event.target;
+        
+        if (!RoadMapWPAdminFrontendAjax.nonce) {
+            console.error('RoadMapWP Error: Security nonce missing');
+            alert('Error: Security validation failed. Please refresh the page and try again.');
+            return;
+        }
 
-            var ideaId = this.getAttribute('data-idea-id');
-            var selectElement = this.querySelector('.rmwp__status-select');
+        var ideaId = form.getAttribute('data-idea-id');
+        var selectElement = form.querySelector('.rmwp__status-select');
             
             if (!selectElement) {
                 console.error('RoadMapWP Error: Status select element not found');
@@ -67,6 +74,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 alert('Error connecting to server. Check console for details.');
             });
-        });
     });
 });

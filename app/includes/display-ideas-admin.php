@@ -27,6 +27,10 @@ if ( current_user_can( 'manage_options' ) ) : ?>
 						$current_statuses = array();
 					}
 
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( 'RoadMapWP Admin Template Debug: Idea ID ' . $idea_id . ' current_statuses: ' . print_r( $current_statuses, true ) );
+					}
+
 					foreach ( $statuses as $status_term ) {
 						$is_selected = in_array( $status_term->slug, $current_statuses, true );
 						printf( '<option value="%s" %s>%s</option>', esc_attr( $status_term->slug ), selected( $is_selected, true, false ), esc_html( $status_term->name ) );

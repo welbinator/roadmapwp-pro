@@ -13,6 +13,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Clear all filter result caches.
+ * This is needed when idea data changes (e.g., status updates) to ensure fresh results.
+ */
+function clear_filter_caches(): void {
+    global $wpdb;
+    
+    // Delete all transients that start with 'rmwp_filter_'
+    $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+            $wpdb->esc_like( '_transient_rmwp_filter_' ) . '%'
+        )
+    );
+    
+    // Also delete the timeout transients
+    $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+            $wpdb->esc_like( '_transient_timeout_rmwp_filter_' ) . '%'
+        )
+    );
+    
+    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+        error_log( 'RoadMapWP: Cleared all filter caches' );
+    }
+}
+
+/**
  * Handles voting functionality via AJAX.
  */
 function handle_vote(): void {
@@ -77,6 +105,10 @@ function filter_ideas(): void {
 
     $filter_data = filter_input( INPUT_POST, 'filter_data', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
     $filter_data = is_array( $filter_data ) ? $filter_data : array();
+    
+    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+        error_log( 'RoadMapWP Filter Debug: Received filter_data: ' . print_r( $filter_data, true ) );
+    }
     $search_term = filter_input( INPUT_POST, 'search_term', FILTER_SANITIZE_STRING );
     $search_term = $search_term ? sanitize_text_field( $search_term ) : '';
     $page        = filter_input( INPUT_POST, 'page', FILTER_VALIDATE_INT );
@@ -216,8 +248,14 @@ function filter_ideas(): void {
             // @phpstan-ignore-next-line -- helper defined in admin functions within this project
             $idea_class = Functions\get_idea_class_with_votes( $idea_id );
 
-            echo '<div class="wp-roadmap-idea border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden ' . esc_attr( $idea_class ) . '" data-v0-t="card">';
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                $debug_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'names' ) );
+                error_log( 'RoadMapWP Filter Debug: Idea ID ' . $idea_id . ' (' . get_the_title( $idea_id ) . ') has statuses: ' . print_r( $debug_statuses, true ) );
+            }
+
+            echo '<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden ' . esc_attr( $idea_class ) . '" data-v0-t="card">';
             include plugin_dir_path( __FILE__ ) . 'includes/display-ideas-grid.php';
+            include plugin_dir_path( __FILE__ ) . 'includes/display-ideas-admin.php';
             echo '</div>';
         endwhile;
         echo '</div>';
@@ -393,6 +431,9 @@ function update_idea_status(): void {
     if ( empty( $added_terms ) ) {
         wp_send_json_error( array( 'message' => __( 'Could not set any status terms.', 'roadmapwp-pro' ) ) );
     }
+
+    // Clear all filter caches since the status has changed
+    clear_filter_caches();
 
     wp_send_json_success( array(
         'message' => __( 'Status updated successfully.', 'roadmapwp-pro' ),
