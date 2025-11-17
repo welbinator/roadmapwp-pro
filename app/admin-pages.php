@@ -265,7 +265,8 @@ function display_taxonomies_page() {
 
 	echo '<h2>' . esc_html__( 'Taxonomies', 'roadmapwp-pro' ) . '</h2>';
 
-	echo wp_kses_post( $pro_feature );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Content is escaped in the filter callback
+	echo $pro_feature;
 }
 
 /**

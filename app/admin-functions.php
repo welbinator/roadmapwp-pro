@@ -103,9 +103,11 @@ function enqueue_admin_styles( $hook ) {
 	if ( $hook == 'roadmap_page_wp-roadmap-settings' ) {
 		wp_enqueue_style( 'wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css', array(), '4.0.13' );
 		wp_enqueue_script( 'wp-roadmap-select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js', array( 'jquery' ), '4.0.13', true );
+		wp_enqueue_script( 'wp-roadmap-settings-js', plugin_dir_url( __FILE__ ) . 'assets/js/settings.js', array( 'jquery' ), ( defined( 'RMWP_PLUGIN_VERSION' ) ? RMWP_PLUGIN_VERSION : 'dev' ), true );
 
-		// This script initializes Select2 for your specific select field.
+		// Initialize Select2 and add settings styles
 		wp_add_inline_script( 'wp-roadmap-select2-js', "jQuery(document).ready(function($) { $('.wp-roadmap-select2').select2(); });" );
+		wp_add_inline_style( 'wp-roadmap-general-admin-styles', '#single_idea_page_setting { display: none; }' );
 	}
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_styles' );
