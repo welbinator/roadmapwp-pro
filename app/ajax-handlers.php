@@ -248,11 +248,6 @@ function filter_ideas(): void {
             // @phpstan-ignore-next-line -- helper defined in admin functions within this project
             $idea_class = Functions\get_idea_class_with_votes( $idea_id );
 
-            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                $debug_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'names' ) );
-                error_log( 'RoadMapWP Filter Debug: Idea ID ' . $idea_id . ' (' . get_the_title( $idea_id ) . ') has statuses: ' . print_r( $debug_statuses, true ) );
-            }
-
             echo '<div class="wp-roadmap-idea flex flex-col justify-between border bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden ' . esc_attr( $idea_class ) . '" data-v0-t="card">';
             include plugin_dir_path( __FILE__ ) . 'includes/display-ideas-grid.php';
             include plugin_dir_path( __FILE__ ) . 'includes/display-ideas-admin.php';
