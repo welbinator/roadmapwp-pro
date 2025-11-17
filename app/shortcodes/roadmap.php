@@ -34,7 +34,8 @@ function roadmap_shortcode( $atts ) {
 	// Retrieve dynamic status terms.
 	$dynamic_status_terms = get_terms(
 		array(
-			'taxonomy' => 'idea-status',
+			'taxonomy'   => 'idea-status',
+			'hide_empty' => false,
 		)
 	);
 	$dynamic_statuses     = array_map(
@@ -140,11 +141,14 @@ function roadmap_shortcode( $atts ) {
 										<h6 class="text-center">Admin only</h6>
 										<form class="rmwp__idea-status-update-form" data-idea-id="<?php echo intval( $idea_id ); ?>">
 											<select multiple class="rmwp__status-select" name="idea_status[]">
-												<?php
-												$statuses         = get_terms( array( 'taxonomy' => 'idea-status' ) );
-												$current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );
-
-												if ( ! is_wp_error( $statuses ) && ! is_wp_error( $current_statuses ) ) {
+										<?php
+										$statuses         = get_terms(
+											array(
+												'taxonomy'   => 'idea-status',
+												'hide_empty' => false,
+											)
+										);
+										$current_statuses = wp_get_post_terms( $idea_id, 'idea-status', array( 'fields' => 'slugs' ) );												if ( ! is_wp_error( $statuses ) && ! is_wp_error( $current_statuses ) ) {
 													foreach ( $statuses as $status ) {
 														$selected = in_array( $status->slug, $current_statuses, true ) ? ' selected="selected"' : '';
 														echo '<option value="' . esc_attr( $status->slug ) . '"' . esc_attr( $selected ) . '>' . esc_html( $status->name ) . '</option>';
