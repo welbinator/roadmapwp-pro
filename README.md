@@ -1,6 +1,6 @@
 # RoadMapWP Pro
 
-Stable tag: 2.3.3
+Stable tag: 2.4.0
 
 Tested up to: 6.5
 
