@@ -49,28 +49,6 @@ function hide_custom_idea_heading_setting( $content ) {
 	$content .= '<input type="checkbox" name="wp_roadmap_settings[hide_custom_idea_heading]" id="hide_custom_idea_heading" value="1" ' . $hide_submit_idea_heading_checked . ' />';
 	$content .= '<br/>';
 
-	// JavaScript for toggling the visibility of the custom heading input
-	$content .= '<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var checkbox = document.getElementById("hide_custom_idea_heading");
-        var label = document.querySelector("label[for=\'custom_idea_heading\']");
-        var input = document.querySelector("input[name=\'wp_roadmap_settings[custom_idea_heading]\']");
-
-        function toggleInput() {
-            if (checkbox.checked) {
-                label.style.display = "none";
-                input.style.display = "none";
-            } else {
-                label.style.display = "inline";
-                input.style.display = "inline";
-            }
-        }
-
-        checkbox.addEventListener("change", toggleInput);
-        toggleInput(); // Initialize on page load
-    });
-    </script>';
-
 	// Input field for custom heading
 	$content .= '<label for="custom_idea_heading">Custom Heading: </label>';
 	$content .= '<input type="text" name="wp_roadmap_settings[custom_idea_heading]" value="' . esc_attr( $new_submit_idea_heading ) . '" />';

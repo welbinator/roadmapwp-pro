@@ -48,31 +48,6 @@ function hide_display_ideas_heading_setting( $content ) {
 	$content .= '<input type="checkbox" name="wp_roadmap_settings[hide_display_ideas_heading]" id="hide_display_ideas_heading" value="1" ' . $hide_display_ideas_heading_checked . ' />';
 	$content .= '<br/>';
 
-		// Add JavaScript to toggle the visibility of the label and input field based on checkbox state
-		$content .= '<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var checkbox = document.getElementById("hide_display_ideas_heading");
-            var label = document.querySelector("label[for=\'custom_display_ideas_heading\']");
-            var input = document.querySelector("input[name=\'wp_roadmap_settings[custom_display_ideas_heading]\']");
-
-            checkbox.addEventListener("change", function() {
-                if (checkbox.checked) {
-                    label.style.display = "none";
-                    input.style.display = "none";
-                } else {
-                    label.style.display = "inline";
-                    input.style.display = "inline";
-                }
-            });
-
-            // Initialize visibility based on the initial checkbox state
-            if (checkbox.checked) {
-                label.style.display = "none";
-                input.style.display = "none";
-            }
-        });
-    </script>';
-
 	$content .= '<label for="custom_display_ideas_heading">Custom Heading: </label>';
 	$content .= '<input type="text" name="wp_roadmap_settings[custom_display_ideas_heading]" value="' . esc_attr( $new_display_ideas_heading ) . '" />';
 

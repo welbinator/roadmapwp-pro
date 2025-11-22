@@ -52,7 +52,7 @@ function register_idea_post_type() {
 		'capability_type'    => 'post',
 		'has_archive'        => true,
 		'hierarchical'       => false,
-		'menu_position'      => null,
+		'menu_position'      => 6,
 		'taxonomies'         => $taxonomies,
 		'supports'           => $supports,
 		'show_in_rest'       => $show_in_rest,
@@ -70,12 +70,12 @@ add_action( 'init', __NAMESPACE__ . '\\register_idea_post_type' );
 function register_default_idea_taxonomies() {
 	// Define default taxonomies with their properties.
 	$default_taxonomies = array(
-		'idea-status'   => array(
+		'idea-status' => array(
 			'singular' => __( 'Status', 'roadmapwp-pro' ), // Translatable.
 			'plural'   => __( 'Status', 'roadmapwp-pro' ),   // Translatable.
 			'public'   => true,  // Make status taxonomy private.
 		),
-		'idea-tag' => array(
+		'idea-tag'    => array(
 			'singular' => __( 'Tag', 'roadmapwp-pro' ),    // Translatable.
 			'plural'   => __( 'Tags', 'roadmapwp-pro' ),     // Translatable.
 			'public'   => true,  // Keep tag taxonomy public.

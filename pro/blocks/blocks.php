@@ -72,7 +72,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_edito
  * @param array $categories Existing block categories.
  * @return array Updated list of block categories.
  */
-function add_block_category( $categories ) {
+function add_block_category( $categories, $post = null ) {
 	return array_merge(
 		$categories,
 		array(
@@ -83,4 +83,4 @@ function add_block_category( $categories ) {
 		)
 	);
 }
-add_filter( 'block_categories_all', __NAMESPACE__ . '\\add_block_category', 10, 2 );
+add_filter( 'block_categories_all', __NAMESPACE__ . '\add_block_category', 10, 2 );

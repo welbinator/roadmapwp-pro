@@ -90,31 +90,28 @@ function settings_validate( $input ) {
 		);
 	}
 
+	// Validate 'restricted_courses'
+	$validated_settings['restricted_courses'] = array(); // Default to empty array
 
-// Validate 'restricted_courses'
-$validated_settings['restricted_courses'] = array(); // Default to empty array
-
-if ( isset( $input['restricted_courses'] ) && is_array( $input['restricted_courses'] ) ) {
-    $validated_courses = array();
-    foreach ( $input['restricted_courses'] as $course_id ) {
-        // Ensure the course ID is numeric to prevent invalid data types
-        $course_id = intval($course_id); // Convert to integer for safety
-        if ( get_post_type( $course_id ) == 'sfwd-courses' ) {
-            $validated_courses[] = $course_id;
-        } else {
-            add_settings_error(
-                'restricted_courses',
-                'invalid_course_id',
-                "Invalid Course ID: $course_id. Please select a valid course.",
-                'error'
-            );
-        }
-    }
-    $validated_settings['restricted_courses'] = $validated_courses;
-}
-// No else part needed, as we default to an empty array if 'restricted_courses' isn't set
-
-
+	if ( isset( $input['restricted_courses'] ) && is_array( $input['restricted_courses'] ) ) {
+		$validated_courses = array();
+		foreach ( $input['restricted_courses'] as $course_id ) {
+			// Ensure the course ID is numeric to prevent invalid data types
+			$course_id = intval( $course_id ); // Convert to integer for safety
+			if ( get_post_type( $course_id ) == 'sfwd-courses' ) {
+				$validated_courses[] = $course_id;
+			} else {
+				add_settings_error(
+					'restricted_courses',
+					'invalid_course_id',
+					"Invalid Course ID: $course_id. Please select a valid course.",
+					'error'
+				);
+			}
+		}
+		$validated_settings['restricted_courses'] = $validated_courses;
+	}
+	// No else part needed, as we default to an empty array if 'restricted_courses' isn't set
 
 	// Validate 'restrict_voting'
 	$validated_settings['restrict_voting'] = ! empty( $input['restrict_voting'] ) && $input['restrict_voting'] == '1' ? 1 : 0;
@@ -141,16 +138,25 @@ if ( isset( $input['restricted_courses'] ) && is_array( $input['restricted_cours
 	} else {
 		$validated_settings['custom_display_ideas_heading'] = '';
 	}
-	
+
 	// Validate 'hide_from_rest'
-    $validated_settings['hide_from_rest'] = ! empty( $input['hide_from_rest'] ) && $input['hide_from_rest'] == '1' ? 1 : 0;
+	$validated_settings['hide_from_rest'] = ! empty( $input['hide_from_rest'] ) && $input['hide_from_rest'] == '1' ? 1 : 0;
 
 	// Return the array of validated settings
 	return $validated_settings;
 }
 
 function register_settings() {
-	register_setting( 'wp_roadmap_settings', 'wp_roadmap_settings', __NAMESPACE__ . '\\settings_validate' );
+	// Use an args array for register_setting so PHPStan can validate the shape (sanitize_callback key expected).
+	register_setting(
+		'wp_roadmap_settings',
+		'wp_roadmap_settings',
+		array(
+			'sanitize_callback' => function ( $input ) {
+				return \RoadMapWP\Pro\Settings\settings_validate( $input );
+			},
+		)
+	);
 }
 
 add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );

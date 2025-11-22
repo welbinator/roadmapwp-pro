@@ -4,8 +4,8 @@
  */
 
 // Retrieve color settings
-$options                = get_option( 'wp_roadmap_settings' );
-$allow_comments         = isset( $options['allow_comments'] ) ? $options['allow_comments'] : false;
+$options        = get_option( 'wp_roadmap_settings' );
+$allow_comments = isset( $options['allow_comments'] ) ? $options['allow_comments'] : false;
 
 
 get_header(); ?>
@@ -37,7 +37,8 @@ get_header(); ?>
 					$exclude_taxonomies = array( 'idea-status' );
 					$taxonomies         = array_diff( $taxonomies, $exclude_taxonomies );
 
-					$terms = wp_get_post_terms( get_the_ID(), $taxonomies, array( 'exclude' => $exclude_taxonomies ) );
+					// We've already filtered $taxonomies to exclude the status taxonomy, so fetch terms directly.
+					$terms = wp_get_post_terms( get_the_ID(), $taxonomies );
 					if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 						echo '<div class="idea-tags flex space-x-2">';
 						foreach ( $terms as $term ) {
@@ -67,7 +68,7 @@ get_header(); ?>
 						</div>
 						
 						<?php
-							\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button($idea_id, $vote_count);
+							\RoadMapWP\Pro\ClassVoting\VotingHandler::render_vote_button( $idea_id, $vote_count );
 						?>
 					</div>
 					

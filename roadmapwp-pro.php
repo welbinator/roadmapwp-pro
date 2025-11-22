@@ -3,7 +3,7 @@
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     2.3.3
+Version:     2.4.0
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
@@ -11,6 +11,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: roadmapwp-pro
 */
 
+define( 'WP_ROADMAP_PRO', __FILE__ );
+define('RMWP_PLUGIN_VERSION', '2.4.0');
 
 // This function will be called when the Pro version is activated.
 function rmwp_pro_activate() {
@@ -31,31 +33,39 @@ register_activation_hook( __FILE__, 'rmwp_pro_activate' );
  * This is a means of catching errors from the activation method above and displaying it to the customer
  */
 function rmwp_pro_admin_notices() {
-	if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['message'] ) ) {
+	$sl_activation = filter_input( INPUT_GET, 'sl_activation', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	$message_raw  = filter_input( INPUT_GET, 'message', FILTER_DEFAULT );
+	$notice_nonce = filter_input( INPUT_GET, 'rmwp_activation_nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		switch ( $_GET['sl_activation'] ) {
-
-			case 'false':
-				$message = urldecode( $_GET['message'] );
-				?>
-				<div class="error">
-					<p><?php echo wp_kses_post( $message ); ?></p>
-				</div>
-				<?php
-				break;
-
-			case 'true':
-			default:
-				// Developers can put a custom success message here for when activation is successful if they way.
-				break;
-
-		}
+	if ( ! $sl_activation || empty( $message_raw ) ) {
+		return;
 	}
-}
+
+	// Only show activation-related notices when current user can manage plugins and a valid nonce is present.
+	if ( ! current_user_can( 'activate_plugins' ) || ! $notice_nonce || ! wp_verify_nonce( $notice_nonce, 'rmwp_pro_activation' ) ) {
+		return;
+	}
+
+	switch ( $sl_activation ) {
+		case 'false':
+			// Unsash and allow a safe subset of HTML.
+			$message = wp_kses_post( wp_unslash( $message_raw ) );
+			?>
+			<div class="error">
+				<p><?php echo wp_kses_post( $message ); ?></p>
+			</div>
+			<?php
+			break;
+
+		case 'true':
+		default:
+			// Developers can put a custom success message here for when activation is successful if they way.
+			break;
+	}
+	}
 add_action( 'admin_notices', 'rmwp_pro_admin_notices' );
 
-define( 'WP_ROADMAP_PRO', __FILE__ );
-define('RMWP_PLUGIN_VERSION', '2.3.3');
+
 
 if ( file_exists( plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php' ) ) {
     require plugin_dir_path( __FILE__ ) . 'EDD_Licensing.php';
@@ -103,6 +113,7 @@ require_once plugin_dir_path( __FILE__ ) . 'app/customizer-styles.php';
 // Include necessary files
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-pages.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/admin-functions.php';
+require_once plugin_dir_path( __FILE__ ) . 'app/admin-enqueue.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/cpt-ideas.php';
 require_once plugin_dir_path( __FILE__ ) . 'app/ajax-handlers.php';
 
@@ -121,6 +132,13 @@ if (file_exists($gm_file)) {
 	include_once plugin_dir_path( __FILE__ ) . 'gutenberg-market.php';
 }
 
+if (file_exists(WP_ROADMAP_PRO . 'github-update.php')) {
+    include WP_ROADMAP_PRO . 'github-update.php';
+	// delete_site_transient('update_plugins');
+} else {
+    error_log('github-update.php not found in ' . WP_ROADMAP_PRO);
+}
+
 function rmwp_pro_on_activation() {
 	// Directly call the function that registers your taxonomies here
 	\RoadMapWP\Pro\CPT\register_default_idea_taxonomies();
@@ -131,7 +149,9 @@ function rmwp_pro_on_activation() {
 		if ( ! term_exists( $term, 'idea-status' ) ) {
 			$result = wp_insert_term( $term, 'idea-status' );
 			if ( is_wp_error( $result ) ) {
-				error_log( 'Error inserting term ' . $term . ': ' . $result->get_error_message() );
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'Error inserting term ' . $term . ': ' . $result->get_error_message() );
+				}
 			}
 		}
 	}
@@ -187,12 +207,21 @@ function create_pages() {
         )
     );
 
-    foreach ($pages as $page) {
-        // Check if the page already exists
-        $page_exists = get_page_by_title($page['title']);
+	foreach ( $pages as $page ) {
+		// Check if the page already exists (use get_posts instead of deprecated get_page_by_title)
+		$existing = get_posts(
+			array(
+				'title'       => $page['title'],
+				'post_type'   => 'page',
+				'post_status' => 'any',
+				'numberposts' => 1,
+			)
+		);
 
-        // If the page does not exist, create it
-        if (!$page_exists) {
+		$page_exists = ! empty( $existing );
+
+		// If the page does not exist, create it
+		if ( ! $page_exists ) {
             $new_page = array(
                 'post_title'    => $page['title'],
                 'post_content'  => $page['content'],
@@ -214,4 +243,4 @@ function create_pages() {
 }
 
 
-register_activation_hook(__FILE__, __NAMESPACE__ . '\\create_pages');
+register_activation_hook( __FILE__, 'create_pages' );

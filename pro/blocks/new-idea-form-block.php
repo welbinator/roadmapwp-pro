@@ -33,13 +33,13 @@ function register_block() {
 					'type'    => 'object',
 					'default' => array(),
 				),
-				'selectedCourses' => array(
-                    'type'    => 'array',
-                    'default' => array(),
-                    'items'   => array(
-                        'type' => 'integer',
-                    ),
-                ),
+				'selectedCourses'    => array(
+					'type'    => 'array',
+					'default' => array(),
+					'items'   => array(
+						'type' => 'integer',
+					),
+				),
 
 			),
 		)
@@ -57,28 +57,31 @@ add_action( 'init', __NAMESPACE__ . '\register_block' );
  * @return string The HTML output for the new idea form.
  */
 function block_render( $attributes ) {
-	
-    $user_id = get_current_user_id();
-    $display_block = apply_filters('roadmapwp_new_idea_form_block', true, $attributes, $user_id);
+
+	// Ensure these variables are defined to satisfy static analysis and avoid undefined variable warnings.
+	$user_id       = get_current_user_id();
+	$title         = '';
+	$description   = '';
+	$summary       = '';
+	$display_block = apply_filters( 'roadmapwp_new_idea_form_block', true, $attributes, $user_id );
 
 	// Dev Note: probably a better way to do this
-    $learndash_active = function_exists('sfwd_lms_has_access');
+	$learndash_active = function_exists( 'sfwd_lms_has_access' );
 
 	// Check if any courses are selected
-	$selectedCourses = $attributes['selectedCourses'] ?? [];
-	$userHasAccess = false;
- 
+	$selectedCourses = $attributes['selectedCourses'] ?? array();
+	$userHasAccess   = false;
 
-    if (!$display_block) {
-        return '';
-    }
+	if ( ! $display_block ) {
+		return '';
+	}
 
-    // Existing block rendering logic here
-    update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
+	// Existing block rendering logic here
+	update_option( 'wp_roadmap_new_idea_form_shortcode_loaded', true );
 
-    if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
-        return;
-    }
+	if ( ! empty( $attributes['onlyLoggedInUsers'] ) && ! is_user_logged_in() ) {
+		return '';
+	}
 
 	$options             = get_option( 'wp_roadmap_settings' );
 	$default_status_term = isset( $options['default_status_term'] ) ? $options['default_status_term'] : 'new-idea';
@@ -116,28 +119,31 @@ function block_render( $attributes ) {
 	);
 
 	// If LearnDash is active and courses are selected, check the user's enrollment
-    if ($learndash_active && !empty($selectedCourses)) {
-        foreach ($selectedCourses as $courseId) {
-            if (sfwd_lms_has_access($courseId, $user_id)) {
-                $userHasAccess = true;
-                break; // Exit loop if user has access to at least one course
-            }
-        }
-        
-        // If the user is not enrolled in any selected courses, return without rendering the block
-        if (!$userHasAccess) {
-            return '';
-        }
-    } elseif (!empty($selectedCourses) && !$learndash_active) {
-        // If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
-        // This ensures the block content is accessible when LearnDash is deactivated
-        $userHasAccess = true; // Bypass enrollment checks
-    }
+	if ( $learndash_active && ! empty( $selectedCourses ) ) {
+		foreach ( $selectedCourses as $courseId ) {
+			if ( sfwd_lms_has_access( $courseId, $user_id ) ) {
+				$userHasAccess = true;
+				break; // Exit loop if user has access to at least one course
+			}
+		}
+
+		// If the user is not enrolled in any selected courses, return without rendering the block
+		if ( ! $userHasAccess ) {
+			return '';
+		}
+	} elseif ( ! empty( $selectedCourses ) && ! $learndash_active ) {
+		// If LearnDash is not active but courses were selected, ignore the course selection and proceed to render
+		// This ensures the block content is accessible when LearnDash is deactivated
+		$userHasAccess = true; // Bypass enrollment checks
+	}
 
 	ob_start();
 
-	if ( isset( $_GET['new_idea_submitted'] ) && '1' === $_GET['new_idea_submitted'] ) {
-		echo '<p>Thank you for your submission!</p>';
+	// Show a thank-you message only if we have the submitted flag and a valid nonce
+	$submitted_flag  = filter_input( INPUT_GET, 'new_idea_submitted', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	$submitted_nonce = filter_input( INPUT_GET, 'wp_roadmap_new_idea_submitted_nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	if ( '1' === (string) $submitted_flag && $submitted_nonce && wp_verify_nonce( $submitted_nonce, 'wp_roadmap_new_idea_submitted' ) ) {
+		echo '<p>' . esc_html__( 'Thank you for your submission!', 'roadmapwp-pro' ) . '</p>';
 	}
 
 	$hide_submit_idea_heading = apply_filters( 'wp_roadmap_hide_custom_idea_heading', false );
@@ -152,8 +158,9 @@ function block_render( $attributes ) {
 			<?php endif; ?>
 
 			<?php
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$form_action_url = isset( $_SERVER['REQUEST_URI'] ) ? esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			// Use filter_input for server variables and sanitize the URL for the form action
+			$form_action_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+			$form_action_url = $form_action_url ? esc_url( $form_action_url ) : '';
 
 			?>
 
@@ -199,7 +206,7 @@ function block_render( $attributes ) {
 											foreach ( $terms as $term ) :
 												?>
 												<label class="rmwp__taxonomy-term-label">
-													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>">
+													<input type="checkbox" name="idea_taxonomies[<?php echo esc_attr( $taxonomy->name ); ?>][]" value="<?php echo esc_attr( (string) $term->term_id ); ?>">
 													<?php echo esc_html( $term->name ); ?>
 												</label>
 												<?php
@@ -234,7 +241,13 @@ function block_render( $attributes ) {
  * Handles the submission of the new idea form block.
  */
 function handle_new_idea_block_submission() {
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+	$request_method = filter_input( INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	if ( $request_method && 'POST' === strtoupper( $request_method ) && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
+		// Initialize variables to satisfy static analysis and avoid "might not be defined" warnings in later logic.
+		$title       = '';
+		$description = '';
+		$summary     = '';
+
 		$nonce = sanitize_text_field( wp_unslash( $_POST['wp_roadmap_new_idea_nonce'] ) );
 		if ( wp_verify_nonce( $nonce, 'wp_roadmap_new_idea' ) ) {
 
@@ -263,32 +276,47 @@ function handle_new_idea_block_submission() {
 					'post_type'    => 'idea',
 				)
 			);
-
-			if ( $idea_id && ! is_wp_error( $idea_id ) ) {
+			// Normalize error handling: check for WP_Error first using instanceof, then proceed when we have a valid post ID.
+			if ( $idea_id instanceof \WP_Error ) {
+				// Log or handle the error as needed; keep behavior unchanged for now.
+			} elseif ( $idea_id ) {
 				// Set terms for non-status taxonomies
-				if ( isset( $_POST['idea_taxonomies'] ) && is_array( $_POST['idea_taxonomies'] ) ) {
-					foreach ( $_POST['idea_taxonomies'] as $tax_slug => $term_ids ) {
+				// Sanitize incoming taxonomy selections using filter_input to avoid direct unslashed superglobal usage
+				$raw_idea_taxonomies = filter_input( INPUT_POST, 'idea_taxonomies', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+				$raw_idea_taxonomies = is_array( $raw_idea_taxonomies ) ? $raw_idea_taxonomies : array();
+				if ( is_array( $raw_idea_taxonomies ) ) {
+					foreach ( $raw_idea_taxonomies as $tax_slug => $term_ids ) {
+						$tax_slug = sanitize_key( $tax_slug );
 						if ( $tax_slug !== 'idea-status' ) {
-							$term_ids = array_map( 'intval', $term_ids );
+							$term_ids = array_map( 'intval', (array) $term_ids );
 							wp_set_object_terms( $idea_id, $term_ids, $tax_slug );
 						}
 					}
 				}
-	
+
 				// Check if selected statuses is set, not empty, and contains valid numeric values
-				$valid_selected_statuses = isset( $_POST['selected_statuses'] ) && is_array( $_POST['selected_statuses'] )
-											&& count( array_filter( $_POST['selected_statuses'], 'is_numeric' ) ) > 0;
-	
+				$raw_selected_statuses = filter_input( INPUT_POST, 'selected_statuses', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+				$raw_selected_statuses = is_array( $raw_selected_statuses ) ? $raw_selected_statuses : array();
+				$valid_selected_statuses = is_array( $raw_selected_statuses ) && count( array_filter( $raw_selected_statuses, 'is_numeric' ) ) > 0;
+
 				if ( $valid_selected_statuses ) {
-					$selected_status_terms = array_map( 'intval', $_POST['selected_statuses'] );
+					$selected_status_terms = array_map( 'intval', $raw_selected_statuses );
 					wp_set_object_terms( $idea_id, $selected_status_terms, 'idea-status' );
 				} else {
 					// Fallback to default status term if none or invalid selected
 					wp_set_object_terms( $idea_id, array( $default_idea_status_term ), 'idea-status' );
 				}
-	
-				// Redirect to the confirmation page
-				$redirect_url = add_query_arg( 'new_idea_submitted', '1', esc_url_raw( $_SERVER['REQUEST_URI'] ) );
+
+				// Redirect to the confirmation page with a nonce so the thank-you message can be validated safely
+				$current_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+				$current_url = $current_url ? esc_url_raw( $current_url ) : home_url();
+				$redirect_url = add_query_arg(
+					array(
+						'new_idea_submitted' => '1',
+						'wp_roadmap_new_idea_submitted_nonce' => wp_create_nonce( 'wp_roadmap_new_idea_submitted' ),
+					),
+					$current_url
+				);
 				wp_redirect( $redirect_url );
 				exit;
 			}

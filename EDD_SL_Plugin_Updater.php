@@ -222,9 +222,9 @@ class EDD_SL_Plugin_Updater {
 
 		printf(
 			'<tr class="plugin-update-tr %3$s" id="%1$s-update" data-slug="%1$s" data-plugin="%2$s">',
-			$this->slug,
-			$file,
-			in_array( $this->name, $this->get_active_plugins(), true ) ? 'active' : 'inactive'
+			esc_attr( $this->slug ),
+			esc_attr( $file ),
+			esc_attr( in_array( $this->name, $this->get_active_plugins(), true ) ? 'active' : 'inactive' )
 		);
 
 		echo '<td colspan="3" class="plugin-update colspanchange">';
@@ -254,37 +254,42 @@ class EDD_SL_Plugin_Updater {
 
 		printf(
 			/* translators: the plugin name. */
-			esc_html__( 'There is a new version of %1$s available.', 'easy-digital-downloads' ),
+			esc_html__( 'There is a new version of %1$s available.', 'roadmapwp-pro' ),
 			esc_html( $plugin['Name'] )
 		);
 
 		if ( ! current_user_can( 'update_plugins' ) ) {
 			echo ' ';
-			esc_html_e( 'Contact your network administrator to install the update.', 'easy-digital-downloads' );
+			esc_html_e( 'Contact your network administrator to install the update.', 'roadmapwp-pro' );
 		} elseif ( empty( $update_cache->response[ $this->name ]->package ) && ! empty( $changelog_link ) ) {
 			echo ' ';
-			printf(
+			$version_details = sprintf(
 				/* translators: 1. opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate. */
-				__( '%1$sView version %2$s details%3$s.', 'easy-digital-downloads' ),
+				/* translators: the %2$s placeholder is the plugin version number. */
+				__( '%1$sView version %2$s details%3$s.', 'roadmapwp-pro' ),
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
 				esc_html( $update_cache->response[ $this->name ]->new_version ),
 				'</a>'
 			);
+			echo wp_kses_post( $version_details );
 		} elseif ( ! empty( $changelog_link ) ) {
 			echo ' ';
-			printf(
-				__( '%1$sView version %2$s details%3$s or %4$supdate now%5$s.', 'easy-digital-downloads' ),
+			/* translators: 1. opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate 4. opening anchor tag for update link 5. closing anchor tag for update link */
+			$version_details_and_update = sprintf(
+				/* translators: the %2$s placeholder is the plugin version number; the %4$s..%5$s placeholders wrap the update link. */
+				__( '%1$sView version %2$s details%3$s or %4$supdate now%5$s.', 'roadmapwp-pro' ),
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
 				esc_html( $update_cache->response[ $this->name ]->new_version ),
 				'</a>',
 				'<a target="_blank" class="update-link" href="' . esc_url( wp_nonce_url( $update_link, 'upgrade-plugin_' . $file ) ) . '">',
 				'</a>'
 			);
+			echo wp_kses_post( $version_details_and_update );
 		} else {
 			printf(
 				' %1$s%2$s%3$s',
 				'<a target="_blank" class="update-link" href="' . esc_url( wp_nonce_url( $update_link, 'upgrade-plugin_' . $file ) ) . '">',
-				esc_html__( 'Update now.', 'easy-digital-downloads' ),
+				esc_html__( 'Update now.', 'roadmapwp-pro' ),
 				'</a>'
 			);
 		}
@@ -516,7 +521,7 @@ class EDD_SL_Plugin_Updater {
 		}
 
 		if ( ! current_user_can( 'update_plugins' ) ) {
-			wp_die( esc_html__( 'You do not have permission to install plugin updates', 'easy-digital-downloads' ), esc_html__( 'Error', 'easy-digital-downloads' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to install plugin updates', 'roadmapwp-pro' ), esc_html__( 'Error', 'roadmapwp-pro' ), array( 'response' => 403 ) );
 		}
 
 		$version_info = $this->get_repo_api_data();

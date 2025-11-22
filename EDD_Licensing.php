@@ -37,7 +37,7 @@ $edd_updater = new \EDD_SL_Plugin_Updater(
  * @return void
  */
 function license_key_settings_section() {
-	esc_html_e( 'This is where you enter your license key.' );
+	esc_html_e( 'This is where you enter your license key.', 'roadmapwp-pro' );
 }
 
 /**
@@ -50,7 +50,7 @@ function license_key_settings_field() {
 	$status  = get_option( 'roadmapwp_pro_license_status' );
 
 	?>
-	<p class="description"><?php esc_html_e( 'Enter your license key.' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Enter your license key.', 'roadmapwp-pro' ); ?></p>
 	<?php
 	printf(
 		'<input type="text" class="regular-text" id="roadmapwp_pro_license_key" name="roadmapwp_pro_license_key" value="%s" />',
@@ -58,12 +58,12 @@ function license_key_settings_field() {
 	);
 	$button = array(
 		'name'  => 'roadmapwp_pro_edd_license_deactivate',
-		'label' => __( 'Deactivate License' ),
+		'label' => __( 'Deactivate License', 'roadmapwp-pro' ),
 	);
 	if ( 'valid' !== $status ) {
 		$button = array(
 			'name'  => 'roadmapwp_pro_edd_license_activate',
-			'label' => __( 'Activate License' ),
+			'label' => __( 'Activate License', 'roadmapwp-pro' ),
 		);
 	}
 	wp_nonce_field( 'roadmapwp_pro_nonce', 'roadmapwp_pro_nonce' );
@@ -149,7 +149,7 @@ function activate_license() {
 		if ( is_wp_error( $response ) ) {
 			$message = $response->get_error_message();
 		} else {
-			$message = __( 'An error occurred, please try again.' );
+			$message = __( 'An error occurred, please try again.', 'roadmapwp-pro' );
 		}
 	} else {
 
@@ -267,7 +267,7 @@ function deactivate_license() {
 			if ( is_wp_error( $response ) ) {
 				$message = $response->get_error_message();
 			} else {
-				$message = __( 'An error occurred, please try again.' );
+				$message = __( 'An error occurred, please try again.', 'roadmapwp-pro' );
 			}
 
 			$redirect = add_query_arg(
