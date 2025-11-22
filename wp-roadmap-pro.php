@@ -31,9 +31,9 @@ register_activation_hook( __FILE__, 'rmwp_pro_activate' );
  * This is a means of catching errors from the activation method above and displaying it to the customer
  */
 function rmwp_pro_admin_notices() {
-	$sl_activation = filter_input( INPUT_GET, 'sl_activation', FILTER_SANITIZE_STRING );
+	$sl_activation = filter_input( INPUT_GET, 'sl_activation', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 	$message_raw  = filter_input( INPUT_GET, 'message', FILTER_DEFAULT );
-	$notice_nonce = filter_input( INPUT_GET, 'rmwp_activation_nonce', FILTER_SANITIZE_STRING );
+	$notice_nonce = filter_input( INPUT_GET, 'rmwp_activation_nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 	if ( ! $sl_activation || empty( $message_raw ) ) {
 		return;

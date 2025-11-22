@@ -98,7 +98,7 @@ add_action( 'wp_ajax_nopriv_wp_roadmap_handle_vote', __NAMESPACE__ . '\\handle_v
  */
 function filter_ideas(): void {
     // Verify nonce and sanitize inputs
-    $nonce_val = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+    $nonce_val = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
     if ( ! $nonce_val || ! wp_verify_nonce( $nonce_val, 'wp-roadmap-idea-filter-nonce' ) ) {
         wp_send_json_error( array( 'message' => __( 'Nonce verification failed.', 'roadmapwp-pro' ) ) );
     }
@@ -109,7 +109,7 @@ function filter_ideas(): void {
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
         error_log( 'RoadMapWP Filter Debug: Received filter_data: ' . print_r( $filter_data, true ) );
     }
-    $search_term = filter_input( INPUT_POST, 'search_term', FILTER_SANITIZE_STRING );
+    $search_term = filter_input( INPUT_POST, 'search_term', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
     $search_term = $search_term ? sanitize_text_field( $search_term ) : '';
     $page        = filter_input( INPUT_POST, 'page', FILTER_VALIDATE_INT );
     $page        = $page && $page > 0 ? $page : 1;
@@ -278,8 +278,8 @@ add_action( 'wp_ajax_nopriv_filter_ideas', __NAMESPACE__ . '\\filter_ideas' );
  */
 function handle_delete_custom_taxonomy(): void {
     // Sanitize and validate nonce and taxonomy parameters
-    $nonce_val = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
-    $taxonomy  = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
+    $nonce_val = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+    $taxonomy  = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
     if ( ! $nonce_val || ! $taxonomy ) {
         wp_send_json_error( array( 'message' => __( 'Missing parameters.', 'roadmapwp-pro' ) ) );
@@ -314,7 +314,7 @@ add_action( 'wp_ajax_delete_custom_taxonomy', __NAMESPACE__ . '\\handle_delete_c
 function handle_delete_selected_terms(): void {
     check_ajax_referer( 'wp_roadmap_delete_terms_nonce', 'nonce' );
 
-    $taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
+    $taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
     $taxonomy = $taxonomy ? sanitize_key( $taxonomy ) : '';
     $terms_raw = filter_input( INPUT_POST, 'terms', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
     $terms     = is_array( $terms_raw ) ? array_map( 'intval', $terms_raw ) : array();
@@ -356,7 +356,7 @@ function update_idea_status(): void {
     }
 
     $idea_id  = filter_input( INPUT_POST, 'idea_id', FILTER_VALIDATE_INT );
-    $statuses_raw = filter_input( INPUT_POST, 'statuses', FILTER_SANITIZE_STRING );
+    $statuses_raw = filter_input( INPUT_POST, 'statuses', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
         error_log( 'RoadMapWP Pro - Received data - idea_id: ' . print_r( $idea_id, true ) );
@@ -446,7 +446,7 @@ function load_ideas_for_status(): void {
 
     check_ajax_referer( 'roadmap_nonce', 'nonce' );
 
-    $status = filter_input( INPUT_POST, 'idea-status', FILTER_SANITIZE_STRING );
+    $status = filter_input( INPUT_POST, 'idea-status', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
     $status = $status ? sanitize_text_field( wp_unslash( $status ) ) : '';
     $selected_taxonomiesSlugs = filter_input( INPUT_POST, 'selectedTaxonomies', FILTER_DEFAULT );
     $selected_taxonomiesSlugs = $selected_taxonomiesSlugs ? explode( ',', sanitize_text_field( wp_unslash( $selected_taxonomiesSlugs ) ) ) : array();

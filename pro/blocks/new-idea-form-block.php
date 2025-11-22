@@ -140,8 +140,8 @@ function block_render( $attributes ) {
 	ob_start();
 
 	// Show a thank-you message only if we have the submitted flag and a valid nonce
-	$submitted_flag  = filter_input( INPUT_GET, 'new_idea_submitted', FILTER_SANITIZE_STRING );
-	$submitted_nonce = filter_input( INPUT_GET, 'wp_roadmap_new_idea_submitted_nonce', FILTER_SANITIZE_STRING );
+	$submitted_flag  = filter_input( INPUT_GET, 'new_idea_submitted', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	$submitted_nonce = filter_input( INPUT_GET, 'wp_roadmap_new_idea_submitted_nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 	if ( '1' === (string) $submitted_flag && $submitted_nonce && wp_verify_nonce( $submitted_nonce, 'wp_roadmap_new_idea_submitted' ) ) {
 		echo '<p>' . esc_html__( 'Thank you for your submission!', 'roadmapwp-pro' ) . '</p>';
 	}
@@ -241,7 +241,7 @@ function block_render( $attributes ) {
  * Handles the submission of the new idea form block.
  */
 function handle_new_idea_block_submission() {
-	$request_method = filter_input( INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING );
+	$request_method = filter_input( INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 	if ( $request_method && 'POST' === strtoupper( $request_method ) && isset( $_POST['idea_title'], $_POST['wp_roadmap_new_idea_nonce'] ) ) {
 		// Initialize variables to satisfy static analysis and avoid "might not be defined" warnings in later logic.
 		$title       = '';
