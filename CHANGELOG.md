@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.2] - 2025-11-27
+* Bug Fix - Fixed github-update.php file path resolution issue
+* Bug Fix - Fixed plugin deactivation to correctly detect and deactivate old free version (roadmap-wp)
+
+## [2.4.1] - 2025-11-27
+* Bug Fix - Fixed deprecated FILTER_SANITIZE_STRING constant (replaced with FILTER_SANITIZE_FULL_SPECIAL_CHARS for PHP 8.1+ compatibility)
+* Bug Fix - Fixed status display in filtered results by clearing filter cache when status is updated
+* Bug Fix - Fixed event delegation for status update forms to work with dynamically loaded content
+* Bug Fix - Fixed roadmap shortcode to display all status terms (added hide_empty => false)
+* Bug Fix - Fixed roadmap tabs shortcode to display taxonomy tags
+* Enhancement - Removed unnecessary debug logging from adjust_chosen_page_main_query function
+
 ## [2.4.0] - 2025-11-21
 * Refactored entire plugin per plugin check, phpstan results
 * Added github update functionality (so folks who download from github will receive updates)

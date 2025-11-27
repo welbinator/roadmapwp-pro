@@ -353,15 +353,6 @@ add_action( 'template_redirect', __NAMESPACE__ . '\\redirect_single_idea_to_chos
  * Adjusts the main query for single idea display on chosen pages
  */
 function adjust_chosen_page_main_query( \WP_Query $query ) {
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'RoadMapWP Debug: adjust_chosen_page_main_query entered with query: ' . 
-			'is_admin=' . (int)is_admin() . 
-			' is_main_query=' . (int)$query->is_main_query() .
-			' is_archive=' . (int)$query->is_archive() .
-			' request=' . $query->request
-		);
-	}
-
 	if ( is_admin() || ! $query->is_main_query() || ! isset( $_GET['idea_id'] ) ) {
 		return;
 	}
