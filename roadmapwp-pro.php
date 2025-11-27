@@ -3,7 +3,7 @@
 Plugin Name: RoadMapWP Pro
 Plugin URI:  https://apexbranding.design/wp-roadmap
 Description: Pro version of WP Roadmap, a roadmap plugin where users can submit and vote on ideas, and admins can organize them into a roadmap.
-Version:     2.4.1
+Version:     2.4.2
 Author:      James Welbes
 Author URI:  https://apexbranding.design
 License:     GPL2
@@ -12,15 +12,15 @@ Text Domain: roadmapwp-pro
 */
 
 define( 'WP_ROADMAP_PRO', __FILE__ );
-define('RMWP_PLUGIN_VERSION', '2.4.1');
+define('RMWP_PLUGIN_VERSION', '2.4.2');
 
 // This function will be called when the Pro version is activated.
 function rmwp_pro_activate() {
 	// Check if the free version is active
 	include_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( is_plugin_active( 'roadmapwp/wp-roadmap.php' ) ) {
+	if ( is_plugin_active( 'roadmap-wp/wp-roadmap.php' ) ) {
 		// Deactivate the free version
-		deactivate_plugins( 'roadmapwp/wp-roadmap.php' );
+		deactivate_plugins( 'roadmap-wp/wp-roadmap.php' );
 	}
 	// Additional activation code for Pro version goes here...
 }
@@ -132,11 +132,11 @@ if (file_exists($gm_file)) {
 	include_once plugin_dir_path( __FILE__ ) . 'gutenberg-market.php';
 }
 
-if (file_exists(WP_ROADMAP_PRO . 'github-update.php')) {
-    include WP_ROADMAP_PRO . 'github-update.php';
+if (file_exists(plugin_dir_path( WP_ROADMAP_PRO ) . 'github-update.php')) {
+    include plugin_dir_path( WP_ROADMAP_PRO ) . 'github-update.php';
 	// delete_site_transient('update_plugins');
 } else {
-    error_log('github-update.php not found in ' . WP_ROADMAP_PRO);
+    error_log('github-update.php not found in ' . plugin_dir_path( WP_ROADMAP_PRO ));
 }
 
 function rmwp_pro_on_activation() {
