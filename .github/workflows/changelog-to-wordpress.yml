@@ -28,7 +28,8 @@ jobs:
     - name: Convert Extracted Changelog to JSON
       run: |
         VERSION="${{ github.event.inputs.version }}"
-        jq -Rs --arg version "$VERSION" '{title: ("RoadMapWP Pro " + $version + " is here!"), content: .}' specific-changelog.md > changelog.json
+        # Send just the version number - WordPress will format the title
+        jq -Rs --arg version "$VERSION" '{title: $version, content: .}' specific-changelog.md > changelog.json
 
     - name: Update WordPress
       env:
